@@ -40,8 +40,6 @@ ipch/
 *.sdf
 *.cachefile
 *.VC.db
-*.idb
-*.pdb
 
 Client/Bin/*
 !Client/Bin/Resource
