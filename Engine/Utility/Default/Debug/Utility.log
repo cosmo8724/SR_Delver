@@ -1,0 +1,86 @@
+﻿  Weapon.cpp
+  VIBuffer.cpp
+  UI.cpp
+  TriCol.cpp
+  Transform.cpp
+  Texture.cpp
+  TerrainTex.cpp
+  Scene.cpp
+  Renderer.cpp
+  RcTex.cpp
+  RcCol.cpp
+  PtBuffer.cpp
+  ProtoMgr.cpp
+  Pipeline.cpp
+  NPC.cpp
+  Monster.cpp
+  Management.cpp
+  LightMgr.cpp
+  Light.cpp
+  Layer.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Item.cpp
+  GameObject.cpp
+  CubeTex.cpp
+  Component.cpp
+  CollisionMgr.cpp
+  Camera.cpp
+  Calculator.cpp
+  Bullet.cpp
+  Animator.cpp
+  코드를 생성하고 있습니다...
+     ../Bin\Utility.lib 라이브러리 및 ../Bin\Utility.exp 개체를 생성하고 있습니다.
+  Utility.vcxproj -> C:\Users\Cosmo\OneDrive\바탕 화면\Delver Backup\Engine\Utility\Default\../Bin\Utility.dll
+  Utility.vcxproj -> ../Bin\Utility.pdb (Full PDB)
+          1개 파일이 복사되었습니다.
+          1개 파일이 복사되었습니다.
+  .\Engine\Header\Animator.h
+  .\Engine\Header\Bullet.h
+  .\Engine\Header\Calculator.h
+  .\Engine\Header\Camera.h
+  .\Engine\Header\CollisionMgr.h
+  .\Engine\Header\Component.h
+  .\Engine\Header\CubeTex.h
+  .\Engine\Header\Engine_Enum.h
+  .\Engine\Header\Engine_Include.h
+  .\Engine\Header\Engine_Macro.h
+  .\Engine\Header\Engine_Struct.h
+  .\Engine\Header\Engine_Template.h
+  .\Engine\Header\Engine_Typedef.h
+  .\Engine\Header\Export_Function.h
+  .\Engine\Header\Export_System.h
+  .\Engine\Header\Export_System.inl
+  .\Engine\Header\Export_Utility.h
+  .\Engine\Header\Export_Utility.inl
+  .\Engine\Header\FontMgr.h
+  .\Engine\Header\Frame.h
+  .\Engine\Header\FrameMgr.h
+  .\Engine\Header\GameObject.h
+  .\Engine\Header\GraphicDev.h
+  .\Engine\Header\InputDev.h
+  .\Engine\Header\Item.h
+  .\Engine\Header\Layer.h
+  .\Engine\Header\Light.h
+  .\Engine\Header\LightMgr.h
+  .\Engine\Header\Management.h
+  .\Engine\Header\Monster.h
+  .\Engine\Header\MyFont.h
+  .\Engine\Header\NPC.h
+  .\Engine\Header\Pipeline.h
+  .\Engine\Header\ProtoMgr.h
+  .\Engine\Header\PtBuffer.h
+  .\Engine\Header\RcCol.h
+  .\Engine\Header\RcTex.h
+  .\Engine\Header\Renderer.h
+  .\Engine\Header\Scene.h
+  .\Engine\Header\TerrainTex.h
+  .\Engine\Header\Texture.h
+  .\Engine\Header\Timer.h
+  .\Engine\Header\TimerMgr.h
+  .\Engine\Header\Transform.h
+  .\Engine\Header\TriCol.h
+  .\Engine\Header\UI.h
+  .\Engine\Header\VIBuffer.h
+  .\Engine\Header\Weapon.h
+         48개 파일이 복사되었습니다.
