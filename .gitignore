@@ -33,6 +33,14 @@
 
 *.tlog
 *.log
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
 
 Client/Bin/*
 !Client/Bin/Resource
