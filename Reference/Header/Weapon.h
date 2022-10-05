@@ -34,9 +34,6 @@ protected:
 	DURABILITY		m_eDurability = DUR_END;
 	CCamera*		m_pCamera = nullptr; // 플레이어에 종속적
 	CTransform*		m_pCenter = nullptr;
-	_float			m_fChargeTime = 0.f;
-	_bool			m_bCharge = false; // 공격버튼을 눌렀는가? ( 화살 발사를 위함 )
-	_bool			m_bAttack = false; 
 };
 
 END
