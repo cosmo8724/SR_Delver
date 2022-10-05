@@ -31,6 +31,8 @@
 *.out
 *.app
 
+*.tlog
+*.log
 
 Client/Bin/*
 !Client/Bin/Resource
