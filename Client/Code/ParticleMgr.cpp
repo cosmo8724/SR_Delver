@@ -11,6 +11,7 @@ CParticleMgr::CParticleMgr()
 
 CParticleMgr::~CParticleMgr()
 {
+	Free();
 }
 
 void CParticleMgr::Ready_ParticleMgr(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -37,4 +38,9 @@ void CParticleMgr::Collect_Particle(_int iIdx)
 
 inline void CParticleMgr::Free(void)
 {
+	for (auto& tag : m_vecObjTag)
+	{
+		delete[] tag;
+		tag = nullptr;
+	}
 }
