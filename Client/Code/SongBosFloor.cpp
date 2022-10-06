@@ -5,6 +5,9 @@
 
 CSongBosFloor::CSongBosFloor(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
+	, m_iBulletCount(0)
+	, m_iTransparency(0)
+	, m_fTransparencyTimeAcc(0.f)
 {
 }
 
@@ -21,11 +24,12 @@ HRESULT CSongBosFloor::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Scale(0.2f, 0.2f, 0.2f);
+	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pTransCom->Rotation(ROT_X, 45.555f);
 
 	m_iBulletCount = iBulletCount;
-	
+	m_iTransparency = 90;
+
 	return S_OK;
 }
 
@@ -69,17 +73,17 @@ _int CSongBosFloor::Update_Object(const _float & fTimeDelta)
 
 	if (!m_bReady)
 	{
-		_float fNotePos = 0.5f;
+		_float fNotePos = 2.f;
 		_float fNotePosY = 0.01f;
 
 		if (m_iBulletCount == 0)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z + 1.f);
+			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z + fNotePos);
 		else if (m_iBulletCount == 1)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x + 1.f, fNotePosY, m_vPlayerPos.z);
+			m_pTransCom->Set_Pos(m_vPlayerPos.x + fNotePos, fNotePosY, m_vPlayerPos.z);
 		else if (m_iBulletCount == 2)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x - 1.f, fNotePosY, m_vPlayerPos.z);
+			m_pTransCom->Set_Pos(m_vPlayerPos.x - fNotePos, fNotePosY, m_vPlayerPos.z);
 		else if (m_iBulletCount == 3)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z - 1.f);
+			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z - fNotePos);
 		else if (m_iBulletCount == 4)
 			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z);
 
@@ -87,6 +91,7 @@ _int CSongBosFloor::Update_Object(const _float & fTimeDelta)
 	}
 
 	m_fLifeTime += fTimeDelta;
+	m_fTransparencyTimeAcc += fTimeDelta;
 	return iResult;
 }
 
@@ -95,10 +100,24 @@ void CSongBosFloor::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	//if (10.f < m_fLifeTime)
+	if (6.f < m_fLifeTime)
+	{
+		Reset();
+	}
+
+	//if (m_iTransparency > 255)
 	//{
-	//	Reset();
+	//	m_iTransparency = 255;
+	//	return;
 	//}
+
+	// 투명도 조절
+	if (0.1f < m_fTransparencyTimeAcc)
+	{
+		m_iTransparency += 10;
+
+		m_fTransparencyTimeAcc = 0.f;
+	}
 
 	CGameObject::LateUpdate_Object();
 }
@@ -109,14 +128,19 @@ void CSongBosFloor::Render_Obejct(void)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(m_iTransparency, 0, 0, 0));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	m_pAnimtorCom->Set_Texture();
-
 	m_pBufferCom->Render_Buffer();
 
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }

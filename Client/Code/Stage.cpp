@@ -10,18 +10,6 @@
 #include "GameObject.h"
 #include "Block.h"
 
-#include "GreenSlime.h"
-#include "PinkSlime.h"
-#include "Fist.h"
-#include "HealthBar.h"
-#include "BlueBat.h"
-#include "BrownBat.h"
-#include "Dog.h"
-#include "GrandFather.h"
-#include "GuitarMan.h"
-#include "HoodMan.h"
-#include "SmileMan.h"
-#include "WinkMan.h"
 // �κ��丮
 #include "HPGauge.h"
 #include "QuickSlot.h"
@@ -34,7 +22,9 @@
 #include "PinkSlime.h"
 #include "Fist.h"
 #include "BlueBat.h"
-#include  "BrownBat.h"
+#include "BrownBat.h"
+#include "Stick.h"
+#include "Leaf.h"
 // Boss
 #include "SongBoss.h"
 
@@ -222,6 +212,16 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CBrownBat::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat", pGameObject), E_FAIL);
+
+	// Stick
+	pGameObject = CStick::Create(m_pGraphicDev, 1);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Stick", pGameObject), E_FAIL);
+
+	// Leaf
+	pGameObject = CLeaf::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
 
 	//////////////Boss
 	// SongBoss

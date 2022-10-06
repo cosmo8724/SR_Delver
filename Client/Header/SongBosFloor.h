@@ -37,7 +37,12 @@ private:
 	_bool		m_bReady = false;
 	_vec3		m_vPlayerPos = { 0.f,0.f,0.f };
 
-	_uint		m_iBulletCount = 0;
+	_uint		m_iBulletCount;
+	_uint		m_iTransparency;
+
+	// Timer
+	_float		m_fTransparencyTimeAcc;
+
 };
 
 END

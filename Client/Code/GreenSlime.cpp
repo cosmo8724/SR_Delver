@@ -2,6 +2,7 @@
 #include "..\Header\GreenSlime.h"
 
 #include "Export_Function.h"
+#include "WandBullet.h"
 
 CGreenSlime::CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -18,6 +19,9 @@ CGreenSlime::~CGreenSlime()
 HRESULT CGreenSlime::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_State.iHp = 1;
+	m_State.iAttack = 1;
 
 	m_pTransCom->Set_Pos(0.f, 1.f, 20.f);
 
@@ -196,6 +200,11 @@ void CGreenSlime::Motion_Change(const _float& fTimeDelta)
 		}
 		m_ePreState = m_eCurState;
 	}
+}
+
+void CGreenSlime::CollisionEvent(CGameObject * pObj)
+{
+	m_eCurState = HIT;
 }
 
 CGreenSlime * CGreenSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev)

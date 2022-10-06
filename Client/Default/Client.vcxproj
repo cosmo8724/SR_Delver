@@ -184,6 +184,7 @@
     <ClInclude Include="..\Header\Inventory.h" />
     <ClInclude Include="..\Header\InvImg.h" />
     <ClInclude Include="..\Header\ItemMgr.h" />
+    <ClInclude Include="..\Header\Leaf.h" />
     <ClInclude Include="..\Header\Loading.h" />
     <ClInclude Include="..\Header\Logo.h" />
     <ClInclude Include="..\Header\MainApp.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="..\Header\SongBosStun.h" />
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\StaticCamera.h" />
+    <ClInclude Include="..\Header\Stick.h" />
     <ClInclude Include="..\Header\TalkWindow.h" />
     <ClInclude Include="..\Header\Terrain.h" />
     <ClInclude Include="..\Header\Tool_Scene.h" />
@@ -261,6 +263,7 @@
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\InvImg.cpp" />
     <ClCompile Include="..\Code\ItemMgr.cpp" />
+    <ClCompile Include="..\Code\Leaf.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />
     <ClCompile Include="..\Code\Logo.cpp" />
     <ClCompile Include="..\Code\MainApp.cpp" />
@@ -280,6 +283,7 @@
     <ClCompile Include="..\Code\SongBosStun.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\StaticCamera.cpp" />
+    <ClCompile Include="..\Code\Stick.cpp" />
     <ClCompile Include="..\Code\TalkWindow.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
     <ClCompile Include="..\Code\Tool_Scene.cpp" />
