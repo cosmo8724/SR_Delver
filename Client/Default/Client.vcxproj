@@ -188,6 +188,7 @@
     <ClInclude Include="..\Header\MainApp.h" />
     <ClInclude Include="..\Header\MapTool.h" />
     <ClInclude Include="..\Header\MapUI.h" />
+    <ClInclude Include="..\Header\ParticleMgr.h" />
     <ClInclude Include="..\Header\ParticleTool.h" />
     <ClInclude Include="..\Header\PinkSlime.h" />
     <ClInclude Include="..\Header\Player.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="..\Code\MainApp.cpp" />
     <ClCompile Include="..\Code\MapTool.cpp" />
     <ClCompile Include="..\Code\MapUI.cpp" />
+    <ClCompile Include="..\Code\ParticleMgr.cpp" />
     <ClCompile Include="..\Code\ParticleTool.cpp" />
     <ClCompile Include="..\Code\PinkSlime.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />

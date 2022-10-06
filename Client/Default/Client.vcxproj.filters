@@ -217,6 +217,9 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\05. CrossHair">
       <UniqueIdentifier>{8b76c546-8740-4382-8339-a260941f8583}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. For_Public\02. Particle\Manager">
+      <UniqueIdentifier>{eba8f420-befd-42b2-bb7e-0845e53dbacb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -429,6 +432,9 @@
     <ClInclude Include="..\Header\ItemMgr.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\00. Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\ParticleMgr.h">
+      <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -622,6 +628,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ItemMgr.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\00. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ParticleMgr.cpp">
+      <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

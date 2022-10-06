@@ -59,5 +59,6 @@ private:
 	_float		m_fFrameSpeed = 1.f;
 	PTYPE		m_eType = PTYPE_END;
 	_float		m_fVelocityMulti = 1.f;
+	_int		m_iIndex = -1;
 };
 
