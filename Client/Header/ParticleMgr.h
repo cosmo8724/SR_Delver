@@ -25,8 +25,12 @@ public:
 	// 파티클 호출
 	void			Call_Particle(PTYPE eType, PTEXTUREID eTex);
 
-	// 사용이 끝난 파티클
+	// 사용이 끝난 파티클 회수
 	void			Collect_Particle(_int iIdx);
+
+	// 호출 전 파티클 정보 설정
+	void			Set_Info(CGameObject* pObj);
+
 
 public:
 	inline virtual void Free(void);
@@ -39,6 +43,10 @@ private:
 	vector<CGameObject*>	m_ParticlePool;
 
 	queue<_int>				m_IdxQue;
+
+
+	ATTRIBUTE		m_pInfo;
+	CGameObject*	m_pTarget;
 
 };
 

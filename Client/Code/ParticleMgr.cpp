@@ -75,10 +75,10 @@ void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 		iIdx = m_IdxQue.front();
 		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Use(true);
 		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Index(iIdx);
-		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Particle(eType);
 		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Texture(eTex);
+		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Target(m_pTarget);
 
-
+		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Particle(eType);
 		m_IdxQue.pop();
 	}
 }
@@ -86,6 +86,12 @@ void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 void CParticleMgr::Collect_Particle(_int iIdx)
 {
 	m_IdxQue.push(iIdx);
+}
+
+void CParticleMgr::Set_Info(CGameObject* pObj)
+{
+	m_pTarget = pObj;
+	//Info
 }
 
 inline void CParticleMgr::Free(void)

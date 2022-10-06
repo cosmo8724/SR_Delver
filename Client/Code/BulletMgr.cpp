@@ -10,6 +10,7 @@
 #include "SongBossBullet.h"
 #include "SongBosStun.h"
 #include "SongBosFloor.h"
+#include "ArrowBullet.h"
 
 IMPLEMENT_SINGLETON(CBulletMgr)
 
@@ -20,11 +21,13 @@ CBulletMgr::CBulletMgr()
 	//	m_CurIdx[i] = 0;
 	//}
 
-	m_MaxIdx[BULLET_WAND] = 20;
+	m_MaxIdx[BULLET_WAND] = 10;
 	m_MaxIdx[BULLET_M_FIST] = 5;
 	m_MaxIdx[BULLET_SONGBOSS] = 5;
 	m_MaxIdx[STUN_SONGBOSS] = 4; // 선언위치 변경 X
 	m_MaxIdx[FLOOR_SONGBOSS] = 5; // 선언위치 변경 X
+	m_MaxIdx[BULLET_ARROW] = 10; // 선언위치 변경 X
+
 
 	for (int bulletId = 0; bulletId < BULLET_END; ++bulletId)
 	{
@@ -34,8 +37,8 @@ CBulletMgr::CBulletMgr()
 		}
 	}
 
-	for (int i = 0; i < m_MaxIdx[BULLET_WAND]; ++i)
-		m_IdxQue[BULLET_WAND].push(i);
+	//for (int i = 0; i < m_MaxIdx[BULLET_WAND]; ++i)
+	//	m_IdxQue[BULLET_WAND].push(i);
 }
 
 
@@ -158,6 +161,25 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objTags[i].c_str(), pGameObject), E_FAIL);
 
 		m_vecObjPool[FLOOR_SONGBOSS].push_back(pGameObject);
+	}
+
+	// Bullet_arrow
+	objTags = nullptr;
+	objTags = new wstring[m_MaxIdx[BULLET_ARROW]];
+	m_vecObjTags[BULLET_ARROW].push_back(objTags);
+
+	for (int i = 0; i < m_MaxIdx[BULLET_ARROW]; ++i)
+	{
+		pGameObject = CArrowBullet::Create(pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		objTags[i] = L"ArrowBullet";
+		wchar_t index[10];
+		_itow_s(i, index, 10);
+		objTags[i] += index;
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objTags[i].c_str(), pGameObject), E_FAIL);
+
+		m_vecObjPool[BULLET_ARROW].push_back(pGameObject);
 	}
 
 	return S_OK;

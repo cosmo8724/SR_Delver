@@ -435,6 +435,9 @@
     <ClInclude Include="..\Header\ParticleMgr.h">
       <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\ArrowBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -631,6 +634,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ParticleMgr.cpp">
       <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ArrowBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

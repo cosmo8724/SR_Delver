@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
+    <ClInclude Include="..\Header\ArrowBullet.h" />
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Block.h" />
     <ClInclude Include="..\Header\BlueBat.h" />
@@ -236,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Arrow.cpp" />
+    <ClCompile Include="..\Code\ArrowBullet.cpp" />
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Block.cpp" />
     <ClCompile Include="..\Code\BlueBat.cpp" />

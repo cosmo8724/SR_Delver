@@ -38,6 +38,8 @@ public:
 	void			Set_Use(_bool bUse) { m_bUse = bUse; }
 	void			Set_Particle(PTYPE _eType);	// 파티클의 타입에 따라 필요한 요소 세팅
 	void			Set_Texture(PTEXTUREID eTex);
+	void			Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
+	void			ReUse();	// 파티클이 끝나고 풀로 돌아가면 리셋시켜줌.
 
 public:
 	virtual HRESULT			Ready_Object(void);
@@ -70,6 +72,9 @@ private:
 	_int		m_iIndex = -1;
 	_bool		m_bUse = false;
 	_bool		m_bReady = false;
+
+	// 추가된 변수
+	CGameObject*	m_pTarget = nullptr;
 
 };
 
