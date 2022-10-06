@@ -7,6 +7,7 @@
 #include "ImGuiMgr.h"
 #include "ItemMgr.h"
 #include "Block.h"
+#include "MapUI.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -219,6 +220,18 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 				m_fJSpeed = m_fJSpeed0;
 			m_eState = PLAYER_JUMP;
 			m_bJump = true;
+		}
+	}
+
+	if (Engine::Key_Down(DIK_M))
+	{
+		CMapUI*	pMapUI = dynamic_cast<CMapUI*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Map"));
+		if (pMapUI)
+		{
+			if (!pMapUI->Get_IsOpenMap())
+				pMapUI->Set_OpenMap();
+			else
+				pMapUI->Set_CloseMap();
 		}
 	}
 

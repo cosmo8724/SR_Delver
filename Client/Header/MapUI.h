@@ -10,6 +10,7 @@ private:
 public:
 	void					Set_OpenMap() { m_bIsOpenMap = true; }
 	void					Set_CloseMap() { m_bIsOpenMap = false; }
+	const _bool&			Get_IsOpenMap() const { return m_bIsOpenMap; }
 
 public:
 	virtual HRESULT		Ready_Object(void)						override;
