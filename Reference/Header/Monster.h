@@ -30,6 +30,8 @@ protected:
 	_float				m_fIdle_Speed;
 	_float				m_fAttack_Speed;
 
+	STATE				m_State;
+
 public:
 	virtual void		Free(void);
 
