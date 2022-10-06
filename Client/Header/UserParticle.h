@@ -34,7 +34,13 @@ public:
 	void			Play_Particle();
 
 public:
-	virtual HRESULT		Ready_Object(void);
+	void			Set_Index(_int iIdx) { m_iIndex = iIdx; }
+	void			Set_Use(_bool bUse) { m_bUse = bUse; }
+	void			Set_Particle(PTYPE _eType);	// 파티클의 타입에 따라 필요한 요소 세팅
+	void			Set_Texture(PTEXTUREID eTex);
+
+public:
+	virtual HRESULT			Ready_Object(void);
 	virtual _int			Update_Object(const _float& fTimeDelta);
 	virtual void			LateUpdate_Object(void);
 	virtual void			Render_Obejct(void);
@@ -49,7 +55,7 @@ private:
 	HRESULT				Add_Component(void);
 
 public:
-	static CUserParticle*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CUserParticle*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void				Free(void) override;
 
 private:
@@ -59,6 +65,11 @@ private:
 	_float		m_fFrameSpeed = 1.f;
 	PTYPE		m_eType = PTYPE_END;
 	_float		m_fVelocityMulti = 1.f;
+
+	// 풀 관리용
 	_int		m_iIndex = -1;
+	_bool		m_bUse = false;
+	_bool		m_bReady = false;
+
 };
 

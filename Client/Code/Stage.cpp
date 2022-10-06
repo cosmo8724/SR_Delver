@@ -56,7 +56,9 @@
 #include "HPGauge.h"
 #include "TalkWindow.h"
 
+// Manager
 #include "ItemMgr.h"
+#include "ParticleMgr.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -190,7 +192,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
 
-	
+	// 파티클 생성
+ 	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
+
+
 	//////////// Monster
 	// GreenSlime
 	pGameObject = CGreenSlime::Create(m_pGraphicDev);
