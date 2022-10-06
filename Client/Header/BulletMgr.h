@@ -25,6 +25,8 @@ public:
 	vector<CGameObject*>*	Get_Bullets(BULLETID _eID) { return &m_vecObjPool[_eID]; }
 	bool			Is_Fired(CGameObject* pObj);
 
+	void			Pre_Setting(BULLETID eID,  _float fSet);
+
 	//void			FireTest(BULLETID _eID);
 
 public:

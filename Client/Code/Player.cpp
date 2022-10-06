@@ -255,7 +255,8 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
 
-		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
+		//CBulletMgr::GetInstance()->Fire(BULLET_WAND);
+		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
 		//CBulletMgr::GetInstance()->Reuse_Obj(vPos, vLook);
 
 
