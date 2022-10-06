@@ -22,7 +22,7 @@
 #include "HoodMan.h"
 #include "SmileMan.h"
 #include "WinkMan.h"
-// ÀÎº¥Åä¸®
+// ï¿½Îºï¿½ï¿½ä¸®
 #include "HPGauge.h"
 #include "QuickSlot.h"
 #include "Inventory.h"
@@ -59,6 +59,7 @@
 // Manager
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
+#include "MapUI.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -122,7 +123,7 @@ void CStage::LateUpdate_Scene(void)
 	CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
 
 	CGameObject* pDest = nullptr;
-	// ¾ÆÀÌÅÛ Ãæµ¹ Å×½ºÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½×½ï¿½Æ®
 	for (int i = 0; i < 2; ++i)
 	{
 		wstring obj = L"Arrow";
@@ -188,11 +189,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	// Bullet
 	FAILED_CHECK_RETURN(CBulletMgr::GetInstance()->Ready_Clone(pLayer, m_pGraphicDev), E_FAIL);
 
-	// ¾ÆÀÌÅÛ »ý¼º
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
 
-	// ÆÄÆ¼Å¬ »ý¼º
+	// ï¿½ï¿½Æ¼Å¬ ï¿½ï¿½ï¿½ï¿½
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 
@@ -353,6 +354,11 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	pGameObject = CTalkWindow::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_TalkWindow", pGameObject), E_FAIL);
+
+	// NPC_TalkWindow
+	pGameObject = CMapUI::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Map", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
