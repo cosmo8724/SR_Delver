@@ -14,6 +14,11 @@ CMapUI::~CMapUI()
 
 HRESULT CMapUI::Ready_Object(void)
 {
+	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	//D3DXMatrixIdentity(&m_matView);
+	//D3DXMatrixIdentity(&m_matWorld);
+
 	return E_NOTIMPL;
 }
 
