@@ -46,6 +46,8 @@ protected:
 	_float			m_fChargeTime = 0.f;
 	_float			m_fOldChargeTime = 0.f;
 	_float			m_fCoolTime = 0.f;
+
+	_bool			m_bParticleCall = false;
 };
 
 END

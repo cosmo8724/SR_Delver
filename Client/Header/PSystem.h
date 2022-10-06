@@ -65,7 +65,7 @@ protected:
 	_float					m_fEmitRate;	// 시스템에 새로운 파티클이 추가되는 비율. (개수/s)
 	_float					m_fSize;			// 시스템 내 모든 파티클의 크기
 
-	CTexture*				m_pTextureCom = nullptr;
+	CTexture*			m_pTextureCom = nullptr;
 	CPtBuffer*			m_pBufferCom = nullptr;
 
 	list<ATTINFO>		m_particles;		// 시스템 내 파티클 속성 리스트

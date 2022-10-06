@@ -4,6 +4,7 @@
 #include "Logo.h"
 #include "ImGuiMgr.h"
 #include "ItemMgr.h"
+#include "ParticleMgr.h"
 
 USING(Engine)
 CMainApp::CMainApp()	
@@ -112,7 +113,7 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 
 	// 매니저 클래스들 생성
 	CItemMgr::GetInstance()->Ready_ItemMgr(m_pGraphicDev);
-
+	CParticleMgr::GetInstance()->Ready_ParticleMgr(m_pGraphicDev);
 
 	return S_OK;
 }
@@ -137,6 +138,7 @@ void CMainApp::Free(void)
 	// *ImGui Release
 
 	CItemMgr::DestroyInstance();
+	CParticleMgr::DestroyInstance();
 
 	Safe_Release(m_pGraphicDev);
 	Safe_Release(m_pDeviceClass);

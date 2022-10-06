@@ -2,6 +2,7 @@
 #include "Arrow.h"
 #include "Export_Function.h"
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CArrow::CArrow(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CWeapon(pGraphicDev)
@@ -193,6 +194,15 @@ void CArrow::Charge(const _float & fTimeDelta)
 	if (m_bCharge)
 	{
 		m_fFrame += frameEnd * fTimeDelta;
+
+		if (!m_bParticleCall)
+		{
+			CParticleMgr::GetInstance()->Set_Info(this);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_0);
+			m_bParticleCall = true;
+		}
+
+
 		if (m_fFrame >= frameEnd)
 			m_fFrame = (_float)frameEnd;
 
@@ -235,6 +245,7 @@ void CArrow::Charge(const _float & fTimeDelta)
 			m_bCharge = false;
 			m_fChargeTime = 0.f;
 			m_bAttack = true;
+			m_bParticleCall = false;
 		}
 	}
 }
@@ -244,7 +255,7 @@ void CArrow::Attack(const _float & fTimeDelta)
 	if (true == m_bAttack)
 	{
 		// 총알 발사가 좀?
-		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
+		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
 		m_bAttack = false;
 	}
 }
