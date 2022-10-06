@@ -27,16 +27,17 @@ public:
 public:
 	void	Get_Index(int& iRow, int& iCol);
 	void	Set_Inventory(CItem* pItem);
+	CItem*	Pick();
 	CItem*	Set_ItemEquip();
 
 private:
-	void	Mouse_Input(const _float& fTimeDelta);
+	void		Mouse_Input(const _float& fTimeDelta);
 
 private:
-	_matrix				m_matView, m_matWorld;
+	_matrix		m_matView, m_matWorld;
 
 private:
-	_float					m_fTempPosX, m_fTempPosY = 2022.f;
+	_float		m_fTempPosX, m_fTempPosY = 2022.f;
 
 	// 인벤토리 피킹용 변수
 	_float			m_fInvWidth = 0.f;
@@ -50,6 +51,11 @@ private:
 private:
 	CCalculator*	m_pCalCom = nullptr;
 	CItem*			m_pPickedItem = nullptr;
+
+// 추가 변수
+private:
+	_float			m_fClickTime = 0.f;
+	_int			m_iClickedCnt = 0;
 
 };
 

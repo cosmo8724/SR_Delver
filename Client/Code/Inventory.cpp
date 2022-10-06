@@ -192,11 +192,8 @@ void CInventory::Set_Inventory(CItem * pItem)
 	}
 }
 
-CItem * CInventory::Set_ItemEquip()
+CItem * CInventory::Pick()
 {
-	if (nullptr != m_pPickedItem)
-		return m_pPickedItem;
-
 	POINT	ptMouse{};
 
 	GetCursorPos(&ptMouse);
@@ -234,20 +231,32 @@ CItem * CInventory::Set_ItemEquip()
 
 			if (ptMouse.x > rc.left && ptMouse.x < rc.right && ptMouse.y > rc.bottom && ptMouse.y < rc.top)
 			{
-				// 무기라면 Equip 상태가 되어야 함.
-				CWeapon*	pWeapon = dynamic_cast<CWeapon*>(static_cast<CInvImg*>(m_Inventory[i][j])->Get_TargetObj());
-				if (pWeapon != nullptr)
-				{
-					pWeapon->Set_Equipped();
-					break;
-				}
-
-
-				// 아이템이라면 소모해야 함.
+				if (nullptr == m_Inventory[i][j])
+					return nullptr;
+				else
+					return m_Inventory[i][j];
 			}
-
 		}
 	}
+
+
+	return nullptr;
+}
+
+CItem * CInventory::Set_ItemEquip()
+{
+	if (nullptr == m_pPickedItem)
+		return nullptr;
+	
+	// 랜턴/아머/무기라면 Equip 상태가 되어야 함.
+	CWeapon*	pWeapon = dynamic_cast<CWeapon*>(static_cast<CInvImg*>(m_pPickedItem)->Get_TargetObj());
+	if (pWeapon != nullptr)
+	{
+		pWeapon->Set_Equipped();
+		return pWeapon;
+	}
+
+	// 소모형 아이템이라면 사용 상태가 되어야 함.
 
 	return nullptr;
 }
@@ -257,9 +266,27 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_TAB))
 	{
-		if (Engine::Is_DoubleClicked(DIM_LB, fTimeDelta))
+		m_fClickTime += fTimeDelta;
+
+		if (m_fClickTime < 0.7f)
 		{
-			m_pPickedItem = Set_ItemEquip();
+			if(Engine::Mouse_Down(DIM_LB))
+				++m_iClickedCnt;
+		}
+		else if (m_fClickTime > 0.8f)
+		{
+			if (2 == m_iClickedCnt)		// double click
+			{
+				m_pPickedItem = Pick();
+				Set_ItemEquip();	// if double clicked -> Item Equipped
+			}	
+			else if (1 == m_iClickedCnt)	// one click
+			{
+				m_pPickedItem = Pick();	
+				//Swap(); // if one clicked -> Item Swap
+			}
+			m_fClickTime = 0.f;
+			m_iClickedCnt = 0;
 		}
 	}
 
