@@ -34,5 +34,9 @@ private:
 private:
 	_matrix		m_matView, m_matWorld;
 	_vec3		m_vPos;
+
+	// 추가변수
+private:
+	_float		m_fPlusSpeed = 0.f;
 };
 

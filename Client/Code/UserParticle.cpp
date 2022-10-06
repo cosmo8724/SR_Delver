@@ -66,7 +66,14 @@ void CUserParticle::Set_Texture(PTEXTUREID eTex)
 void CUserParticle::Set_Particle(PTYPE _eType)
 {
 	removeAllParticles();
+
+	if (nullptr == m_pTarget)
+		MSG_BOX("파티클 타겟 없음 ㅠㅠ");
+	CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+
+
 	m_eType = _eType;
+
 	switch (_eType)
 	{
 	case PTYPE_SNOW:
@@ -76,20 +83,36 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 		m_maxParticles = 5000;
 		break;
 	case PTYPE_SPOT:
-		// 파티클 수
+	{
 		m_maxParticles = 1;
+		m_origin = pCom->Get_Pos();
+		m_bFrameRepeat = true;
+		m_Attribute.fLifeTime = 1.f;
+	}
+		break;
+
+	case PTYPE_REMAIN:
+		// 파티클 수
+		m_maxParticles = 5;
 
 		// 생성 위치
-		if (nullptr == m_pTarget)
-			MSG_BOX("파티클 타겟 없음 ㅠㅠ");
-		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 		m_origin = pCom->Get_Pos();
-
-		// 파티클 반복재생
-		m_bFrameRepeat = true;
 
 		// 생존시간
 		m_Attribute.fLifeTime = 1.f;
+
+		// 크기
+		m_fSize = 0.1f;
+		
+		// 속도
+		m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
+
+		// 가속도
+		m_Attribute.vAcceleration = { 0.1f, 0.1f, 0.1f };
+
+		m_fFrameSpeed = 5.f;
+		m_bFrameRepeat = true;
+
 
 		break;
 	}
@@ -146,6 +169,12 @@ void CUserParticle::LateUpdate_Object(void)
 {
 	if (!m_bUse || !m_bReady)
 		return;
+
+	if (isDead())
+	{
+		CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
+		ReUse();
+	}
 
 	CGameObject::LateUpdate_Object();
 }
@@ -244,6 +273,12 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->vPosition = m_origin;
 	}
 		break;
+
+	case PTYPE_REMAIN:
+		attribute->bIsAlive = true;
+		attribute->vPosition = m_origin;
+
+		break;
 	}
 
 	// 공통
@@ -281,7 +316,7 @@ void CUserParticle::update(_float fTimeDelta)
 			}
 		}
 	}
-		break;
+	break;
 
 	case PTYPE_SNOW:
 	{
@@ -298,7 +333,7 @@ void CUserParticle::update(_float fTimeDelta)
 		}
 
 	}
-		break;
+	break;
 
 	case PTYPE_LASER:
 	{
@@ -314,9 +349,10 @@ void CUserParticle::update(_float fTimeDelta)
 				i->bIsAlive = false;
 		}
 	}
-		break;
+	break;
 
-	case PTYPE_FOUNTAIN:
+	case PTYPE_FOUNTAIN:	
+	{
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
@@ -329,9 +365,11 @@ void CUserParticle::update(_float fTimeDelta)
 					iter->bIsAlive = false;
 			}
 		}
+	}
 		break;
 
 	case PTYPE_SPOT:
+	{
 		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 
 		auto iter = m_particles.begin();
@@ -342,22 +380,36 @@ void CUserParticle::update(_float fTimeDelta)
 			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
 			ReUse();
 		}
+	}
+		break;
+	case PTYPE_REMAIN: // 잔상 파티클
 
 
-		//for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
-		//{
-		//	//iter->vPosition += iter->vVelocity * fTimeDelta;
-		//	CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
-		//	m_origin = pCom->Get_Pos();
+		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 
-		//	// 포인트가 경계를 벗어났는가?
-		//	if (m_bdBox.isPointInside(iter->vPosition) == false)
-		//	{
-		//		// 경계를 벗어난 파티클은 재활용한다.
-		//		//resetParticle(&(*iter));
+		_float index = 1.f;
+		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
+		{
+			// 생존한 파티클만 갱신
+			if (iter->bIsAlive)
+			{
+				_vec3 vDir = pCom->Get_Pos() - iter->vPosition;
+				D3DXVec3Normalize(&vDir, &vDir);
 
-		//	}
-		//}
+				_float fSpeed = 30.f - index*0.5f;
+				index++;
+
+				iter->vPosition += (fSpeed* fTimeDelta* vDir);
+				iter->fAge += fTimeDelta;
+				if (iter->fAge > iter->fLifeTime) // 죽인다.
+				{
+					iter->bIsAlive = false;
+					//CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
+					//ReUse();
+				}
+			}
+		}
+
 		break;
 	}
 }
@@ -427,6 +479,11 @@ void CUserParticle::ReUse()
 	m_bUse = false;
 	m_bReady = false;
 	m_pTarget = nullptr;
+
+	m_fFrame = 0.f;
+	m_bFrameRepeat = false;
+	m_fFrameSpeed = 1.f;
+	m_fSize = 1.f;
 
 	removeAllParticles();
 }

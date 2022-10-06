@@ -194,6 +194,7 @@ void CArrow::Charge(const _float & fTimeDelta)
 	if (m_bCharge)
 	{
 		m_fFrame += frameEnd * fTimeDelta;
+		m_fPlusSpeed += 0.3f;
 
 		if (!m_bParticleCall)
 		{
@@ -237,6 +238,7 @@ void CArrow::Charge(const _float & fTimeDelta)
 				m_fFrame = 0.f;
 				m_bClick = false;
 				m_bAttack = true;
+				m_fChargeTime = 0.f;
 			}
 		}
 		else if (true == m_bCharge)  // 차지 중인 상황이었다면 차징공격을 한다.
@@ -254,8 +256,9 @@ void CArrow::Attack(const _float & fTimeDelta)
 {
 	if (true == m_bAttack)
 	{
-		// 총알 발사가 좀?
+		CBulletMgr::GetInstance()->Pre_Setting(BULLET_ARROW, m_fPlusSpeed);
 		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
 		m_bAttack = false;
+		m_fPlusSpeed = 0.f;
 	}
 }
