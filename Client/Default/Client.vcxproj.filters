@@ -217,6 +217,12 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\05. CrossHair">
       <UniqueIdentifier>{8b76c546-8740-4382-8339-a260941f8583}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\05. Stick">
+      <UniqueIdentifier>{d70d262e-8916-46e3-9774-6d31a3e924e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\06. Leaf">
+      <UniqueIdentifier>{1187f670-7c17-47b1-9c16-7b1272f5b4ca}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\02. For_Public\02. Particle\Manager">
       <UniqueIdentifier>{eba8f420-befd-42b2-bb7e-0845e53dbacb}</UniqueIdentifier>
     </Filter>
@@ -432,6 +438,12 @@
     <ClInclude Include="..\Header\ItemMgr.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\00. Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Stick.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\05. Stick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Leaf.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\06. Leaf</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\ParticleMgr.h">
       <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
     </ClInclude>
@@ -631,6 +643,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\ItemMgr.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\00. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Stick.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\05. Stick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Leaf.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\06. Leaf</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ParticleMgr.cpp">
       <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>

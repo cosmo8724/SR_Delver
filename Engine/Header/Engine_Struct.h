@@ -3,6 +3,13 @@
 
 namespace Engine
 {
+	typedef struct tagState
+	{
+		_uint		iHp;
+		_uint		iAttack;
+
+	}STATE;
+
 	typedef	struct tagVertexColor
 	{
 		_vec3		vPos;
