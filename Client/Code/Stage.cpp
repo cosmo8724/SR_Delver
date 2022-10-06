@@ -103,15 +103,15 @@ void CStage::LateUpdate_Scene(void)
 
 		if (pBlock)
 		{
-			for (auto& bullet : *pPlayerBullets)
-			{
-				if (CBulletMgr::GetInstance()->Is_Fired(bullet))
-				{
-					//CCollisionMgr::GetInstance()->CollisionAABB(pSour, bullet);
+			//for (auto& bullet : *pPlayerBullets)
+			//{
+			//	if (CBulletMgr::GetInstance()->Is_Fired(bullet))
+			//	{
+			//		//CCollisionMgr::GetInstance()->CollisionAABB(pSour, bullet);
 
-					CCollisionMgr::GetInstance()->CollisionAABB(pBlock, bullet);
-				}
-			}
+			//		CCollisionMgr::GetInstance()->CollisionAABB(pBlock, bullet);
+			//	}
+			//}
 			//CCollisionMgr::GetInstance()->CollisionSphere(pPlayer, pBlock);
 			CCollisionMgr::GetInstance()->CollisionAABB(pPlayer, pBlock);
 		}

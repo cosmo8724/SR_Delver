@@ -4,6 +4,7 @@
 #include "Export_Function.h"	
 //#include "EffectMgr.h"
 //#include "ExploEffect.h"
+#include "BulletMgr.h"
 
 CWandBullet::CWandBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -120,7 +121,7 @@ _int CWandBullet::Update_Object(const _float & fTimeDelta)
 
 void CWandBullet::LateUpdate_Object(void)
 {
-	if (!m_bFire)
+	if (!m_bFire || !m_bReady)
 		return;
 
 	// 아무데도 충돌안해도 일정 시간 후 리셋
@@ -149,7 +150,7 @@ void CWandBullet::LateUpdate_Object(void)
 
 void CWandBullet::Render_Obejct(void)
 {
-	if (!m_bFire)
+	if (!m_bFire || !m_bReady)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
@@ -196,5 +197,6 @@ void CWandBullet::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	CBulletMgr::GetInstance()-> Collect_Obj(m_iIndex, BULLET_WAND);
 }
 

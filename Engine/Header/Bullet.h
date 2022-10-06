@@ -25,6 +25,7 @@ protected:
 public:
 	void	Set_Fire(_bool _bFire) { m_bFire = _bFire; m_bDead = false; }
 	_bool	Is_Fired() { return m_bFire; }
+	void	Set_Index(_int iIdx) { m_iIndex = iIdx; }
 
 
 protected:
@@ -34,6 +35,8 @@ protected:
 	_bool			m_bFire = false;
 	_bool			m_bDead = false;
 	_float			m_fLifeTime = 0.f;
+
+	_int			m_iIndex = -1;// 매니저 인덱스 회수용
 };
 END
 
