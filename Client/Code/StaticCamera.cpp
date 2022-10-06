@@ -20,6 +20,7 @@ CStaticCamera::~CStaticCamera()
 HRESULT CStaticCamera::Ready_Object(const _vec3* pEye, 
 	const _vec3* pAt, 
 	const _vec3* pUp,
+	CAMERATYPE eType,
 	const _float& fFov,
 	const _float& fAspect ,
 	const _float& fNear,
@@ -28,7 +29,7 @@ HRESULT CStaticCamera::Ready_Object(const _vec3* pEye,
 	m_vEye = *pEye;
 	m_vAt = *pAt;
 	m_vUp = *pUp;
-
+	m_eType = eType;
 	m_fFov = fFov;
 	m_fAspect = fAspect;
 	m_fNear = fNear;
@@ -64,11 +65,11 @@ void CStaticCamera::Free(void)
 	CCamera::Free();
 }
 
-CStaticCamera* CStaticCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3* pEye, const _vec3* pAt, const _vec3* pUp, const _float& fFov /*= D3DXToRadian(60.f)*/, const _float& fAspect /*= (float)WINCX / WINCY*/, const _float& fNear /*= 0.1f*/, const _float& fFar /*= 1000.f*/)
+CStaticCamera* CStaticCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3* pEye, const _vec3* pAt, const _vec3* pUp, CAMERATYPE eType, const _float& fFov /*= D3DXToRadian(60.f)*/, const _float& fAspect /*= (float)WINCX / WINCY*/, const _float& fNear /*= 0.1f*/, const _float& fFar /*= 1000.f*/)
 {
 	CStaticCamera*		pInstance = new CStaticCamera(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Object(pEye, pAt, pUp, fFov, fAspect, fNear, fFar)))
+	if (FAILED(pInstance->Ready_Object(pEye, pAt, pUp, eType, fFov, fAspect, fNear, fFar)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
@@ -78,6 +79,22 @@ CStaticCamera* CStaticCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3*
 
 void CStaticCamera::Key_Input(const _float& fTimeDelta)
 {
+	if (m_eType == CAMERA_TOPVIEW)
+	{
+		if (0 < Engine::Get_DIMouseMove(DIMS_Z))
+		{
+			if (m_vEye.y > 5.f)
+				m_vEye.y -= 1.f;
+		}
+		else if (0 > Engine::Get_DIMouseMove(DIMS_Z))
+		{
+			if (m_vEye.y < 30.f)
+				m_vEye.y += 1.f;
+		}
+		return;
+	}
+
+
 	if (Get_DIKeyState(DIK_TAB) & 0x80)
 		m_bFix = false;
 	else
@@ -124,13 +141,23 @@ void CStaticCamera::Target_Renewal(void)
 	pPlayerTransform->Get_Info(INFO_LOOK, &vLook);
 	D3DXVec3Normalize(&vLook, &vLook);
 
-	m_vEye = vPos + 0.3f * vLook;
-	m_vAt = vPos + vLook;
+	if (m_eType == CAMERA_FPS)
+	{
+		m_vEye = vPos + 0.3f * vLook;
+		m_vAt = vPos + vLook;
+	}
+	else
+	{
+		m_vEye.x = vPos.x;
+		m_vEye.z = vPos.z;
+		m_vAt.x = vPos.x;
+		m_vAt.z = vPos.z;
+	}
 }
 
 void CStaticCamera::ShakeY(const _float & fTimeDelta)
 {
-	if (!m_bShakeY)
+	if (!m_bShakeY || m_eType == CAMERA_TOPVIEW)
 		return;
 
 	m_fShakeYTimeAcc += fTimeDelta;
@@ -152,6 +179,9 @@ void CStaticCamera::ShakeY(const _float & fTimeDelta)
 
 void CStaticCamera::Mouse_Fix(void)
 {
+	if (m_eType == CAMERA_TOPVIEW)
+		return;
+
 	POINT pt{ WINCX >> 1, WINCY >> 1 };
 
 	ClientToScreen(g_hWnd, &pt);

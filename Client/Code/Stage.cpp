@@ -157,6 +157,11 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StaticCamera", pGameObject), E_FAIL);
 
+	// MapCamera
+	pGameObject = CStaticCamera::Create(m_pGraphicDev, &_vec3(0.f, 30.f, 0.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 0.f, 1.f), CAMERA_TOPVIEW);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapCamera", pGameObject), E_FAIL);
+
 	// skybox
 	pGameObject = CSkyBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

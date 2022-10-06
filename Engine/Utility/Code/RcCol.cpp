@@ -111,6 +111,31 @@ void CRcCol::Render_Buffer(void)
 	CVIBuffer::Render_Buffer();
 }
 
+HRESULT CRcCol::Change_Color(D3DXCOLOR _color)
+{
+	VTXCOL*		pVertex = nullptr;
+
+	FAILED_CHECK_RETURN(m_pVB->Lock(0, 0, (void**)&pVertex, 0), E_FAIL);
+	// 3인자 : 배열에 저장된 첫 번째 버텍스의 주소를 얻어옴
+
+	// 오른쪽 위 삼각형
+	pVertex[0].vPos = { -1.f, 1.f, 0.f };
+	pVertex[0].dwColor = _color;
+
+	pVertex[1].vPos = { 1.f, 1.f, 0.f };
+	pVertex[1].dwColor = _color;
+
+	pVertex[2].vPos = { 1.f, -1.f, 0.f };
+	pVertex[2].dwColor = _color;
+
+	pVertex[3].vPos = { -1.f, -1.f, 0.f };
+	pVertex[3].dwColor = _color;
+
+	m_pVB->Unlock();
+
+	return S_OK;
+}
+
 CRcCol* CRcCol::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CRcCol*	pInstance = new CRcCol(pGraphicDev);

@@ -13,7 +13,7 @@ public:
 	void		Set_ShakeY() { m_bShakeY = true; }
 
 public:
-	HRESULT Ready_Object(const _vec3* pEye, const _vec3* pAt, const _vec3* pUp, 
+	HRESULT Ready_Object(const _vec3* pEye, const _vec3* pAt, const _vec3* pUp, CAMERATYPE eType,
 		const _float& fFov , 
 		const _float& fAspect, 
 		const _float& fNear, 
@@ -30,6 +30,8 @@ private:
 	void		Mouse_Fix(void);
 
 private:
+	CAMERATYPE	m_eType = CAMERA_FPS;
+
 	_float			m_fDistance = 10.f;
 	_float			m_fSpeed = 10.f;
 	_float			m_fAngle = 0.f;
@@ -48,6 +50,7 @@ public:
 										const _vec3* pEye, 
 										const _vec3* pAt, 
 										const _vec3* pUp,
+										CAMERATYPE eType = CAMERA_FPS,
 										const _float& fFov = D3DXToRadian(60.f),
 										const _float& fAspect = (float)WINCX / WINCY,
 										const _float& fNear = 0.1f,

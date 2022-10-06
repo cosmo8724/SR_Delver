@@ -220,6 +220,9 @@
     <Filter Include="02. GameObject\02. For_Public\02. Particle\Manager">
       <UniqueIdentifier>{eba8f420-befd-42b2-bb7e-0845e53dbacb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\06. MiniMap\MiniMapping">
+      <UniqueIdentifier>{2e7b1028-944f-4257-92aa-ae6492384818}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -435,6 +438,9 @@
     <ClInclude Include="..\Header\ParticleMgr.h">
       <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MiniMapping.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\MiniMapping</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -631,6 +637,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ParticleMgr.cpp">
       <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MiniMapping.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\MiniMapping</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

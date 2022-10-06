@@ -15,6 +15,9 @@ public:
 	virtual void Render_Buffer(void) override;
 
 public:
+	HRESULT		Change_Color(D3DXCOLOR _color);
+
+public:
 	static CRcCol*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	CComponent*	Clone(void);
 	virtual void Free(void) override;

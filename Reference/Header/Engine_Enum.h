@@ -39,6 +39,7 @@ namespace Engine
 
 	enum WEAPONLIST { WEAPON_WAND, WEAPON_ARROW, WEAPON_DAGGER, WEAPON_END };
 
+	enum CAMERATYPE { CAMERA_FPS, CAMERA_TOPVIEW };
 }
 
 #endif // Engine_Enum_h__

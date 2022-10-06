@@ -73,7 +73,7 @@ void CRenderer::Set_RenderState(LPDIRECT3DDEVICE9 & pGraphicDev, _int _i)
 	{
 		CGameObject* pObj = nullptr;
 
-		pObj = CManagement::GetInstance()->Get_GameObject(L"Layer_Environment", L"StaticCamera");
+		pObj = CManagement::GetInstance()->Get_GameObject(L"Layer_Environment", L"MapCamera");
 
 		if (!pObj)
 			pObj = CManagement::GetInstance()->Get_GameObject(L"Layer_Tool_Environment", L"DynamicCamera");
