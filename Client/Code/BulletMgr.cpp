@@ -10,21 +10,35 @@
 #include "SongBossBullet.h"
 #include "SongBosStun.h"
 #include "SongBosFloor.h"
+#include "ArrowBullet.h"
 
 IMPLEMENT_SINGLETON(CBulletMgr)
 
 CBulletMgr::CBulletMgr()
 {
-	for (int i = 0; i < BULLET_END; ++i)
-	{
-		m_CurIdx[i] = 0;
-	}
+	//for (int i = 0; i < BULLET_END; ++i)
+	//{
+	//	m_CurIdx[i] = 0;
+	//}
 
-	m_MaxIdx[BULLET_WAND] = 20;
+	m_MaxIdx[BULLET_WAND] = 10;
 	m_MaxIdx[BULLET_M_FIST] = 5;
 	m_MaxIdx[BULLET_SONGBOSS] = 5;
 	m_MaxIdx[STUN_SONGBOSS] = 4; // 선언위치 변경 X
 	m_MaxIdx[FLOOR_SONGBOSS] = 5; // 선언위치 변경 X
+	m_MaxIdx[BULLET_ARROW] = 10; // 선언위치 변경 X
+
+
+	for (int bulletId = 0; bulletId < BULLET_END; ++bulletId)
+	{
+		for (int Idx = 0; Idx < m_MaxIdx[bulletId]; ++Idx)
+		{
+			m_IdxQue[bulletId].push(Idx);
+		}
+	}
+
+	//for (int i = 0; i < m_MaxIdx[BULLET_WAND]; ++i)
+	//	m_IdxQue[BULLET_WAND].push(i);
 }
 
 
@@ -152,13 +166,32 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 		m_vecObjPool[FLOOR_SONGBOSS].push_back(pGameObject);
 	}
 
+	// Bullet_arrow
+	objTags = nullptr;
+	objTags = new wstring[m_MaxIdx[BULLET_ARROW]];
+	m_vecObjTags[BULLET_ARROW].push_back(objTags);
+
+	for (int i = 0; i < m_MaxIdx[BULLET_ARROW]; ++i)
+	{
+		pGameObject = CArrowBullet::Create(pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		objTags[i] = L"ArrowBullet";
+		wchar_t index[10];
+		_itow_s(i, index, 10);
+		objTags[i] += index;
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objTags[i].c_str(), pGameObject), E_FAIL);
+
+		m_vecObjPool[BULLET_ARROW].push_back(pGameObject);
+	}
+
 	return S_OK;
 }
 
 
-void CBulletMgr::Collect_Obj()
+void CBulletMgr::Collect_Obj(_int iIdx, BULLETID eID)
 {
-
+	m_IdxQue[eID].push(iIdx);
 }
 
 CGameObject * CBulletMgr::Reuse_Obj(const D3DXVECTOR3 & vPos, const D3DXVECTOR3 & vDir)
@@ -192,20 +225,19 @@ CGameObject * CBulletMgr::Reuse_Obj(const D3DXVECTOR3 & vPos, const D3DXVECTOR3 
 
 void CBulletMgr::Fire(BULLETID _eID)
 {
-	for (auto& idx : m_CurIdx)
+	_int iIdx = -1;
+	if (!m_IdxQue[_eID].empty())
 	{
-		if (false == static_cast<CBullet*>(m_vecObjPool[_eID][idx])->Is_Fired())
-		{
-			static_cast<CBullet*>(m_vecObjPool[_eID][idx])->Set_Fire(true);
+		iIdx = m_IdxQue[_eID].front();
+		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Fire(true);
+		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Index(iIdx);
 
-			return;
-
-		}
+		m_IdxQue[_eID].pop();
 	}
-
 
 	//m_CurIdx[_eID] = (m_CurIdx[_eID] + 1) % m_MaxIdx[_eID];
 }
+
 
 bool CBulletMgr::Is_Fired(CGameObject * pObj)
 {
@@ -225,4 +257,5 @@ void CBulletMgr::Free()
 
 		m_vecObjPool[i].swap(vector<CGameObject*>());
 	}
+
 }

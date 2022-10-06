@@ -3,6 +3,7 @@
 #include "Export_Function.h"
 #include "StaticCamera.h"
 #include "DynamicCamera.h"
+#include "ParticleMgr.h"
 
 USING(Engine)
 
@@ -13,12 +14,12 @@ CUserParticle::CUserParticle(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fSize = 0.9f;
 
 	m_bdBox.vMin = { 0.f, 0.f, 0.f };
-	m_bdBox.vMax = { 10.f, 10.f, 10.f };
+	m_bdBox.vMax = { 30.f, 30.f, 30.f };
 
 	m_Attribute.fLifeTime = 2.f;
 	m_Attribute.tColor = { 1.f, 1.f, 1.f, 1.f };
 
-	m_maxParticles = 5000;
+	m_maxParticles = 1;
 	m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
 
 	for (int i = 0; i < m_maxParticles; ++i)
@@ -37,6 +38,67 @@ void CUserParticle::Set_Particle_Texture(_int iSelected)
 	str = str + num + L"_Texture";
 	m_pTextureCom = static_cast<CTexture*>(Engine::Get_Component(L"Layer_Tool_Environment", L"Particle", str.c_str(), ID_STATIC));
 }
+
+void CUserParticle::Set_Texture(PTEXTUREID eTex)
+{
+	CComponent* pComponent = nullptr;
+
+	wstring str = L"Proto_Particle";
+	wchar_t	num[10];
+	_itow_s(eTex, num, 10);
+	str = str + num + L"_Texture";
+
+	auto iter = find_if(m_mapComponent[ID_STATIC].begin(), m_mapComponent[ID_STATIC].end(), CTag_Finder(str.c_str()));
+
+	if (iter != m_mapComponent[ID_STATIC].end())	// 이미 존재하는 텍스쳐명이라면 맵에 넣지 않고 쓴다.
+		m_pTextureCom = static_cast<CTexture*>(iter->second);
+	else
+	{
+		pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(str.c_str()));
+		NULL_CHECK(m_pTextureCom);
+		m_mapComponent[ID_STATIC].insert({ str.c_str(), pComponent });
+	}
+
+
+
+}
+
+void CUserParticle::Set_Particle(PTYPE _eType)
+{
+	removeAllParticles();
+	m_eType = _eType;
+	switch (_eType)
+	{
+	case PTYPE_SNOW:
+		//m_bdBox.vMin = { 0.f, 0.f, 0.f };
+		//m_bdBox.vMax = { 10.f, 10.f, 10.f };
+		//m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
+		m_maxParticles = 5000;
+		break;
+	case PTYPE_SPOT:
+		// 파티클 수
+		m_maxParticles = 1;
+
+		// 생성 위치
+		if (nullptr == m_pTarget)
+			MSG_BOX("파티클 타겟 없음 ㅠㅠ");
+		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+		m_origin = pCom->Get_Pos();
+
+		// 파티클 반복재생
+		m_bFrameRepeat = true;
+
+		// 생존시간
+		m_Attribute.fLifeTime = 1.f;
+
+		break;
+	}
+
+	for (int i = 0; i < m_maxParticles; ++i)
+		addParticle();
+	m_bReady = true;
+}
+
 
 void CUserParticle::Play_Particle()
 {
@@ -59,6 +121,9 @@ HRESULT CUserParticle::Ready_Object(void)
 
 _int CUserParticle::Update_Object(const _float & fTimeDelta)
 {
+	if (!m_bUse || !m_bReady)
+		return 0;
+
 	_float frameEnd = (_float)m_pTextureCom->Get_FrameEnd();
 	m_fFrame += frameEnd * fTimeDelta * m_fFrameSpeed;
 
@@ -79,14 +144,24 @@ _int CUserParticle::Update_Object(const _float & fTimeDelta)
 
 void CUserParticle::LateUpdate_Object(void)
 {
+	if (!m_bUse || !m_bReady)
+		return;
+
 	CGameObject::LateUpdate_Object();
 }
 
 void CUserParticle::Render_Obejct(void)
 {
+	if (!m_bUse || !m_bReady)
+		return;
+
 	_matrix matWorld;
 	D3DXMatrixIdentity(&matWorld);
-	//m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	_vec3 vMax = m_bdBox.vMax;
+	_vec3 vMin = m_bdBox.vMin;
+
 
 	preRender();
 	CPSystem::render();
@@ -257,17 +332,32 @@ void CUserParticle::update(_float fTimeDelta)
 		break;
 
 	case PTYPE_SPOT:
-		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
-		{
-			//iter->vPosition += iter->vVelocity * fTimeDelta;
+		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 
-			// 포인트가 경계를 벗어났는가?
-			if (m_bdBox.isPointInside(iter->vPosition) == false)
-			{
-				// 경계를 벗어난 파티클은 재활용한다.
-				resetParticle(&(*iter));
-			}
+		auto iter = m_particles.begin();
+		iter->fAge += fTimeDelta;
+		iter->vPosition = pCom->Get_Pos();
+		if (iter->fAge > iter->fLifeTime)
+		{
+			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
+			ReUse();
 		}
+
+
+		//for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
+		//{
+		//	//iter->vPosition += iter->vVelocity * fTimeDelta;
+		//	CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+		//	m_origin = pCom->Get_Pos();
+
+		//	// 포인트가 경계를 벗어났는가?
+		//	if (m_bdBox.isPointInside(iter->vPosition) == false)
+		//	{
+		//		// 경계를 벗어난 파티클은 재활용한다.
+		//		//resetParticle(&(*iter));
+
+		//	}
+		//}
 		break;
 	}
 }
@@ -303,33 +393,42 @@ HRESULT CUserParticle::Add_Component(void)
 	CComponent*		pComponent = nullptr;
 
 	//// 버퍼 컴포넌트
-	pComponent = m_pBufferCom = dynamic_cast<CPtBuffer*>(Clone_Proto(L"Proto_PtBufferCom"));
+	pComponent = m_pBufferCom = dynamic_cast<CPtBuffer*>(Engine::Clone_Proto(L"Proto_PtBufferCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_PtBufferCom", pComponent });
 
 	// 텍스쳐 컴객체 컴포넌트
 	// 모든 파티클 용 텍스쳐 컴객체를 가지고 있도록 하는건??
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Particle0_Texture"));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle0_Texture", pComponent });
+	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle0_Texture"));
+	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle0_Texture", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Particle1_Texture"));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle1_Texture", pComponent });
+	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle1_Texture"));
+	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle1_Texture", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Particle2_Texture"));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle2_Texture", pComponent });
+	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle2_Texture"));
+	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle2_Texture", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Particle3_Texture"));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle3_Texture", pComponent });
+	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle3_Texture"));
+	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle3_Texture", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Particle4_Texture"));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle4_Texture", pComponent });
+	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle4_Texture"));
+	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle4_Texture", pComponent });
 
 	return S_OK;
+}
+void CUserParticle::ReUse()
+{
+	m_iIndex = -1;
+	m_bUse = false;
+	m_bReady = false;
+	m_pTarget = nullptr;
+
+	removeAllParticles();
 }
 
 CUserParticle * CUserParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev)

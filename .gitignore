@@ -43,3 +43,5 @@ ipch/
 
 Client/Bin/*
 !Client/Bin/Resource
+Engine/System/Default/Debug
+Engine/Utility/Default/Debug

@@ -2,6 +2,7 @@
 #include "Arrow.h"
 #include "Export_Function.h"
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CArrow::CArrow(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CWeapon(pGraphicDev)
@@ -72,8 +73,11 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 		m_pTransCom->Revolution(pPlayerInfo, matView, 0.f, m_fTimeDelta, STATE_GROUND);
 		break;
 	case STATE_EQUIP:
-		Charge(fTimeDelta);
-		Attack(fTimeDelta);
+		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
+		{
+			Charge(fTimeDelta);
+			Attack(fTimeDelta);
+		}
 
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
 		m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
@@ -185,12 +189,19 @@ void CArrow::CollisionEvent(CGameObject * pObj)
 
 void CArrow::Charge(const _float & fTimeDelta)
 {
-	m_fChargeTime += fTimeDelta * 1.2f;
-	if (Engine::Get_DIMouseState(DIM_LB))
+	_int frameEnd = m_pTextureCom->Get_FrameEnd();
+
+	if (m_bCharge)
 	{
-		m_bCharge = true;
-		_int frameEnd = m_pTextureCom->Get_FrameEnd() - 1;
 		m_fFrame += frameEnd * fTimeDelta;
+
+		if (!m_bParticleCall)
+		{
+			CParticleMgr::GetInstance()->Set_Info(this);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_0);
+			m_bParticleCall = true;
+		}
+
 
 		if (m_fFrame >= frameEnd)
 			m_fFrame = (_float)frameEnd;
@@ -202,16 +213,40 @@ void CArrow::Charge(const _float & fTimeDelta)
 			m_bCharge = false;
 			m_bAttack = true;
 		}
+
+	}
+
+	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)	// 왼쪽 버튼이 눌렸다.
+	{
+		m_bClick = true;
+		m_fChargeTime += m_fTimeDelta;
+
+		if (m_fChargeTime > 0.3f)	// 차징상황이라면
+		{
+			m_bClick = false;		// 클릭이 아니라 차징이다.
+			m_bCharge = true;
+		}
 	}
 	else
 	{
-		if (true == m_bCharge)
+		if (true == m_bClick)	// 왼쪽 버튼이 눌려있지는 않지만 이전에 눌렸었다면
 		{
-			m_bCharge = false;
-			m_bAttack = true;
+			m_fFrame += frameEnd * fTimeDelta * 3.f;	// 단순 공격을 한다.
+			if (m_fFrame >= frameEnd)
+			{
+				m_fFrame = 0.f;
+				m_bClick = false;
+				m_bAttack = true;
+			}
 		}
-		m_fFrame = 0.f;
-		m_fChargeTime = 0.f;
+		else if (true == m_bCharge)  // 차지 중인 상황이었다면 차징공격을 한다.
+		{
+			m_fFrame = 0.f;
+			m_bCharge = false;
+			m_fChargeTime = 0.f;
+			m_bAttack = true;
+			m_bParticleCall = false;
+		}
 	}
 }
 
@@ -219,8 +254,8 @@ void CArrow::Attack(const _float & fTimeDelta)
 {
 	if (true == m_bAttack)
 	{
-		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
-
+		// 총알 발사가 좀?
+		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
 		m_bAttack = false;
 	}
 }

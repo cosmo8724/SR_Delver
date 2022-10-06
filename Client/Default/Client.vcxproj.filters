@@ -223,6 +223,9 @@
     <Filter Include="02. GameObject\01. For_Stage\02. Monster\06. Leaf">
       <UniqueIdentifier>{1187f670-7c17-47b1-9c16-7b1272f5b4ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. For_Public\02. Particle\Manager">
+      <UniqueIdentifier>{eba8f420-befd-42b2-bb7e-0845e53dbacb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -441,6 +444,12 @@
     <ClInclude Include="..\Header\Leaf.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\06. Leaf</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\ParticleMgr.h">
+      <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ArrowBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -640,6 +649,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\Leaf.cpp">
       <Filter>02. GameObject\01. For_Stage\02. Monster\06. Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ParticleMgr.cpp">
+      <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ArrowBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

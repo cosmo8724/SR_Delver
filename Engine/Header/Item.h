@@ -38,6 +38,16 @@ protected:
 
 	wstring			m_ObjTag;
 	wstring			m_textureTag;
+
+	// 일반공격/차징공격
+	_bool			m_bClick = false;
+	_bool			m_bCharge = false;
+	_bool			m_bAttack = false;
+	_float			m_fChargeTime = 0.f;
+	_float			m_fOldChargeTime = 0.f;
+	_float			m_fCoolTime = 0.f;
+
+	_bool			m_bParticleCall = false;
 };
 
 END

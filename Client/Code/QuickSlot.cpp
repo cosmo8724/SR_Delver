@@ -26,7 +26,7 @@ HRESULT CQuickSlot::Ready_Object(void)
 	m_fPosY = (WINCY / 2) - 32;
 
 	// 스케일 값
-	D3DXMatrixScaling(&m_matView, 160.f, 32.f, 1.f);
+	D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
 
 	// 포지션
 	m_matView._41 = m_fPosX;

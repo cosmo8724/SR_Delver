@@ -1,32 +1,27 @@
 #include "stdafx.h"
-#include "..\Header\WandBullet.h"
-
-#include "Export_Function.h"	
-//#include "EffectMgr.h"
-//#include "ExploEffect.h"
+#include "ArrowBullet.h"
+#include "Export_Function.h"
 #include "BulletMgr.h"
 
-CWandBullet::CWandBullet(LPDIRECT3DDEVICE9 pGraphicDev)
+CArrowBullet::CArrowBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
 {
-	//m_pGraphicDev->AddRef();
 	memset(&m_bdBox, 0, sizeof(BDBOX));
 	memset(&m_bdSphere, 0, sizeof(BDSPHERE));
 }
 
-CWandBullet::CWandBullet(const CWandBullet & rhs)
+CArrowBullet::CArrowBullet(const CArrowBullet & rhs)
 	:CBullet(rhs)
 {
-	//m_pGraphicDev->AddRef();
 	memcpy(&m_bdBox, &rhs.m_bdBox, sizeof(BDBOX));
 	memcpy(&m_bdSphere, &rhs.m_bdSphere, sizeof(BDSPHERE));
 }
 
-CWandBullet::~CWandBullet()
+CArrowBullet::~CArrowBullet()
 {
 }
 
-HRESULT CWandBullet::Ready_Object(void)
+HRESULT CArrowBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -44,51 +39,7 @@ HRESULT CWandBullet::Ready_Object(void)
 	return S_OK;
 }
 
-HRESULT CWandBullet::Add_Component(void)
-{
-	CComponent*		pComponent = nullptr;
-
-	// 버퍼 컴포넌트
-	pComponent = m_pBufferCom = dynamic_cast<CCubeTex*>(Clone_Proto(L"Proto_CubeTexCom"));
-	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_CubeTexCom", pComponent });
-
-	// 텍스쳐 컴객체 컴포넌트
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_CubeTexture"));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_CubeTexture", pComponent });
-
-	// 월드행렬 컴포넌트
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
-
-	return S_OK;
-}
-
-void CWandBullet::CollisionEvent(CGameObject * pObj)
-{
-	//_vec3 vPos;
-	//m_pTransCom->Get_Info(INFO_POS, &vPos);
-
-	//CGameObject*		pGameObject = nullptr;
-	//pGameObject =		CExploEffect::Create(m_pGraphicDev, vPos);
-	//NULL_CHECK(pGameObject);
-
-
-	////CEffectMgr::GetInstance()->Add_Object(L"ExploEffect", pGameObject); 
-	//	// 첫 하나의 이펙트를 넣어주면 복사하여 랜덤 개수/위치/크기의 오브젝트를 복사생성하여 레이어에 추가한다.
-	//CLayer*		pLayer = Engine::Get_Layer(L"Layer_Effect");
-	//NULL_CHECK(pLayer);
-	//if (E_FAIL == pLayer->Add_GameObject(L"Layer_Effect", pGameObject))
-	//{
-	//	MSG_BOX("Add_Effect_Fail");
-	//}
-
-	Reset();
-}
-
-_int CWandBullet::Update_Object(const _float & fTimeDelta)
+_int CArrowBullet::Update_Object(const _float & fTimeDelta)
 {
 	if (!m_bFire)
 		return 0;
@@ -119,13 +70,13 @@ _int CWandBullet::Update_Object(const _float & fTimeDelta)
 	return iResult;
 }
 
-void CWandBullet::LateUpdate_Object(void)
+void CArrowBullet::LateUpdate_Object(void)
 {
 	if (!m_bFire || !m_bReady)
 		return;
 
-	// 아무데도 충돌안해도 일정 시간 후 리셋
-	if (3.f < m_fLifeTime)
+	// 아무데도 충돌안해도 일정 시간 후 리셋함
+	if (2.f < m_fLifeTime)
 	{
 		Reset();
 	}
@@ -148,7 +99,7 @@ void CWandBullet::LateUpdate_Object(void)
 	CGameObject::LateUpdate_Object();
 }
 
-void CWandBullet::Render_Obejct(void)
+void CArrowBullet::Render_Obejct(void)
 {
 	if (!m_bFire || !m_bReady)
 		return;
@@ -165,16 +116,11 @@ void CWandBullet::Render_Obejct(void)
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-
-	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	//m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
 }
 
-CWandBullet * CWandBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CArrowBullet * CArrowBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CWandBullet*		pInstance = new CWandBullet(pGraphicDev);
+	CArrowBullet*		pInstance = new CArrowBullet(pGraphicDev);
 	if (FAILED(pInstance->Ready_Object()))
 	{
 		Safe_Release(pInstance);
@@ -184,19 +130,43 @@ CWandBullet * CWandBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CWandBullet::Free(void)
+void CArrowBullet::Free(void)
 {
 	CGameObject::Free();
-	//Safe_Release(m_pGraphicDev);
 }
 
-void CWandBullet::Reset()
+void CArrowBullet::Reset()
 {
 	m_bFire = false;
 	m_bDead = false;
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
-	CBulletMgr::GetInstance()-> Collect_Obj(m_iIndex, BULLET_WAND);
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_ARROW);
 }
 
+HRESULT CArrowBullet::Add_Component(void)
+{
+	CComponent*		pComponent = nullptr;
+
+	// 버퍼 컴포넌트
+	pComponent = m_pBufferCom = dynamic_cast<CCubeTex*>(Clone_Proto(L"Proto_CubeTexCom"));
+	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_CubeTexCom", pComponent });
+
+	// 텍스쳐 컴객체 컴포넌트
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_CubeTexture"));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_CubeTexture", pComponent });
+
+	// 월드행렬 컴포넌트
+	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+
+	return S_OK;
+}
+
+void CArrowBullet::CollisionEvent(CGameObject * pObj)
+{
+}
