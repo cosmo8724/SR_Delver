@@ -88,7 +88,7 @@ void CStage::LateUpdate_Scene(void)
 	CLayer*	pLayer = m_mapLayer[L"Layer_GameLogic"];
 	//CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
 	CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
-	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
+	//vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 
 	for (auto iter = pLayer->Get_mapGameObject()->begin(); iter != pLayer->Get_mapGameObject()->end(); ++iter)
 	{

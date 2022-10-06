@@ -2,12 +2,17 @@
 #include "ArrowBullet.h"
 #include "Export_Function.h"
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CArrowBullet::CArrowBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
+	, m_fMinSpeed(10.f)
+	, m_fMaxSpeed(20.f)
 {
 	memset(&m_bdBox, 0, sizeof(BDBOX));
 	memset(&m_bdSphere, 0, sizeof(BDSPHERE));
+	m_fSpeed = m_fMinSpeed;
+	m_fSpeedY = m_fMinSpeed;
 }
 
 CArrowBullet::CArrowBullet(const CArrowBullet & rhs)
@@ -15,6 +20,11 @@ CArrowBullet::CArrowBullet(const CArrowBullet & rhs)
 {
 	memcpy(&m_bdBox, &rhs.m_bdBox, sizeof(BDBOX));
 	memcpy(&m_bdSphere, &rhs.m_bdSphere, sizeof(BDSPHERE));
+	m_fMinSpeed = rhs.m_fMinSpeed;
+	m_fMaxSpeed = rhs.m_fMaxSpeed;
+	m_fSpeed = rhs.m_fSpeed;
+	m_fSpeedY = rhs.m_fSpeedY;
+
 }
 
 CArrowBullet::~CArrowBullet()
@@ -55,11 +65,35 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 
 		pPlayer->Get_Info(INFO_LOOK, &m_vDirection);
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
+		
+		
+		if (m_fSpeed > m_fMaxSpeed)
+		{
+			m_fSpeed = m_fMaxSpeed;
+			m_fSpeedY = m_fMaxSpeed;
+		}
+		
+		CParticleMgr::GetInstance()->Set_Info(this);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_REMAIN, TEXTURE_0);
+
+
 		m_bReady = true;
+
+
 	}
 
+	_vec3 vMove;
+	vMove.x = m_fSpeed * fTimeDelta * m_vDirection.x;
 
-	m_pTransCom->Move_Pos(&(m_fSpeed * fTimeDelta * m_vDirection));
+	if (m_vDirection.y < 0.f)
+		m_vDirection.y = 0.1f;
+	m_fSpeedY = m_fSpeedY - 1.5f;
+	vMove.y = m_fSpeedY *fTimeDelta * m_vDirection.y;
+
+	vMove.z = m_fSpeed * fTimeDelta * m_vDirection.z;
+	m_pTransCom->Move_Pos(&vMove);
+
+
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
 
@@ -109,13 +143,10 @@ void CArrowBullet::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
 	m_pTextureCom->Set_Texture(FtoDw(m_fFrame));
 
 	m_pBufferCom->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
 CArrowBullet * CArrowBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -142,6 +173,9 @@ void CArrowBullet::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	m_fSpeed = m_fMinSpeed;
+	m_fSpeedY = m_fMinSpeed;
+
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_ARROW);
 }
 

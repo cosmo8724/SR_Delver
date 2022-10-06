@@ -27,11 +27,19 @@ public:
 private:
 	HRESULT		Add_Component(void);
 
+public:
+	void		Plus_Speed(_float fSpeed) { m_fSpeed += fSpeed; m_fSpeedY += fSpeed; }
+
 private:
 	_float		m_fFrame = 0.f;
-	_float		m_fSpeed = 10.f;
+	_float		m_fSpeed;
 	_bool		m_bReady = false;
 	_vec3		m_vDirection = { 0.f,0.f,0.f };
+
+	//추가 변수
+	_float		m_fMinSpeed;
+	_float		m_fMaxSpeed;
+	_float		m_fSpeedY;
 
 	// 충돌처리용
 private:

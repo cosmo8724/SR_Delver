@@ -244,6 +244,22 @@ bool CBulletMgr::Is_Fired(CGameObject * pObj)
 	return static_cast<CBullet*>(pObj)->Is_Fired();
 }
 
+void CBulletMgr::Pre_Setting(BULLETID eID, _float fSet)
+{
+	_int iIdx = -1;
+
+	switch (eID)
+	{
+	case BULLET_ARROW:
+		if (!m_IdxQue[eID].empty())
+		{
+			iIdx = m_IdxQue[eID].front();
+			static_cast<CArrowBullet*>(m_vecObjPool[eID][iIdx])->Plus_Speed(fSet);
+		}
+		break;
+	}
+}
+
 void CBulletMgr::Free()
 {
 	for (int i = 0; i < BULLET_END; ++i)
