@@ -188,7 +188,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 
 void CBlueBat::KnockBack(const _float& fTimeDelta)
 {
-	if (Engine::Get_DIKeyState(DIK_V) && 0x08)
+	if (Engine::Key_Down(DIK_V))
 	{
 		if (!m_bKnockBack)
 			m_bKnockBack = true;

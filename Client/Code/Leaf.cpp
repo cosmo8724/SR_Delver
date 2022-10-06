@@ -2,19 +2,16 @@
 #include "..\Header\Leaf.h"
 
 #include "Export_Function.h"
-
 #include "BulletMgr.h"
-
 
 CLeaf::CLeaf(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CMonster(pGraphicDev)
 	, m_ePreState(MOTION_END)
 	, m_eCurState(MOTION_END)
-	, m_eSkill(SKILL_END)
 	, m_OriginalPos(0.f, 0.f, 0.f)
 	, m_fTimeAcc(0.f)
 	, m_fTeleportingTimeAcc(0.f)
-	, m_fAttackTimeAcc(0.f)
+	, m_fBulletTimeAcc(0.f)
 {
 }
 
@@ -27,11 +24,10 @@ HRESULT CLeaf::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_OriginalPos = { 25.f, 1.f, 25.f };
+	m_OriginalPos = { 10.f, 1.f, 30.f };
 	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
 
 	m_eCurState = IDLE;
-	m_eSkill = SKILL_BULLET;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
@@ -47,28 +43,7 @@ _int CLeaf::Update_Object(const _float & fTimeDelta)
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
 	Motion_Change(fTimeDelta);
-	SKill_Update(fTimeDelta);
-
-	if (Engine::Get_DIKeyState(DIK_1) && 0x08)
-	{
-		m_eCurState = IDLE;
-	}
-	if (Engine::Get_DIKeyState(DIK_2) && 0x08)
-	{
-		m_eCurState = ATTACK;
-	}
-	if (Engine::Get_DIKeyState(DIK_3) && 0x08)
-	{
-		m_eCurState = HIT;
-	}
-	if (Engine::Get_DIKeyState(DIK_4) && 0x08)
-	{
-		m_eCurState = DIE;
-	}	
-	if (Engine::Get_DIKeyState(DIK_5) && 0x08)
-	{
-		m_eCurState = LEAF;
-	}
+	SKillTeleporting(fTimeDelta);
 
 	return 0;
 }
@@ -115,7 +90,6 @@ HRESULT CLeaf::Add_Component(void)
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_LeafIDLE_Texture");
-	//m_pAnimtorCom->Add_Component(L"Proto_LeafLEAF_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_LeafATTACK_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_LeafHIT_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_LeafDIE_Texture");
@@ -123,25 +97,7 @@ HRESULT CLeaf::Add_Component(void)
 	return S_OK;
 }
 
-void CLeaf::SKill_Update(const _float & fTimeDelta)
-{
-	switch (m_eSkill)
-	{
-	case CLeaf::SKILL_BULLET:
-		SKillTeleporting_Update(fTimeDelta);
-		break;
-	case CLeaf::SKILL_STUN:
-		SKillStun_Update(fTimeDelta);
-		break;
-	case CLeaf::SKILL_FLOOR:
-		SKillFloor_Update(fTimeDelta);
-		break;
-	case CLeaf::SKILL_END:
-		break;
-	}
-}
-
-void CLeaf::SKillTeleporting_Update(const _float & fTimeDelta)
+void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 {
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
@@ -152,7 +108,7 @@ void CLeaf::SKillTeleporting_Update(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 	
-	if (fDist < 5.f)
+	if (fDist < 5.f) // 몬스터 순간 이동
 	{
 		m_eCurState = ATTACK;
 
@@ -162,10 +118,20 @@ void CLeaf::SKillTeleporting_Update(const _float & fTimeDelta)
 	else
 	{
 		m_eCurState = IDLE;
+
+		if (fDist < 10.f)
+		{
+			m_fBulletTimeAcc += fTimeDelta;
+			if (2.f < m_fBulletTimeAcc)
+			{
+				CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
+				m_fTeleportingTimeAcc = 0.f;
+			}
+		}
 	}
 }
 
-void CLeaf::Teleporting(_float fPlayerPosX, _float fPlayerPosZ)
+void CLeaf::Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ)
 {
 	int iRandomNum = rand() % 7 + 2; // 몬스터가 랜덤하게 이동할 좌표
 	if (fPlayerPosX == (m_OriginalPos.x + iRandomNum) || fPlayerPosZ == (m_OriginalPos.z + iRandomNum) ||
@@ -188,16 +154,6 @@ void CLeaf::Teleporting(_float fPlayerPosX, _float fPlayerPosZ)
 	}
 }
 
-void CLeaf::SKillStun_Update(const _float & fTimeDelta)
-{
-
-}
-
-void CLeaf::SKillFloor_Update(const _float & fTimeDelta)
-{
-
-}
-
 void CLeaf::Motion_Change(const _float & fTimeDelta)
 {
 		if (m_ePreState != m_eCurState)
@@ -207,10 +163,6 @@ void CLeaf::Motion_Change(const _float & fTimeDelta)
 		case IDLE:
 			m_pAnimtorCom->Change_Animation(L"Proto_LeafIDLE_Texture");
 			break;
-
-		//case LEAF:
-		//	m_pAnimtorCom->Change_Animation(L"Proto_LeafLEAF_Texture");
-		//	break;
 
 		case ATTACK:
 			m_pAnimtorCom->Change_Animation(L"Proto_LeafATTACK_Texture");

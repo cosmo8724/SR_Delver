@@ -3,8 +3,7 @@
 
 class CLeaf : public CMonster
 {
-	enum STATE { IDLE, LEAF, ATTACK, HIT, DIE, MOTION_END };
-	enum SKILL { SKILL_BULLET, SKILL_STUN, SKILL_FLOOR, SKILL_END };
+	enum STATE { IDLE, ATTACK, HIT, DIE, MOTION_END };
 
 private:
 	explicit CLeaf(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -19,11 +18,8 @@ public:
 private:
 	virtual HRESULT		Add_Component(void) override;
 	
-	void				SKill_Update(const _float & fTimeDelta);
-	void				SKillTeleporting_Update(const _float& fTimeDelta);
-	void				Teleporting(_float fPlayerPosX, _float fPlayerPosZ);
-	void				SKillStun_Update(const _float& fTimeDelta);
-	void				SKillFloor_Update(const _float& fTimeDelta);
+	void				SKillTeleporting(const _float& fTimeDelta);
+	void				Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ);
 
 	void				Motion_Change(const _float& fTimeDelta);
 
@@ -31,14 +27,12 @@ private:
 	STATE				m_ePreState;
 	STATE				m_eCurState;
 
-	SKILL				m_eSkill;
-
 	_vec3				m_OriginalPos;
 
 	// Timer
 	_float				m_fTimeAcc ;
 	_float				m_fTeleportingTimeAcc;
-	_float				m_fAttackTimeAcc;
+	_float				m_fBulletTimeAcc;
 
 public:
 	static CLeaf*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

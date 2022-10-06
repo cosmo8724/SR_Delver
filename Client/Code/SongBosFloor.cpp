@@ -2,6 +2,7 @@
 #include "..\Header\SongBosFloor.h"
 
 #include "Export_Function.h"	
+#include "BulletMgr.h"
 
 CSongBosFloor::CSongBosFloor(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -169,4 +170,5 @@ void CSongBosFloor::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, FLOOR_SONGBOSS);
 }

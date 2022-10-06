@@ -10,13 +10,6 @@
 #include "GameObject.h"
 #include "Block.h"
 
-// �κ��丮
-#include "HPGauge.h"
-#include "QuickSlot.h"
-#include "Inventory.h"
-#include "EquipWindow.h"
-#include "TalkWindow.h"
-
 // Monster
 #include "GreenSlime.h"
 #include "PinkSlime.h"

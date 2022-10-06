@@ -29,7 +29,7 @@ HRESULT CSongBoss::Ready_Object(void)
 	m_pTransCom->Set_Pos(1.f, 1.f, 50.f);
 
 	m_eCurState = IDLE;
-	m_eSkill = SKILL_BULLET;
+	m_eSkill = SKILL_END;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
@@ -50,29 +50,13 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_1) && 0x08)
 	{
-		m_eCurState = IDLE;
+		m_eSkill = SKILL_BULLET;
 	}
 	if (Engine::Get_DIKeyState(DIK_2) && 0x08)
 	{
-		m_eCurState = ATTACK;
-	}
-	if (Engine::Get_DIKeyState(DIK_3) && 0x08)
-	{
-		m_eCurState = HIT;
-	}
-	if (Engine::Get_DIKeyState(DIK_4) && 0x08)
-	{
-		m_eCurState = DIE;
-	}	
-	if (Engine::Get_DIKeyState(DIK_5) && 0x08)
-	{
-		m_eSkill = SKILL_BULLET;
-	}
-	if (Engine::Get_DIKeyState(DIK_6) && 0x08)
-	{
 		m_eSkill = SKILL_STUN;
 	}
-	if (Engine::Get_DIKeyState(DIK_7) && 0x08)
+	if (Engine::Get_DIKeyState(DIK_3) && 0x08)
 	{
 		m_eSkill = SKILL_FLOOR;
 	}

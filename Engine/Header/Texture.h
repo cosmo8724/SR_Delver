@@ -20,7 +20,7 @@ public:
 
 private:
 	vector<IDirect3DBaseTexture9*>		m_vecTexture;
-	_uint										m_iFrameEnd;
+	_uint								m_iFrameEnd;
 
 public:
 	static	CTexture*		Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pPath, TEXTUREID eType, const _uint& iCnt = 1);
