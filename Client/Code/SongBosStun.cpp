@@ -2,6 +2,7 @@
 #include "..\Header\SongBosStun.h"
 
 #include "Export_Function.h"	
+#include "BulletMgr.h"
 
 CSongBosStun::CSongBosStun(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -157,4 +158,5 @@ void CSongBosStun::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, STUN_SONGBOSS);
 }

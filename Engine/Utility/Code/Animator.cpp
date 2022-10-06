@@ -31,7 +31,7 @@ void CAnimator::Play_Animation(const _float & fTimeDelta, const _float & fTimeSp
 {
 	m_fFrame += m_pCurAnim->Get_FrameEnd() * fTimeDelta * fTimeSpeed;
 
-	if (m_fFrame >= m_pCurAnim->Get_FrameEnd())
+	if (m_fFrame >= m_pCurAnim->Get_FrameEnd() + 1)
 		m_fFrame = 0;
 }
 

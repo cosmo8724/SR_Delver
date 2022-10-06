@@ -2,9 +2,7 @@
 #include "..\Header\Fist.h"
 
 #include "Export_Function.h"
-
 #include "BulletMgr.h"
-
 
 CFist::CFist(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CMonster(pGraphicDev)

@@ -20,7 +20,7 @@ CBlock::CBlock(const CBlock& rhs)
 	//memcpy(&m_bdBox, &rhs.m_bdBox, sizeof(BDBOX));
 	m_pBufferCom = dynamic_cast<CCubeTex*>(rhs.m_pBufferCom->Clone());
 	m_pTransCom = dynamic_cast<CTransform*>(rhs.m_pTransCom->Clone());
-	//m_pTextureCom = dynamic_cast<CTexture*>(rhs.m_pTextureCom->Clone());
+	//m_pTextureCom = dynamic_cast<CTexture*>(rhs.m_pTextureCom->Clone()); // Tool!!
 	m_pCalculatorCom = dynamic_cast<CCalculator*>(rhs.m_pCalculatorCom->Clone());
 }
 

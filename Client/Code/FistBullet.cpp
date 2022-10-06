@@ -2,6 +2,7 @@
 #include "..\Header\FistBullet.h"
 
 #include "Export_Function.h"	
+#include "BulletMgr.h"
 
 CFistBullet::CFistBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -94,10 +95,9 @@ void CFistBullet::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	if (10.f < m_fLifeTime)
-	{
+	if (2.f < m_fLifeTime)
 		Reset();
-	}
+
 
 	CGameObject::LateUpdate_Object();
 }
@@ -164,4 +164,5 @@ void CFistBullet::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_FIST);
 }
