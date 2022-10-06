@@ -75,7 +75,7 @@ void CArrowBullet::LateUpdate_Object(void)
 	if (!m_bFire || !m_bReady)
 		return;
 
-	// 아무데도 충돌안해도 일정 시간 후 리셋
+	// 아무데도 충돌안해도 일정 시간 후 리셋함
 	if (2.f < m_fLifeTime)
 	{
 		Reset();
