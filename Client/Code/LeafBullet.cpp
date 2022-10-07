@@ -64,29 +64,8 @@ _int CLeafBullet::Update_Object(const _float & fTimeDelta)
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
-	if (!m_bReady)
-	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK_RETURN(pFist, -1);
-
-		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK_RETURN(pPlayer, -1);
-
-		pFist->Get_Info(INFO_POS, &vPos);
-		m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
-
-		pPlayer->Get_Info(INFO_POS, &m_vPlayerPos);
-		m_vPlayerPos.y -= 0.01f;
-
-		m_bReady = true;
-	}
-
-	_vec3	vDir;
-	vDir = m_vPlayerPos - vPos;
-	D3DXVec3Normalize(&vDir, &vDir);
-	vDir *= m_fSpeed * fTimeDelta;
-
-	m_pTransCom->Move_Pos(&vDir);
+	Target(fTimeDelta);
+	//Rotation(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 	
@@ -118,7 +97,6 @@ void CLeafBullet::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	m_pAnimtorCom->Set_Texture();
-
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
@@ -142,7 +120,61 @@ void CLeafBullet::Billboard()
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 	// 현재 지금 이 코드는 문제가 없지만 나중에 문제가 될 수 있음
-	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
+	//m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
+	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld * m_matRot));
+}
+
+_int CLeafBullet::Target(const _float & fTimeDelta)
+{
+	if (!m_bReady)
+	{
+		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf", L"Proto_TransformCom", ID_DYNAMIC));
+		NULL_CHECK_RETURN(pFist, -1);
+
+		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+		NULL_CHECK_RETURN(pPlayer, -1);
+
+		pFist->Get_Info(INFO_POS, &vPos);
+		m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+
+		pPlayer->Get_Info(INFO_POS, &m_vPlayerPos);
+		m_vPlayerPos.y -= 0.01f;
+
+		m_bReady = true;
+	}
+
+	_vec3   vDir;
+	vDir = m_vPlayerPos - vPos;
+	D3DXVec3Normalize(&vDir, &vDir);
+
+	static _float fAngle = 0.f;
+	D3DXMatrixIdentity(&m_matRot);
+	D3DXMatrixRotationAxis(&m_matRot, &vDir, D3DXToRadian(fAngle));
+	m_matRot *= 0.05f;
+	fAngle += 5.f;
+
+	vDir *= 2.f * fTimeDelta;
+
+	m_pTransCom->Move_Pos(&vDir);
+
+	// 원래 코드
+	//_vec3	vDir;
+	//vDir = m_vPlayerPos - vPos;
+	//D3DXVec3Normalize(&vDir, &vDir);
+	//vDir *= m_fSpeed * fTimeDelta;
+	//m_pTransCom->Move_Pos(&vDir);
+
+	return 0;
+}
+
+void CLeafBullet::Rotation(const _float & fTimeDelta)
+{
+	_float fRotationValue = 0.f;
+	fRotationValue += 45.f * fTimeDelta;
+	if (fRotationValue >= 360.f)
+		fRotationValue = 0.f;
+
+	m_pTransCom->Rotation(ROT_X, fRotationValue);
 }
 
 CLeafBullet * CLeafBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)

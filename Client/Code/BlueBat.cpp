@@ -171,7 +171,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 			{
 				CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 				NULL_CHECK(pStaticCamera);
-				pStaticCamera->Set_ShakeY();
+				pStaticCamera->Set_ShakeY(); // 카메라Y 흔들기
 			}
 		}
 	}

@@ -26,6 +26,8 @@ public:
 
 private:
 	void					Billboard();
+	_int					Target(const _float& fTimeDelta);
+	void					Rotation(const _float& fTimeDelta);
 
 private:
 	HRESULT					Add_Component(void);
@@ -39,6 +41,8 @@ private:
 	_bool					m_bReady;
 	_vec3					vPos, m_vPlayerPos = { 0.f,0.f,0.f };
 
+	// 회전 테스트
+	_matrix					m_matRot;
 };
 
 END

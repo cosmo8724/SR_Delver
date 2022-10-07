@@ -141,8 +141,6 @@ void CStick::Target_Follow(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
-
-
 }
 
 void CStick::Skill_Update(const _float & fTimeDelta)
@@ -178,7 +176,6 @@ void CStick::SkillMove_Update(const _float & fTimeDelta)
 
 	D3DXVec3Normalize(&vRight, &vRight);
 	m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
-
 }
 
 void CStick::SkillAttack_Update(const _float & fTimeDelta)
@@ -263,10 +260,8 @@ void CStick::SkillAnger_Update(const _float & fTimeDelta)
 			}
 		}
 		m_bReady = true;
-
 	}
 }
-
 
 void CStick::Motion_Change(const _float& fTimeDelta)
 {

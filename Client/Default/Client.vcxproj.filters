@@ -411,9 +411,6 @@
     <ClInclude Include="..\Header\MapUI.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\05. Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\FistBullet.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\SongBossBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet</Filter>
     </ClInclude>
@@ -455,6 +452,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\LeafBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\FistBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -620,9 +620,6 @@
     <ClCompile Include="..\Code\MapUI.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\05. Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\FistBullet.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\SongBossBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet</Filter>
     </ClCompile>
@@ -664,6 +661,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\LeafBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\FistBulle.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

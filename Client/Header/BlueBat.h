@@ -55,6 +55,9 @@ private:
 	_float				m_fSkillTimeAcc;
 	_float				m_fBTimeDelta = 0.f;
 
+	// Test
+	_float m_fJumpTime = 0.f;
+
 public:
 	static CBlueBat*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void		Free(void);

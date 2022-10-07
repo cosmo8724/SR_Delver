@@ -28,7 +28,7 @@ CBulletMgr::CBulletMgr()
 	m_MaxIdx[STUN_SONGBOSS] = 4; // ENUM 선언위치 변경 X
 	m_MaxIdx[FLOOR_SONGBOSS] = 5; // ENUM 선언위치 변경 X
 	m_MaxIdx[BULLET_ARROW] = 10;
-	m_MaxIdx[BULLET_M_LEAF] = 1;
+	m_MaxIdx[BULLET_M_LEAF] = 5;
 
 	for (int bulletId = 0; bulletId < BULLET_END; ++bulletId)
 	{

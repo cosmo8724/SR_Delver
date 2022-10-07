@@ -170,8 +170,8 @@
     <ClInclude Include="..\Header\DynamicCamera.h" />
     <ClInclude Include="..\Header\Effect.h" />
     <ClInclude Include="..\Header\EquipWindow.h" />
-    <ClInclude Include="..\Header\Fist.h" />
     <ClInclude Include="..\Header\FistBullet.h" />
+    <ClInclude Include="..\Header\Fist.h" />
     <ClInclude Include="..\Header\FontLogo.h" />
     <ClInclude Include="..\Header\FontStart.h" />
     <ClInclude Include="..\Header\GrandFather.h" />
@@ -250,8 +250,8 @@
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
     <ClCompile Include="..\Code\Effect.cpp" />
     <ClCompile Include="..\Code\EquipWindow.cpp" />
+    <ClCompile Include="..\Code\FistBulle.cpp" />
     <ClCompile Include="..\Code\Fist.cpp" />
-    <ClCompile Include="..\Code\FistBullet.cpp" />
     <ClCompile Include="..\Code\FontLogo.cpp" />
     <ClCompile Include="..\Code\FontStart.cpp" />
     <ClCompile Include="..\Code\GrandFather.cpp" />
