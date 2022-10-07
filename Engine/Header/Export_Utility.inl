@@ -84,6 +84,11 @@ void	CollisionSphere(CGameObject* _pDest, CGameObject* _pSour)
 	CCollisionMgr::GetInstance()->CollisionSphere(_pDest, _pSour);
 }
 
+void	CollisionTest(CGameObject* _pDest, CGameObject* _pSour)
+{
+	CCollisionMgr::GetInstance()->CollisionTest(_pDest, _pSour);
+}
+
 
 inline void			Release_Utility(void)
 {

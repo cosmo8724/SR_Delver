@@ -32,14 +32,14 @@ HRESULT CInventory::Ready_Object(void)
 	m_fPosX = 64;
 	m_fPosY = WINCY / 4;
 
-	// 스케일 값
+	// scale
 	D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
 
-	// 포지션
+	// position
 	m_matView._41 = m_fTempPosX;
 	m_matView._42 = m_fTempPosY;
 
-	// 피킹용 텍스쳐 포지션 설정
+	// texture position for mouse picking
 	m_fInvWidth = m_fScaleX * 2.f;
 	m_fInvHeight = m_fScaleY * 2.f;
 	m_fTileSize = 32.f * 2;
@@ -103,7 +103,7 @@ void CInventory::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	m_pTextureCom->Set_Texture(0);	// 텍스처 정보 세팅을 우선적으로 한다.
+	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
@@ -192,17 +192,14 @@ void CInventory::Set_Inventory(CItem * pItem)
 	}
 }
 
-CItem * CInventory::Set_ItemEquip()
+void  CInventory::Pick()
 {
-	if (nullptr != m_pPickedItem)
-		return m_pPickedItem;
-
 	POINT	ptMouse{};
 
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
-	// 뷰포트 -> 투영
+	// viewport -> projection 
 	D3DVIEWPORT9		ViewPort;
 	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
 	m_pGraphicDev->GetViewport(&ViewPort);
@@ -212,7 +209,7 @@ CItem * CInventory::Set_ItemEquip()
 	vPoint.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
 	vPoint.z = 0.f;
 
-	// 투영 -> 뷰좌표
+	// projection -> view space
 	_matrix matProj;
 	D3DXMatrixOrthoLH(&matProj, WINCX, WINCY, 0.f, 1.f);
 	D3DXMatrixInverse(&matProj, nullptr, &matProj);
@@ -232,24 +229,70 @@ CItem * CInventory::Set_ItemEquip()
 			rc.right = long(m_InvPosArr[i][j].x + 0.5f * m_fTileSize);
 			rc.bottom = long(m_InvPosArr[i][j].y - 0.5f * m_fTileSize);
 
-			if (ptMouse.x > rc.left && ptMouse.x < rc.right && ptMouse.y > rc.bottom && ptMouse.y < rc.top)
+
+			if (ptMouse.x > rc.left && ptMouse.x < rc.right && ptMouse.y > rc.bottom && ptMouse.y < rc.top) // if the mouse pointer is in the tile
 			{
-				// 무기라면 Equip 상태가 되어야 함.
-				CWeapon*	pWeapon = dynamic_cast<CWeapon*>(static_cast<CInvImg*>(m_Inventory[i][j])->Get_TargetObj());
-				if (pWeapon != nullptr)
+				if (nullptr == m_ppPickedItem && nullptr != m_Inventory[i][j])
 				{
-					pWeapon->Set_Equipped();
-					break;
+					m_ppPickedItem = &m_Inventory[i][j];
 				}
+				else if (nullptr != m_ppPickedItem && nullptr == m_Inventory[i][j]) // if there's already picked one, but no item in the selected tile
+				{
+					CTransform* pTransCom = static_cast<CTransform*>((*m_ppPickedItem)->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+					_vec3 vCurPos = pTransCom->Get_Pos();
 
+					CItem* temp = *m_ppPickedItem;
 
-				// 아이템이라면 소모해야 함.
+					m_Inventory[i][j] = *m_ppPickedItem;
+					pTransCom->Set_Pos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y, 0.f);
+
+					*m_ppPickedItem = nullptr;
+					m_ppPickedItem = nullptr;
+
+				}
+				else if(nullptr != m_ppPickedItem && nullptr != m_Inventory[i][j])// if there's alreay picked one -> swap
+				{
+					Swap(m_ppPickedItem, m_Inventory[i][j]);
+				}
 			}
-
 		}
 	}
+}
 
-	return nullptr;
+void CInventory::Swap(CItem** ppCur, CItem * pTgt)
+{
+	// swap the pCur and pTgt position
+	CItem*	pTemp;
+	_vec3	vOrigin, vTarget;
+	CTransform* pOrigin = static_cast<CTransform*>((*ppCur)->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+	CTransform* pTarget = static_cast<CTransform*>(pTgt->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+
+	vOrigin = pOrigin->Get_Pos();
+	vTarget = pTarget->Get_Pos();
+
+	pOrigin->Set_Pos(vTarget.x, vTarget.y, vTarget.z);
+	pTarget->Set_Pos(vOrigin.x, vOrigin.y, vOrigin.z);
+
+	pTemp = (*ppCur);
+	ppCur = &pTgt;
+	pTgt = pTemp;
+
+	m_ppPickedItem = nullptr;
+}
+
+void CInventory::Set_ItemEquip()
+{
+	if (nullptr == m_ppPickedItem)
+		return;
+	
+	// if the item type is lantern / armor / weapon -> equipped 
+	CWeapon*	pWeapon = dynamic_cast<CWeapon*>(static_cast<CInvImg*>((*m_ppPickedItem))->Get_TargetObj());
+	if (pWeapon != nullptr)
+	{
+		pWeapon->Set_Equipped();
+	}
+
+	// if the item type is consumalbe -> use
 }
 
 void CInventory::Mouse_Input(const _float& fTimeDelta)
@@ -257,10 +300,33 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_TAB))
 	{
-		if (Engine::Is_DoubleClicked(DIM_LB, fTimeDelta))
+		m_fClickTime += fTimeDelta;
+
+		if (m_fClickTime < 0.6f)
 		{
-			m_pPickedItem = Set_ItemEquip();
+			if(Engine::Mouse_Down(DIM_LB))
+				++m_iClickedCnt;
+		}
+		else if (m_fClickTime > 0.6f)
+		{
+			if (2 == m_iClickedCnt)		// double click
+			{
+				//MSG_BOX("double");
+				Pick();	// if there's no picked item		&&	double clicked item		-> item equip (or use)
+				Set_ItemEquip();		// else if there's a picked item	&&	double clicked item		-> item equip swapped 
+			}	
+			else if (1 == m_iClickedCnt)	// one click
+			{
+				//MSG_BOX("one");
+				Pick();	 // if there's no picked item		&&	clicked item -> item picked (stick to mouse pointer)
+										// else if there's a picked item	&&	clicked item -> swap
+			}
+			m_fClickTime = 0.f;
+			m_iClickedCnt = 0;
 		}
 	}
-
+	else	// if you didn't press the Tab Key -> there's no picked item;(picked item will be sticked to the mouse pointer)
+	{
+		m_ppPickedItem = nullptr;
+	}
 }

@@ -41,6 +41,7 @@ private:
 	_bool		m_bReady = false;
 	_vec3		vPos, m_vPlayerPos = { 0.f,0.f,0.f };
 
+
 };
 
 END
