@@ -2,6 +2,7 @@
 #include "..\Header\Block.h"
 #include "Export_Function.h"
 #include "DynamicCamera.h"
+#include "MiniMap.h"
 
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -155,7 +156,15 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	if (m_bClone)
+	{
+		if (!m_bCreateIcon)
+		{
+			CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+			pMiniMap->Add_Icon(m_pGraphicDev, this);
+			m_bCreateIcon = true;
+		}
 		Add_RenderGroup(RENDER_NONALPHA, this);
+	}
 	else
 		Add_RenderGroup(RENDER_ALPHA, this);
 

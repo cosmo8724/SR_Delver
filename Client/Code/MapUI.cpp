@@ -61,7 +61,8 @@ void CMapUI::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	m_pTextureCom->Set_Texture(0);	// 텍스처 정보 세팅을 우선적으로 한다.
-	m_pBufferCom->Render_Buffer();
+	if(m_bIsOpenMap)
+		m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);

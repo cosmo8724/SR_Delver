@@ -4,6 +4,7 @@
 #include "Export_Function.h"
 
 #include "TalkWindow.h"
+#include "MiniMap.h"
 
 CDog::CDog(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CNPC(pGraphicDev)
@@ -42,6 +43,12 @@ HRESULT CDog::Ready_Object(void)
 
 _int CDog::Update_Object(const _float & fTimeDelta)
 {
+	if (!m_bCreateIcon)
+	{
+		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		m_bCreateIcon = true;
+	}
 	Engine::CGameObject::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 

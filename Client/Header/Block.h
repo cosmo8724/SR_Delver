@@ -51,6 +51,7 @@ public:
 	_bool				m_bSet = false;
 	_bool				m_bClone = false;
 	_bool				m_bChanging = false;
+	_bool				m_bCreateIcon = false;
 
 	_int				m_iTexture = 0;
 	_float				m_fScale = 1.f;
