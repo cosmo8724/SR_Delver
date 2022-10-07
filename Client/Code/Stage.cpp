@@ -18,6 +18,7 @@
 #include "BrownBat.h"
 #include "Stick.h"
 #include "Leaf.h"
+
 // Boss
 #include "SongBoss.h"
 
@@ -35,6 +36,9 @@
 #include "QuickSlot.h"
 #include "Inventory.h"
 #include "EquipWindow.h"
+#include "MapUI.h"
+#include "MiniMap.h"
+
 // Font
 #include "HPGauge.h"
 #include "TalkWindow.h"
@@ -42,7 +46,6 @@
 // Manager
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
-#include "MapUI.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -349,9 +352,14 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_TalkWindow", pGameObject), E_FAIL);
 
 	// UI_MAP
-	//pGameObject = CMapUI::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Map", pGameObject), E_FAIL);
+	pGameObject = CMapUI::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Map", pGameObject), E_FAIL);
+
+	// UI_MiniMap
+	pGameObject = CMiniMap::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 

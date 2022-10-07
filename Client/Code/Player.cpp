@@ -7,6 +7,8 @@
 #include "ImGuiMgr.h"
 #include "ItemMgr.h"
 #include "Block.h"
+#include "MapUI.h"
+#include "MiniMap.h"
 //#include "ParticleMgr.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -26,7 +28,7 @@ HRESULT CPlayer::Ready_Object(void)
 {
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransCom->Set_Pos(20.f, 1.f, 20.f);
+	m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
 
 	// 충돌처리 테스트
 	_vec3 vPos, vScale;
@@ -38,12 +40,19 @@ HRESULT CPlayer::Ready_Object(void)
 	m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z };
 	m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z };
 
-
 	return S_OK;
 }
 
 _int CPlayer::Update_Object(const _float & fTimeDelta)
 {
+	static _bool	bOnce = false;
+	if (!bOnce)
+	{
+		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		bOnce = true;
+	}
+
 	m_fTimeDelta = fTimeDelta;
 	if (!(GetKeyState(VK_TAB) & 0x80))
 	{
@@ -221,6 +230,16 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 			m_eState = PLAYER_JUMP;
 			m_bJump = true;
 		}
+	}
+
+	if (Engine::Key_Down(DIK_M))
+	{
+		CMapUI* pMap = dynamic_cast<CMapUI*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Map"));
+
+		if (pMap->Get_MapState())
+			pMap->Set_CloseMap();
+		else
+			pMap->Set_OpenMap();
 	}
 
 }

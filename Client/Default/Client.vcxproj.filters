@@ -175,9 +175,6 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\05. Map">
       <UniqueIdentifier>{bf3b0050-192f-4082-96d8-2e038e1d5adc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\06. MiniMap">
-      <UniqueIdentifier>{15a9784d-142f-4831-97d4-2aeb67c7edad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist">
       <UniqueIdentifier>{2d992638-c057-4820-a3c2-6fb05be23569}</UniqueIdentifier>
     </Filter>
@@ -228,6 +225,12 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. Floor">
       <UniqueIdentifier>{52579f46-3a14-4f77-a0e3-7aae88fcc4f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\06. MiniMap">
+      <UniqueIdentifier>{15a9784d-142f-4831-97d4-2aeb67c7edad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon">
+      <UniqueIdentifier>{424aea31-d71b-43a1-b988-ff83081e05cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -456,6 +459,12 @@
     <ClInclude Include="..\Header\LeafBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MiniMap.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Icon.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -664,6 +673,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\LeafBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MiniMap.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Icon.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

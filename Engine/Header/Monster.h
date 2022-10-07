@@ -40,6 +40,8 @@ protected:
 	CTexture*			m_pTextureCom = nullptr;
 	CTransform*			m_pTransCom = nullptr;
 	CAnimator*			m_pAnimtorCom = nullptr;
+
+	_bool					m_bCreateIcon = false;
 };
 
 END

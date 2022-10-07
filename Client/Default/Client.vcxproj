@@ -180,6 +180,7 @@
     <ClInclude Include="..\Header\HealthBar.h" />
     <ClInclude Include="..\Header\HoodMan.h" />
     <ClInclude Include="..\Header\HPGauge.h" />
+    <ClInclude Include="..\Header\Icon.h" />
     <ClInclude Include="..\Header\ImGuiMgr.h" />
     <ClInclude Include="..\Header\Inventory.h" />
     <ClInclude Include="..\Header\InvImg.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="..\Header\MainApp.h" />
     <ClInclude Include="..\Header\MapTool.h" />
     <ClInclude Include="..\Header\MapUI.h" />
+    <ClInclude Include="..\Header\MiniMap.h" />
     <ClInclude Include="..\Header\ParticleMgr.h" />
     <ClInclude Include="..\Header\ParticleTool.h" />
     <ClInclude Include="..\Header\PinkSlime.h" />
@@ -260,6 +262,7 @@
     <ClCompile Include="..\Code\HealthBar.cpp" />
     <ClCompile Include="..\Code\HoodMan.cpp" />
     <ClCompile Include="..\Code\HPGauge.cpp" />
+    <ClCompile Include="..\Code\Icon.cpp" />
     <ClCompile Include="..\Code\ImGuiMgr.cpp" />
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\InvImg.cpp" />
@@ -271,6 +274,7 @@
     <ClCompile Include="..\Code\MainApp.cpp" />
     <ClCompile Include="..\Code\MapTool.cpp" />
     <ClCompile Include="..\Code\MapUI.cpp" />
+    <ClCompile Include="..\Code\MiniMap.cpp" />
     <ClCompile Include="..\Code\ParticleMgr.cpp" />
     <ClCompile Include="..\Code\ParticleTool.cpp" />
     <ClCompile Include="..\Code\PinkSlime.cpp" />
