@@ -1,31 +1,37 @@
 #include "stdafx.h"
-#include "..\Header\FistBullet.h"
+#include "..\Header\LeafBullet.h"
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
 
-CFistBullet::CFistBullet(LPDIRECT3DDEVICE9 pGraphicDev)
+CLeafBullet::CLeafBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
+	, m_bReady(false)
+	, m_fSpeed(0.f)
 {
 }
 
-CFistBullet::CFistBullet(const CFistBullet & rhs)
-	: CBullet(rhs)
+CLeafBullet::CLeafBullet(const CLeafBullet & rhs)
+	:CBullet(rhs)
 {
 }
 
-CFistBullet::~CFistBullet()
+CLeafBullet::~CLeafBullet()
 {
 }
 
-HRESULT CFistBullet::Ready_Object(void)
+HRESULT CLeafBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+
+	m_fSpeed = 10.f;
+
 	return S_OK;
 }
 
-HRESULT CFistBullet::Add_Component(void)
+HRESULT CLeafBullet::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -44,12 +50,12 @@ HRESULT CFistBullet::Add_Component(void)
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
-	m_pAnimtorCom->Add_Component(L"Proto_FistGreenEffect_Texture");
+	m_pAnimtorCom->Add_Component(L"Proto_Leaf_Bullet_Texture");
 
 	return S_OK;
 }
 
-_int CFistBullet::Update_Object(const _float & fTimeDelta)
+_int CLeafBullet::Update_Object(const _float & fTimeDelta)
 {
 	if (!m_bFire)
 		return 0;
@@ -60,7 +66,7 @@ _int CFistBullet::Update_Object(const _float & fTimeDelta)
 
 	if (!m_bReady)
 	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Fist", L"Proto_TransformCom", ID_DYNAMIC));
+		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pFist, -1);
 
 		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -83,12 +89,12 @@ _int CFistBullet::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Move_Pos(&vDir);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
-
+	
 	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
 
-void CFistBullet::LateUpdate_Object(void)
+void CLeafBullet::LateUpdate_Object(void)
 {
 	Billboard();
 
@@ -98,11 +104,10 @@ void CFistBullet::LateUpdate_Object(void)
 	if (2.f < m_fLifeTime)
 		Reset();
 
-
 	CGameObject::LateUpdate_Object();
 }
 
-void CFistBullet::Render_Obejct(void)
+void CLeafBullet::Render_Obejct(void)
 {
 	if (!m_bFire)
 		return;
@@ -120,7 +125,7 @@ void CFistBullet::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
-void CFistBullet::Billboard()
+void CLeafBullet::Billboard()
 {
 	// ºôº¸µå
 	_matrix		matWorld, matView, matBill;
@@ -140,9 +145,9 @@ void CFistBullet::Billboard()
 	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 
-CFistBullet * CFistBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CLeafBullet * CLeafBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CFistBullet*		pInstance = new CFistBullet(pGraphicDev);
+	CLeafBullet*		pInstance = new CLeafBullet(pGraphicDev);
 	if (FAILED(pInstance->Ready_Object()))
 	{
 		Safe_Release(pInstance);
@@ -152,17 +157,16 @@ CFistBullet * CFistBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CFistBullet::Free(void)
+void CLeafBullet::Free(void)
 {
 	CGameObject::Free();
 }
 
-void CFistBullet::Reset()
+void CLeafBullet::Reset()
 {
 	m_bFire = false;
 	m_bDead = false;
 	m_fLifeTime = 0.f;
-	m_fFrame = 0.f;
 	m_bReady = false;
-	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_FIST);
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_LEAF);
 }

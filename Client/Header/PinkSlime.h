@@ -7,6 +7,7 @@ class CPinkSlime : public CMonster
 
 private:
 	explicit CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CPinkSlime(const CPinkSlime& rhs);
 	virtual ~CPinkSlime();
 
 public:
@@ -24,6 +25,9 @@ private:
 	void				Scale_Change();
 
 private:
+	CGameObject*		pGameObject = nullptr;
+
+private:
 	STATE				m_ePreState;
 	STATE				m_eCurState;
 
@@ -32,8 +36,12 @@ private:
 
 	_float				m_fTimeAcc;
 
+	_float				m_fTime = 0.f; 
+	_bool				m_bClone = false;
+
 public:
 	static CPinkSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPinkSlime*	Create(const CPinkSlime& rhs);
 	virtual void		Free(void);
 };
 

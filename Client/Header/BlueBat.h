@@ -41,7 +41,7 @@ private:
 	_float				m_fJSpeed0; 		// 점프 초기 속도
 	_float				m_fAccel;			// 중력가속도
 
-											// 넉백 관련 변수
+	// 넉백 관련 변수
 	_bool				m_bKnockBack = false;
 	_float				m_fBSpeed = 0.1f;
 	_float				m_fBSpeed0 = 0.1f;

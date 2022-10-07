@@ -181,18 +181,6 @@
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist">
       <UniqueIdentifier>{2d992638-c057-4820-a3c2-6fb05be23569}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss">
-      <UniqueIdentifier>{978bcb6c-d2a1-48e5-adaa-509d6eaa9dec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet">
-      <UniqueIdentifier>{99b4687d-1545-4096-add2-7d4fcf4740ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Strun">
-      <UniqueIdentifier>{3add4dec-7927-4f11-95c8-cfaa6dfd1461}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. Floor">
-      <UniqueIdentifier>{52579f46-3a14-4f77-a0e3-7aae88fcc4f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\02. Monster\99. SongBoss">
       <UniqueIdentifier>{49497359-5d52-4df1-9fee-118bae8f1ec2}</UniqueIdentifier>
     </Filter>
@@ -225,6 +213,21 @@
     </Filter>
     <Filter Include="02. GameObject\02. For_Public\02. Particle\Manager">
       <UniqueIdentifier>{eba8f420-befd-42b2-bb7e-0845e53dbacb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf">
+      <UniqueIdentifier>{fde1a060-1e3e-410e-b32d-020c9302a2fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss">
+      <UniqueIdentifier>{978bcb6c-d2a1-48e5-adaa-509d6eaa9dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet">
+      <UniqueIdentifier>{99b4687d-1545-4096-add2-7d4fcf4740ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Strun">
+      <UniqueIdentifier>{3add4dec-7927-4f11-95c8-cfaa6dfd1461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. Floor">
+      <UniqueIdentifier>{52579f46-3a14-4f77-a0e3-7aae88fcc4f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -450,6 +453,9 @@
     <ClInclude Include="..\Header\ArrowBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\LeafBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -655,6 +661,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ArrowBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\LeafBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

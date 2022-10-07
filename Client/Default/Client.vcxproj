@@ -185,6 +185,7 @@
     <ClInclude Include="..\Header\InvImg.h" />
     <ClInclude Include="..\Header\ItemMgr.h" />
     <ClInclude Include="..\Header\Leaf.h" />
+    <ClInclude Include="..\Header\LeafBullet.h" />
     <ClInclude Include="..\Header\Loading.h" />
     <ClInclude Include="..\Header\Logo.h" />
     <ClInclude Include="..\Header\MainApp.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="..\Code\InvImg.cpp" />
     <ClCompile Include="..\Code\ItemMgr.cpp" />
     <ClCompile Include="..\Code\Leaf.cpp" />
+    <ClCompile Include="..\Code\LeafBullet.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />
     <ClCompile Include="..\Code\Logo.cpp" />
     <ClCompile Include="..\Code\MainApp.cpp" />

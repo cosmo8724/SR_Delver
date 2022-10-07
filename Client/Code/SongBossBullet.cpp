@@ -2,6 +2,7 @@
 #include "..\Header\SongBossBullet.h"
 
 #include "Export_Function.h"	
+#include "BulletMgr.h"
 
 CSongBossBullet::CSongBossBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -174,4 +175,5 @@ void CSongBossBullet::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_SONGBOSS);
 }

@@ -8,10 +8,18 @@ CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_ePreState(MOTION_END)
 	, m_eCurState(MOTION_END)
 	, m_fTimeAcc(0.f)
-
 {
 }
 
+CPinkSlime::CPinkSlime(const CPinkSlime& rhs)
+	: CMonster(rhs)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_fTimeAcc(0.f)
+	, m_fScale(rhs.m_fScale)
+	, m_bClone(true)
+{
+}
 
 CPinkSlime::~CPinkSlime()
 {
@@ -117,19 +125,30 @@ void CPinkSlime::Target_Follow(const _float & fTimeDelta)
 	}
 	else
 		m_eCurState = IDLE;
-
 }
 
 void CPinkSlime::Scale_Change()
 {
 	_float fSize = 0.f;
 
-	if (Engine::Get_DIKeyState(DIK_P) & 0X80)
-	{
-		// TODO : 분리 되며 생성되는 PinkSlime
-		//CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		//pLayer->Add_GameObject(L"Fist", pGameObject);
+	CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 
+	if (Engine::Get_DIKeyState(DIK_0))
+	{
+		pLayer->Delete_GameObject(L"PinkSlime0");
+		pLayer->Delete_GameObject(L"PinkSlime1");
+		pLayer->Delete_GameObject(L"PinkSlime2");
+	}
+
+	if (Engine::Key_Down(DIK_P))
+	{
+		pGameObject = CPinkSlime::Create(m_pGraphicDev);
+		if (pGameObject == nullptr)
+		{
+			MSG_BOX("PinkSlime Create Failure");
+			return;
+		}
+		pLayer->Add_GameObject(L"PinkSlime0", pGameObject);		
 
 		fSize = 0.9f;
 
@@ -138,6 +157,14 @@ void CPinkSlime::Scale_Change()
 	}
 	else if (Engine::Get_DIKeyState(DIK_O) & 0X80)
 	{
+		pGameObject = CPinkSlime::Create(m_pGraphicDev);
+		if (pGameObject == nullptr)
+		{
+			MSG_BOX("PinkSlime Create Failure");
+			return;
+		}
+		pLayer->Add_GameObject(L"PinkSlime1", pGameObject);
+
 		fSize = 0.7f;
 
 		m_pTransCom->Set_Scale(m_fScale * fSize, m_fScale * fSize, m_fScale * fSize);
@@ -145,6 +172,14 @@ void CPinkSlime::Scale_Change()
 	}
 	else if (Engine::Get_DIKeyState(DIK_I) & 0X80)
 	{
+		pGameObject = CPinkSlime::Create(m_pGraphicDev);
+		if (pGameObject == nullptr)
+		{
+			MSG_BOX("PinkSlime Create Failure");
+			return;
+		}
+		pLayer->Add_GameObject(L"PinkSlime2", pGameObject);
+
 		fSize = 0.5f;
 
 		m_pTransCom->Set_Scale(m_fScale * fSize, m_fScale * fSize, m_fScale * fSize);
@@ -160,6 +195,19 @@ void CPinkSlime::Scale_Change()
 CPinkSlime * CPinkSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CPinkSlime *	pInstance = new CPinkSlime(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CPinkSlime * CPinkSlime::Create(const CPinkSlime & rhs)
+{
+	CPinkSlime *	pInstance = new CPinkSlime(rhs);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{
