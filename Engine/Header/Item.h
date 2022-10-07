@@ -27,6 +27,7 @@ protected:
 public:
 	void		Set_Equipped() { m_eState = STATE_EQUIP; }
 	wstring		Get_TextureTag() { return m_textureTag; }
+	void		Set_State(ITEMSTATE eState) { m_eState = eState; }
 
 protected:
 	CRcTex*			m_pBufferCom = nullptr;

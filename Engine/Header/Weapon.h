@@ -34,6 +34,15 @@ protected:
 	DURABILITY		m_eDurability = DUR_END;
 	CCamera*		m_pCamera = nullptr; // 플레이어에 종속적
 	CTransform*		m_pCenter = nullptr;
+
+protected:
+	_float		m_fPlusSpeed = 0.f;
+	_float		m_fFrame = 0.f;
+	_bool		m_bReady = false;
+	_float		m_fTimeDelta = 0.f;
+
+	_matrix		m_matView, m_matWorld;
+	_vec3		m_vPos;
 };
 
 END

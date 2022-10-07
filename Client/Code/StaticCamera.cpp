@@ -124,8 +124,13 @@ void CStaticCamera::Target_Renewal(void)
 	pPlayerTransform->Get_Info(INFO_LOOK, &vLook);
 	D3DXVec3Normalize(&vLook, &vLook);
 
-	m_vEye = vPos + 0.3f * vLook;
-	m_vAt = vPos + vLook;
+	// 1ÀÎÄª
+	//m_vEye = vPos + 0.3f * vLook;
+	//m_vAt = vPos + vLook;
+
+	// 3ÀÎÄª
+	m_vEye = vPos - 5.f * vLook;
+	m_vAt = vPos;
 }
 
 void CStaticCamera::ShakeY(const _float & fTimeDelta)

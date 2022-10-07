@@ -44,6 +44,7 @@ HRESULT CPlayer::Ready_Object(void)
 
 _int CPlayer::Update_Object(const _float & fTimeDelta)
 {
+
 	m_fTimeDelta = fTimeDelta;
 	if (!(GetKeyState(VK_TAB) & 0x80))
 	{
@@ -66,10 +67,15 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	//D3DXVec3TransformCoord(&m_bdBox.vMin, &m_bdBox.vMin, &matWorld);
 	//D3DXVec3TransformCoord(&m_bdBox.vMax, &m_bdBox.vMax, &matWorld);
-
+	
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
+
 	Add_RenderGroup(RENDER_NONALPHA, this); // TestPlayer를 렌더그룹에 포함
+
+
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
 	return 0;
 }
 
@@ -146,8 +152,15 @@ void CPlayer::Render_Obejct(void)
 
 	m_pBufferCom->Render_Buffer();
 
-	// TestPlayer의 버퍼 컴포넌트를 출력 후 원래의 셋팅을 복원해야만 다른 오브젝트에 반영되지 않는다.
-	// m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
+
 }
 
 HRESULT CPlayer::Add_Component(void)
@@ -173,6 +186,11 @@ HRESULT CPlayer::Add_Component(void)
 	pComponent = m_pCalculatorCom = dynamic_cast<CCalculator*>(Clone_Proto(L"Proto_CalculatorCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_CalculatorCom", pComponent });
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	return S_OK;
 }
@@ -256,7 +274,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
 
 		//CBulletMgr::GetInstance()->Fire(BULLET_WAND);
-		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
+		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
 		//CBulletMgr::GetInstance()->Reuse_Obj(vPos, vLook);
 
 

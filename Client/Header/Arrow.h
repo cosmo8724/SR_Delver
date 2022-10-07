@@ -20,23 +20,11 @@ public:
 
 private:
 	HRESULT		Add_Component(void);
-	void		Set_StateEquip() { m_eState = STATE_EQUIP; }
 
 public:
 	virtual void	CollisionEvent(CGameObject* pObj);
 	virtual void	Charge(const _float& fTimeDelta);
 	virtual void	Attack(const _float& fTimeDelta);
-private:
-	_float		m_fFrame = 0.f;
-	_bool		m_bReady = false;
-	_float		m_fTimeDelta = 0.f;
 
-private:
-	_matrix		m_matView, m_matWorld;
-	_vec3		m_vPos;
-
-	// 추가변수
-private:
-	_float		m_fPlusSpeed = 0.f;
 };
 

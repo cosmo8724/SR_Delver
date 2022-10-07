@@ -11,6 +11,7 @@
 #include "TerrainTex.h"
 #include "CubeTex.h"
 #include "PtBuffer.h"
+#include "Collider.h"
 
 // Logics
 #include "Transform.h"
@@ -69,6 +70,8 @@ inline HRESULT		Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev, const D3DLIGHT9* pLig
 // CollisionMgr
 inline  void			CollisionAABB(CGameObject* _pDest, CGameObject* _pSour);
 inline	void			CollisionSphere(CGameObject* _pDest, CGameObject* _pSour);
+inline  void			CollisionTest(CGameObject* _pDest, CGameObject* _pSour);
+
 
 inline void				Release_Utility(void);
 

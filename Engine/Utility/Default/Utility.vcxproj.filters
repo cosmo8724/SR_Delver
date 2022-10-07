@@ -100,6 +100,9 @@
     <Filter Include="01. GameObject\NPC">
       <UniqueIdentifier>{555c3a30-655f-44bb-af96-271075c22ff2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Component\00. VIBuffer\06. Collider">
+      <UniqueIdentifier>{1feaa775-610a-4714-8053-1bd5e7017c5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Header\TriCol.h">
@@ -190,6 +193,9 @@
       <Filter>00. Component\05. ParticleBuffer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Header\NPC.h" />
+    <ClInclude Include="..\..\Header\Collider.h">
+      <Filter>00. Component\00. VIBuffer\06. Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\TriCol.cpp">
@@ -277,6 +283,9 @@
       <Filter>00. Component\05. ParticleBuffer</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\NPC.cpp" />
+    <ClCompile Include="..\Code\Collider.cpp">
+      <Filter>00. Component\00. VIBuffer\06. Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Header\Export_Utility.inl">

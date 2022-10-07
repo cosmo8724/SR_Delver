@@ -55,15 +55,15 @@ Engine::_int CLogo::Update_Scene(const _float& fTimeDelta)
 	{
 		if (m_pLoading->Get_Finish())
 		{
-			if (Key_Down(DIK_SPACE))
-			{
-				CScene*		pScene = CStage::Create(m_pGraphicDev);
-				NULL_CHECK_RETURN(pScene, E_FAIL);
+			//if (Key_Down(DIK_SPACE))
+			//{
+			//	//CScene*		pScene = CStage::Create(m_pGraphicDev);
+			//	//NULL_CHECK_RETURN(pScene, E_FAIL);
 
-				FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
+			//	//FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
 
-				return 0;
-			}
+			//	return 0;
+			//}
 			if (Key_Down(DIK_F1))
 			{
 				CScene* pScene = CTool_Scene::Create(m_pGraphicDev);
@@ -81,6 +81,21 @@ Engine::_int CLogo::Update_Scene(const _float& fTimeDelta)
 void CLogo::LateUpdate_Scene(void)
 {
 	Engine::CScene::LateUpdate_Scene();
+
+	if (!m_pLoading)
+		return;
+
+	if (m_pLoading->Get_Finish())
+	{
+		if (Key_Down(DIK_SPACE))
+		{
+			CScene*		pScene = CStage::Create(m_pGraphicDev);
+			NULL_CHECK(pScene);
+
+			Engine::Set_Scene(pScene);
+
+		}
+	}
 }
 
 void CLogo::Render_Scene(void)
