@@ -88,7 +88,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				Engine::Update_Timer(L"Timer_FPS60");
 				Engine::_float	fTimer_FPS60 = Engine::Get_TimeDelta(L"Timer_FPS60");
 
-				pMainApp->Update_MainApp(fTimer_FPS60);
+ 				pMainApp->Update_MainApp(fTimer_FPS60);
 				pMainApp->LateUpdate_MainApp();
 				pMainApp->Render_MainApp();
 			}			

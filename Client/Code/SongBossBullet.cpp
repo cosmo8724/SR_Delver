@@ -84,6 +84,7 @@ _int CSongBossBullet::Update_Object(const _float & fTimeDelta)
 	D3DXVec3Normalize(&vDir, &vDir);
 	vDir *= m_fSpeed * fTimeDelta;
 
+
 	m_pTransCom->Move_Pos(&vDir);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -132,6 +133,10 @@ void CSongBossBullet::Billboard()
 	D3DXMatrixIdentity(&matBill);
 
 	m_pTransCom->Get_WorldMatrix(&matWorld);
+
+
+
+
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
 	matBill._11 = matView._11;

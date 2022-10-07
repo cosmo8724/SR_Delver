@@ -27,13 +27,13 @@ HRESULT CArrow::Ready_Object(void)
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 	m_eState = STATE_GROUND;
 
-	_vec3 vScale;
-	_matrix matWorld;
-	m_pTransCom->Get_WorldMatrix(&matWorld);
+	//_vec3 vScale;
+	//_matrix matWorld;
+	//m_pTransCom->Get_WorldMatrix(&matWorld);
 
-	vScale = m_pTransCom->Get_Scale();
-	m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
-	m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
+	//vScale = m_pTransCom->Get_Scale();
+	//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
+	//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
 
 	return S_OK;
 }
@@ -44,7 +44,6 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 
 	if (STATE_INV == m_eState)
 		return iResult;
-
 
 	if (!m_bReady)
 	{
@@ -71,6 +70,7 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 	case STATE_GROUND:
 		m_pTransCom->Set_Scale(1.f, 1.f, 1.f);
 		m_pTransCom->Revolution(pPlayerInfo, matView, 0.f, m_fTimeDelta, STATE_GROUND);
+		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
 		break;
 	case STATE_EQUIP:
 		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
@@ -87,6 +87,8 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_fTimeDelta = fTimeDelta;
+
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	return iResult;
 }
@@ -125,6 +127,15 @@ void CArrow::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, 
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
 }
 
 CArrow * CArrow::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
@@ -164,6 +175,11 @@ HRESULT CArrow::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
 	return S_OK;
 
 }
@@ -176,13 +192,14 @@ void CArrow::CollisionEvent(CGameObject * pObj)
 		m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
 		m_vPos = { -1000.f, -1000.f, -1000.f };
 
-		_vec3 vScale;
-		_matrix matWorld;
-		m_pTransCom->Get_WorldMatrix(&matWorld);
+		m_pColliderCom->Set_Free(true);
+		//_vec3 vScale;
+		//_matrix matWorld;
+		//m_pTransCom->Get_WorldMatrix(&matWorld);
 
-		vScale = m_pTransCom->Get_Scale();
-		m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
-		m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
+		//vScale = m_pTransCom->Get_Scale();
+		//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
+		//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
 	}
 
 }

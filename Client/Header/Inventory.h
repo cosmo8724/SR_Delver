@@ -27,8 +27,9 @@ public:
 public:
 	void	Get_Index(int& iRow, int& iCol);
 	void	Set_Inventory(CItem* pItem);
-	CItem*	Pick();
-	CItem*	Set_ItemEquip();
+	void	Pick();
+	void	Swap(CItem** ppCur, CItem* pTgt);
+	void	Set_ItemEquip();
 
 private:
 	void		Mouse_Input(const _float& fTimeDelta);
@@ -49,8 +50,8 @@ private:
 	_int			m_iMaxCol = 6;
 
 private:
-	CCalculator*	m_pCalCom = nullptr;
-	CItem*			m_pPickedItem = nullptr;
+	CCalculator*	m_pCalCom		= nullptr;
+	CItem**			m_ppPickedItem	= nullptr;
 
 // 추가 변수
 private:
