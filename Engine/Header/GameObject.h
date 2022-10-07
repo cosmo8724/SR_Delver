@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 
+class CCollider;
 class ENGINE_DLL CGameObject :	public CBase
 {
 protected:
@@ -37,6 +38,8 @@ public:
 protected:
 	BDBOX		m_bdBox;
 	BDSPHERE	m_bdSphere;
+
+	CCollider*	m_pColliderCom;
 };
 
 END

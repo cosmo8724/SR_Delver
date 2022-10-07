@@ -106,10 +106,9 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
-	CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
-
+	// Collider 테스트
 	CGameObject* pDest = nullptr;
-	// ������ �浹 �׽�Ʈ
+
 	for (int i = 0; i < 2; ++i)
 	{
 		wstring obj = L"Arrow";
@@ -118,8 +117,15 @@ void CStage::LateUpdate_Scene(void)
 		obj += index;
 
 		pDest = Engine::Get_GameObject(L"Layer_GameLogic", obj.c_str());
-		Engine::CollisionAABB(pSour, pDest);
+		//Engine::CollisionAABB(pSour, pDest);
+		Engine::CollisionTest(pPlayer, pDest);
 	}
+
+	pDest = Engine::Get_GameObject(L"Layer_GameLogic", L"Wand2");
+	//Engine::CollisionAABB(pSour, pDest);
+	Engine::CollisionTest(pPlayer, pDest);
+	// ~Collider 테스트
+	
 	Engine::CScene::LateUpdate_Scene();
 }
 
@@ -175,11 +181,13 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	// Bullet
 	FAILED_CHECK_RETURN(CBulletMgr::GetInstance()->Ready_Clone(pLayer, m_pGraphicDev), E_FAIL);
 
-	// ������ ����
+	// Item
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
+	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Wand", ITEM_WEAPON, _vec3({ 35.f, 1.f, 35.f }));
 
-	// ��ƼŬ ����
+
+	// Particle
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 

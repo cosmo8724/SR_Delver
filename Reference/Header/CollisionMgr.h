@@ -14,6 +14,7 @@ private:
 public:
 	void CollisionSphere(CGameObject* _pDest, CGameObject* _pSour);
 	void CollisionAABB(CGameObject* _pDest, CGameObject* _pSour);
+	void CollisionTest(CGameObject* _pDest, CGameObject* _pSour);
 private:
 	virtual void Free(void);
 };

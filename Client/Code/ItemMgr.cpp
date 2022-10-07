@@ -2,6 +2,7 @@
 #include "ItemMgr.h"
 #include "Export_Function.h"
 #include "Arrow.h"
+#include "Wand.h"
 #include "InvImg.h"
 
 IMPLEMENT_SINGLETON(CItemMgr)
@@ -24,7 +25,7 @@ void CItemMgr::Ready_ItemMgr(LPDIRECT3DDEVICE9 pGraphicDev)
 
 HRESULT CItemMgr::Ready_Proto()
 {
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WandTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Wand/wand%d.png", TEX_NORMAL, 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Wand1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Wand/wand%d.png", TEX_NORMAL, 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Arrow1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Arrow/Arrow1/Arrow1_%d.png", TEX_NORMAL, 4)), E_FAIL);
 
 	return S_OK;
@@ -89,6 +90,17 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 		m_vecItemObjTags[eType].push_back(szObjTag);
 
 		CGameObject* pGameObject = CArrow::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool.push_back(pGameObject);
+	}
+	else if (objName == L"Wand")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CWand::Create(m_pGraphicDev, vPos);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);

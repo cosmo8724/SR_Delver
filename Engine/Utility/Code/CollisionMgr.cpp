@@ -43,6 +43,28 @@ void CCollisionMgr::CollisionAABB(CGameObject * _pDest, CGameObject * _pSour)
 	_pSour->CollisionEvent(_pDest);
 }
 
+void CCollisionMgr::CollisionTest(CGameObject * _pDest, CGameObject * _pSour)
+{
+	CTransform*	pDest = static_cast<CTransform*>(_pDest->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+	CTransform*	pSour = static_cast<CTransform*>(_pSour->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+
+	_vec3 vDest, vSour;
+	pDest->Get_Info(INFO_POS, &vDest);
+	pSour->Get_Info(INFO_POS, &vSour);
+
+
+
+	CCollider*	pDestCol = static_cast<CCollider*>(_pDest->Get_Component(L"Proto_ColliderCom", ID_STATIC));
+	CCollider*	pSourCol = static_cast<CCollider*>(_pSour->Get_Component(L"Proto_ColliderCom", ID_STATIC));
+
+	if (true == pDestCol->CollideAABB(pSourCol))
+	{
+		_pDest->CollisionEvent(_pSour);
+		_pSour->CollisionEvent(_pDest);
+	}
+
+}
+
 void CCollisionMgr::Free(void)
 {
 }

@@ -30,7 +30,7 @@ HRESULT CPlayer::Ready_Object(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
 
-	// Ãæµ¹Ã³¸® Å×½ºÆ®
+	// ï¿½æµ¹Ã³ï¿½ï¿½ ï¿½×½ï¿½Æ®
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
@@ -75,16 +75,21 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	//D3DXVec3TransformCoord(&m_bdBox.vMin, &m_bdBox.vMin, &matWorld);
 	//D3DXVec3TransformCoord(&m_bdBox.vMax, &m_bdBox.vMax, &matWorld);
-
+	
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
-	Add_RenderGroup(RENDER_NONALPHA, this); // TestPlayer¸¦ ·»´õ±×·ì¿¡ Æ÷ÇÔ
+
+	Add_RenderGroup(RENDER_NONALPHA, this); // TestPlayerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½×·ì¿¡ ï¿½ï¿½ï¿½ï¿½
+
+
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
 	return 0;
 }
 
 void CPlayer::LateUpdate_Object(void)
 {
-	// Ãæµ¹Ã³¸® Å×½ºÆ®
+	// ï¿½æµ¹Ã³ï¿½ï¿½ ï¿½×½ï¿½Æ®
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
@@ -155,33 +160,45 @@ void CPlayer::Render_Obejct(void)
 
 	m_pBufferCom->Render_Buffer();
 
-	// TestPlayerÀÇ ¹öÆÛ ÄÄÆ÷³ÍÆ®¸¦ Ãâ·Â ÈÄ ¿ø·¡ÀÇ ¼ÂÆÃÀ» º¹¿øÇØ¾ß¸¸ ´Ù¸¥ ¿ÀºêÁ§Æ®¿¡ ¹Ý¿µµÇÁö ¾Ê´Â´Ù.
-	// m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
+
 }
 
 HRESULT CPlayer::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ·»´õ¸µÇÒ ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ÅØ½ºÃÄ ÄÄ°´Ã¼ °ü¸® ÄÄÆ÷³ÍÆ®
+	// ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½Ä°ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_PlayerTexture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_PlayerTexture", pComponent });
 
-	// ¿ùµåÇà·Ä º¯È¯ Æ®·£½ºÆû ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
-	// ÁöÇüÅ¸±â¿ë °è»ê ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pCalculatorCom = dynamic_cast<CCalculator*>(Clone_Proto(L"Proto_CalculatorCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_CalculatorCom", pComponent });
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	return S_OK;
 }
@@ -190,21 +207,21 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 {
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
 
-	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	// ÀüÁø
+	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	// ï¿½ï¿½ï¿½ï¿½
 	{
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
 	}
 
-	if (Engine::Get_DIKeyState(DIK_S) & 0x80)	// ÈÄÁø
+	if (Engine::Get_DIKeyState(DIK_S) & 0x80)	// ï¿½ï¿½ï¿½ï¿½
 	{
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_pTransCom->Move_Pos(&(m_vDirection * -m_fSpeed * fTimeDelta));
 	}
 
-	if (Engine::Get_DIKeyState(DIK_A) & 0x80)	// ¿ÞÂÊ °Ô°ÉÀ½
+	if (Engine::Get_DIKeyState(DIK_A) & 0x80)	// ï¿½ï¿½ï¿½ï¿½ ï¿½Ô°ï¿½ï¿½ï¿½
 	{
 		m_pTransCom->Get_Info(INFO_RIGHT, &m_vDirection);
 		m_vDirection.y = 0.f;
@@ -212,7 +229,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_pTransCom->Move_Pos(&(m_vDirection * -m_fSpeed * fTimeDelta));
 	}
 
-	if (Engine::Get_DIKeyState(DIK_D) & 0x80)	// ¿À¸¥ÂÊ °Ô°ÉÀ½
+	if (Engine::Get_DIKeyState(DIK_D) & 0x80)	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô°ï¿½ï¿½ï¿½
 	{
 		m_pTransCom->Get_Info(INFO_RIGHT, &m_vDirection);
 		m_vDirection.y = 0.f;
@@ -248,7 +265,7 @@ void CPlayer::Mouse_Move(void)
 {
 	_long	dwMouseMove = 0;
 
-	// ÁÂ¿ìÈ¸ÀüÀº ´ëºÎºÐ yÃà±âÁØÀ¸·Î È¸Àü
+	// ï¿½Â¿ï¿½È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Îºï¿½ yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½
 	if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
 	{
 		m_pTransCom->Rotation(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
@@ -275,7 +292,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
 
 		//CBulletMgr::GetInstance()->Fire(BULLET_WAND);
-		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
+		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
 		//CBulletMgr::GetInstance()->Reuse_Obj(vPos, vLook);
 
 
@@ -352,9 +369,9 @@ _float CPlayer::Get_Height()
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
 
-	// Ãæµ¹ÇÑ ¹°Ã¼°¡ ¾ÆÀÌÅÛÀÌ¶ó¸é ÀÎº¥Åä¸®¿¡ ³Ö¾î¾ß ÇÔ.
-	// È¹µæÇÑ ¾ÆÀÌÅÛÀº INV»óÅÂ°¡ µÇ°í, ÀÌ »óÅÂÀÏ °æ¿ì ¸ðµç ¿¬»ê(·»´õ¸µÆ÷ÇÔ)¿¡¼­ ºüÁö°Ô µÈ´Ù.
-	// ¾ÆÀÌÅÛ È¹µæ ½Ã, INV¿¡ µé¾î°¥ °´Ã¼¸¦ µû·Î »ý¼ºÇÑ´Ù.
+	// ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ ï¿½ï¿½.
+	// È¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ INVï¿½ï¿½ï¿½Â°ï¿½ ï¿½Ç°ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È´ï¿½.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¹ï¿½ï¿½ ï¿½ï¿½, INVï¿½ï¿½ ï¿½ï¿½î°¥ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem)
 	{
@@ -370,7 +387,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
 	if (pBlock)
 	{
-		// ±¸ Ãæµ¹
+		// ï¿½ï¿½ ï¿½æµ¹
 		/*_vec3	BlockPos = pBlock->Get_bdSphere()->vCenter;
 		_float fDistance = (m_bdSphere.fRadius + pBlock->Get_bdSphere()->fRadius) -
 		sqrtf(pow(BlockPos.x - m_bdSphere.vCenter.x, 2) +
@@ -396,31 +413,31 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		_float		fDistY = 0.f;
 		_float		fDistZ = 0.f;
 
-		// ÇÃ·¹ÀÌ¾î°¡ ¹Ú½º ¿ÞÂÊ
+		// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (m_bdBox.vMax.x > BlockBox->vMin.x && m_bdBox.vMax.x < BlockBox->vMax.x)
 		{
 			fDistX = BlockBox->vMin.x - m_bdBox.vMax.x;
 		}
 
-		// ÇÃ·¹ÀÌ¾î°¡ ¹Ú½º ¿À¸¥ÂÊ
+		// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		else if (m_bdBox.vMin.x < BlockBox->vMax.x && m_bdBox.vMin.x > BlockBox->vMin.x)
 		{
 			fDistX = BlockBox->vMax.x - m_bdBox.vMin.x;
 		}
 
-		// ÇÃ·¹ÀÌ¾î°¡ ¹Ú½º ¾ÕÂÊ
+		// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (m_bdBox.vMin.z < BlockBox->vMax.z  && m_bdBox.vMin.z > BlockBox->vMin.z)
 		{
 			fDistZ = BlockBox->vMax.z - m_bdBox.vMin.z;
 		}
 
-		// ÇÃ·¹ÀÌ¾î°¡ ¹Ú½º µÚÂÊ
+		// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		else if (m_bdBox.vMax.z > BlockBox->vMin.z && m_bdBox.vMax.z < BlockBox->vMax.z)
 		{
 			fDistZ = BlockBox->vMin.z - m_bdBox.vMax.z;
 		}
 
-		// ÇÃ·¹ÀÌ¾î°¡ ¹Ú½º À§ÂÊ
+		// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (m_bdBox.vMin.y < BlockBox->vMax.y && m_bdBox.vMin.y > BlockBox->vMin.y && m_eState != PLAYER_GROUND)
 		{
 
@@ -449,7 +466,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 			fDistY = 0.f;
 		}
 
-		// ÇÃ·¹ÀÌ¾î°¡ ¹Ú½º ¾Æ·¡ÂÊ
+		// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ú½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½
 		else if (m_bdBox.vMax.y > BlockBox->vMin.y && m_bdBox.vMax.y < BlockBox->vMax.y)
 		{
 			fDistY = BlockBox->vMin.y - m_bdBox.vMax.y;
