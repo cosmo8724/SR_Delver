@@ -28,7 +28,6 @@ public:
 	void	Get_Index(int& iRow, int& iCol);
 	void	Set_Inventory(CItem* pItem);
 	void	Pick();
-	void	Swap(CItem** ppCur, CItem* pTgt);
 	void	Set_ItemEquip();
 
 private:
@@ -50,13 +49,15 @@ private:
 	_int			m_iMaxCol = 6;
 
 private:
-	CCalculator*	m_pCalCom		= nullptr;
-	CItem**			m_ppPickedItem	= nullptr;
+	CCalculator*	m_pCalCom = nullptr;
+	CItem**			m_ppPickedItem = nullptr;
 
-// 추가 변수
+	// 추가 변수
 private:
 	_float			m_fClickTime = 0.f;
 	_int			m_iClickedCnt = 0;
+	_bool			m_bShow = false;
+	_matrix			m_matProj;
 
 };
 

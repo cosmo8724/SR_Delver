@@ -23,6 +23,7 @@ HRESULT CInventory::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	/*
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matWorld);
 
@@ -50,11 +51,55 @@ HRESULT CInventory::Ready_Object(void)
 
 	for (int i = 0; i < 3; ++i)
 	{
+	for (int j = 0; j < 6; ++j)
+	{
+	m_InvPosArr[i][j] = { firstX + m_fTileSize * j, firstY - m_fTileSize*i };
+	}
+	}
+	*/
+
+	D3DXMatrixOrthoLH(&m_matProj, WINCX, WINCY, 0.f, 1.f);
+	m_fPosX = WINCX*0.5f + 64.f;
+	m_fPosY = WINCY*0.25f;
+	m_fScaleX = 192.f;
+	m_fScaleY = 96.f;
+
+	m_fTileSize = 32.f * 2;
+
+	_float firstX = m_fPosX - 2.5f * m_fTileSize;
+	_float firstY = m_fPosY - 1.0f * m_fTileSize;
+
+
+	// m_fPosX - WINCX * 0.5f, -m_fPosY
+	//firstX = firstX - WINCX * 0.5f;
+	//firstY = -firstY + WINCY * 0.5f;
+
+	for (int i = 0; i < 3; ++i)
+	{
 		for (int j = 0; j < 6; ++j)
 		{
-			m_InvPosArr[i][j] = { firstX + m_fTileSize * j, firstY - m_fTileSize*i };
+			m_InvPosArr[i][j] = { firstX + m_fTileSize * j, firstY + m_fTileSize * i };
 		}
 	}
+
+
+
+	_vec3 vPos = m_InvPosArr[2][5];
+	//RECT		rcUI = { _long(m_fPosX - m_fScaleX * 0.5f), _long(m_fPosY - m_fScaleY * 0.5f)
+	//	, _long(m_fPosX + m_fScaleX * 0.5f), _long(m_fPosY + m_fScaleY * 0.5f) };
+
+	//POINT		ptMouse;
+	//GetCursorPos(&ptMouse);
+	//ScreenToClient(g_hWnd, &ptMouse);
+
+
+	//if (PtInRect(&rcUI, ptMouse))
+	//{
+	//	MSG_BOX("충돌");
+	//}
+
+
+
 
 
 	return S_OK;
@@ -62,28 +107,75 @@ HRESULT CInventory::Ready_Object(void)
 
 _int CInventory::Update_Object(const _float & fTimeDelta)
 {
+	if (Engine::Get_DIKeyState(DIK_TAB) & 0x80)
+		m_bShow = true;
+	else
+		m_bShow = false;
+
+	//if (!m_bShow)
+	//	return 0;
+	m_pTransCom->Set_Scale(m_fScaleX, m_fScaleY, 1.f);
+	m_pTransCom->Set_Pos(m_fPosX - WINCX * 0.5f, -m_fPosY + WINCY * 0.5f, 0.f);
+
+
 	Mouse_Input(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
+
+
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
-	if (Engine::Get_DIKeyState(DIK_TAB) & 0X80)
-	{
-		m_matView._41 = m_fPosX;
-		m_matView._42 = m_fPosY;
-	}
-	else
-	{
-		m_matView._41 = m_fTempPosX;
-		m_matView._42 = m_fTempPosY;
-	}
+	//if (Engine::Get_DIKeyState(DIK_TAB) & 0X80)
+	//{
+	//	m_matView._41 = m_fPosX;
+	//	m_matView._42 = m_fPosY;
+	//}
+	//else
+	//{
+	//	m_matView._41 = m_fTempPosX;
+	//	m_matView._42 = m_fTempPosY;
+	//}
+
 
 	return 0;
 }
 
 void CInventory::LateUpdate_Object(void)
 {
+	if (!m_bShow)
+		return;
+
+
+	//RECT		rcUI = { _long(m_fPosX - m_fScaleX), _long(m_fPosY - m_fScaleY)
+	//	, _long(m_fPosX + m_fScaleX), _long(m_fPosY + m_fScaleY) };
+
+	//POINT		ptMouse;
+	//GetCursorPos(&ptMouse);
+	//ScreenToClient(g_hWnd, &ptMouse);
+
+
+	//if (PtInRect(&rcUI, ptMouse))
+	//{
+	//	MSG_BOX("충돌");
+	//}
+
+	//RECT		rcUI = { _long(m_InvPosArr[2][5].x - m_fTileSize*0.5f), _long(m_InvPosArr[2][5].y - m_fTileSize*0.5f)
+	//	, _long(m_InvPosArr[2][5].x + m_fTileSize*0.5f), _long(m_InvPosArr[2][5].y + m_fTileSize*0.5f) };
+
+	//POINT		ptMouse;
+	//GetCursorPos(&ptMouse);
+	//ScreenToClient(g_hWnd, &ptMouse);
+
+
+	//if (PtInRect(&rcUI, ptMouse))
+	//{
+	//	MSG_BOX("충돌");
+	//}
+
+
+
+
 
 
 	Engine::CGameObject::LateUpdate_Object();
@@ -91,9 +183,17 @@ void CInventory::LateUpdate_Object(void)
 
 void CInventory::Render_Obejct(void)
 {
+	if (!m_bShow)
+		return;
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
+	_matrix		ViewMatrix;
+	ViewMatrix = *D3DXMatrixIdentity(&ViewMatrix);
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &ViewMatrix);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
+
+	//m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+	//m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
@@ -173,17 +273,19 @@ void CInventory::Get_Index(int & iRow, int & iCol)
 	iCol = -1;
 }
 
+
 void CInventory::Set_Inventory(CItem * pItem)
 {
 	for (int i = 0; i < m_iMaxRow; ++i)
 	{
 		for (int j = 0; j < m_iMaxCol; ++j)
 		{
-			if (pItem == m_Inventory[i][j])
-				return;
+			//if (pItem == m_Inventory[i][j])
+			//	return;
 			if (nullptr == m_Inventory[i][j])
 			{
 				m_Inventory[i][j] = pItem;
+				static_cast<CInvImg*>(m_Inventory[i][j])->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y);
 				CTransform* pTransCom = static_cast<CTransform*>(pItem->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 				pTransCom->Set_Pos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y, 0.f);
 				return;
@@ -194,132 +296,121 @@ void CInventory::Set_Inventory(CItem * pItem)
 
 void  CInventory::Pick()
 {
-	POINT	ptMouse{};
-
+	POINT		ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
-
-	// viewport -> projection 
-	D3DVIEWPORT9		ViewPort;
-	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
-	m_pGraphicDev->GetViewport(&ViewPort);
-
-	_vec3	vPoint;
-	vPoint.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
-	vPoint.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
-	vPoint.z = 0.f;
-
-	// projection -> view space
-	_matrix matProj;
-	D3DXMatrixOrthoLH(&matProj, WINCX, WINCY, 0.f, 1.f);
-	D3DXMatrixInverse(&matProj, nullptr, &matProj);
-	D3DXVec3TransformCoord(&vPoint, &vPoint, &matProj);
-
-	ptMouse.x = _long(vPoint.x);
-	ptMouse.y = _long(vPoint.y);
-
-	RECT		rc{};
 
 	for (int i = 0; i < m_iMaxRow; ++i)
 	{
 		for (int j = 0; j < m_iMaxCol; ++j)
 		{
-			rc.left = long(m_InvPosArr[i][j].x - 0.5f * m_fTileSize);
-			rc.top = long(m_InvPosArr[i][j].y + 0.5f * m_fTileSize);
-			rc.right = long(m_InvPosArr[i][j].x + 0.5f * m_fTileSize);
-			rc.bottom = long(m_InvPosArr[i][j].y - 0.5f * m_fTileSize);
+			_float fSize = m_fTileSize * 0.5f;
+			RECT rcUI = { _long(m_InvPosArr[i][j].x - fSize), _long(m_InvPosArr[i][j].y - fSize)
+				, _long(m_InvPosArr[i][j].x + fSize), _long(m_InvPosArr[i][j].y + fSize) };
 
-
-			if (ptMouse.x > rc.left && ptMouse.x < rc.right && ptMouse.y > rc.bottom && ptMouse.y < rc.top) // if the mouse pointer is in the tile
+			if (PtInRect(&rcUI, ptMouse))
 			{
-				if (nullptr == m_ppPickedItem && nullptr != m_Inventory[i][j])
+				if (nullptr == m_ppPickedItem && nullptr != m_Inventory[i][j]) // 선택한 아이템이 없는 상황에서 아이템 클릭
 				{
 					m_ppPickedItem = &m_Inventory[i][j];
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(true);
 				}
-				else if (nullptr != m_ppPickedItem && nullptr == m_Inventory[i][j]) // if there's already picked one, but no item in the selected tile
+				else if (nullptr != m_ppPickedItem && nullptr == m_Inventory[i][j]) // 선택한 아이템이 있는 상황에서 빈 칸을 클릭
 				{
-					CTransform* pTransCom = static_cast<CTransform*>((*m_ppPickedItem)->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
-					_vec3 vCurPos = pTransCom->Get_Pos();
+					m_Inventory[i][j] = *m_ppPickedItem;
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y); // 위치 변경
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);	// 고정
 
-					CItem* temp = *m_ppPickedItem;
+																				// 선택한 아이템이 있던 기존 타일은 null
+					(*m_ppPickedItem) = nullptr;
+					m_ppPickedItem = nullptr;
+				}
+				else if (nullptr != m_ppPickedItem&& nullptr != m_Inventory[i][j]) // 선택한 아이템이 있는 상황에서 아이템을 클릭했을 때
+				{
+					_vec2 vOrigin = static_cast<CInvImg*>(*m_ppPickedItem)->Get_InvPos();
+
+					CItem* pTemp = m_Inventory[i][j];
 
 					m_Inventory[i][j] = *m_ppPickedItem;
-					pTransCom->Set_Pos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y, 0.f);
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y); // 위치 변경
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);	// 고정
 
-					*m_ppPickedItem = nullptr;
+					(*m_ppPickedItem) = pTemp;
+					static_cast<CInvImg*>(pTemp)->Set_InvPos(vOrigin.x, vOrigin.y); // 위치 변경
+
 					m_ppPickedItem = nullptr;
-
 				}
-				else if(nullptr != m_ppPickedItem && nullptr != m_Inventory[i][j])// if there's alreay picked one -> swap
+
+				break;
+			}
+		}
+	}
+}
+
+void CInventory::Set_ItemEquip()
+{
+	if (nullptr != m_ppPickedItem) // 선택한 아이템이 있다면 더블클릭 시 실행되지 않게 하자.
+		return;
+
+
+	POINT		ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+
+	for (int i = 0; i < m_iMaxRow; ++i)
+	{
+		for (int j = 0; j < m_iMaxCol; ++j)
+		{
+			_float fSize = m_fTileSize * 0.5f;
+			RECT rcUI = { _long(m_InvPosArr[i][j].x - fSize), _long(m_InvPosArr[i][j].y - fSize)
+				,_long(m_InvPosArr[i][j].x + fSize), _long(m_InvPosArr[i][j].y + fSize) };
+
+			if (PtInRect(&rcUI, ptMouse))
+			{
+				if (nullptr != m_Inventory[i][j])
 				{
-					Swap(m_ppPickedItem, m_Inventory[i][j]);
+					// if the item type is lantern / armor / weapon -> equipped 
+					CWeapon*	pWeapon = dynamic_cast<CWeapon*>(static_cast<CInvImg*>(m_Inventory[i][j])->Get_TargetObj());
+					if (pWeapon != nullptr)
+					{
+						pWeapon->Set_Equipped();
+					}
 				}
 			}
 		}
 	}
 }
 
-void CInventory::Swap(CItem** ppCur, CItem * pTgt)
-{
-	// swap the pCur and pTgt position
-	CItem*	pTemp;
-	_vec3	vOrigin, vTarget;
-	CTransform* pOrigin = static_cast<CTransform*>((*ppCur)->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
-	CTransform* pTarget = static_cast<CTransform*>(pTgt->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
-
-	vOrigin = pOrigin->Get_Pos();
-	vTarget = pTarget->Get_Pos();
-
-	pOrigin->Set_Pos(vTarget.x, vTarget.y, vTarget.z);
-	pTarget->Set_Pos(vOrigin.x, vOrigin.y, vOrigin.z);
-
-	pTemp = (*ppCur);
-	ppCur = &pTgt;
-	pTgt = pTemp;
-
-	m_ppPickedItem = nullptr;
-}
-
-void CInventory::Set_ItemEquip()
-{
-	if (nullptr == m_ppPickedItem)
-		return;
-	
-	// if the item type is lantern / armor / weapon -> equipped 
-	CWeapon*	pWeapon = dynamic_cast<CWeapon*>(static_cast<CInvImg*>((*m_ppPickedItem))->Get_TargetObj());
-	if (pWeapon != nullptr)
-	{
-		pWeapon->Set_Equipped();
-	}
-
-	// if the item type is consumalbe -> use
-}
-
 void CInventory::Mouse_Input(const _float& fTimeDelta)
 {
-
 	if (Engine::Get_DIKeyState(DIK_TAB))
 	{
+		m_bShow = true;
 		m_fClickTime += fTimeDelta;
 
-		if (m_fClickTime < 0.6f)
+		if (m_fClickTime < 0.5f)
 		{
-			if(Engine::Mouse_Down(DIM_LB))
+			if (Engine::Mouse_Down(DIM_LB))
 				++m_iClickedCnt;
+			//if (2 == m_iClickedCnt)
+			//{
+			//	//MSG_BOX("double");
+			//	//Set_ItemEquip();
+			//	m_fClickTime = 0.f;
+			//	m_iClickedCnt = 0;
+			//}
 		}
-		else if (m_fClickTime > 0.6f)
+		else if (m_fClickTime > 0.5f)
 		{
 			if (2 == m_iClickedCnt)		// double click
 			{
-				//MSG_BOX("double");
-				Pick();	// if there's no picked item		&&	double clicked item		-> item equip (or use)
 				Set_ItemEquip();		// else if there's a picked item	&&	double clicked item		-> item equip swapped 
-			}	
-			else if (1 == m_iClickedCnt)	// one click
+			}
+			if (1 == m_iClickedCnt)	// one click
 			{
-				//MSG_BOX("one");
 				Pick();	 // if there's no picked item		&&	clicked item -> item picked (stick to mouse pointer)
-										// else if there's a picked item	&&	clicked item -> swap
+						 // else if there's a picked item	&&	clicked item -> swap
+
 			}
 			m_fClickTime = 0.f;
 			m_iClickedCnt = 0;
@@ -327,6 +418,11 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 	}
 	else	// if you didn't press the Tab Key -> there's no picked item;(picked item will be sticked to the mouse pointer)
 	{
-		m_ppPickedItem = nullptr;
+		if (m_ppPickedItem != nullptr)
+		{
+			static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);
+			m_ppPickedItem = nullptr;
+		}
+		m_bShow = false;
 	}
 }

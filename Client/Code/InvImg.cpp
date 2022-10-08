@@ -45,6 +45,11 @@ HRESULT CInvImg::Ready_Object(void)
 	//if (E_FAIL == pLayer->Add_GameObject(CDynamicObjMgr::GetInstance()->InvImgObjTag[iIndex].c_str(), this))
 	//	MSG_BOX("CInvImg - Add_GameObject 실패");
 
+	D3DXMatrixOrthoLH(&m_matProj, WINCX, WINCY, 0.f, 1.f);
+
+	m_fScaleX = 32.f;
+	m_fScaleY = 32.f;
+
 	return S_OK;
 }
 
@@ -58,9 +63,48 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 	if (!m_bOn)
 		return 0;
 
+	m_pTransCom->Set_Scale(m_fScaleX, m_fScaleY, 1.f);
+
+	_vec3 vPos;
+	if (!m_bPicked)
+		vPos = { m_fPosX, m_fPosY, 0.f };
+	else
+	{
+		POINT	ptMouse{};
+
+		GetCursorPos(&ptMouse);
+		ScreenToClient(g_hWnd, &ptMouse);
+
+		//// viewport -> projection 
+		//D3DVIEWPORT9		ViewPort;
+		//ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+		//m_pGraphicDev->GetViewport(&ViewPort);
+
+		//_vec3	vPoint;
+		//vPoint.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
+		//vPoint.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
+		//vPoint.z = 0.f;
+
+		//// projection -> view space
+		//_matrix matProj;
+		//D3DXMatrixOrthoLH(&matProj, WINCX, WINCY, 0.f, 1.f);
+		//D3DXMatrixInverse(&matProj, nullptr, &matProj);
+		//D3DXVec3TransformCoord(&vPoint, &vPoint, &matProj);
+
+		//ptMouse.x = _long(vPoint.x);
+		//ptMouse.y = _long(vPoint.y);
+
+		vPos = { (_float)ptMouse.x,(_float)ptMouse.y, 0.f };
+	}
+	m_pTransCom->Set_Pos(vPos.x - WINCX * 0.5f, -vPos.y + WINCY * 0.5f, 0.f);
+
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
 
+
+
+
+	/*
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matWorld);
 
@@ -72,9 +116,43 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 
 	// 포지션
 	_vec3 vPos;
+
+	if(!m_bPicked)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	else
+	{
+	POINT	ptMouse{};
+
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+
+	// viewport -> projection
+	D3DVIEWPORT9		ViewPort;
+	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+	m_pGraphicDev->GetViewport(&ViewPort);
+
+	_vec3	vPoint;
+	vPoint.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
+	vPoint.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
+	vPoint.z = 0.f;
+
+	// projection -> view space
+	_matrix matProj;
+	D3DXMatrixOrthoLH(&matProj, WINCX, WINCY, 0.f, 1.f);
+	D3DXMatrixInverse(&matProj, nullptr, &matProj);
+	D3DXVec3TransformCoord(&vPoint, &vPoint, &matProj);
+
+	ptMouse.x = _long(vPoint.x);
+	ptMouse.y = _long(vPoint.y);
+
+	vPos = { (_float)ptMouse.x,(_float)ptMouse.y, 0.f };
+	}
+
 	m_matView._41 = vPos.x;
 	m_matView._42 = vPos.y;
+	*/
+
+
 	Add_RenderGroup(RENDER_UI, this);
 
 	return iResult;
@@ -95,11 +173,18 @@ void CInvImg::Render_Obejct(void)
 	if (!m_bOn)
 		return;
 
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+	//m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
+	//m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+
+	_matrix		ViewMatrix;
+	ViewMatrix = *D3DXMatrixIdentity(&ViewMatrix);
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &ViewMatrix);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
 	_vec3 vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
