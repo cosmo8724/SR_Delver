@@ -1,29 +1,28 @@
 #include "stdafx.h"
-#include "..\Header\MapUI.h"
+#include "..\Header\MiniMap.h"
 #include "Export_Function.h"
 
-CMapUI::CMapUI(LPDIRECT3DDEVICE9 pGraphicDev)
+CMiniMap::CMiniMap(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
 {
 }
 
-
-CMapUI::~CMapUI()
+CMiniMap::~CMiniMap()
 {
 }
 
-HRESULT CMapUI::Ready_Object(void)
+HRESULT CMiniMap::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matWorld);
 
-	m_fScaleX = 352.f;
-	m_fScaleY = 240.f;
+	m_fScaleX = 130.f;
+	m_fScaleY = 130.f;
 
-	m_fPosX = 0.f;
-	m_fPosY = 0.f;
+	m_fPosX = (WINCX >> 1) - m_fScaleX - 50.f;
+	m_fPosY = (WINCY >> 1) - m_fScaleY - 50.f;
 
 	D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
 
@@ -33,21 +32,27 @@ HRESULT CMapUI::Ready_Object(void)
 	return S_OK;
 }
 
-_int CMapUI::Update_Object(const _float & fTimeDelta)
+_int CMiniMap::Update_Object(const _float & fTimeDelta)
 {
 	Engine::CGameObject::Update_Object(fTimeDelta);
+
+	for (size_t i = 0; i < m_vecIcon.size(); ++i)
+		m_vecIcon[i]->Update_Object(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
 	return 0;
 }
 
-void CMapUI::LateUpdate_Object(void)
+void CMiniMap::LateUpdate_Object(void)
 {
 	Engine::CGameObject::LateUpdate_Object();
+
+	for (size_t i = 0; i < m_vecIcon.size(); ++i)
+		m_vecIcon[i]->LateUpdate_Object();
 }
 
-void CMapUI::Render_Obejct(void)
+void CMiniMap::Render_Obejct(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
@@ -61,14 +66,16 @@ void CMapUI::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	m_pTextureCom->Set_Texture(0);	// 텍스처 정보 세팅을 우선적으로 한다.
-	if(m_bIsOpenMap)
-		m_pBufferCom->Render_Buffer();
+	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	for (size_t i = 0; i < m_vecIcon.size(); ++i)
+		m_vecIcon[i]->Render_Obejct();
 }
 
-HRESULT CMapUI::Add_Component(void)
+HRESULT CMiniMap::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 
@@ -80,17 +87,23 @@ HRESULT CMapUI::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
-	// m_pTextureCom	
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UI_Map_Texture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UI_MiniMap_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_UI_Map_Texture", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Proto_UI_MiniMap_Texture", pComponent });
 
 	return S_OK;
 }
 
-CMapUI * CMapUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+void CMiniMap::Add_Icon(LPDIRECT3DDEVICE9 pGraphicDev, CGameObject* pObj)
 {
-	CMapUI*	pInstance = new CMapUI(pGraphicDev);
+	CIcon* pIcon = CIcon::Create(pGraphicDev, pObj);
+
+	m_vecIcon.push_back(pIcon);
+}
+
+CMiniMap * CMiniMap::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+{
+	CMiniMap*	pInstance = new CMiniMap(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{
@@ -100,7 +113,11 @@ CMapUI * CMapUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CMapUI::Free(void)
+void CMiniMap::Free(void)
 {
+	for (size_t i = 0; i < m_vecIcon.size(); ++i)
+		Safe_Release(m_vecIcon[i]);
+	m_vecIcon.clear();
+
 	CUI::Free();
 }

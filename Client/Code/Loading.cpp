@@ -189,6 +189,16 @@ _uint CLoading::Loading_ForStage(void)
 
 	// UI_Map
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_Map_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Map/Map_BG.png", TEX_NORMAL, 1)), E_FAIL);
+
+	// UI_MiniMap
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniMap_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Terrain.png", TEX_NORMAL, 1)), E_FAIL);
+
+	// UI_MiniMap_Icon
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniPlayer_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Player.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniMonster_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Monster.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniNPC_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/NPC.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniBlock_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Block.png", TEX_NORMAL, 1)), E_FAIL);
+
 	
 	m_bFinish = true;
 

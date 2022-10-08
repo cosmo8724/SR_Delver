@@ -1,16 +1,11 @@
 #pragma once
 #include "UI.h"
 
-class CMapUI : public CUI
+class CIcon : public CUI
 {
 private:
-	explicit CMapUI(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CMapUI();
-
-public:
-	void					Set_OpenMap() { m_bIsOpenMap = true; }
-	void					Set_CloseMap() { m_bIsOpenMap = false; }
-	const _bool&			Get_MapState() { return m_bIsOpenMap; }
+	explicit CIcon(LPDIRECT3DDEVICE9 pGraphicDev, CGameObject* pObj);
+	virtual ~CIcon();
 
 public:
 	virtual HRESULT		Ready_Object(void)						override;
@@ -20,12 +15,16 @@ public:
 
 private:
 	virtual HRESULT		Add_Component(void);
+	void					RotateByPlayer();
 
 public:
-	static CMapUI*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CIcon*			Create(LPDIRECT3DDEVICE9 pGraphicDev, CGameObject* pObj);
 	virtual void			Free(void);
 
 private:
 	_matrix				m_matWorld, m_matView;
-	_bool					m_bIsOpenMap = false;
+	CGameObject*		m_pParentObj = nullptr;
+	OBJECTTYPE			m_eType = OBJ_END;
+	_bool					m_bOnMinimap = true;
 };
+

@@ -1,16 +1,15 @@
 #pragma once
 #include "UI.h"
+#include "Icon.h"
 
-class CMapUI : public CUI
+class CMiniMap :	public CUI
 {
 private:
-	explicit CMapUI(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CMapUI();
+	explicit CMiniMap(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CMiniMap();
 
 public:
-	void					Set_OpenMap() { m_bIsOpenMap = true; }
-	void					Set_CloseMap() { m_bIsOpenMap = false; }
-	const _bool&			Get_MapState() { return m_bIsOpenMap; }
+	const vector<CIcon*>&	Get_vecIcon() { return m_vecIcon; }
 
 public:
 	virtual HRESULT		Ready_Object(void)						override;
@@ -18,14 +17,16 @@ public:
 	virtual void			LateUpdate_Object(void)					override;
 	virtual void			Render_Obejct(void)						override;
 
+	void					Add_Icon(LPDIRECT3DDEVICE9 pGraphicDev, CGameObject* pObj);
+
 private:
 	virtual HRESULT		Add_Component(void);
 
 public:
-	static CMapUI*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CMiniMap*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void			Free(void);
 
 private:
 	_matrix				m_matWorld, m_matView;
-	_bool					m_bIsOpenMap = false;
+	vector<CIcon*>			m_vecIcon;
 };

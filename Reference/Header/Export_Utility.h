@@ -25,6 +25,7 @@
 #include "Bullet.h"
 #include "Monster.h"
 #include "UI.h"
+#include "NPC.h"
 
 // Management
 #include "ProtoMgr.h"
