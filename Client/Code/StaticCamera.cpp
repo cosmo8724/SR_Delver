@@ -107,6 +107,9 @@ void CStaticCamera::Key_Input(const _float& fTimeDelta)
 		if (m_fFov >= D3DXToRadian(75.f))
 			m_fFov = D3DXToRadian(75.f);
 	}
+
+	if (Key_Down(DIK_T))
+		m_bFPS = !m_bFPS;
 }
 
 void CStaticCamera::Target_Renewal(void)
@@ -124,25 +127,15 @@ void CStaticCamera::Target_Renewal(void)
 	pPlayerTransform->Get_Info(INFO_LOOK, &vLook);
 	D3DXVec3Normalize(&vLook, &vLook);
 
-
-
-	if (Engine::Key_Down(DIK_1))
+	// 1ï¿½ï¿½Äª
+	if (m_bFPS)
 	{
-		if (m_bSwitch == false)
-			m_bSwitch = true;
-		else
-			m_bSwitch = false;
-	}
-
-	if (!m_bSwitch)
-	{
-		// 1ÀÎÄª
 		m_vEye = vPos + 0.3f * vLook;
 		m_vAt = vPos + vLook;
 	}
+	// 3ï¿½ï¿½Äª
 	else
 	{
-		// 3ÀÎÄª
 		m_vEye = vPos - 5.f * vLook;
 		m_vAt = vPos;
 	}
