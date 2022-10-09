@@ -6,7 +6,7 @@
 IMPLEMENT_SINGLETON(CParticleMgr)
 CParticleMgr::CParticleMgr()
 {
-	m_maxParticle = 20;
+	m_maxParticle = 50;
 
 	for (int i = 0; i < m_maxParticle; ++i)
 		m_IdxQue.push(i);
@@ -36,6 +36,7 @@ HRESULT CParticleMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle2_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle2/particle2_%d.png", TEX_NORMAL, 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle3_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle3/particle3_%d.png", TEX_NORMAL, 9)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle4_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle4/particle4_%d.png", TEX_NORMAL, 12)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle5_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle5/particle5_%d.png", TEX_NORMAL, 1)), E_FAIL);
 
 
 

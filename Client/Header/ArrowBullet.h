@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CCubeTex;
+class CRcTex;
 END
 
 // 포물선 형태로 날아갈 Bullet
@@ -31,6 +32,7 @@ public:
 	void		Plus_Speed(_float fSpeed) { m_fSpeed += fSpeed; m_fSpeedY += fSpeed; }
 
 private:
+	CRcTex*		m_pBufferCom = nullptr;
 	_float		m_fFrame = 0.f;
 	_float		m_fSpeed;
 	_bool		m_bReady = false;
@@ -40,6 +42,7 @@ private:
 	_float		m_fMinSpeed;
 	_float		m_fMaxSpeed;
 	_float		m_fSpeedY;
+	_float		m_fArrowAngle = 0.f;
 
 	// 충돌처리용
 private:

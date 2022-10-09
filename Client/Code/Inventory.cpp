@@ -23,41 +23,6 @@ HRESULT CInventory::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	/*
-	D3DXMatrixIdentity(&m_matView);
-	D3DXMatrixIdentity(&m_matWorld);
-
-	m_fScaleX = 192.f;
-	m_fScaleY = 96.f;
-
-	m_fPosX = 64;
-	m_fPosY = WINCY / 4;
-
-	// scale
-	D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
-
-	// position
-	m_matView._41 = m_fTempPosX;
-	m_matView._42 = m_fTempPosY;
-
-	// texture position for mouse picking
-	m_fInvWidth = m_fScaleX * 2.f;
-	m_fInvHeight = m_fScaleY * 2.f;
-	m_fTileSize = 32.f * 2;
-
-	_float firstX = m_fPosX - 2.5f * m_fTileSize;
-	_float firstY = m_fPosY + 1.0f * m_fTileSize;
-
-
-	for (int i = 0; i < 3; ++i)
-	{
-	for (int j = 0; j < 6; ++j)
-	{
-	m_InvPosArr[i][j] = { firstX + m_fTileSize * j, firstY - m_fTileSize*i };
-	}
-	}
-	*/
-
 	D3DXMatrixOrthoLH(&m_matProj, WINCX, WINCY, 0.f, 1.f);
 	m_fPosX = WINCX*0.5f + 64.f;
 	m_fPosY = WINCY*0.25f;
@@ -69,11 +34,6 @@ HRESULT CInventory::Ready_Object(void)
 	_float firstX = m_fPosX - 2.5f * m_fTileSize;
 	_float firstY = m_fPosY - 1.0f * m_fTileSize;
 
-
-	// m_fPosX - WINCX * 0.5f, -m_fPosY
-	//firstX = firstX - WINCX * 0.5f;
-	//firstY = -firstY + WINCY * 0.5f;
-
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < 6; ++j)
@@ -81,26 +41,6 @@ HRESULT CInventory::Ready_Object(void)
 			m_InvPosArr[i][j] = { firstX + m_fTileSize * j, firstY + m_fTileSize * i };
 		}
 	}
-
-
-
-	_vec3 vPos = m_InvPosArr[2][5];
-	//RECT		rcUI = { _long(m_fPosX - m_fScaleX * 0.5f), _long(m_fPosY - m_fScaleY * 0.5f)
-	//	, _long(m_fPosX + m_fScaleX * 0.5f), _long(m_fPosY + m_fScaleY * 0.5f) };
-
-	//POINT		ptMouse;
-	//GetCursorPos(&ptMouse);
-	//ScreenToClient(g_hWnd, &ptMouse);
-
-
-	//if (PtInRect(&rcUI, ptMouse))
-	//{
-	//	MSG_BOX("충돌");
-	//}
-
-
-
-
 
 	return S_OK;
 }
@@ -112,8 +52,6 @@ _int CInventory::Update_Object(const _float & fTimeDelta)
 	else
 		m_bShow = false;
 
-	//if (!m_bShow)
-	//	return 0;
 	m_pTransCom->Set_Scale(m_fScaleX, m_fScaleY, 1.f);
 	m_pTransCom->Set_Pos(m_fPosX - WINCX * 0.5f, -m_fPosY + WINCY * 0.5f, 0.f);
 
@@ -126,18 +64,6 @@ _int CInventory::Update_Object(const _float & fTimeDelta)
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
-	//if (Engine::Get_DIKeyState(DIK_TAB) & 0X80)
-	//{
-	//	m_matView._41 = m_fPosX;
-	//	m_matView._42 = m_fPosY;
-	//}
-	//else
-	//{
-	//	m_matView._41 = m_fTempPosX;
-	//	m_matView._42 = m_fTempPosY;
-	//}
-
-
 	return 0;
 }
 
@@ -145,38 +71,6 @@ void CInventory::LateUpdate_Object(void)
 {
 	if (!m_bShow)
 		return;
-
-
-	//RECT		rcUI = { _long(m_fPosX - m_fScaleX), _long(m_fPosY - m_fScaleY)
-	//	, _long(m_fPosX + m_fScaleX), _long(m_fPosY + m_fScaleY) };
-
-	//POINT		ptMouse;
-	//GetCursorPos(&ptMouse);
-	//ScreenToClient(g_hWnd, &ptMouse);
-
-
-	//if (PtInRect(&rcUI, ptMouse))
-	//{
-	//	MSG_BOX("충돌");
-	//}
-
-	//RECT		rcUI = { _long(m_InvPosArr[2][5].x - m_fTileSize*0.5f), _long(m_InvPosArr[2][5].y - m_fTileSize*0.5f)
-	//	, _long(m_InvPosArr[2][5].x + m_fTileSize*0.5f), _long(m_InvPosArr[2][5].y + m_fTileSize*0.5f) };
-
-	//POINT		ptMouse;
-	//GetCursorPos(&ptMouse);
-	//ScreenToClient(g_hWnd, &ptMouse);
-
-
-	//if (PtInRect(&rcUI, ptMouse))
-	//{
-	//	MSG_BOX("충돌");
-	//}
-
-
-
-
-
 
 	Engine::CGameObject::LateUpdate_Object();
 }
@@ -369,7 +263,12 @@ void CInventory::Set_ItemEquip()
 			{
 				if (nullptr != m_Inventory[i][j])
 				{
-					// if the item type is lantern / armor / weapon -> equipped 
+					if (nullptr != m_pEquipped)
+					{
+						static_cast<CInvImg*>(m_pEquipped)->Get_TargetObj()->Set_State(STATE_INV);
+					}
+
+					m_pEquipped = m_Inventory[i][j];
 					CWeapon*	pWeapon = dynamic_cast<CWeapon*>(static_cast<CInvImg*>(m_Inventory[i][j])->Get_TargetObj());
 					if (pWeapon != nullptr)
 					{
@@ -404,19 +303,17 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 		{
 			if (2 == m_iClickedCnt)		// double click
 			{
-				Set_ItemEquip();		// else if there's a picked item	&&	double clicked item		-> item equip swapped 
+				Set_ItemEquip();
 			}
 			if (1 == m_iClickedCnt)	// one click
 			{
-				Pick();	 // if there's no picked item		&&	clicked item -> item picked (stick to mouse pointer)
-						 // else if there's a picked item	&&	clicked item -> swap
-
+				Pick();	 
 			}
 			m_fClickTime = 0.f;
 			m_iClickedCnt = 0;
 		}
 	}
-	else	// if you didn't press the Tab Key -> there's no picked item;(picked item will be sticked to the mouse pointer)
+	else	
 	{
 		if (m_ppPickedItem != nullptr)
 		{

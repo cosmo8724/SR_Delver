@@ -158,6 +158,8 @@ void CWand::Attack(const _float & fTimeDelta)
 	{
 		CBulletMgr::GetInstance()->Pre_Setting(BULLET_WAND, m_fPlusSpeed);
 		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
+		//CParticleMgr::GetInstance()->Set_Info(this);
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_LASER, TEXTURE_0);
 		m_bAttack = false;
 		m_fPlusSpeed = 0.f;
 	}
@@ -166,11 +168,10 @@ void CWand::Attack(const _float & fTimeDelta)
 
 _int CWand::Update_Object(const _float & fTimeDelta)
 {
-	int iResult = CGameObject::Update_Object(fTimeDelta);
-
 	if (STATE_INV == m_eState)
-		return iResult;
+		return 0;
 
+	int iResult = CWeapon::Update_Object(fTimeDelta);
 
 	if (!m_bReady)
 	{
@@ -187,6 +188,7 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 	}
 
 
+
 	_vec3* pPlayerInfo = m_pCenter->Get_InfoAll();
 
 	_matrix matView;
@@ -197,6 +199,7 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 	case STATE_GROUND:
 		m_pTransCom->Set_Scale(1.f, 1.f, 1.f);
 		m_pTransCom->Revolution(pPlayerInfo, matView, 0.f, m_fTimeDelta, STATE_GROUND);
+		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
 		break;
 	case STATE_EQUIP:
 		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
@@ -206,7 +209,9 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 		}
 
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
-		m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
+		//m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
+
+		m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
 		break;
 	}
 
@@ -215,6 +220,7 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 	m_fTimeDelta = fTimeDelta;
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
 
 
 	return iResult;

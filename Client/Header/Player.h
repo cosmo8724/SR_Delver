@@ -7,6 +7,7 @@ namespace Engine
 	class CRcTex;
 	class CTexture;
 	class CCalculator;	// 여기에 선언하지 않으면 형식지정자가 없다는 에러가 뜰 수 있다.
+	class CItem;
 }
 class CBlock;
 
@@ -60,6 +61,10 @@ private:
 	// 마우스 입력 관련 변수
 	_float				m_fLBClick = 0.f;
 	_float				m_fTimeDelta = 0.f;
+
+	// 장착템 관련 변수
+	CItem*				m_pRight	= nullptr;	// 오른손템
+	CItem*				m_pLeft		= nullptr;	// 왼손템
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

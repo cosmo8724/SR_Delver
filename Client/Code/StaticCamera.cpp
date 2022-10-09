@@ -54,7 +54,7 @@ void CStaticCamera::LateUpdate_Object(void)
 {
 	if (true == m_bFix)
 	{
-		Mouse_Fix();
+		//Mouse_Fix();
 	}
 	CCamera::LateUpdate_Object();
 }
@@ -124,13 +124,28 @@ void CStaticCamera::Target_Renewal(void)
 	pPlayerTransform->Get_Info(INFO_LOOK, &vLook);
 	D3DXVec3Normalize(&vLook, &vLook);
 
-	// 1ÀÎÄª
-	m_vEye = vPos + 0.3f * vLook;
-	m_vAt = vPos + vLook;
 
-	// 3ÀÎÄª
-	//m_vEye = vPos - 5.f * vLook;
-	//m_vAt = vPos;
+
+	if (Engine::Key_Down(DIK_1))
+	{
+		if (m_bSwitch == false)
+			m_bSwitch = true;
+		else
+			m_bSwitch = false;
+	}
+
+	if (!m_bSwitch)
+	{
+		// 1ÀÎÄª
+		m_vEye = vPos + 0.3f * vLook;
+		m_vAt = vPos + vLook;
+	}
+	else
+	{
+		// 3ÀÎÄª
+		m_vEye = vPos - 5.f * vLook;
+		m_vAt = vPos;
+	}
 }
 
 void CStaticCamera::ShakeY(const _float & fTimeDelta)

@@ -5,9 +5,11 @@
 //#include "EffectMgr.h"
 //#include "ExploEffect.h"
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CWandBullet::CWandBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
+	, m_fSpeed(30.f)
 {
 	//m_pGraphicDev->AddRef();
 	memset(&m_bdBox, 0, sizeof(BDBOX));
@@ -16,6 +18,7 @@ CWandBullet::CWandBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CWandBullet::CWandBullet(const CWandBullet & rhs)
 	:CBullet(rhs)
+	, m_fSpeed(rhs.m_fSpeed)
 {
 	//m_pGraphicDev->AddRef();
 	memcpy(&m_bdBox, &rhs.m_bdBox, sizeof(BDBOX));
@@ -103,25 +106,47 @@ _int CWandBullet::Update_Object(const _float & fTimeDelta)
 		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pPlayer, -1);
 
-		_vec3 vPos;
+		_vec3 vPos, vRight, vUp, vLook;
 		pPlayer->Get_Info(INFO_POS, &vPos);
-		m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+		pPlayer->Get_Info(INFO_RIGHT, &vRight);
+		pPlayer->Get_Info(INFO_UP, &vUp);
+		pPlayer->Get_Info(INFO_LOOK, &vLook);
+		D3DXVec3Normalize(&vRight, &vRight);
+		D3DXVec3Normalize(&vUp, &vUp);
+		D3DXVec3Normalize(&vLook, &vLook);
+
+
+		_vec3 vTrans = vPos + 0.25f * vRight + 0.8f * vLook;
+
+		m_pTransCom->Set_Pos(vTrans.x, vTrans.y, vTrans.z);
 
 		pPlayer->Get_Info(INFO_LOOK, &m_vDirection);
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_bReady = true;
 	}
 
+	int iResult = CGameObject::Update_Object(fTimeDelta);
+	
+	m_fLifeTime += fTimeDelta;
+	m_fParticleTime += fTimeDelta;
 
 	m_pTransCom->Move_Pos(&(m_fSpeed * fTimeDelta * m_vDirection));
+	if (0.2f < m_fParticleTime)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_5);
+		m_fParticleTime = 0.f;
+	}
 
-	int iResult = CGameObject::Update_Object(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
-	m_fLifeTime += fTimeDelta;
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
+
+
+
 
 
 	return iResult;
@@ -133,8 +158,10 @@ void CWandBullet::LateUpdate_Object(void)
 		return;
 
 	// 아무데도 충돌안해도 일정 시간 후 리셋
-	if (3.f < m_fLifeTime)
+	if (1.f < m_fLifeTime)
 	{
+		CParticleMgr::GetInstance()->Set_Info(this);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_0);
 		Reset();
 	}
 
@@ -166,13 +193,13 @@ void CWandBullet::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
 	m_pTextureCom->Set_Texture(FtoDw(m_fFrame));
 
 	m_pBufferCom->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
 
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);

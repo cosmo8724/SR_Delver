@@ -99,7 +99,7 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Set_Pos(vPos.x - WINCX * 0.5f, -vPos.y + WINCY * 0.5f, 0.f);
 
 
-	int iResult = CGameObject::Update_Object(fTimeDelta);
+	int iResult = CItem::Update_Object(fTimeDelta);
 
 
 

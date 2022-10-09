@@ -58,6 +58,7 @@ private:
 	_int			m_iClickedCnt = 0;
 	_bool			m_bShow = false;
 	_matrix			m_matProj;
+	CItem*			m_pEquipped = nullptr;
 
 };
 
