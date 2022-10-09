@@ -33,7 +33,8 @@ HRESULT CPlayer::Ready_Object(void)
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	m_pTransCom->Set_Scale(0.4f, 0.4f, 0.4f);
+	//m_fScale = 0.4f;
+	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 	return S_OK;
 }
 
@@ -106,13 +107,15 @@ void CPlayer::LateUpdate_Object(void)
 			if (m_pCurrentBlock)
 				fDistFromBlock = D3DXVec3Length(&(vBlockPos - vPlayerPos));
 
-			if (fDistFromBlock < sqrtf(2.8f))
+			_float	fBlockRange = m_fScale + D3DXVec3Length(&(dynamic_cast<CCollider*>(m_pCurrentBlock->Get_Component(L"Proto_ColliderCom", ID_STATIC))->Get_MaxPoint() - m_pCurrentBlock->m_pTransCom->Get_Pos()));
+
+			if (fDistFromBlock < fBlockRange - 0.002f)
 				m_bBlockChanged = false;
-			else if (fDistFromBlock > sqrtf(2.8f) && fDistFromBlock < sqrtf(2.9f))
+			else if (fDistFromBlock > fBlockRange - 0.002f && fDistFromBlock < fBlockRange - 0.001f)
 			{
 				m_bBlockChanged = true;
 			}
-			else if (fDistFromBlock > sqrtf(2.9f))
+			else if (fDistFromBlock > fBlockRange - 0.001f)
 				m_pCurrentBlock = nullptr;
 		}
 	}
@@ -123,8 +126,19 @@ void CPlayer::Render_Obejct(void)
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 #ifdef _DEBUG
 	// Collider
@@ -338,7 +352,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		_float		fDistZ = 0.f;
 
 		// Player at Leftside
-		if (PlayerBox.vMax.x > BlockBox.vMin.x && PlayerBox.vMax.x < BlockBox.vMax.x)
+ 		if (PlayerBox.vMax.x > BlockBox.vMin.x && PlayerBox.vMax.x < BlockBox.vMax.x)
 		{
 			fDistX = BlockBox.vMin.x - PlayerBox.vMax.x;
 		}
@@ -364,14 +378,13 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		// Player On Block
 		if (PlayerBox.vMin.y < BlockBox.vMax.y && PlayerBox.vMin.y > BlockBox.vMin.y && m_eState != PLAYER_GROUND)
 		{
-
 			m_eState = PLAYER_ON_BLOCK;
 			m_bJump = false;
 			fDistX = 0.f;
 			fDistY = BlockBox.vMax.y - PlayerBox.vMin.y;
 			fDistZ = 0.f;
 
-			if (m_bBlockChanged && m_pCurrentBlock != nullptr && m_pCurrentBlock != pBlock)
+			if (m_pCurrentBlock != nullptr && m_pCurrentBlock != pBlock)
 			{
 				m_pCurrentBlock = pBlock;
 				m_bBlockChanged = false;
@@ -379,11 +392,11 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 				m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
 				_vec3 vTemp = { 0.f, fDistY, 0.f };
 				_float	fBlockHeight = pBlock->Get_Height();
-				m_pTransCom->Set_Y(fBlockHeight + (PlayerPos.y - PlayerBox.vMin.y));
+				m_pTransCom->Set_Y(fBlockHeight + (PlayerPos.y - PlayerBox.vMin.y) - 0.0001f);
 				return;
 			}
 
-			m_pCurrentBlock = pBlock;
+ 			m_pCurrentBlock = pBlock;
 			fDistY = 0.f;
 		}
 
@@ -394,13 +407,22 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 			m_fJSpeed = 0.f;
 		}
 
-		if (fabs(fDistX) > fabs(fDistZ))
-		fDistX = 0.f;
-		else if (fabs(fDistX) < fabs(fDistZ))
-		fDistZ = 0.f;
-
 		_vec3	PlayerPos;
 		m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
+
+		if (fabs(fabs(fDistX) - fabs(fDistZ)) < 0.15f)
+			return;
+
+		if ((PlayerPos.x < BlockBox.vMin.x || PlayerPos.x > BlockBox.vMax.x) && (PlayerPos.z < BlockBox.vMin.z || PlayerPos.z > BlockBox.vMax.z))
+		{
+			if (fabs(fDistX) > fabs(fDistZ))
+				fDistX = 0.f;
+			else if (fabs(fDistX) < fabs(fDistZ))
+				fDistZ = 0.f;
+		}
+		
+
+		
 
 		_vec3	PlayerLook;
 		m_pTransCom->Get_Info(INFO_LOOK, &PlayerLook);

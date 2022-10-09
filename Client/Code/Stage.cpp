@@ -266,7 +266,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WinkMan", pGameObject), E_FAIL);
 
 	// Blocks
-	string	strPath = "..\\Bin\\Resource\\Map.dat";
+	string	strPath = "..\\Bin\\Resource\\Map_SH.dat";
 	const char* pPath = strPath.c_str();
 	int iLength = strlen(pPath) + 1;
 	TCHAR* wpPath = new TCHAR[iLength];
