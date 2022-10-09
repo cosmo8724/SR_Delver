@@ -28,23 +28,18 @@ HRESULT CPlayer::Ready_Object(void)
 {
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
+	m_pTransCom->Set_Pos(20.5f, 1.f, 20.5f);
 
-	// �浹ó�� �׽�Ʈ
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	vScale = m_pTransCom->Get_Scale();
-	m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z };
-	m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z };
-
+	m_pTransCom->Set_Scale(0.4f, 0.4f, 0.4f);
 	return S_OK;
 }
 
 _int CPlayer::Update_Object(const _float & fTimeDelta)
 {
+	// Create Minimap Icon
 	static _bool	bOnce = false;
 	if (!bOnce)
 	{
@@ -52,35 +47,21 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
 		bOnce = true;
 	}
+	// *Create Minimap Icon
 
 	m_fTimeDelta = fTimeDelta;
-	if (!(GetKeyState(VK_TAB) & 0x80))
+
+	if (!(GetKeyState(VK_TAB) & 0x80))		// Except Open Inventory
 	{
 		Mouse_Move();
 	}
+
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
-
-	_vec3 vPos, vScale;
-	_matrix matWorld;
-	m_pTransCom->Get_WorldMatrix(&matWorld);
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	vScale = m_pTransCom->Get_Scale();
-	vScale = { 0.5f, 0.9f, 0.5f };
-	m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
-	m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
-
-	m_bdSphere.vCenter = vPos;
-	m_bdSphere.fRadius = vScale.x;
-
-	//D3DXVec3TransformCoord(&m_bdBox.vMin, &m_bdBox.vMin, &matWorld);
-	//D3DXVec3TransformCoord(&m_bdBox.vMax, &m_bdBox.vMax, &matWorld);
 	
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
-
-	Add_RenderGroup(RENDER_NONALPHA, this); // TestPlayer�� �����׷쿡 ����
-
+	Add_RenderGroup(RENDER_NONALPHA, this);
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
@@ -89,19 +70,13 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 void CPlayer::LateUpdate_Object(void)
 {
-	// �浹ó�� �׽�Ʈ
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
 
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	vScale = m_pTransCom->Get_Scale();
-	m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z };
-	m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z };
-
 	Mouse_Click(m_fTimeDelta);
 
-	if (m_bdBox.vMin.y < 0.1f)
+	if (m_pColliderCom->Get_MinPoint().y < 0.1f)
 	{
 		Set_OnTerrain();
 	}
@@ -109,7 +84,7 @@ void CPlayer::LateUpdate_Object(void)
 	{
 		_vec3	vPlayerPos;
 		m_pTransCom->Get_Info(INFO_POS, &vPlayerPos);
-		vPlayerPos.y = m_bdBox.vMin.y;
+		vPlayerPos.y = m_pColliderCom->Get_MinPoint().y;
 
 		if (m_eState == PLAYER_ON_BLOCK)
 		{
@@ -131,12 +106,6 @@ void CPlayer::LateUpdate_Object(void)
 			if (m_pCurrentBlock)
 				fDistFromBlock = D3DXVec3Length(&(vBlockPos - vPlayerPos));
 
-			/*if (m_bBlockChanged)
-			{
-			m_bBlockChanged = false;
-			return;
-			}*/
-
 			if (fDistFromBlock < sqrtf(2.8f))
 				m_bBlockChanged = false;
 			else if (fDistFromBlock > sqrtf(2.8f) && fDistFromBlock < sqrtf(2.9f))
@@ -154,10 +123,7 @@ void CPlayer::Render_Obejct(void)
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	// m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
 	m_pTextureCom->Set_Texture(0);
-
 	m_pBufferCom->Render_Buffer();
 
 #ifdef _DEBUG
@@ -207,29 +173,31 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 {
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
 
-	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	// ����
+	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	
 	{
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
 	}
 
-	if (Engine::Get_DIKeyState(DIK_S) & 0x80)	// ����
+	if (Engine::Get_DIKeyState(DIK_S) & 0x80)
 	{
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
-		m_pTransCom->Move_Pos(&(m_vDirection * -m_fSpeed * fTimeDelta));
+		m_vDirection *= -1.f;
+		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
 	}
 
-	if (Engine::Get_DIKeyState(DIK_A) & 0x80)	// ���� �԰���
+	if (Engine::Get_DIKeyState(DIK_A) & 0x80)
 	{
 		m_pTransCom->Get_Info(INFO_RIGHT, &m_vDirection);
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
-		m_pTransCom->Move_Pos(&(m_vDirection * -m_fSpeed * fTimeDelta));
+		m_vDirection *= -1.f;
+		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
 	}
 
-	if (Engine::Get_DIKeyState(DIK_D) & 0x80)	// ������ �԰���
+	if (Engine::Get_DIKeyState(DIK_D) & 0x80)
 	{
 		m_pTransCom->Get_Info(INFO_RIGHT, &m_vDirection);
 		m_vDirection.y = 0.f;
@@ -258,14 +226,12 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		else
 			pMap->Set_OpenMap();
 	}
-
 }
 
 void CPlayer::Mouse_Move(void)
 {
 	_long	dwMouseMove = 0;
 
-	// �¿�ȸ���� ��κ� y��������� ȸ��
 	if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
 	{
 		m_pTransCom->Rotation(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
@@ -275,13 +241,10 @@ void CPlayer::Mouse_Move(void)
 	{
 		m_pTransCom->Rotation(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
 	}
-
-
 }
 
 void CPlayer::Mouse_Click(const _float& fTimeDelta)
 {
-	//if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
 	m_fLBClick += fTimeDelta;
 
 	if ((Engine::Get_DIKeyState(DIK_X) & 0x80) && (0.3f<m_fLBClick))
@@ -291,25 +254,14 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
 
-		//CBulletMgr::GetInstance()->Fire(BULLET_WAND);
 		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
-		//CBulletMgr::GetInstance()->Reuse_Obj(vPos, vLook);
-
-
 	}
 }
 
 void CPlayer::Set_OnTerrain(void)
 {
-	//m_bJump = false;
-
 	_vec3		vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
-
-	//Engine::CTerrainTex*	pTerrainTexCom = dynamic_cast<Engine::CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"Proto_TerrainTexCom", ID_STATIC));
-	//NULL_CHECK(pTerrainTexCom);
-
-	//_float fHeight = m_pCalculatorCom->HeightOnTerrain(&vPos, pTerrainTexCom->Get_VtxPos(), VTXCNTX, VTXCNTZ);
 
 	_float fHeight = Get_Height();
 
@@ -323,14 +275,9 @@ void CPlayer::Jump(const _float & fTimeDelta)
 		_vec3 vPos;
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-
-		/*Engine::CTerrainTex*	pTerrainTexCom = dynamic_cast<Engine::CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"Proto_TerrainTexCom", ID_STATIC));
-		NULL_CHECK(pTerrainTexCom);
-
-		_float fHeight = m_pCalculatorCom->HeightOnTerrain(&vPos, pTerrainTexCom->Get_VtxPos(), VTXCNTX, VTXCNTZ);*/
 		_float fHeight = Get_Height();
 
-		if (m_fJTimeDelta > 2.f && 0.f >= m_bdBox.vMin.y)
+		if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
 		{
 			m_bJump = false;
 			m_eState = PLAYER_GROUND;
@@ -341,8 +288,6 @@ void CPlayer::Jump(const _float & fTimeDelta)
 		}
 		else
 		{
-			//_float fDist = fHeight + m_fJSpeed0*m_fJTimeDelta - 0.5 * m_fAccel * m_fJTimeDelta * m_fJTimeDelta;
-			//_float fVelocity = m_fJSpeed0 - m_fAccel;
 			m_fJSpeed -= m_fAccel;
 			m_pTransCom->Plus_PosY(m_fJSpeed);
 			m_fJTimeDelta += 0.1f;
@@ -368,10 +313,6 @@ _float CPlayer::Get_Height()
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-
-	// �浹�� ��ü�� �������̶�� �κ��丮�� �־�� ��.
-	// ȹ���� �������� INV���°� �ǰ�, �� ������ ��� ��� ����(����������)���� ������ �ȴ�.
-	// ������ ȹ�� ��, INV�� �� ��ü�� ���� �����Ѵ�.
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem)
 	{
@@ -387,64 +328,47 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
 	if (pBlock)
 	{
-		// �� �浹
-		/*_vec3	BlockPos = pBlock->Get_bdSphere()->vCenter;
-		_float fDistance = (m_bdSphere.fRadius + pBlock->Get_bdSphere()->fRadius) -
-		sqrtf(pow(BlockPos.x - m_bdSphere.vCenter.x, 2) +
-		pow(BlockPos.y - m_bdSphere.vCenter.y, 2) +
-		pow(BlockPos.z - m_bdSphere.vCenter.z, 2));
-
-		_vec3	PlayerPos;
-		m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
-
-		_vec3	PlayerLook;
-		m_pTransCom->Get_Info(INFO_LOOK, &PlayerLook);
-
-		_vec3 vDir = PlayerLook - PlayerPos;
-		PlayerLook *= -fDistance * m_fSpeed * 2.f * m_fTimeDelta;
-		PlayerLook.y = 0.f;
-		vDir *= m_fSpeed * m_fTimeDelta;
-		m_pTransCom->Move_Pos(&PlayerLook);*/
-
 		// AABB
-		BDBOX	*	BlockBox = pBlock->Get_bdBox();
+		CCollider* BlockCollider = dynamic_cast<CCollider*>(pBlock->Get_Component(L"Proto_ColliderCom", ID_STATIC));
+		BDBOX		PlayerBox = { m_pColliderCom->Get_MinPoint(), m_pColliderCom->Get_MaxPoint() };
+		BDBOX		BlockBox = { BlockCollider->Get_MinPoint(), BlockCollider->Get_MaxPoint() };
 
 		_float		fDistX = 0.f;
 		_float		fDistY = 0.f;
 		_float		fDistZ = 0.f;
 
-		// �÷��̾ �ڽ� ����
-		if (m_bdBox.vMax.x > BlockBox->vMin.x && m_bdBox.vMax.x < BlockBox->vMax.x)
+		// Player at Leftside
+		if (PlayerBox.vMax.x > BlockBox.vMin.x && PlayerBox.vMax.x < BlockBox.vMax.x)
 		{
-			fDistX = BlockBox->vMin.x - m_bdBox.vMax.x;
+			fDistX = BlockBox.vMin.x - PlayerBox.vMax.x;
 		}
 
-		// �÷��̾ �ڽ� ������
-		else if (m_bdBox.vMin.x < BlockBox->vMax.x && m_bdBox.vMin.x > BlockBox->vMin.x)
+		// Player at Rightside
+		else if (PlayerBox.vMin.x < BlockBox.vMax.x && PlayerBox.vMin.x > BlockBox.vMin.x)
 		{
-			fDistX = BlockBox->vMax.x - m_bdBox.vMin.x;
+			fDistX = BlockBox.vMax.x - PlayerBox.vMin.x;
 		}
 
-		// �÷��̾ �ڽ� ����
-		if (m_bdBox.vMin.z < BlockBox->vMax.z  && m_bdBox.vMin.z > BlockBox->vMin.z)
+		// Player at Frontside
+		if (PlayerBox.vMin.z < BlockBox.vMax.z  && PlayerBox.vMin.z > BlockBox.vMin.z)
 		{
-			fDistZ = BlockBox->vMax.z - m_bdBox.vMin.z;
+			fDistZ = BlockBox.vMax.z - PlayerBox.vMin.z;
 		}
 
-		// �÷��̾ �ڽ� ����
-		else if (m_bdBox.vMax.z > BlockBox->vMin.z && m_bdBox.vMax.z < BlockBox->vMax.z)
+		// Player at Backside
+		else if (PlayerBox.vMax.z > BlockBox.vMin.z && PlayerBox.vMax.z < BlockBox.vMax.z)
 		{
-			fDistZ = BlockBox->vMin.z - m_bdBox.vMax.z;
+			fDistZ = BlockBox.vMin.z - PlayerBox.vMax.z;
 		}
 
-		// �÷��̾ �ڽ� ����
-		if (m_bdBox.vMin.y < BlockBox->vMax.y && m_bdBox.vMin.y > BlockBox->vMin.y && m_eState != PLAYER_GROUND)
+		// Player On Block
+		if (PlayerBox.vMin.y < BlockBox.vMax.y && PlayerBox.vMin.y > BlockBox.vMin.y && m_eState != PLAYER_GROUND)
 		{
 
 			m_eState = PLAYER_ON_BLOCK;
 			m_bJump = false;
 			fDistX = 0.f;
-			fDistY = BlockBox->vMax.y - m_bdBox.vMin.y;
+			fDistY = BlockBox.vMax.y - PlayerBox.vMin.y;
 			fDistZ = 0.f;
 
 			if (m_bBlockChanged && m_pCurrentBlock != nullptr && m_pCurrentBlock != pBlock)
@@ -454,11 +378,8 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 				_vec3	PlayerPos;
 				m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
 				_vec3 vTemp = { 0.f, fDistY, 0.f };
-				//m_pTransCom->Set_Pos(PlayerPos.x, PlayerPos.y + fDistY, PlayerPos.z);
 				_float	fBlockHeight = pBlock->Get_Height();
-				m_pTransCom->Set_Y(fBlockHeight + (PlayerPos.y - m_bdBox.vMin.y));
-
-				//m_pTransCom->Move_Pos(&vTemp);
+				m_pTransCom->Set_Y(fBlockHeight + (PlayerPos.y - PlayerBox.vMin.y));
 				return;
 			}
 
@@ -466,28 +387,26 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 			fDistY = 0.f;
 		}
 
-		// �÷��̾ �ڽ� �Ʒ���
-		else if (m_bdBox.vMax.y > BlockBox->vMin.y && m_bdBox.vMax.y < BlockBox->vMax.y)
+		// Player Under Block
+		else if (PlayerBox.vMax.y > BlockBox.vMin.y && PlayerBox.vMax.y < BlockBox.vMax.y)
 		{
-			fDistY = BlockBox->vMin.y - m_bdBox.vMax.y;
+			fDistY = BlockBox.vMin.y - PlayerBox.vMax.y;
 			m_fJSpeed = 0.f;
 		}
 
-		/*if (fabs(fDistX) > fabs(fDistZ))
+		if (fabs(fDistX) > fabs(fDistZ))
+		fDistX = 0.f;
+		else if (fabs(fDistX) < fabs(fDistZ))
 		fDistZ = 0.f;
-		else if (fabs(fDistX) <= fabs(fDistZ))
-		fDistX = 0.f;*/
 
 		_vec3	PlayerPos;
 		m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
 
 		_vec3	PlayerLook;
 		m_pTransCom->Get_Info(INFO_LOOK, &PlayerLook);
+		PlayerLook.y = 0.f;
 
-		_vec3 vDir = { fDistX, fDistY, fDistZ };
-		vDir *= m_fSpeed * m_fTimeDelta;
-		m_pTransCom->Move_Pos(&vDir);
-		//m_pTransCom->Set_Pos(PlayerPos.x + fDistX, PlayerPos.y + fDistY, PlayerPos.z + fDistZ);
+		m_pTransCom->Set_Pos(PlayerPos.x + fDistX, PlayerPos.y, PlayerPos.z + fDistZ);
 	}
 }
 
