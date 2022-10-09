@@ -290,7 +290,7 @@ void CBlock::Chase_MousePT()
 
 	_vec3 vPickPos = m_pCalculatorCom->PickingOnTerrainIndex(g_hWnd, pTerrainBufferCom, pTerrainTransformCom);
 
-	m_pTransCom->Set_Pos(vPickPos.x, vPickPos.y, vPickPos.z);
+	m_pTransCom->Set_Pos(vPickPos.x, vPickPos.y + m_fScale, vPickPos.z);
 }
 
 HRESULT CBlock::Change_BlockType()
