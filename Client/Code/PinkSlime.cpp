@@ -49,7 +49,7 @@ _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
 		m_bCreateIcon = true;
 	}
-	Engine::CGameObject::Update_Object(fTimeDelta);
+	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pTransCom->Set_Y(m_fHeight);
@@ -84,6 +84,8 @@ void CPinkSlime::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	CMonster::Render_Obejct();
 }
 
 HRESULT CPinkSlime::Add_Component(void)
@@ -102,6 +104,11 @@ HRESULT CPinkSlime::Add_Component(void)
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeIDLE_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeATTACK_Texture");

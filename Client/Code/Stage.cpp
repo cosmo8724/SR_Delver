@@ -102,7 +102,8 @@ void CStage::LateUpdate_Scene(void)
 			//	}
 			//}
 			//CCollisionMgr::GetInstance()->CollisionSphere(pPlayer, pBlock);
-			CCollisionMgr::GetInstance()->CollisionAABB(pPlayer, pBlock);
+			//CCollisionMgr::GetInstance()->CollisionAABB(pPlayer, pBlock);
+			Engine::CollisionTest(pPlayer, pBlock);
 		}
 	}
 
