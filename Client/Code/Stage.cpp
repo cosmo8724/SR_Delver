@@ -147,13 +147,10 @@ void CStage::LateUpdate_Scene(void)
 
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
 		Engine::CollisionTest(pSour, bullet);
-
-
 	}
 
-
 	// Monster Collider
-	CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
 	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
 		Engine::CollisionTest(pSour, bullet);
 	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))

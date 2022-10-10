@@ -59,11 +59,7 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	if (0 >= m_tInfo.iHp)
 	{
 		m_eCurState = DIE;
-		//m_bHit = true;
-
-		//CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		//pLayer->Delete_GameObject(L"GreenSlime");
-		return 0;
+		return OBJ_DEAD;
 	}
 
 	Hit(fTimeDelta);
@@ -226,9 +222,9 @@ void CGreenSlime::Hit(const _float & fTimeDelta)
 void CGreenSlime::CollisionEvent(CGameObject * pObj)
 {
 	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
-	CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
-	if (nullptr != pPlayer)
-		m_bHit = true;
+	//CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+	//if (nullptr != pPlayer)
+	//	m_bHit = true;
 
 	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
 	{

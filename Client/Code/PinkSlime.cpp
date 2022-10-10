@@ -5,6 +5,8 @@
 #include "MiniMap.h"
 #include "Player.h"
 
+#include "BulletMgr.h"
+
 CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
 	, m_ePreState(MOTION_END)
@@ -145,25 +147,12 @@ HRESULT CPinkSlime::Add_Component(void)
 
 void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 {
-	/*
-	1) IDLE ���·� ������ �ִ´�
-	2) �÷��̾ �ٰ����� ������ �� �� �ϸ� �÷��̾ �˹� ��Ų��
-	3) �׸��� ��� �÷��̾ ���󰣴�
-	
-	�÷��̾�� ������ ���ҽ� �����ð� ������ �ִٰ� �÷��̾ ���󰣴�	
-
-	�÷��̾�� ���� 2���� ���ϸ� �������� �پ��鼭 �и��Ǹ�
-	�ִ� 3������ �и��Ǹ�, ���ʹ� �� 4������ �����Ѵ�
-	*/
-
-	// �÷��̾�� ���� ���ϸ� ��� ���߰� HIT����
 	if (Engine::Key_Down(DIK_U))
 	{
 		m_eCurState = HIT;
 		return;
 	}
 
-	// �÷��̾� ���󰡱�
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
 
@@ -173,7 +162,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
-	if (!m_bSkillJumpStart && fDist < 5.f) // ó�� �÷��̾ �ٰ����� 1�� �ִٰ� ���� �� ��
+	if (!m_bSkillJumpStart && fDist < 5.f)
 	{
 		m_SkillJumpTimeAcc += fTimeDelta;
 		if (1.5f < m_SkillJumpTimeAcc)
@@ -194,11 +183,9 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 	{
 		if (!m_bSkillFollowStart)
 		{
-			// ������ �� �� �ϰ� ���� �÷��̾ ��� ���󰣴�
 			m_eSkill = SKILL_FOLLOW;
 		}
 
-		// �׷��ٰ� ���� �÷��̾�� ������ 2�� ���ϸ� ũ�Ⱑ �پ��鼭 ���صȴ�
 		if (Engine::Key_Down(DIK_P))
 		{
 			m_eSkill_Scale = SKILLSCALE_BIG;
@@ -331,7 +318,11 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 
 void CPinkSlime::CollisionEvent(CGameObject * pObj)
 {
-
+	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
+	{
+		if (nullptr != bullet)
+			m_bHit = true;
+	}
 }
 
 void CPinkSlime::Motion_Change()
