@@ -41,7 +41,7 @@ public:
 
 public:
 	// 아이템 리스트 반환
-	vector<CGameObject*>*	Get_Items() { return &m_vecItemPool; }
+	vector<CGameObject*>*	Get_Items(ITEMTYPE eType) { return &m_vecItemPool[eType]; }
 
 private:
 	LPDIRECT3DDEVICE9	m_pGraphicDev;
@@ -49,8 +49,8 @@ private:
 	vector<TCHAR*>		m_vecItemObjTags[ITEM_END];	// 아이템이 동적생성될 때 오브젝트 태그 저장소
 	vector<TCHAR*>		m_vecItemTextureTags;		// 인벤토리에 들어가는 아이템 InvImg 용 텍스쳐 컴퍼넌트 태그 저장소
 
-	vector<CGameObject*>	m_vecItemPool;
-	vector<CGameObject*>	m_vecImgPool;
+	vector<CGameObject*>	m_vecItemPool[ITEM_END];
+	//vector<CGameObject*>	m_vecImgPool;
 
 };
 

@@ -17,6 +17,8 @@ public:
 	void		Set_Eye(_float& pEye) { m_vEye.y = pEye; }
 	void		Get_ViewMatrix(_matrix& _viewMat) { _viewMat = m_matView; }
 	void		Get_ProjectMatrix(_matrix& _ProjMat) { _ProjMat = m_matProj; }
+	void		Set_Switch(_bool bSwitch) { m_bSwitch = bSwitch; }
+	_bool		Get_Switch() { return m_bSwitch; }
 
 public:
 	virtual HRESULT Ready_Object(void)						override;
@@ -27,6 +29,7 @@ protected:
 	_vec3		m_vEye, m_vAt, m_vUp;
 	_float		m_fFov, m_fAspect, m_fNear, m_fFar;
 	_matrix		m_matView, m_matProj;
+	_bool		m_bSwitch = false;
 	
 protected:
 	virtual void		Free(void);

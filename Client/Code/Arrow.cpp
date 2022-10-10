@@ -242,22 +242,22 @@ void CArrow::Charge(const _float & fTimeDelta)
 
 	}
 
-	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)	// ���� ��ư�� ���ȴ�.
+	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)	
 	{
 		m_bClick = true;
 		m_fChargeTime += m_fTimeDelta;
 
-		if (m_fChargeTime > 0.3f)	// ��¡��Ȳ�̶��
+		if (m_fChargeTime > 0.3f)	
 		{
-			m_bClick = false;		// Ŭ���� �ƴ϶� ��¡�̴�.
+			m_bClick = false;		
 			m_bCharge = true;
 		}
 	}
 	else
 	{
-		if (true == m_bClick)	// ���� ��ư�� ���������� ������ ������ ���Ⱦ��ٸ�
+		if (true == m_bClick)	
 		{
-			m_fFrame += frameEnd * fTimeDelta * 3.f;	// �ܼ� ������ �Ѵ�.
+			m_fFrame += frameEnd * fTimeDelta * 3.f;	
 			if (m_fFrame >= frameEnd)
 			{
 				m_fFrame = 0.f;
@@ -266,7 +266,7 @@ void CArrow::Charge(const _float & fTimeDelta)
 				m_fChargeTime = 0.f;
 			}
 		}
-		else if (true == m_bCharge)  // ���� ���� ��Ȳ�̾��ٸ� ��¡������ �Ѵ�.
+		else if (true == m_bCharge)  
 		{
 			m_fFrame = 0.f;
 			m_bCharge = false;
