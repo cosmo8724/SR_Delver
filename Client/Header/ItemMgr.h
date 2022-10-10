@@ -32,10 +32,16 @@ public:
 	// 아이템 동적 할당용 (인벤토리 이미지아이템 용)
 	CGameObject*	Add_GameObject(const _tchar* pLayerTag, wstring texTag, CItem* pObj);
 
+	// 아이템 랜덤 생성용
+	HRESULT			Add_RandomObject(const _tchar* pLayerTag, const _tchar* objTag, ITEMTYPE eType, _vec3 vPos);
 
 
 public:
 	inline virtual void Free(void);
+
+public:
+	// 아이템 리스트 반환
+	vector<CGameObject*>*	Get_Items() { return &m_vecItemPool; }
 
 private:
 	LPDIRECT3DDEVICE9	m_pGraphicDev;
@@ -44,6 +50,7 @@ private:
 	vector<TCHAR*>		m_vecItemTextureTags;		// 인벤토리에 들어가는 아이템 InvImg 용 텍스쳐 컴퍼넌트 태그 저장소
 
 	vector<CGameObject*>	m_vecItemPool;
+	vector<CGameObject*>	m_vecImgPool;
 
 };
 

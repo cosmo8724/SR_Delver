@@ -343,6 +343,12 @@ void CUserParticle::update(_float fTimeDelta)
 	{
 	case PTYPE_FIREWORK:
 	{
+		if (isDead())
+		{
+			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
+			ReUse();
+		}
+
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
@@ -403,7 +409,8 @@ void CUserParticle::update(_float fTimeDelta)
 			// 생존한 파티클만 갱신
 			if (iter->bIsAlive)
 			{
-				iter->vPosition += iter->vVelocity * fTimeDelta;
+				iter->vVelocity.y -= GetRandomFloat(0.f, 1.f);
+				iter->vPosition += (0.3f * iter->vVelocity * fTimeDelta); 
 				iter->fAge += fTimeDelta;
 				if (iter->fAge > iter->fLifeTime) // 죽인다.
 					iter->bIsAlive = false;

@@ -21,9 +21,15 @@ public:
 	virtual void		Free(void);
 
 protected:
+	virtual void		Billboard();
+
+protected:
 	CRcTex*				m_pBufferCom	= nullptr;
 	CTransform*			m_pTransCom		= nullptr;
 	CTexture*			m_pTextureCom	= nullptr;
 	_vec3				m_vPos;
+	_bool				m_bDead			= false;
+	_matrix				m_matWorld;
+	_int				m_iTransparency	= 255;
 };
 

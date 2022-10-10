@@ -135,10 +135,48 @@ CGameObject* CItemMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, 
 	CLayer* pLayer = Engine::Get_Layer(pLayerTag);
 	if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
 		return nullptr;
+	
+	m_vecImgPool.push_back(pGameObject);
 
-	m_vecItemPool.push_back(pGameObject);
 
 	return pGameObject;
+}
+
+HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objTag, ITEMTYPE eType, _vec3 vPos)
+{
+
+	wstring tag = objTag;
+	tag += L"%d";
+
+	TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
+	wsprintf(szObjTag, objTag);
+	_tcscat_s(szObjTag, MAX_PATH, L"%d");
+	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
+
+
+	wstring objName = objTag;
+	if (objName == L"Arrow")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CArrow::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool.push_back(pGameObject);
+	}
+
+	else
+	{
+		delete[] szObjTag;
+		szObjTag = nullptr;
+	}
+
+
+
+	return S_OK;
 }
 
 inline void CItemMgr::Free(void)
@@ -165,6 +203,8 @@ inline void CItemMgr::Free(void)
 
 
 	m_vecItemPool.swap(vector<CGameObject*>());
+	m_vecImgPool.swap(vector<CGameObject*>());
+
 
 	Safe_Release(m_pGraphicDev);
 
