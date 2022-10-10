@@ -103,6 +103,9 @@
     <Filter Include="00. Component\00. VIBuffer\06. Collider">
       <UniqueIdentifier>{1feaa775-610a-4714-8053-1bd5e7017c5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Component\00. VIBuffer\05. SphereTex">
+      <UniqueIdentifier>{ed566c01-6569-4746-bc2a-35c4d380a078}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Header\TriCol.h">
@@ -198,8 +201,8 @@
     <ClInclude Include="..\..\Header\Collider.h">
       <Filter>00. Component\00. VIBuffer\06. Collider</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Header\NPC.h">
-      <Filter>01. GameObject\NPC</Filter>
+    <ClInclude Include="..\..\Header\SphereTex.h">
+      <Filter>00. Component\00. VIBuffer\05. SphereTex</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,8 +296,8 @@
     <ClCompile Include="..\Code\Collider.cpp">
       <Filter>00. Component\00. VIBuffer\06. Collider</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\NPC.cpp">
-      <Filter>01. GameObject\NPC</Filter>
+    <ClCompile Include="..\Code\SphereTex.cpp">
+      <Filter>00. Component\00. VIBuffer\05. SphereTex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@ CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_vMin({ 0.f, 0.f, 0.f })
 	, m_vCenter({ 0.f, 0.f, 0.f })
 	, m_fRadius(0.f)
+	, m_dwColor(D3DXCOLOR(1.f, 1.f, 1.f, 1.f))
 	, m_bFree(false)
 {
 }
@@ -23,9 +24,10 @@ CCollider::CCollider(const CCollider & rhs)
 	, m_vMin(rhs.m_vMin)
 	, m_vCenter(rhs.m_vCenter)
 	, m_fRadius(rhs.m_fRadius)
+	, m_dwColor(rhs.m_dwColor)
 	, m_bFree(rhs.m_bFree)
-
 {
+	m_pSphereBuffer = CSphereTex::Create(m_pGraphicDev, m_vCenter, m_fRadius, m_dwColor);
 }
 
 CCollider::~CCollider()
@@ -153,7 +155,9 @@ HRESULT CCollider::Ready_Buffer(void)
 	m_vMin = pVertex[3].vPos;
 	m_vMax = pVertex[5].vPos;
 	m_vCenter = { m_vMin.x + 1.f, m_vMin.y + 1.f, m_vMin.z + 1.f };
-	m_fRadius = 1.f;
+	m_fRadius = 2.f;
+
+	m_pSphereBuffer = CSphereTex::Create(m_pGraphicDev, m_vCenter, m_fRadius, m_dwColor);
 
 	return S_OK;
 
@@ -161,7 +165,18 @@ HRESULT CCollider::Ready_Buffer(void)
 
 void CCollider::Render_Buffer(void)
 {
-	CVIBuffer::Render_Buffer();
+	static	_bool	bDrawCube = true;
+	static	_bool	bDrawSphere = true;
+
+	if (Key_Down(DIK_F2))
+		bDrawCube = !bDrawCube;
+	if (Key_Down(DIK_F3))
+		bDrawSphere = !bDrawSphere;
+
+	if (bDrawCube)
+		CVIBuffer::Render_Buffer();
+	if (bDrawSphere)
+		m_pSphereBuffer->Render_Buffer();
 }
 
 CComponent * CCollider::Clone(void)
@@ -175,7 +190,7 @@ void CCollider::Free(void)
 	{
 		Safe_Delete_Array(m_pPos);
 	}
-
+	Safe_Release(m_pSphereBuffer);
 	CVIBuffer::Free();
 }
 
@@ -236,4 +251,20 @@ _bool	CCollider::CollideAABB(CCollider* _collider)
 
 
 	return true;
+}
+
+_bool	CCollider::CollideSphere(CCollider* _collider)
+{
+	if (_collider->Is_Free())
+		return false;
+
+	if (pow(this->m_vCenter.x - _collider->m_vCenter.x, 2)
+		+ pow(this->m_vCenter.y - _collider->m_vCenter.y, 2)
+		+ pow(this->m_vCenter.z - _collider->m_vCenter.z, 2)
+		< pow(this->m_fRadius + _collider->m_fRadius, 2))
+	{
+		return true;
+	}
+
+	return false;
 }
