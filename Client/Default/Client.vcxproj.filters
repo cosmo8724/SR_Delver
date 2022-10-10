@@ -493,7 +493,7 @@
       <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Jar.h">
-      <Filter>99. Default\헤더 파일</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Jar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -723,7 +723,7 @@
       <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Jar.cpp">
-      <Filter>99. Default\소스 파일</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Jar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
