@@ -47,6 +47,8 @@
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 
+#include "EcoObject.h"
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -284,6 +286,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CWinkMan::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WinkMan", pGameObject), E_FAIL);
+
+	// EcoObject
+	pGameObject = CEcoObject::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Eco", pGameObject), E_FAIL);
 
 	// Blocks
 	string	strPath = "..\\Bin\\Resource\\Map_SH.dat";
