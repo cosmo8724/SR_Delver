@@ -2,6 +2,7 @@
 #include "..\Header\SkeletonGhost.h"
 
 #include "Export_Function.h"
+#include "MiniMap.h"
 
 CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -25,7 +26,7 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 	m_tInfo.iAttack = 1;
 
 	m_fHeight = 3.f;
-	m_pTransCom->Set_Pos(15.f, m_fHeight, 40.f);
+	m_pTransCom->Set_Pos(0.f, m_fHeight, 55.f);
 
 	m_eCurState = IDLE;
 
@@ -37,7 +38,13 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 
 _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 {
-	Engine::CGameObject::Update_Object(fTimeDelta);
+	if (!m_bCreateIcon)
+	{
+		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		m_bCreateIcon = true;
+	}
+	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pTransCom->Set_Y(m_fHeight);
@@ -77,6 +84,8 @@ void CSkeletonGhost::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	CMonster::Render_Obejct();
 }
 
 HRESULT CSkeletonGhost::Add_Component(void)
@@ -95,6 +104,11 @@ HRESULT CSkeletonGhost::Add_Component(void)
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_SkeletonGhostIDLE_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_SkeletonGhostATTACK_Texture");

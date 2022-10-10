@@ -15,6 +15,8 @@ CWand::CWand(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	m_vPos = vPos;
 	m_ObjTag = L"Wand";
+	m_eWeaponType = WT_AD;
+
 }
 
 CWand::~CWand()
@@ -162,7 +164,6 @@ void CWand::Attack(const _float & fTimeDelta)
 		m_fPlusSpeed = 0.f;
 	}
 }
-
 
 _int CWand::Update_Object(const _float & fTimeDelta)
 {

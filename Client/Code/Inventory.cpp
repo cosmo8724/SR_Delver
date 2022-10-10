@@ -2,6 +2,7 @@
 #include "..\Header\Inventory.h"
 #include "InvImg.h"
 #include "Export_Function.h"
+#include "CrossHair.h"
 
 CInventory::CInventory(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
@@ -273,6 +274,16 @@ void CInventory::Set_ItemEquip()
 					if (pWeapon != nullptr)
 					{
 						pWeapon->Set_Equipped();
+						if (WT_AD == pWeapon->Get_WeaponType())
+						{
+							CCrossHair* pCrossHair = dynamic_cast<CCrossHair*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CrossHair"));
+							pCrossHair->Set_CrossHair(true);
+						}
+						else
+						{
+							CCrossHair* pCrossHair = dynamic_cast<CCrossHair*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CrossHair"));
+							pCrossHair->Set_CrossHair(false);
+						}
 					}
 				}
 			}

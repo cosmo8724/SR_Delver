@@ -50,6 +50,7 @@ _int CBrownBat::Update_Object(const _float & fTimeDelta)
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 5.f);
 
 	Target_Follow(fTimeDelta);
+	
 	Motion_Change(fTimeDelta);
 
 	return 0;

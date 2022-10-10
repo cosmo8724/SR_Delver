@@ -5,6 +5,10 @@
 #include "WandBullet.h"
 #include "MiniMap.h"
 
+// 충돌
+#include "Player.h"
+#include "BulletMgr.h"
+
 CGreenSlime::CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
 	, m_ePreState(MOTION_END)
@@ -52,7 +56,15 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	//if (m_fFrame >= m_pTextureCom->Get_FrameEnd())
 	//	m_fFrame = 0;
 
-	Target_Follow(fTimeDelta);
+	if (0 >= m_tInfo.iHp)
+	{
+		m_eCurState = DIE;
+		return OBJ_DEAD;
+	}
+
+	Hit(fTimeDelta);
+	
+  	Target_Follow(fTimeDelta);
 	Motion_Change(fTimeDelta);
 
 
@@ -72,7 +84,7 @@ void CGreenSlime::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);//1
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
@@ -136,6 +148,9 @@ HRESULT CGreenSlime::Add_Component(void)
 
 void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 {
+	if (m_bHit)
+		return;
+
 	// 플레이어 따라가기
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
@@ -187,6 +202,39 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 		//m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
 	}
 }
+
+void CGreenSlime::Hit(const _float & fTimeDelta)
+{
+	if (!m_bHit)
+		return;
+
+	m_eCurState = HIT;
+
+	m_fHitTimeAcc += fTimeDelta;
+	if (1.f < m_fHitTimeAcc)
+	{
+		m_tInfo.iHp--;
+		m_bHit = false;
+		m_fHitTimeAcc = 0.f;
+	}
+}
+
+void CGreenSlime::CollisionEvent(CGameObject * pObj)
+{
+	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+	//CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+	//if (nullptr != pPlayer)
+	//	m_bHit = true;
+
+	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
+	{
+		if (nullptr != bullet)
+			m_bHit = true;
+	}
+
+
+}
+
 void CGreenSlime::Motion_Change(const _float& fTimeDelta)
 {
 	if (m_ePreState != m_eCurState)
@@ -215,11 +263,6 @@ void CGreenSlime::Motion_Change(const _float& fTimeDelta)
 		}
 		m_ePreState = m_eCurState;
 	}
-}
-
-void CGreenSlime::CollisionEvent(CGameObject * pObj)
-{
-	m_eCurState = HIT;
 }
 
 CGreenSlime * CGreenSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev)

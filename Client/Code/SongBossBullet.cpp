@@ -25,7 +25,7 @@ HRESULT CSongBossBullet::Ready_Object(void)
 
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 
-	m_fSpeed = 10.f;
+	m_fSpeed = 20.f;
 
 	return S_OK;
 }
