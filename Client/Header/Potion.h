@@ -24,6 +24,9 @@ public:
 	virtual void		Free(void);
 	virtual void		CollisionEvent(CGameObject *pObj);
 
+public:
+	_int		Get_TexturId() { return m_iTextureIdx; }
+
 
 private:
 	_vec3				m_vPos;

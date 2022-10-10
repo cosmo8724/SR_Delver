@@ -144,7 +144,16 @@ CGameObject* CItemMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, 
 	wsprintf(szTexTag, texTag.c_str());
 	m_vecItemTextureTags.push_back(szTexTag);
 
+	_int iTex;
 	CGameObject* pGameObject = CInvImg::Create(m_pGraphicDev, szTexTag, pObj);
+
+	if (ITEM_POTION == pObj->Get_ItemType())
+	{
+		iTex = static_cast<CPotion*>(pObj)->Get_TexturId();
+		static_cast<CInvImg*>(pGameObject)->Set_Frame(iTex);
+	}
+
+
 	NULL_CHECK_RETURN(pGameObject, nullptr);
 
 	CLayer* pLayer = Engine::Get_Layer(pLayerTag);

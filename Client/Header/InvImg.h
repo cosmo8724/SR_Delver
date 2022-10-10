@@ -28,7 +28,7 @@ public:
 	void				Set_Picked(_bool bPicked) { m_bPicked = bPicked; }
 	void				Set_InvPos(_float fX, _float fY) { m_fPosX = fX; m_fPosY = fY; }
 	_vec2				Get_InvPos() { return _vec2({ m_fPosX, m_fPosY }); }
-
+	void				Set_Frame(_int iTex) { m_fFrame = (_float)iTex; }
 
 private:
 	_vec2				m_vPos;
