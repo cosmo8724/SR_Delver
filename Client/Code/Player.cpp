@@ -32,13 +32,13 @@ HRESULT CPlayer::Ready_Object(void)
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(25.f, 1.f, 25.f);
+	m_pTransCom->Set_Pos(3.f, 1.f, 3.f);
 
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	//m_fScale = 0.4f;
-	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+	m_fScale = 0.6f;
+	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	// 플레이어 스탯정보
 	//m_tInfo.iHp = 20;
@@ -341,7 +341,7 @@ _float CPlayer::Get_Height()
 	Engine::CTerrainTex*	pTerrainTexCom = dynamic_cast<Engine::CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"Proto_TerrainTexCom", ID_STATIC));
 	NULL_CHECK_RETURN(pTerrainTexCom, 0.f);
 
-	return m_pCalculatorCom->HeightOnTerrain(&vPos, pTerrainTexCom->Get_VtxPos(), iWidth, iDepth) + 1 * m_fScale;
+	return m_pCalculatorCom->HeightOnTerrain(&vPos, pTerrainTexCom->Get_VtxPos(), 20, 20) + 1.f * m_fScale;
 }
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)

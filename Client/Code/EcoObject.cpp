@@ -8,12 +8,26 @@ CEcoObject::CEcoObject(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 }
 
+CEcoObject::CEcoObject(const CEcoObject & rhs)
+	: CGameObject(rhs)
+	, m_eType(rhs.m_eType)
+	, m_vPos(rhs.m_vPos)
+	, m_matWorld(rhs.m_matWorld)
+	, m_iTransparency(rhs.m_iTransparency)
+	, m_iTexture(rhs.m_iTexture)
+	, m_bClone(true)
+{
+	m_pTransCom = dynamic_cast<CTransform*>(rhs.m_pTransCom->Clone());
+	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", m_pTransCom });
+}
+
 CEcoObject::~CEcoObject()
 {
 }
 
 HRESULT CEcoObject::Ready_Object(void)
 {
+	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	return S_OK;
 }
@@ -44,6 +58,19 @@ void CEcoObject::Render_Obejct(void)
 
 }
 
+CEcoObject * CEcoObject::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+{
+	CEcoObject *	pInstance = new CEcoObject(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
 void CEcoObject::Free(void)
 {
 	CGameObject::Free();
@@ -70,4 +97,17 @@ void CEcoObject::Billboard()
 	m_pTransCom->Set_WorldMatrix(&m_matWorld);
 
 
+}
+
+HRESULT CEcoObject::Add_Component(void)
+{
+	CComponent*		pComponent = nullptr;
+
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
+	return S_OK;
 }

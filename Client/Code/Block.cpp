@@ -192,9 +192,9 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 		if (!m_bCreateIcon)
 		{
 			// Only For Stage
-			/*CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+			CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 			pMiniMap->Add_Icon(m_pGraphicDev, this);
-			m_bCreateIcon = true;*/
+			m_bCreateIcon = true;
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 		Add_RenderGroup(RENDER_NONALPHA, this);

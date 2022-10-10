@@ -45,7 +45,7 @@ void CTerrain::Render_Obejct(void)
 	if (m_bWireFrame)
 		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-	m_pTextureCom->Set_Texture(m_iTextureIndex);	// 텍스처 정보 세팅을 우선적으로 한다.
+	m_pTextureCom->Set_Texture(18);	// 텍스처 정보 세팅을 우선적으로 한다.
 
 	FAILED_CHECK_RETURN(SetUp_Material(), );
 	m_pBufferCom->Render_Buffer();

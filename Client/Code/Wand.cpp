@@ -27,7 +27,8 @@ CWand::~CWand()
 HRESULT CWand::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	m_pTransCom->Set_Pos(6.f, 0.5f, 15.f);
 	m_eState = STATE_GROUND;
 
 	//_vec3 vScale;
@@ -197,7 +198,7 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 	switch (m_eState)
 	{
 	case STATE_GROUND:
-		m_pTransCom->Set_Scale(1.f, 1.f, 1.f);
+		m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 		m_pTransCom->Revolution(pPlayerInfo, matView, 0.f, m_fTimeDelta, STATE_GROUND);
 		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
 		break;

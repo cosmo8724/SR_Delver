@@ -178,6 +178,7 @@
     <ClInclude Include="..\Header\FontLogo.h" />
     <ClInclude Include="..\Header\FontStart.h" />
     <ClInclude Include="..\Header\GrandFather.h" />
+    <ClInclude Include="..\Header\Grass.h" />
     <ClInclude Include="..\Header\GreenSlime.h" />
     <ClInclude Include="..\Header\GuitarMan.h" />
     <ClInclude Include="..\Header\HealthBar.h" />
@@ -220,9 +221,11 @@
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\StaticCamera.h" />
     <ClInclude Include="..\Header\Stick.h" />
+    <ClInclude Include="..\Header\Stone.h" />
     <ClInclude Include="..\Header\TalkWindow.h" />
     <ClInclude Include="..\Header\Terrain.h" />
     <ClInclude Include="..\Header\Tool_Scene.h" />
+    <ClInclude Include="..\Header\Tree.h" />
     <ClInclude Include="..\Header\UserParticle.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -272,6 +275,7 @@
     <ClCompile Include="..\Code\FontLogo.cpp" />
     <ClCompile Include="..\Code\FontStart.cpp" />
     <ClCompile Include="..\Code\GrandFather.cpp" />
+    <ClCompile Include="..\Code\Grass.cpp" />
     <ClCompile Include="..\Code\GreenSlime.cpp" />
     <ClCompile Include="..\Code\GuitarMan.cpp" />
     <ClCompile Include="..\Code\HealthBar.cpp" />
@@ -317,9 +321,11 @@
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\StaticCamera.cpp" />
     <ClCompile Include="..\Code\Stick.cpp" />
+    <ClCompile Include="..\Code\Stone.cpp" />
     <ClCompile Include="..\Code\TalkWindow.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
     <ClCompile Include="..\Code\Tool_Scene.cpp" />
+    <ClCompile Include="..\Code\Tree.cpp" />
     <ClCompile Include="..\Code\UserParticle.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>

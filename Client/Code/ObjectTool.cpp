@@ -1,10 +1,14 @@
 #include "../Default/stdafx.h"
 #include "../Default/ImGui/ImGuizmo.h"
+#include "../Default/ImGui/ImGuiFileDialog.h"
 #include "ObjectTool.h"
 #include "Export_Function.h"
 #include "Terrain.h"
 #include "Jar.h"
 #include "DynamicCamera.h"
+#include "Stone.h"
+#include "Grass.h"
+#include "Tree.h"
 
 CObjectTool::CObjectTool(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -33,9 +37,6 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 	static	_bool	bNowCrafting = false;
 	if (pGameObject)
 	{
-		ImGui::Text("This is ObjectTool.");
-		ImGui::Text("Add Tool Logic Here...");
-
 		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Jam"};
 		static _int item_current = 0;
 
@@ -52,16 +53,34 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 			case ECO_STONE:
 				wsprintf(szObjTag, L"Stone_%d", m_iStoneCnt);
 				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CStone::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iStoneCnt++;
 				break;
 
 			case ECO_GRASS:
 				wsprintf(szObjTag, L"Grass_%d", m_iGrassCnt);
 				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CGrass::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iGrassCnt++;
 				break;
 
 			case ECO_TREE:
 				wsprintf(szObjTag, L"Tree_%d", m_iTreeCnt);
 				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CTree::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iTreeCnt++;
 				break;
 
 			case ECO_JAR:
@@ -154,10 +173,192 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 			memcpy(&pTransCom->m_vAngle, vAngle * D3DX_PI / 180.f, sizeof(vAngle));
 			memcpy(&pTransCom->m_vScale, vScale, sizeof(vScale));
 
-			if (ImGui::Button("Apply"))
+			ImGui::BulletText("Current Texture : %d (0 ~ %d)", pCurObject->Get_CurrentTexture(), pCurObject->Get_TextureCom()->Get_FrameEnd());
+			ImGui::SameLine();
+			if (ImGui::Button("<"))
+				pCurObject->MinusTexture();
+			ImGui::SameLine();
+			if (ImGui::Button(">"))
+				pCurObject->PlusTexture();
+
+			if (ImGui::Button("Apply") || Mouse_Down(DIM_RB))
 			{
 				bNowCrafting = false;
 				iSelectObject = -1;
+			}
+		}
+
+		if (ImGui::Button("Save"))
+		{
+			if (bNowCrafting)
+			{
+				bNowCrafting = false;
+				iSelectObject = -1;
+			}
+			ImGuiFileDialog::Instance()->OpenDialog("SaveEcoObject", "Choose Folder", nullptr, ".", 1, nullptr, ImGuiFileDialogFlags_Modal);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Load"))
+		{
+			if (bNowCrafting)
+			{
+				bNowCrafting = false;
+				iSelectObject = -1;
+			}
+			ImGuiFileDialog::Instance()->OpenDialog("LoadEcoObject", "Choose Folder", ".dat", ".", 1, nullptr, ImGuiFileDialogFlags_Modal);
+		}
+
+		if (ImGuiFileDialog::Instance()->Display("SaveEcoObject"))
+		{
+			if (ImGuiFileDialog::Instance()->IsOk())
+			{
+				string	strPath = ImGuiFileDialog::Instance()->GetCurrentPath();
+				strPath += "\\EcoObject.dat";
+				const char* pPath = strPath.c_str();
+				int iLength = strlen(pPath) + 1;
+				TCHAR* wpPath = new TCHAR[iLength];
+				size_t	Temp;
+				mbstowcs_s(&Temp, wpPath, iLength, pPath, iLength);
+
+				HANDLE	hFile = CreateFile(wpPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+				if (INVALID_HANDLE_VALUE == hFile)
+					return E_FAIL;
+
+				DWORD	dwByte = 0;
+				DWORD	dwStrByte = 0;
+
+				auto		mapGameObject = pLayer->Get_mapGameObject();
+				for (auto iter = mapGameObject->begin(); iter != mapGameObject->end(); iter++)
+				{
+					CEcoObject*	pEcoObject = dynamic_cast<CEcoObject*>(iter->second);
+					dwStrByte = sizeof(TCHAR) * (lstrlen(iter->first) + 1);
+					if (pEcoObject)
+					{
+						CTransform*	pTransCom = dynamic_cast<CTransform*>(pEcoObject->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+						
+						WriteFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+						WriteFile(hFile, iter->first, dwStrByte, &dwByte, nullptr);
+						WriteFile(hFile, &pEcoObject->m_eType, sizeof(ECOOBJTYPE), &dwByte, nullptr);
+						WriteFile(hFile, &pTransCom->m_vInfo[INFO_RIGHT], sizeof(_vec3), &dwByte, nullptr);
+						WriteFile(hFile, &pTransCom->m_vInfo[INFO_UP], sizeof(_vec3), &dwByte, nullptr);
+						WriteFile(hFile, &pTransCom->m_vInfo[INFO_LOOK], sizeof(_vec3), &dwByte, nullptr);
+						WriteFile(hFile, &pTransCom->m_vInfo[INFO_POS], sizeof(_vec3), &dwByte, nullptr);
+						WriteFile(hFile, &pTransCom->m_vAngle, sizeof(_vec3), &dwByte, nullptr);
+						WriteFile(hFile, &pTransCom->m_vScale, sizeof(_vec3), &dwByte, nullptr);
+						WriteFile(hFile, &pTransCom->m_matWorld, sizeof(_matrix), &dwByte, nullptr);
+						WriteFile(hFile, &pEcoObject->Get_CurrentTexture(), sizeof(_int), &dwByte, nullptr);
+					}
+				}
+				CloseHandle(hFile);
+
+				Safe_Delete_Array(wpPath);
+				ImGuiFileDialog::Instance()->Close();
+			}
+			if (!ImGuiFileDialog::Instance()->IsOk())
+			{
+				ImGuiFileDialog::Instance()->Close();
+			}
+		}
+
+		if (ImGuiFileDialog::Instance()->Display("LoadEcoObject"))
+		{
+			if (ImGuiFileDialog::Instance()->IsOk())
+			{
+				if (!m_vecObjTags.empty())
+				{
+					for (size_t i = 0; i < m_vecObjTags.size(); ++i)
+					{
+						pLayer->Delete_GameObject(m_vecObjTags[i]);
+						Safe_Delete_Array(m_vecObjTags[i]);
+					}
+					m_vecObjTags.clear();
+				}
+				m_iStoneCnt = 0;
+				m_iGrassCnt = 0;
+				m_iTreeCnt = 0;
+				m_iJarCnt = 0;
+				m_iJamCnt = 0;
+
+				string	strPath = ImGuiFileDialog::Instance()->GetFilePathName();
+				const char* pPath = strPath.c_str();
+				int iLength = strlen(pPath) + 1;
+				TCHAR* wpPath = new TCHAR[iLength];
+				size_t	Temp;
+				mbstowcs_s(&Temp, wpPath, iLength, pPath, iLength);
+
+				HANDLE	hFile = CreateFile(wpPath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+				if (INVALID_HANDLE_VALUE == hFile)
+					return E_FAIL;
+
+				DWORD	dwByte = 0;
+				DWORD	dwStrByte = 0;
+				CEcoObject* pEcoObject = CEcoObject::Create(m_pGraphicDev);
+				CEcoObject* pCloneObject = nullptr;
+				CTransform*	pTransCom = dynamic_cast<CTransform*>(pEcoObject->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+
+				while (true)
+				{
+					ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+					TCHAR*	pName = new TCHAR[dwStrByte];
+					ReadFile(hFile, pName, dwStrByte, &dwByte, nullptr);
+
+					ReadFile(hFile, &pEcoObject->m_eType, sizeof(ECOOBJTYPE), &dwByte, nullptr);
+					ReadFile(hFile, &pTransCom->m_vInfo[INFO_RIGHT], sizeof(_vec3), &dwByte, nullptr);
+					ReadFile(hFile, &pTransCom->m_vInfo[INFO_UP], sizeof(_vec3), &dwByte, nullptr);
+					ReadFile(hFile, &pTransCom->m_vInfo[INFO_LOOK], sizeof(_vec3), &dwByte, nullptr);
+					ReadFile(hFile, &pTransCom->m_vInfo[INFO_POS], sizeof(_vec3), &dwByte, nullptr);
+					ReadFile(hFile, &pTransCom->m_vAngle, sizeof(_vec3), &dwByte, nullptr);
+					ReadFile(hFile, &pTransCom->m_vScale, sizeof(_vec3), &dwByte, nullptr);
+					ReadFile(hFile, &pTransCom->m_matWorld, sizeof(_matrix), &dwByte, nullptr);
+					_int	iTexture = 0;
+					ReadFile(hFile, &iTexture, sizeof(_int), &dwByte, nullptr);
+					pEcoObject->Set_CurrentTexture(iTexture);
+
+					if (0 == dwByte)
+					{
+						Safe_Release(pEcoObject);
+						Safe_Delete_Array(wpPath);
+						Safe_Delete_Array(pName);
+						break;
+					}
+
+					m_vecObjTags.push_back(pName);
+					switch (pEcoObject->m_eType)
+					{
+					case ECO_STONE:
+						pCloneObject = CStone::Create(pEcoObject);
+						m_iStoneCnt++;
+						break;
+
+					case ECO_GRASS:
+						pCloneObject = CGrass::Create(pEcoObject);
+						m_iGrassCnt++;
+						break;
+
+					case ECO_TREE:
+						pCloneObject = CTree::Create(pEcoObject);
+						m_iTreeCnt++;
+						break;
+
+					case ECO_JAR:
+						pCloneObject = CJar::Create(pEcoObject);
+						m_iJarCnt++;
+						break;
+
+					case ECO_JAM:
+						break;
+					}
+					pLayer->Add_GameObject(m_vecObjTags.back(), pCloneObject);
+				}
+				CloseHandle(hFile);
+				ImGuiFileDialog::Instance()->Close();
+			}
+			if (!ImGuiFileDialog::Instance()->IsOk())
+			{
+				ImGuiFileDialog::Instance()->Close();
 			}
 		}
 
