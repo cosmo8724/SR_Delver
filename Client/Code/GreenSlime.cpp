@@ -21,10 +21,10 @@ HRESULT CGreenSlime::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_State.iHp = 1;
-	m_State.iAttack = 1;
+	m_tInfo.iHp = 2;
+	m_tInfo.iAttack = 1;
 
-	m_pTransCom->Set_Pos(0.f, 1.f, 20.f);
+	m_pTransCom->Set_Pos(0.f, 1.f, 30.f);
 
 	m_eCurState = IDLE;
 
@@ -44,8 +44,6 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-
-	m_pTransCom->Set_Y(1.f);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	//// 애니메이션 변화
@@ -157,9 +155,12 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 	{
 		m_eCurState = IDLE;
 
-		// 몬스터 좌우로 이동하기
-		_vec3		vRight;
-		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
+		_vec3 vRight, vUp, vLook;
+		vLook = vPlayerPos - vPos;
+		D3DXVec3Normalize(&vLook, &vLook);
+		vUp = _vec3(0.f, 1.f, 0.f);
+
+		D3DXVec3Cross(&vRight, &vUp, &vLook);
 
 		m_fTimeAcc += fTimeDelta;
 		if (2.f < m_fTimeAcc)
@@ -170,21 +171,20 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 
 		D3DXVec3Normalize(&vRight, &vRight);
 		m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
+		
+		//// 몬스터 좌우로 이동하기
+		//_vec3		vRight;
+		//m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
 
-		//////
-		//_vec3		vSenter = { 15.f, 0.f, 15.f };
-
-		//_float fDist = D3DXVec3Length(&(vSenter - vPos));
-
-		// _float		fRadius = 5.f;
-
-		//if (fDist > fRadius)
+		//m_fTimeAcc += fTimeDelta;
+		//if (2.f < m_fTimeAcc)
 		//{
-		//	m_fIdleSpeed *= -1;
-		//}	
+		//	m_fIdle_Speed *= -1;
+		//	m_fTimeAcc = 0.f;
+		//}
 
 		//D3DXVec3Normalize(&vRight, &vRight);
-		//m_pTransCom->Move_Pos(&(vRight * m_fIdleSpeed * vRight));
+		//m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
 	}
 }
 void CGreenSlime::Motion_Change(const _float& fTimeDelta)

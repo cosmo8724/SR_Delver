@@ -26,6 +26,7 @@ public:
 
 private:
 	void					Billboard();
+	_int					Target(const _float& fTimeDelta);
 
 private:
 	HRESULT					Add_Component(void);
@@ -37,8 +38,13 @@ private:
 private:
 	_float					m_fSpeed;
 	_bool					m_bReady;
-	_vec3					vPos, m_vPlayerPos = { 0.f,0.f,0.f };
 
+	// 회전 테스트
+	_matrix					m_matTempRot;
+	_float m_fDistance = 0.0f;
+	_float m_fAngle = 0.f;
+	_matrix			m_matWorld;
+	_vec3			m_vTrans;
 };
 
 END

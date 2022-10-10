@@ -1,10 +1,9 @@
-#include "stdafx.h"
+癤�#include "stdafx.h"
 #include "..\Header\BlueBat.h"
 
 #include "Export_Function.h"
 
 #include "StaticCamera.h"
-#include "MiniMap.h"
 
 CBlueBat::CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -14,7 +13,7 @@ CBlueBat::CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fHeight(0.f)
 	, m_fJSpeed(0.2f)
 	, m_fJSpeed0(0.2f)
-	, m_fAccel(0.01f)
+	, m_fAccel(0.015f)
 	, m_fKnockBackSpeed(0.f)
 	, m_fTimeAcc(0.f)
 	, m_fJumpTimeAcc(0.f)
@@ -38,29 +37,24 @@ HRESULT CBlueBat::Ready_Object(void)
 	m_fHeight = 1.f;
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
-	m_fKnockBackSpeed = 20.f;
+	m_fKnockBackSpeed = 5.f;
 
 	return S_OK;
 }
 
 _int CBlueBat::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bCreateIcon)
-	{
-		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
-		pMiniMap->Add_Icon(m_pGraphicDev, this);
-		m_bCreateIcon = true;
-	}
-	Engine::CMonster::Update_Object(fTimeDelta);
+	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
-	Motion_Change(fTimeDelta);
 	Target_Follow(fTimeDelta);
 	KnockBack(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
+	Motion_Change(fTimeDelta);
+	
 	return 0;
 }
 
@@ -86,8 +80,6 @@ void CBlueBat::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-	CMonster::Render_Obejct();
 }
 
 HRESULT CBlueBat::Add_Component(void)
@@ -107,11 +99,6 @@ HRESULT CBlueBat::Add_Component(void)
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
-	// Collider Component
-	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
-
 	m_pAnimtorCom->Add_Component(L"Proto_BlueBatIDLE_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_BlueBatATTACK_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_BlueBatHIT_Texture");
@@ -122,7 +109,6 @@ HRESULT CBlueBat::Add_Component(void)
 
 void CBlueBat::Target_Follow(const _float & fTimeDelta)
 {
-	// 플레이어 따라가기
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
 
@@ -132,14 +118,14 @@ void CBlueBat::Target_Follow(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
-	if (fDist < 7.f && fDist > 4.f) // 플레이어를 향해 걸어간다
+	if (fDist < 7.f && fDist > 4.f) // Follow
 	{
 		m_eCurState = IDLE;
 
 		m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
 		m_pTransCom->Set_Y(1.f);
 	}
-	else if (fDist < 4.f && fDist > 1.f) // 공격을 시작한다
+	else if (fDist < 4.f && fDist > 1.f) // Jump
 	{
 		m_fSkillTimeAcc += fTimeDelta;
 		if (2.f < m_fSkillTimeAcc)
@@ -161,12 +147,15 @@ void CBlueBat::Target_Follow(const _float & fTimeDelta)
 
 void CBlueBat::Jump(const _float & fTimeDelta)
 {
+	//if (Engine::Key_Down(DIK_V))
+	//	m_bJump = true;
+
 	if (m_bJump)
 	{
 		_vec3 vPos;
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-		if (m_fJumpTimeAcc > 0.3f && m_fHeight >= vPos.y)
+		if (m_fJumpTimeAcc > 0.1f && m_fHeight >= vPos.y)
 		{
 			m_bJump = false;
 			m_fJumpTimeAcc = 0.f;
@@ -202,7 +191,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 
 void CBlueBat::KnockBack(const _float& fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_V))
+	if (Engine::Key_Down(DIK_V)) // TODO : PlayerAttack -> KnockBack
 	{
 		if (!m_bKnockBack)
 			m_bKnockBack = true;

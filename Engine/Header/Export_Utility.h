@@ -10,6 +10,7 @@
 #include "RcTex.h"
 #include "TerrainTex.h"
 #include "CubeTex.h"
+#include "SphereTex.h"
 #include "PtBuffer.h"
 #include "Collider.h"
 

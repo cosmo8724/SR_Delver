@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "..\Header\SongBosStun.h"
+#include "..\Header\SongBossStun.h"
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
 
-CSongBosStun::CSongBosStun(LPDIRECT3DDEVICE9 pGraphicDev)
+CSongBossStun::CSongBossStun(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
 {
 }
 
-CSongBosStun::CSongBosStun(const CSongBosStun & rhs)
+CSongBossStun::CSongBossStun(const CSongBossStun & rhs)
 	:CBullet(rhs)
 {
 }
 
-CSongBosStun::~CSongBosStun()
+CSongBossStun::~CSongBossStun()
 {
 }
 
-HRESULT CSongBosStun::Ready_Object(_int iBulletCount)
+HRESULT CSongBossStun::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -28,7 +28,7 @@ HRESULT CSongBosStun::Ready_Object(_int iBulletCount)
 	return S_OK;
 }
 
-HRESULT CSongBosStun::Add_Component(void)
+HRESULT CSongBossStun::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -52,7 +52,7 @@ HRESULT CSongBosStun::Add_Component(void)
 	return S_OK;
 }
 
-_int CSongBosStun::Update_Object(const _float & fTimeDelta)
+_int CSongBossStun::Update_Object(const _float & fTimeDelta)
 {
 	if (!m_bFire)
 		return 0;
@@ -68,7 +68,7 @@ _int CSongBosStun::Update_Object(const _float & fTimeDelta)
 
 	_float fNotePos = 0.5f;
 
-	if(m_iBulletCount == 0)
+	if (m_iBulletCount == 0)
 		m_pTransCom->Set_Pos(m_vPlayerPos.x + fNotePos, m_vPlayerPos.y - 0.03f, m_vPlayerPos.z + fNotePos);
 	else if (m_iBulletCount == 1)
 		m_pTransCom->Set_Pos(m_vPlayerPos.x + fNotePos, m_vPlayerPos.y - 0.03f, m_vPlayerPos.z - fNotePos);
@@ -76,12 +76,17 @@ _int CSongBosStun::Update_Object(const _float & fTimeDelta)
 		m_pTransCom->Set_Pos(m_vPlayerPos.x - fNotePos, m_vPlayerPos.y - 0.03f, m_vPlayerPos.z - fNotePos);
 	else if (m_iBulletCount == 3)
 		m_pTransCom->Set_Pos(m_vPlayerPos.x - fNotePos, m_vPlayerPos.y - 0.03f, m_vPlayerPos.z + fNotePos);
+	else
+		return 0;
+
+	// À½Ç¥ ÁÂ¿ì·Î Èçµé±â
+
 	
 	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
 
-void CSongBosStun::LateUpdate_Object(void)
+void CSongBossStun::LateUpdate_Object(void)
 {
 	Billboard();
 
@@ -89,14 +94,12 @@ void CSongBosStun::LateUpdate_Object(void)
 		return;
 
 	//if (10.f < m_fLifeTime)
-	//{
 	//	Reset();
-	//}
 
 	CGameObject::LateUpdate_Object();
 }
 
-void CSongBosStun::Render_Obejct(void)
+void CSongBossStun::Render_Obejct(void)
 {
 	if (!m_bFire)
 		return;
@@ -107,14 +110,13 @@ void CSongBosStun::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	m_pAnimtorCom->Set_Texture();
-
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
-void CSongBosStun::Billboard()
+void CSongBossStun::Billboard()
 {
 	// ºôº¸µå
 	_matrix		matWorld, matView, matBill;
@@ -134,9 +136,9 @@ void CSongBosStun::Billboard()
 	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 
-CSongBosStun * CSongBosStun::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount)
+CSongBossStun * CSongBossStun::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount)
 {
-	CSongBosStun*		pInstance = new CSongBosStun(pGraphicDev);
+	CSongBossStun*		pInstance = new CSongBossStun(pGraphicDev);
 	if (FAILED(pInstance->Ready_Object(iBulletCount)))
 	{
 		Safe_Release(pInstance);
@@ -146,12 +148,12 @@ CSongBosStun * CSongBosStun::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletC
 	return pInstance;
 }
 
-void CSongBosStun::Free(void)
+void CSongBossStun::Free(void)
 {
 	CGameObject::Free();
 }
 
-void CSongBosStun::Reset()
+void CSongBossStun::Reset()
 {
 	m_bFire = false;
 	m_bDead = false;

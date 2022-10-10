@@ -2,8 +2,10 @@
 #include "Base.h"
 #include "Engine_Include.h"
 #include "Export_Function.h"
+
 #include "MapTool.h"
 #include "ParticleTool.h"
+#include "InfoTool.h"
 
 class CImGuiMgr : public CBase
 {
@@ -15,7 +17,7 @@ private:
 
 public:
 	void			Set_Particle(CUserParticle* pParticle) { m_pParticleTool->m_pParticle = pParticle; }
-	CMapTool*	Get_MapTool() { return m_pMapTool; }
+	CMapTool*		Get_MapTool() { return m_pMapTool; }
 	void			Get_MapWidth(_int* Width, _int* Depth, _int* Interval) { *Width = m_iWidth; *Depth = m_iDepth; *Interval = m_iInterval; }
 
 public:
@@ -26,9 +28,10 @@ public:
 	void	SetupDevice(LPDIRECT3DDEVICE9 pGraphicDev);
 
 public:
-	HRESULT	ImGui_Map_Tool(LPDIRECT3DDEVICE9 pGraphicDev, const _float& fTimeDelta);
+	HRESULT		ImGui_Map_Tool(LPDIRECT3DDEVICE9 pGraphicDev, const _float& fTimeDelta);
 	void		MapTool();
 	void		ParticleTool();
+	void		InfoTool();
 
 public:
 	virtual void Free() override;
@@ -42,9 +45,10 @@ private:
 
 	vector<TCHAR*>	m_vecObjTags;
 
-	LPDIRECT3DDEVICE9	m_pGraphicDev = nullptr;
+	LPDIRECT3DDEVICE9		m_pGraphicDev = nullptr;
 	CMapTool*				m_pMapTool = nullptr;
 	CParticleTool*			m_pParticleTool = nullptr;
+	CInfoTool*				m_pInfoTool = nullptr;
 
-	_float			m_fTimeDelta;
+	_float					m_fTimeDelta;
 };

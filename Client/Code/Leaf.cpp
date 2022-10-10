@@ -25,6 +25,9 @@ HRESULT CLeaf::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_tInfo.iHp = 5;
+	m_tInfo.iAttack = 1;
+
 	m_OriginalPos = { 10.f, 1.f, 30.f };
 	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
 
@@ -51,6 +54,9 @@ _int CLeaf::Update_Object(const _float & fTimeDelta)
 
 	Motion_Change(fTimeDelta);
 	SKillTeleporting(fTimeDelta);
+
+	if(Key_Down(DIK_L))
+		CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
 
 	return 0;
 }
@@ -121,12 +127,12 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
-	
-	if (fDist < 5.f) // ¸ó½ºÅÍ ¼ø°£ ÀÌµ¿
+
+ 	if (fDist < 5.f) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	{
 		m_eCurState = ATTACK;
 
-		if (m_pAnimtorCom->Get_Currentframe() >= 12.f) // LeafÀÇ Attack ÀÌ¹ÌÁö°¡ ³¡³¯ ¶§ Âë
+		if (m_pAnimtorCom->Get_Currentframe() >= 12.f && m_pAnimtorCom->Get_Currentframe() < 13.f) // Leafï¿½ï¿½ Attack ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
 			Teleporting(vPlayerPos.x, vPlayerPos.z);
 	}
 	else
@@ -136,10 +142,10 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 		if (fDist < 10.f)
 		{
 			m_fBulletTimeAcc += fTimeDelta;
-			if (2.f < m_fBulletTimeAcc)
+			if (0.5f < m_fBulletTimeAcc)
 			{
 				CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
-				m_fTeleportingTimeAcc = 0.f;
+				m_fBulletTimeAcc = 0.f;
 			}
 		}
 	}
@@ -147,24 +153,25 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 
 void CLeaf::Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ)
 {
-	int iRandomNum = rand() % 7 + 2; // ¸ó½ºÅÍ°¡ ·£´ýÇÏ°Ô ÀÌµ¿ÇÒ ÁÂÇ¥
+	int iRandomNum = rand() % 7 + 2; // ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥
+
 	if (fPlayerPosX == (m_OriginalPos.x + iRandomNum) || fPlayerPosZ == (m_OriginalPos.z + iRandomNum) ||
 		fPlayerPosX == (m_OriginalPos.x - iRandomNum) || fPlayerPosZ == (m_OriginalPos.z - iRandomNum))
-		return; // ¸¸¾à ¸ó½ºÅÍ°¡ ÀÌµ¿ÇÒ ÁÂÇ¥°¡ ÇÃ·¹ÀÌ¾î¿Í °°´Ù¸é ´Ù½Ã ·£´ý°ªÀ» ¹Þ´Â´Ù
+		return; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´Â´ï¿½f
 
-	if (iRandomNum % 2 == 0) // Â¦¼ö
+	if (iRandomNum % 2 == 0) // Â¦ï¿½ï¿½
 	{
-		if (iRandomNum < 5) // Â¦¼öÀÎµ¥ 5º¸´Ù Å©´Ù¸é
+		if (iRandomNum < 5) // Â¦ï¿½ï¿½ï¿½Îµï¿½ 5ï¿½ï¿½ï¿½ï¿½ Å©ï¿½Ù¸ï¿½
 			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
-
-		m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
+		else
+			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
 	}
-	else // È¦¼ö
+	else // È¦ï¿½ï¿½
 	{
-		if (iRandomNum < 5) // È¦¼öÀÎµ¥ 5º¸´Ù Å©´Ù¸é
+		if (iRandomNum < 5) // È¦ï¿½ï¿½ï¿½Îµï¿½ 5ï¿½ï¿½ï¿½ï¿½ Å©ï¿½Ù¸ï¿½
 			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z - iRandomNum);
-
-		m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
+		else 
+			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
 	}
 }
 

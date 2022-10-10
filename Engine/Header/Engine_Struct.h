@@ -3,13 +3,6 @@
 
 namespace Engine
 {
-	typedef struct tagState
-	{
-		_uint		iHp;
-		_uint		iAttack;
-
-	}STATE;
-
 	typedef	struct tagVertexColor
 	{
 		_vec3		vPos;
@@ -150,6 +143,13 @@ namespace Engine
 											// 단계 하나에 정의된 파티클 수
 
 	} PINFO;
+
+	typedef struct tagCreatureInfo
+	{
+		_int		iHp;
+		_int		iAttack;
+
+	}CINFO;
 }
 
 

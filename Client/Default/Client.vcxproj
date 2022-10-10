@@ -170,8 +170,8 @@
     <ClInclude Include="..\Header\DynamicCamera.h" />
     <ClInclude Include="..\Header\Effect.h" />
     <ClInclude Include="..\Header\EquipWindow.h" />
-    <ClInclude Include="..\Header\Fist.h" />
     <ClInclude Include="..\Header\FistBullet.h" />
+    <ClInclude Include="..\Header\Fist.h" />
     <ClInclude Include="..\Header\FontLogo.h" />
     <ClInclude Include="..\Header\FontStart.h" />
     <ClInclude Include="..\Header\GrandFather.h" />
@@ -182,6 +182,7 @@
     <ClInclude Include="..\Header\HPGauge.h" />
     <ClInclude Include="..\Header\Icon.h" />
     <ClInclude Include="..\Header\ImGuiMgr.h" />
+    <ClInclude Include="..\Header\InfoTool.h" />
     <ClInclude Include="..\Header\Inventory.h" />
     <ClInclude Include="..\Header\InvImg.h" />
     <ClInclude Include="..\Header\ItemMgr.h" />
@@ -192,6 +193,10 @@
     <ClInclude Include="..\Header\MainApp.h" />
     <ClInclude Include="..\Header\MapTool.h" />
     <ClInclude Include="..\Header\MapUI.h" />
+    <ClInclude Include="..\Header\MonsterMgr.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h" />
     <ClInclude Include="..\Header\ParticleMgr.h" />
     <ClInclude Include="..\Header\ParticleTool.h" />
@@ -199,12 +204,13 @@
     <ClInclude Include="..\Header\Player.h" />
     <ClInclude Include="..\Header\PSystem.h" />
     <ClInclude Include="..\Header\QuickSlot.h" />
+    <ClInclude Include="..\Header\SkeletonGhost.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
     <ClInclude Include="..\Header\SmileMan.h" />
-    <ClInclude Include="..\Header\SongBosFloor.h" />
     <ClInclude Include="..\Header\SongBoss.h" />
     <ClInclude Include="..\Header\SongBossBullet.h" />
-    <ClInclude Include="..\Header\SongBosStun.h" />
+    <ClInclude Include="..\Header\SongBossFloor.h" />
+    <ClInclude Include="..\Header\SongBossStun.h" />
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\StaticCamera.h" />
     <ClInclude Include="..\Header\Stick.h" />
@@ -252,8 +258,8 @@
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
     <ClCompile Include="..\Code\Effect.cpp" />
     <ClCompile Include="..\Code\EquipWindow.cpp" />
+    <ClCompile Include="..\Code\FistBulle.cpp" />
     <ClCompile Include="..\Code\Fist.cpp" />
-    <ClCompile Include="..\Code\FistBullet.cpp" />
     <ClCompile Include="..\Code\FontLogo.cpp" />
     <ClCompile Include="..\Code\FontStart.cpp" />
     <ClCompile Include="..\Code\GrandFather.cpp" />
@@ -264,6 +270,7 @@
     <ClCompile Include="..\Code\HPGauge.cpp" />
     <ClCompile Include="..\Code\Icon.cpp" />
     <ClCompile Include="..\Code\ImGuiMgr.cpp" />
+    <ClCompile Include="..\Code\InfoTool.cpp" />
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\InvImg.cpp" />
     <ClCompile Include="..\Code\ItemMgr.cpp" />
@@ -274,6 +281,10 @@
     <ClCompile Include="..\Code\MainApp.cpp" />
     <ClCompile Include="..\Code\MapTool.cpp" />
     <ClCompile Include="..\Code\MapUI.cpp" />
+    <ClCompile Include="..\Code\MonsterMgr.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Code\MiniMap.cpp" />
     <ClCompile Include="..\Code\ParticleMgr.cpp" />
     <ClCompile Include="..\Code\ParticleTool.cpp" />
@@ -281,12 +292,13 @@
     <ClCompile Include="..\Code\Player.cpp" />
     <ClCompile Include="..\Code\PSystem.cpp" />
     <ClCompile Include="..\Code\QuickSlot.cpp" />
+    <ClCompile Include="..\Code\SkeletonGhost.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />
     <ClCompile Include="..\Code\SmileMan.cpp" />
-    <ClCompile Include="..\Code\SongBosFloor.cpp" />
     <ClCompile Include="..\Code\SongBoss.cpp" />
     <ClCompile Include="..\Code\SongBossBullet.cpp" />
-    <ClCompile Include="..\Code\SongBosStun.cpp" />
+    <ClCompile Include="..\Code\SongBossFloor.cpp" />
+    <ClCompile Include="..\Code\SongBossStun.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\StaticCamera.cpp" />
     <ClCompile Include="..\Code\Stick.cpp" />
