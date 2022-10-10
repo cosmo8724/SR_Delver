@@ -9,7 +9,7 @@ END
 
 class CEcoObject : public CGameObject
 {
-private:
+protected:
 	explicit CEcoObject(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CEcoObject();
 
@@ -18,18 +18,12 @@ public:
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void) override;
 	virtual void		Render_Obejct(void) override;
+	virtual void		Free(void);
 
-private:
-	HRESULT				Add_Component(void);
-
-
-public:
-	static CEcoObject*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual void			Free(void);
-
-private:
+protected:
 	CRcTex*				m_pBufferCom	= nullptr;
-	CTransform*			m_pTransCom	= nullptr;
-	CTexture*				m_pTextureCom	= nullptr;
+	CTransform*			m_pTransCom		= nullptr;
+	CTexture*			m_pTextureCom	= nullptr;
+	_vec3				m_vPos;
 };
 
