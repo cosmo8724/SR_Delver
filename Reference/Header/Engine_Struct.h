@@ -150,6 +150,27 @@ namespace Engine
 		_int		iAttack;
 
 	}CINFO;
+
+	typedef struct tPlayerInfo
+	{
+		_int		iHp;	
+		_int		iHpMax;
+		_int		iLevel;
+		_int		iExp;
+		_int		iExpMax;
+		_int		iHunger;
+		_int		iAtk;
+		_int		iDef;
+		_float		fSpeed; 
+	}PLAYERINFO;
+
+	typedef struct tItemInfo
+	{
+		_int		iHp;	// 내구도
+		_int		iLevel;	// 레벨
+		_int		iExp;
+		_int		iAbility;	// 아이템이 가지고 있는 능력치
+	}ITEMINFO;
 }
 
 

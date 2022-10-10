@@ -28,7 +28,7 @@ protected:
 	CTransform*			m_pTransCom		= nullptr;
 	CTexture*			m_pTextureCom	= nullptr;
 	_vec3				m_vPos;
-	_bool				m_bDead			= false;
+	//_bool				m_bDead			= false;
 	_matrix				m_matWorld;
 	_int				m_iTransparency	= 255;
 };

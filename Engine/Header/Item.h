@@ -28,6 +28,7 @@ public:
 	void		Set_Equipped() { m_eState = STATE_EQUIP; }
 	wstring		Get_TextureTag() { return m_textureTag; }
 	void		Set_State(ITEMSTATE eState) { m_eState = eState; }
+	ITEMTYPE	Get_ItemType() { return m_eItemType; }
 
 protected:
 	CRcTex*			m_pBufferCom = nullptr;
@@ -49,6 +50,9 @@ protected:
 	_float			m_fCoolTime = 0.f;
 
 	_bool			m_bParticleCall = false;
+	ITEMTYPE		m_eItemType = ITEM_END;
+	ITEMINFO		m_tInfo;
+	//_bool			m_bDead = false;
 };
 
 END

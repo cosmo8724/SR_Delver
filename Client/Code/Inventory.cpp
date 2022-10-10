@@ -2,6 +2,7 @@
 #include "..\Header\Inventory.h"
 #include "InvImg.h"
 #include "Export_Function.h"
+#include "Potion.h"
 
 CInventory::CInventory(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
@@ -263,16 +264,23 @@ void CInventory::Set_ItemEquip()
 			{
 				if (nullptr != m_Inventory[i][j])
 				{
-					if (nullptr != m_pEquipped)
-					{
-						static_cast<CInvImg*>(m_pEquipped)->Get_TargetObj()->Set_State(STATE_INV);
-					}
 
-					m_pEquipped = m_Inventory[i][j];
-					CWeapon*	pWeapon = dynamic_cast<CWeapon*>(static_cast<CInvImg*>(m_Inventory[i][j])->Get_TargetObj());
-					if (pWeapon != nullptr)
+
+					CItem*	pItem = static_cast<CInvImg*>(m_Inventory[i][j])->Get_TargetObj();
+					pItem->Set_Equipped();
+					switch (pItem->Get_ItemType())
 					{
-						pWeapon->Set_Equipped();
+					case ITEM_WEAPON:
+						if (nullptr != m_pEquipped)
+							static_cast<CInvImg*>(m_pEquipped)->Get_TargetObj()->Set_State(STATE_INV);
+						m_pEquipped = m_Inventory[i][j];
+						break;
+					case ITEM_POTION:	// 해당 인벤토리아이템을 삭제해야 한다.
+					{
+						m_Inventory[i][j]->Set_Dead(true);
+						m_Inventory[i][j] = nullptr;
+					}
+						break;
 					}
 				}
 			}

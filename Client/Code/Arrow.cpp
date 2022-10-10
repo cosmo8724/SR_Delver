@@ -15,6 +15,8 @@ CArrow::CArrow(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	m_vPos = vPos;
 	m_ObjTag = L"Arrow";
+	m_eItemType = ITEM_WEAPON;
+
 }
 
 CArrow::~CArrow()

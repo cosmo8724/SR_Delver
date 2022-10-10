@@ -18,6 +18,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fJSpeed0(0.15f)
 	, m_fJSpeed(0.3f)
 {
+	memset(&m_tInfo, 0, sizeof(PLAYERINFO));
 }
 
 CPlayer::~CPlayer()
@@ -36,6 +37,19 @@ HRESULT CPlayer::Ready_Object(void)
 	m_pTransCom->Get_WorldMatrix(&matWorld);
 	//m_fScale = 0.4f;
 	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+
+	// 플레이어 스탯정보
+	//m_tInfo.iHp = 20;
+	m_tInfo.iHp = 10;
+	m_tInfo.iHpMax = m_tInfo.iHp;
+	m_tInfo.iAtk = 10;
+	m_tInfo.iDef = 10;
+	m_tInfo.iExp = 0;
+	m_tInfo.iExpMax = 10;
+	m_tInfo.iHunger = 30;
+	m_tInfo.fSpeed = 1;
+	m_tInfo.iLevel = 1;
+
 	return S_OK;
 }
 
@@ -64,6 +78,8 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	Add_RenderGroup(RENDER_NONALPHA, this);
+
+	_int iHp = m_tInfo.iHp;
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
