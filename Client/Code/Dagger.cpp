@@ -75,8 +75,11 @@ _int CDagger::Update_Object(const _float & fTimeDelta)
 
 		//m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
 
-		if(!m_bAttack)
+		if (!m_bAttack)
+		{
+			m_pColliderCom->Set_Free(true);
 			m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
+		}
 		break;
 	}
 
@@ -196,7 +199,19 @@ HRESULT CDagger::Add_Component(void)
 void CDagger::Charge(const _float & fTimeDelta)
 {
 	// 차지는 일단 차후
-	m_bAttack = true;
+	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
+	{
+		if (!m_bAttack)
+			m_bAttack = true;
+
+		m_pColliderCom->Set_Free(false);
+		m_pTransCom->Prepare_Attack();
+
+
+	}
+
+
+
 }
 
 void CDagger::Attack(const _float & fTimeDelta)
@@ -204,8 +219,11 @@ void CDagger::Attack(const _float & fTimeDelta)
 	if (!m_bAttack)
 		return;
 
-	m_fAttackTime += fTimeDelta;
+	if (m_pTransCom->Item_Attack(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer()))
+	{
+		m_bAttack = false;
+		m_pColliderCom->Set_Free(true);
+	}
 
-	m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
 
 }
