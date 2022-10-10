@@ -47,6 +47,8 @@
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 
+#include "EcoObject.h"
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -107,6 +109,7 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
+	// Collider 테스트(Player - 아이템)
 	// Collider 테스트( 플레이어와 Arrow0,Arrow1,Wand2)
 	CGameObject* pDest = nullptr;
 
@@ -126,6 +129,15 @@ void CStage::LateUpdate_Scene(void)
 	//Engine::CollisionAABB(pSour, pDest);
 	Engine::CollisionTest(pPlayer, pDest);
 	// ~Collider 테스트
+
+	// Bullet 테스트
+	CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
+	for (auto& bullet : *pPlayerBullets)
+	{
+		Engine::CollisionTest(pSour, bullet);
+	}
+
 
 	// song bullet 이랑 테스트 하고 싶다면
 	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS))
@@ -274,6 +286,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CWinkMan::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WinkMan", pGameObject), E_FAIL);
+
+	// EcoObject
+	pGameObject = CEcoObject::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Eco", pGameObject), E_FAIL);
 
 	// Blocks
 	string	strPath = "..\\Bin\\Resource\\Map_SH.dat";

@@ -168,6 +168,7 @@
     <ClInclude Include="..\Header\BulletMgr.h" />
     <ClInclude Include="..\Header\Dog.h" />
     <ClInclude Include="..\Header\DynamicCamera.h" />
+    <ClInclude Include="..\Header\EcoObject.h" />
     <ClInclude Include="..\Header\Effect.h" />
     <ClInclude Include="..\Header\EquipWindow.h" />
     <ClInclude Include="..\Header\FistBullet.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="..\Header\Inventory.h" />
     <ClInclude Include="..\Header\InvImg.h" />
     <ClInclude Include="..\Header\ItemMgr.h" />
+    <ClInclude Include="..\Header\Jar.h" />
     <ClInclude Include="..\Header\Leaf.h" />
     <ClInclude Include="..\Header\LeafBullet.h" />
     <ClInclude Include="..\Header\Loading.h" />
@@ -257,6 +259,7 @@
     <ClCompile Include="..\Code\BulletMgr.cpp" />
     <ClCompile Include="..\Code\Dog.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
+    <ClCompile Include="..\Code\EcoObject.cpp" />
     <ClCompile Include="..\Code\Effect.cpp" />
     <ClCompile Include="..\Code\EquipWindow.cpp" />
     <ClCompile Include="..\Code\FistBulle.cpp" />
@@ -275,6 +278,7 @@
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\InvImg.cpp" />
     <ClCompile Include="..\Code\ItemMgr.cpp" />
+    <ClCompile Include="..\Code\Jar.cpp" />
     <ClCompile Include="..\Code\Leaf.cpp" />
     <ClCompile Include="..\Code\LeafBullet.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />

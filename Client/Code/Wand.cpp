@@ -98,8 +98,6 @@ void CWand::Charge(const _float & fTimeDelta)
 
 		if (!m_bParticleCall)
 		{
-			CParticleMgr::GetInstance()->Set_Info(this);
-			CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_0);
 			m_bParticleCall = true;
 		}
 

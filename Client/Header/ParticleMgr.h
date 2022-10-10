@@ -29,7 +29,19 @@ public:
 	void			Collect_Particle(_int iIdx);
 
 	// 호출 전 파티클 정보 설정
-	void			Set_Info(CGameObject* pObj);
+	void			Set_Info(CGameObject* pObj
+		, _int		_maxParticles						// 최대 파티클 수
+		, _float	_fSize								// 모든 파티클의 크기
+		, _vec3		_vVelocity = { 1.f,1.f,1.f }		// 속도
+		, _float	_fLifeTime = 1.f					// 파티클 소멸까지 유지되는 시간
+		, D3DXCOLOR _tColor = {1.f, 1.f, 1.f, 1.f}		// 색깔
+		, _float	_fFrameSpeed = 1.f					// 프레임 속도
+		, _bool		_bFrameRepeat = false				// 프레임 반복재생 여부
+		, _bool		_bRand = false						// 색 랜덤 여부
+	); 
+
+	// 바운딩 박스 세팅 ( 필요한 경우 )
+	//void			Set_BoundingBox(BDBOX _bdBox);
 
 
 public:
@@ -45,8 +57,13 @@ private:
 	queue<_int>				m_IdxQue;
 
 
-	ATTRIBUTE		m_pInfo;
+	ATTRIBUTE		m_tAttribute;
+	PINFO			m_tPInfo;
 	CGameObject*	m_pTarget;
+
+	_float			m_fFrameSpeed = 1.f;
+	_bool			m_bFrameRepeat = false;
+	_bool			m_bRand = false;
 
 };
 
