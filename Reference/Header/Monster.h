@@ -16,15 +16,15 @@ public:
 
 public:
 	virtual HRESULT		Ready_Object(void) { return S_OK; };
-	virtual _int		Update_Object(const _float& fTimeDelta);
-	virtual void		LateUpdate_Object(void) {};
-	virtual void		Render_Obejct(void);
+	virtual _int			Update_Object(const _float& fTimeDelta);
+	virtual void			LateUpdate_Object(void) {};
+	virtual void			Render_Obejct(void);
 
 protected:
 	virtual HRESULT		Add_Component(void) PURE;
-	virtual void		Billboard();
+	virtual void			Billboard();
 
-	virtual void		Target_Follow(const _float& fTimeDelta) {};
+	virtual void			Target_Follow(const _float& fTimeDelta) {};
 
 protected:
 	_float				m_fIdle_Speed;

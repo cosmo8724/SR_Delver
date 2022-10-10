@@ -241,6 +241,9 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon">
       <UniqueIdentifier>{424aea31-d71b-43a1-b988-ff83081e05cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\98. Tool_Scene\ObjectTool">
+      <UniqueIdentifier>{eea8e898-3bef-48e3-b45f-4dc259f2193b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -483,6 +486,9 @@
     <ClInclude Include="..\Header\Icon.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\ObjectTool.h">
+      <Filter>01. Scene\98. Tool_Scene\ObjectTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -706,6 +712,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Icon.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ObjectTool.cpp">
+      <Filter>01. Scene\98. Tool_Scene\ObjectTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

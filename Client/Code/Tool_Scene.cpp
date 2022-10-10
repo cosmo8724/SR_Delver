@@ -32,6 +32,7 @@ _int CTool_Scene::Update_Scene(const _float & fTimeDelta)
 	_uint		iResult = Engine::CScene::Update_Scene(fTimeDelta);
 
 	CImGuiMgr::GetInstance()->MapTool();
+	CImGuiMgr::GetInstance()->ObjectTool();
 	CImGuiMgr::GetInstance()->ParticleTool();
 	CImGuiMgr::GetInstance()->InfoTool();
 
