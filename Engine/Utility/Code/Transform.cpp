@@ -34,6 +34,14 @@ CTransform::~CTransform()
 {
 }
 
+void CTransform::Set_Info(_vec3 vRight, _vec3 vUp, _vec3 vLook)
+{
+	memcpy(&m_matWorld.m[0][0], &vRight, sizeof(_vec3));
+	memcpy(&m_matWorld.m[1][0], &vUp, sizeof(_vec3));
+	memcpy(&m_matWorld.m[2][0], &vLook, sizeof(_vec3));
+
+}
+
 void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta)
 {
 	_vec3		vDir = *pTargetPos - m_vInfo[INFO_POS];
@@ -156,7 +164,7 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
 
 	_matrix matRot;	
-	D3DXMatrixRotationY(&matRot, D3DXToRadian(60.f));
+	D3DXMatrixRotationY(&matRot, D3DXToRadian(90.f));
 
 	_matrix matTrans;
 	_vec3 vTrans = 0.5f * vRight + 0.8f * vLook - 0.2f * vUp;
