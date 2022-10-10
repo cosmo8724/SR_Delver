@@ -128,11 +128,28 @@ void CStage::LateUpdate_Scene(void)
 	// 무기와 환경요소
 	vector<CGameObject*>* pItems = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
 	CGameObject* pSour = nullptr;
+	CGameObject* pSour2 = nullptr;
+	CGameObject* pSour3 = nullptr;
+	CGameObject* pSour4 = nullptr;
+	CGameObject* pSour5 = nullptr;
+
 	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
+	pSour2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_0");
+	pSour3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_1");
+	pSour4 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_2");
+	pSour5 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_3");
+
 	for (auto& weapon : *pItems)
 	{
 		Engine::CollisionAABB(pSour, weapon);
 
+		Engine::CollisionAABB(pSour2, weapon);
+
+		Engine::CollisionAABB(pSour3, weapon);
+
+		Engine::CollisionAABB(pSour4, weapon);
+
+		Engine::CollisionAABB(pSour5, weapon);
 	}
 
 	// Bullet 테스트
@@ -144,6 +161,14 @@ void CStage::LateUpdate_Scene(void)
 
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
 		Engine::CollisionTest(pSour, bullet);
+
+		Engine::CollisionTest(pSour2, bullet);
+
+		Engine::CollisionTest(pSour3, bullet);
+
+		Engine::CollisionTest(pSour4, bullet);
+
+		Engine::CollisionTest(pSour5, bullet);
 	}
 
 	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW);
@@ -154,6 +179,14 @@ void CStage::LateUpdate_Scene(void)
 
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
 		Engine::CollisionTest(pSour, bullet);
+
+		Engine::CollisionTest(pSour2, bullet);
+
+		Engine::CollisionTest(pSour3, bullet);
+
+		Engine::CollisionTest(pSour4, bullet);
+
+		Engine::CollisionTest(pSour5, bullet);
 	}
 
 

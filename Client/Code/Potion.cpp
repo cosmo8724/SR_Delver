@@ -67,6 +67,11 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 			m_fDotTime = 0.f;
 		}
 	}
+	else if (STATE_GROUND == m_eState)
+	{
+		m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+		m_pTransCom->Set_Y(m_vPos.y - 0.3f);
+	}
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
