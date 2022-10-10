@@ -244,11 +244,20 @@
     <Filter Include="01. Scene\98. Tool_Scene\ObjectTool">
       <UniqueIdentifier>{eea8e898-3bef-48e3-b45f-4dc259f2193b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\07. CrossHair">
+      <UniqueIdentifier>{3c39e0b8-07c9-4dec-8fe3-8da03ad038ee}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject">
       <UniqueIdentifier>{62f9a876-dbd3-4e16-912e-3d77abd8d56a}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Jar">
       <UniqueIdentifier>{38e6048f-fc54-41f8-b06f-7d9a3c76b3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger">
+      <UniqueIdentifier>{d1e2faf3-2722-4601-952b-9fb5382577bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Potion">
+      <UniqueIdentifier>{ec9c8099-79a2-465a-a1f5-704697f0ff81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -495,11 +504,20 @@
     <ClInclude Include="..\Header\ObjectTool.h">
       <Filter>01. Scene\98. Tool_Scene\ObjectTool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CrossHair.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\07. CrossHair</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\EcoObject.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Jar.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Jar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Dagger.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Potion.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Potion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -728,11 +746,20 @@
     <ClCompile Include="..\Code\ObjectTool.cpp">
       <Filter>01. Scene\98. Tool_Scene\ObjectTool</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\CrossHair.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\07. CrossHair</Filter>
+    </ClCompile>
     <ClCompile Include="..\Code\EcoObject.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Jar.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Jar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Dagger.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Potion.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Potion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

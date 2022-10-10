@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "..\Header\Jar.h"
+
 #include "Export_Function.h"
+#include "ParticleMgr.h"
+#include "ItemMgr.h"
 
 CJar::CJar(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CEcoObject(pGraphicDev)
@@ -28,21 +31,38 @@ HRESULT CJar::Ready_Object(void)
 
 _int CJar::Update_Object(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+
 	CEcoObject::Update_Object(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CJar::LateUpdate_Object(void)
 {
+	if (m_bDead)
+		return;
+
+	Billboard();
 	CEcoObject::LateUpdate_Object();
 }
 
 void CJar::Render_Obejct(void)
 {
+	if (m_bDead)
+		return;
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+
+	// 알파값 변화
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(m_iTransparency, 0, 0, 0));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -54,6 +74,9 @@ void CJar::Render_Obejct(void)
 
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
+
+	// 알파값 변화 해제
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
@@ -101,4 +124,23 @@ CJar * CJar::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 void CJar::Free(void)
 {
 	CEcoObject::Free();
+}
+
+void CJar::CollisionEvent(CGameObject * pObj)
+{
+	//MSG_BOX("충돌");
+	//m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
+
+	m_bDead = true;
+	m_pColliderCom->Set_Free(true);
+	CParticleMgr::GetInstance()->Set_Info(this, 20, 1.f, { 0.1f, 0.1f, 0.1f },
+		1.f, { 1.f,1.f,1.f,1.f });
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_6);
+
+	//CItemMgr::GetInstance()->Add_RandomObject(
+	//	L"Layer_GameLogic", L"Arrow", ITEM_WEAPON, m_pTransCom->Get_Pos());
+
+	CItemMgr::GetInstance()->Add_RandomObject(
+		L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+
 }

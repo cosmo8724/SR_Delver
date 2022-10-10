@@ -20,12 +20,15 @@ private:
 	virtual HRESULT		Add_Component(void) override;
 	virtual void		Target_Follow(const _float& fTimeDelta);
 
+	void				Hit(const _float& fTimeDelta);
 	void				Motion_Change(const _float& fTimeDelta);
 
 private:
 	STATE				m_ePreState;
 	STATE				m_eCurState;
 
+	_bool				m_bHit = false;
+	_float				m_fHitTimeAcc = 0.f;
 
 	// Timer
 	_float				m_fTimeAcc;

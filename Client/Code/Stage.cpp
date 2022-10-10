@@ -38,6 +38,7 @@
 #include "EquipWindow.h"
 #include "MapUI.h"
 #include "MiniMap.h"
+#include "CrossHair.h"
 
 // Font
 #include "HPGauge.h"
@@ -66,7 +67,6 @@ HRESULT CStage::Ready_Scene(void)
 		return E_FAIL;
 
 	FAILED_CHECK_RETURN(Ready_Proto(), E_FAIL);
-
 	FAILED_CHECK_RETURN(Ready_Light(), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -85,7 +85,6 @@ void CStage::LateUpdate_Scene(void)
 {
 	CBlock* pBlock = nullptr;
 	CLayer*	pLayer = m_mapLayer[L"Layer_GameLogic"];
-	//CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
 	CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
 	//vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 
@@ -112,39 +111,64 @@ void CStage::LateUpdate_Scene(void)
 
 	// Collider 테스트(Player - 아이템)
 	// Collider 테스트( 플레이어와 Arrow0,Arrow1,Wand2)
-	CGameObject* pDest = nullptr;
+	//CGameObject* pDest = nullptr;
 
-	for (int i = 0; i < 2; ++i)
-	{
-		wstring obj = L"Arrow";
-		wchar_t index[10];
-		_itow_s(i, index, 10);
-		obj += index;
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	wstring obj = L"Arrow";
+	//	wchar_t index[10];
+	//	_itow_s(i, index, 10);
+	//	obj += index;
 
-		pDest = Engine::Get_GameObject(L"Layer_GameLogic", obj.c_str());
-		//Engine::CollisionAABB(pSour, pDest);
-		Engine::CollisionTest(pPlayer, pDest);
-	}
+	//	pDest = Engine::Get_GameObject(L"Layer_GameLogic", obj.c_str());
+	//	//Engine::CollisionAABB(pSour, pDest);
+	//	Engine::CollisionTest(pPlayer, pDest);
+	//}
 
-	pDest = Engine::Get_GameObject(L"Layer_GameLogic", L"Wand2");
-	//Engine::CollisionAABB(pSour, pDest);
-	Engine::CollisionTest(pPlayer, pDest);
+	//pDest = Engine::Get_GameObject(L"Layer_GameLogic", L"Wand2");
+	////Engine::CollisionAABB(pSour, pDest);
+	//Engine::CollisionTest(pPlayer, pDest);
 	// ~Collider 테스트
 
+	// 플레이어와 아이템
+	vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items();
+	for (auto& item : *pItems)
+	{
+		Engine::CollisionAABB(pPlayer, item);
+	}
+
 	// Bullet 테스트
-	CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+	CGameObject* pSour = nullptr;
 	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 	for (auto& bullet : *pPlayerBullets)
 	{
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+		Engine::CollisionTest(pSour, bullet);
+
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
 		Engine::CollisionTest(pSour, bullet);
 	}
 
+	// Monster Collider
+	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
+		Engine::CollisionTest(pSour, bullet);
+	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
+	//	Engine::CollisionTest(pSour, bullet);
 
-	// song bullet 이랑 테스트 하고 싶다면
-	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS))
-	//{
+	Engine::CollisionTest(pSour, pPlayer);
 
-	//}
+	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime");
+	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
+		Engine::CollisionTest(pSour, bullet);
+	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
+	//	Engine::CollisionTest(pSour, bullet);
+
+	Engine::CollisionTest(pSour, pPlayer);
+
+
+
+
 	
 	Engine::CScene::LateUpdate_Scene();
 }
@@ -203,7 +227,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Item
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
-	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
+	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Dagger", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Wand", ITEM_WEAPON, _vec3({ 35.f, 1.f, 35.f }));
 	
 	// Particle
@@ -397,6 +421,11 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	pGameObject = CMiniMap::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
+
+	// UI_CrossHair
+	pGameObject = CCrossHair::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 

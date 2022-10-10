@@ -4,6 +4,8 @@
 #include "Arrow.h"
 #include "Wand.h"
 #include "InvImg.h"
+#include "Potion.h"
+#include "Dagger.h"
 
 IMPLEMENT_SINGLETON(CItemMgr)
 
@@ -27,6 +29,9 @@ HRESULT CItemMgr::Ready_Proto()
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Wand1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Wand/wand%d.png", TEX_NORMAL, 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Arrow1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Arrow/Arrow1/Arrow1_%d.png", TEX_NORMAL, 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Potion_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Potion/Potion%d.png", TEX_NORMAL, 5)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Dagger_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Dagger/Dagger%d.png", TEX_NORMAL, 4)), E_FAIL);
+
 
 	return S_OK;
 }
@@ -107,7 +112,17 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 
 		m_vecItemPool.push_back(pGameObject);
 	}
+	else if (objName == L"Dagger")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
 
+		CGameObject* pGameObject = CDagger::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool.push_back(pGameObject);
+	}
 	else
 	{
 		delete[] szObjTag;
@@ -135,10 +150,61 @@ CGameObject* CItemMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, 
 	CLayer* pLayer = Engine::Get_Layer(pLayerTag);
 	if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
 		return nullptr;
+	
+	m_vecImgPool.push_back(pGameObject);
 
-	m_vecItemPool.push_back(pGameObject);
 
 	return pGameObject;
+}
+
+HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objTag, ITEMTYPE eType, _vec3 vPos)
+{
+
+	wstring tag = objTag;
+	tag += L"%d";
+
+	TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
+	wsprintf(szObjTag, objTag);
+	_tcscat_s(szObjTag, MAX_PATH, L"%d");
+	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
+
+
+	wstring objName = objTag;
+	if (objName == L"Arrow")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CArrow::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool.push_back(pGameObject);
+	}
+
+	else if (objName == L"Potion")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CPotion::Create(m_pGraphicDev, vPos, 0);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool.push_back(pGameObject);
+	}
+
+	else
+	{
+		delete[] szObjTag;
+		szObjTag = nullptr;
+	}
+
+
+
+	return S_OK;
 }
 
 inline void CItemMgr::Free(void)
@@ -165,6 +231,8 @@ inline void CItemMgr::Free(void)
 
 
 	m_vecItemPool.swap(vector<CGameObject*>());
+	m_vecImgPool.swap(vector<CGameObject*>());
+
 
 	Safe_Release(m_pGraphicDev);
 

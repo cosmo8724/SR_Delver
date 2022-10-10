@@ -166,6 +166,8 @@
     <ClInclude Include="..\Header\BlueBat.h" />
     <ClInclude Include="..\Header\BrownBat.h" />
     <ClInclude Include="..\Header\BulletMgr.h" />
+    <ClInclude Include="..\Header\CrossHair.h" />
+    <ClInclude Include="..\Header\Dagger.h" />
     <ClInclude Include="..\Header\Dog.h" />
     <ClInclude Include="..\Header\DynamicCamera.h" />
     <ClInclude Include="..\Header\EcoObject.h" />
@@ -205,6 +207,7 @@
     <ClInclude Include="..\Header\ParticleTool.h" />
     <ClInclude Include="..\Header\PinkSlime.h" />
     <ClInclude Include="..\Header\Player.h" />
+    <ClInclude Include="..\Header\Potion.h" />
     <ClInclude Include="..\Header\PSystem.h" />
     <ClInclude Include="..\Header\QuickSlot.h" />
     <ClInclude Include="..\Header\SkeletonGhost.h" />
@@ -257,6 +260,8 @@
     <ClCompile Include="..\Code\BlueBat.cpp" />
     <ClCompile Include="..\Code\BrownBat.cpp" />
     <ClCompile Include="..\Code\BulletMgr.cpp" />
+    <ClCompile Include="..\Code\CrossHair.cpp" />
+    <ClCompile Include="..\Code\Dagger.cpp" />
     <ClCompile Include="..\Code\Dog.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
     <ClCompile Include="..\Code\EcoObject.cpp" />
@@ -299,6 +304,7 @@
     <ClCompile Include="..\Code\ParticleTool.cpp" />
     <ClCompile Include="..\Code\PinkSlime.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
+    <ClCompile Include="..\Code\Potion.cpp" />
     <ClCompile Include="..\Code\PSystem.cpp" />
     <ClCompile Include="..\Code\QuickSlot.cpp" />
     <ClCompile Include="..\Code\SkeletonGhost.cpp" />

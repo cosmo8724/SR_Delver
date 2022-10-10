@@ -55,6 +55,9 @@ HRESULT CInvImg::Ready_Object(void)
 
 _int CInvImg::Update_Object(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return 0;
+
 	if (Engine::Get_DIKeyState(DIK_TAB) & 0X80)
 		m_bOn = true;
 	else
@@ -161,6 +164,9 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 
 void CInvImg::LateUpdate_Object(void)
 {
+	if (m_bDead)
+		return;
+
 	if (!m_bOn)
 		return;
 
@@ -170,6 +176,9 @@ void CInvImg::LateUpdate_Object(void)
 
 void CInvImg::Render_Obejct(void)
 {
+	if (m_bDead)
+		return;
+
 	if (!m_bOn)
 		return;
 
