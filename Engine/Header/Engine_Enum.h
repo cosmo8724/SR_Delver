@@ -45,7 +45,7 @@ namespace Engine
 
 	enum OBJECTTYPE { OBJ_PLAYER, OBJ_MONSTER, OBJ_NPC, OBJ_TERRAIN, OBJ_BLOCK, OBJ_END };
 
-
+	enum ECOOBJTYPE { ECO_STONE, ECO_GRASS, ECO_TREE, ECO_JAR, ECO_JAM, ECO_END };
 }
 
 #endif // Engine_Enum_h__

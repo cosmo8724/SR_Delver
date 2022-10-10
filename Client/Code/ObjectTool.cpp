@@ -27,6 +27,30 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 	{
 		ImGui::Text("This is ObjectTool.");
 		ImGui::Text("Add Tool Logic Here...");
+
+		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Jam"};
+		static int item_current = 0;
+
+		ImGui::Combo("Item Type", &item_current, items, IM_ARRAYSIZE(items), 4);
+		ImGui::Text("Current Object Type : %s", items[item_current]);
+
+		switch (item_current)
+		{
+		case ECO_STONE:
+			break;
+
+		case ECO_GRASS:
+			break;
+
+		case ECO_TREE:
+			break;
+
+		case ECO_JAR:
+			break;
+
+		case ECO_JAM:
+			break;
+		}
 	}
 	else
 		ImGui::Text("Create Terrain First.");

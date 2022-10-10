@@ -29,7 +29,7 @@ public:
 
 private:
 	CRcTex*				m_pBufferCom	= nullptr;
-	CTransform*			m_pTransCom		= nullptr;
-	CTexture*			m_pTextureCom	= nullptr;
+	CTransform*			m_pTransCom	= nullptr;
+	CTexture*				m_pTextureCom	= nullptr;
 };
 

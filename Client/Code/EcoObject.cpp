@@ -43,8 +43,10 @@ void CEcoObject::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
 #ifdef _DEBUG
