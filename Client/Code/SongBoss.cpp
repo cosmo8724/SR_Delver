@@ -4,6 +4,7 @@
 #include "Export_Function.h"
 
 #include "BulletMgr.h"
+#include "MiniMap.h"
 
 
 CSongBoss::CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -43,7 +44,13 @@ HRESULT CSongBoss::Ready_Object(void)
 
 _int CSongBoss::Update_Object(const _float & fTimeDelta)
 {
-	Engine::CGameObject::Update_Object(fTimeDelta);
+	if (!m_bCreateIcon)
+	{
+		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		m_bCreateIcon = true;
+	}
+	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	//m_pTransCom->Set_Y(1.5f);
@@ -90,6 +97,8 @@ void CSongBoss::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	CMonster::Render_Obejct();
 }
 
 HRESULT CSongBoss::Add_Component(void)
@@ -108,6 +117,11 @@ HRESULT CSongBoss::Add_Component(void)
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_SongBossMOVE_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_SongBossIDLE_Texture");

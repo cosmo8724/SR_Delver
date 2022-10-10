@@ -2,6 +2,7 @@
 #include "..\Header\Block.h"
 #include "Export_Function.h"
 #include "DynamicCamera.h"
+#include "MiniMap.h"
 
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -20,8 +21,40 @@ CBlock::CBlock(const CBlock& rhs)
 	//memcpy(&m_bdBox, &rhs.m_bdBox, sizeof(BDBOX));
 	m_pBufferCom = dynamic_cast<CCubeTex*>(rhs.m_pBufferCom->Clone());
 	m_pTransCom = dynamic_cast<CTransform*>(rhs.m_pTransCom->Clone());
-	//m_pTextureCom = dynamic_cast<CTexture*>(rhs.m_pTextureCom->Clone()); // Tool!!
+	m_pTextureCom = dynamic_cast<CTexture*>(rhs.m_pTextureCom->Clone()); // Tool!!
 	m_pCalculatorCom = dynamic_cast<CCalculator*>(rhs.m_pCalculatorCom->Clone());
+
+	m_mapComponent[ID_STATIC].insert({ L"Proto_BlockTexCom", m_pBufferCom });
+
+	switch (m_eCurrentType)
+	{
+	case BLOCK_CAVE:
+		m_mapComponent[ID_STATIC].insert({ L"Proto_Cave_BlockTexture", m_pTextureCom });
+		break;
+
+	case BLOCK_COLD:
+		m_mapComponent[ID_STATIC].insert({ L"Proto_Cold_BlockTexture", m_pTextureCom });
+		break;
+
+	case BLOCK_DUNGEON:
+		m_mapComponent[ID_STATIC].insert({ L"Proto_Dungeon_BlockTexture", m_pTextureCom });
+		break;
+
+	case BLOCK_ROOM:
+		m_mapComponent[ID_STATIC].insert({ L"Proto_Room_BlockTexture", m_pTextureCom });
+		break;
+
+	case BLOCK_SEWER:
+		m_mapComponent[ID_STATIC].insert({ L"Proto_Sewer_BlockTexture", m_pTextureCom });
+		break;
+
+	case BLOCK_TEMPLE:
+		m_mapComponent[ID_STATIC].insert({ L"Proto_Temple_BlockTexture", m_pTextureCom });
+		break;
+	}
+	
+	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", m_pTransCom });
+	m_mapComponent[ID_STATIC].insert({ L"Proto_CalculatorCom", m_pCalculatorCom });
 }
 
 CBlock::~CBlock()
@@ -155,7 +188,16 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	if (m_bClone)
+	{
+		if (!m_bCreateIcon)
+		{
+			CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+			pMiniMap->Add_Icon(m_pGraphicDev, this);
+			m_bCreateIcon = true;
+		}
+		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 		Add_RenderGroup(RENDER_NONALPHA, this);
+	}
 	else
 		Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -205,28 +247,35 @@ void CBlock::Render_Obejct(void)
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
-	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
 HRESULT CBlock::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 
-	pComponent = m_pBufferCom = dynamic_cast<CCubeTex*>(Clone_Proto(L"Proto_BlockTexCom"));
-	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_BlockTexCom", pComponent });
+	if (!m_bClone)
+	{
+		pComponent = m_pBufferCom = dynamic_cast<CCubeTex*>(Clone_Proto(L"Proto_BlockTexCom"));
+		NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_BlockTexCom", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cave_BlockTexture"));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Cave_BlockTexture", pComponent });
+		pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cave_BlockTexture"));
+		NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_Cave_BlockTexture", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+
+		pComponent = m_pCalculatorCom = dynamic_cast<CCalculator*>(Clone_Proto(L"Proto_CalculatorCom"));
+		NULL_CHECK_RETURN(m_pCalculatorCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_CalculatorCom", pComponent });
+	}
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
-
-	pComponent = m_pCalculatorCom = dynamic_cast<CCalculator*>(Clone_Proto(L"Proto_CalculatorCom"));
-	NULL_CHECK_RETURN(m_pCalculatorCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_CalculatorCom", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	return S_OK;
 }
@@ -241,7 +290,7 @@ void CBlock::Chase_MousePT()
 
 	_vec3 vPickPos = m_pCalculatorCom->PickingOnTerrainIndex(g_hWnd, pTerrainBufferCom, pTerrainTransformCom);
 
-	m_pTransCom->Set_Pos(vPickPos.x, vPickPos.y, vPickPos.z);
+	m_pTransCom->Set_Pos(vPickPos.x, vPickPos.y + m_fScale, vPickPos.z);
 }
 
 HRESULT CBlock::Change_BlockType()
@@ -356,23 +405,23 @@ CBlock * CBlock::Create(const CBlock & rhs)
 {
 	CBlock *	pInstance = new CBlock(rhs);
 
-	/*if (FAILED(pInstance->Ready_Object()))
+	if (FAILED(pInstance->Ready_Object()))
 	{
-	Safe_Release(pInstance);
-	return nullptr;
-	}*/
+		Safe_Release(pInstance);
+		return nullptr;
+	}
 
 	return pInstance;
 }
 
 void CBlock::Free(void)
 {
-	if (m_bClone)
+	/*if (m_bClone)
 	{
 		Safe_Release(m_pBufferCom);
 		Safe_Release(m_pTransCom);
 		Safe_Release(m_pTextureCom);
 		Safe_Release(m_pCalculatorCom);
-	}
+	}*/
 	CGameObject::Free();
 }

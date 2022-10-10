@@ -2,6 +2,7 @@
 #include "..\Header\PinkSlime.h"
 
 #include "Export_Function.h"
+#include "MiniMap.h"
 
 CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -51,7 +52,7 @@ HRESULT CPinkSlime::Ready_Object(void)
 	m_fScale = 2.f;
 	m_fHeight = 2.f;
 
-	// Á¡ÇÁ °ü·Ã º¯¼ö ÃÊ±âÈ­
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
 	m_fJSpeed = 5.f;
 	m_fJSpeed0 = 5.f;
 	m_fAccel = 0.1f;
@@ -64,7 +65,13 @@ HRESULT CPinkSlime::Ready_Object(void)
 
 _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 {
-	Engine::CGameObject::Update_Object(fTimeDelta);
+	if (!m_bCreateIcon)
+	{
+		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		m_bCreateIcon = true;
+	}
+	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pTransCom->Set_Y(m_fHeight);
@@ -101,6 +108,8 @@ void CPinkSlime::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	CMonster::Render_Obejct();
 }
 
 HRESULT CPinkSlime::Add_Component(void)
@@ -120,6 +129,12 @@ HRESULT CPinkSlime::Add_Component(void)
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
+	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeIDLE_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeATTACK_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeHIT_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeDIE_Texture");
@@ -131,24 +146,24 @@ HRESULT CPinkSlime::Add_Component(void)
 void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 {
 	/*
-	1) IDLE »óÅÂ·Î °¡¸¸È÷ ÀÖ´Â´Ù
-	2) ÇÃ·¹ÀÌ¾î°¡ ´Ù°¡°¡¸é Á¡ÇÁ¸¦ ÇÑ ¹ø ÇÏ¸ç ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹é ½ÃÅ²´Ù
-	3) ±×¸®°í °è¼Ó ÇÃ·¹ÀÌ¾î¸¦ µû¶ó°£´Ù
+	1) IDLE ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Â´ï¿½
+	2) ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ù°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ë¹ï¿½ ï¿½ï¿½Å²ï¿½ï¿½
+	3) ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ó°£´ï¿½
 	
-	ÇÃ·¹ÀÌ¾î¿¡°Ô °ø°ÝÀ» ´çÇÒ½Ã ÀÏÁ¤½Ã°£ °¡¸¸È÷ ÀÖ´Ù°¡ ÇÃ·¹ÀÌ¾î¸¦ µû¶ó°£´Ù	
+	ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ò½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù°ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ó°£´ï¿½	
 
-	ÇÃ·¹ÀÌ¾î¿¡°Ô °ø°Ý 2¹øÀ» ´çÇÏ¸é ½ºÄÉÀÏÀÌ ÁÙ¾îµé¸é¼­ ºÐ¸®µÇ¸ç
-	ÃÖ´ë 3¹ø±îÁö ºÐ¸®µÇ¸ç, ¸ó½ºÅÍ´Â ÃÑ 4°³±îÁö Á¸ÀçÇÑ´Ù
+	ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¾ï¿½ï¿½é¼­ ï¿½Ð¸ï¿½ï¿½Ç¸ï¿½
+	ï¿½Ö´ï¿½ 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¸ï¿½ï¿½Ç¸ï¿½, ï¿½ï¿½ï¿½Í´ï¿½ ï¿½ï¿½ 4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
 	*/
 
-	// ÇÃ·¹ÀÌ¾î¿¡°Ô °ø°Ý ´çÇÏ¸é ¸ðµÎ ¸ØÃß°í HIT»óÅÂ
+	// ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß°ï¿½ HITï¿½ï¿½ï¿½ï¿½
 	if (Engine::Key_Down(DIK_U))
 	{
 		m_eCurState = HIT;
 		return;
 	}
 
-	// ÇÃ·¹ÀÌ¾î µû¶ó°¡±â
+	// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ó°¡±ï¿½
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
 
@@ -158,7 +173,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
-	if (!m_bSkillJumpStart && fDist < 5.f) // Ã³À½ ÇÃ·¹ÀÌ¾î°¡ ´Ù°¡°¡¸é 1ÃÊ ÀÖ´Ù°¡ Á¡ÇÁ ÇÑ ¹ø
+	if (!m_bSkillJumpStart && fDist < 5.f) // Ã³ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ù°ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½Ö´Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
 	{
 		m_SkillJumpTimeAcc += fTimeDelta;
 		if (1.5f < m_SkillJumpTimeAcc)
@@ -166,7 +181,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 			m_bJump = true;
 			m_eSkill = SKILL_JUMP;
 
-			// TODO ÇÃ·¹ÀÌ¾î ³Ë¹é ³Ö¾î¾ßÇÔ
+			// TODO ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ë¹ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½
 		}
 		if (2.f < m_SkillJumpTimeAcc)
 		{
@@ -179,11 +194,11 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 	{
 		if (!m_bSkillFollowStart)
 		{
-			// Á¡ÇÁ¸¦ ÇÑ ¹ø ÇÏ°í ³ª¸é ÇÃ·¹ÀÌ¾î¸¦ °è¼Ó µû¶ó°£´Ù
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ó°£´ï¿½
 			m_eSkill = SKILL_FOLLOW;
 		}
 
-		// ±×·¯´Ù°¡ °ø°Ý ÇÃ·¹ÀÌ¾î¿¡°Ô °ø°ÝÀ» 2¹ø ´çÇÏ¸é Å©±â°¡ ÁÙ¾îµé¸é¼­ ºÐÇØµÈ´Ù
+		// ï¿½×·ï¿½ï¿½Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ Å©ï¿½â°¡ ï¿½Ù¾ï¿½ï¿½é¼­ ï¿½ï¿½ï¿½ØµÈ´ï¿½
 		if (Engine::Key_Down(DIK_P))
 		{
 			m_eSkill_Scale = SKILLSCALE_BIG;

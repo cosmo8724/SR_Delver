@@ -40,10 +40,10 @@ HRESULT CArrow::Ready_Object(void)
 
 _int CArrow::Update_Object(const _float & fTimeDelta)
 {
-	int iResult = CGameObject::Update_Object(fTimeDelta);
-
 	if (STATE_INV == m_eState)
-		return iResult;
+		return 0;
+
+	int iResult = CWeapon::Update_Object(fTimeDelta);
 
 	if (!m_bReady)
 	{
@@ -80,7 +80,9 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 		}
 
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
-		m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
+		//m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
+		
+		m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
 		break;
 	}
 
@@ -89,6 +91,8 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 	m_fTimeDelta = fTimeDelta;
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
+
 
 	return iResult;
 }
@@ -106,9 +110,9 @@ void CArrow::Render_Obejct(void)
 {
 	if (m_eState == STATE_INV)
 		return;
+													
 
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+ 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
 	_vec3 vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);

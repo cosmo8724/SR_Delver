@@ -33,7 +33,8 @@ protected:
 	CTransform*			m_pTransCom = nullptr;
 	CAnimator*			m_pAnimtorCom = nullptr;
 
-	_bool				m_bDetected = false;
+	_bool					m_bDetected = false;
+	_bool					m_bCreateIcon = false;
 };
 
 END

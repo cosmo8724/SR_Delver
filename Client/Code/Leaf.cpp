@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"
 #include "BulletMgr.h"
+#include "MiniMap.h"
 
 CLeaf::CLeaf(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CMonster(pGraphicDev)
@@ -40,8 +41,13 @@ HRESULT CLeaf::Ready_Object(void)
 
 _int CLeaf::Update_Object(const _float & fTimeDelta)
 {
-	Engine::CGameObject::Update_Object(fTimeDelta * 0.6f);
-
+	if (!m_bCreateIcon)
+	{
+		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		m_bCreateIcon = true;
+	}
+	Engine::CMonster::Update_Object(fTimeDelta * 0.6f);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
@@ -77,6 +83,8 @@ void CLeaf::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	CMonster::Render_Obejct();
 }
 
 HRESULT CLeaf::Add_Component(void)
@@ -95,6 +103,11 @@ HRESULT CLeaf::Add_Component(void)
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_LeafIDLE_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_LeafATTACK_Texture");
@@ -115,11 +128,11 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
- 	if (fDist < 5.f) // ¸ó½ºÅÍ ¼ø°£ ÀÌµ¿
+ 	if (fDist < 5.f) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	{
 		m_eCurState = ATTACK;
 
-		if (m_pAnimtorCom->Get_Currentframe() >= 12.f && m_pAnimtorCom->Get_Currentframe() < 13.f) // LeafÀÇ Attack ÀÌ¹ÌÁö°¡ ³¡³¯ ¶§ Âë
+		if (m_pAnimtorCom->Get_Currentframe() >= 12.f && m_pAnimtorCom->Get_Currentframe() < 13.f) // Leafï¿½ï¿½ Attack ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
 			Teleporting(vPlayerPos.x, vPlayerPos.z);
 	}
 	else
@@ -140,22 +153,22 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 
 void CLeaf::Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ)
 {
-	int iRandomNum = rand() % 7 + 2; // ¸ó½ºÅÍ°¡ ·£´ýÇÏ°Ô ÀÌµ¿ÇÒ ÁÂÇ¥
+	int iRandomNum = rand() % 7 + 2; // ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥
 
 	if (fPlayerPosX == (m_OriginalPos.x + iRandomNum) || fPlayerPosZ == (m_OriginalPos.z + iRandomNum) ||
 		fPlayerPosX == (m_OriginalPos.x - iRandomNum) || fPlayerPosZ == (m_OriginalPos.z - iRandomNum))
-		return; // ¸¸¾à ¸ó½ºÅÍ°¡ ÀÌµ¿ÇÒ ÁÂÇ¥°¡ ÇÃ·¹ÀÌ¾î¿Í °°´Ù¸é ´Ù½Ã ·£´ý°ªÀ» ¹Þ´Â´Ù
+		return; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´Â´ï¿½f
 
-	if (iRandomNum % 2 == 0) // Â¦¼ö
+	if (iRandomNum % 2 == 0) // Â¦ï¿½ï¿½
 	{
-		if (iRandomNum < 5) // Â¦¼öÀÎµ¥ 5º¸´Ù Å©´Ù¸é
+		if (iRandomNum < 5) // Â¦ï¿½ï¿½ï¿½Îµï¿½ 5ï¿½ï¿½ï¿½ï¿½ Å©ï¿½Ù¸ï¿½
 			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
 		else
 			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
 	}
-	else // È¦¼ö
+	else // È¦ï¿½ï¿½
 	{
-		if (iRandomNum < 5) // È¦¼öÀÎµ¥ 5º¸´Ù Å©´Ù¸é
+		if (iRandomNum < 5) // È¦ï¿½ï¿½ï¿½Îµï¿½ 5ï¿½ï¿½ï¿½ï¿½ Å©ï¿½Ù¸ï¿½
 			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z - iRandomNum);
 		else 
 			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);

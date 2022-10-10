@@ -14,6 +14,27 @@ CMonster::~CMonster()
 {
 }
 
+_int CMonster::Update_Object(const _float& fTimeDelta)
+{
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
+	CGameObject::Update_Object(fTimeDelta);
+
+	return 0;
+}
+
+void CMonster::Render_Obejct()
+{
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
+}
+
 void CMonster::Billboard()
 {
 	// ºôº¸µå

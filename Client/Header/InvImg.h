@@ -25,6 +25,10 @@ public:
 
 public:
 	CItem*				Get_TargetObj() { return m_pObj; }
+	void				Set_Picked(_bool bPicked) { m_bPicked = bPicked; }
+	void				Set_InvPos(_float fX, _float fY) { m_fPosX = fX; m_fPosY = fY; }
+	_vec2				Get_InvPos() { return _vec2({ m_fPosX, m_fPosY }); }
+
 
 private:
 	_vec2				m_vPos;
@@ -36,6 +40,10 @@ private:
 	_float				m_fFrame = 0.f;
 
 	const _tchar*		m_texTag;
+	_bool				m_bPicked = false;
+
+	_matrix				m_matProj;
+	_float				m_fPosX, m_fPosY, m_fScaleX, m_fScaleY;
 
 
 };

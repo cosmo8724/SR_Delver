@@ -34,6 +34,8 @@ private:
 	_float			m_fSpeed = 10.f;
 	_float			m_fAngle = 0.f;
 
+	_bool			m_bFPS = true;
+
 	// ShakeY와 관련된 변수
 	_bool		m_bShakeY = false;
 	_float		m_fPosY;
@@ -42,6 +44,9 @@ private:
 	_float		m_fShakeYTimeAcc;
 	_float		m_fNoShakeYTimeAcc;
 	_bool		m_bFix = true;
+
+
+	_bool		m_bSwitch = false;
 
 public:
 	static CStaticCamera*		Create(LPDIRECT3DDEVICE9 pGraphicDev,

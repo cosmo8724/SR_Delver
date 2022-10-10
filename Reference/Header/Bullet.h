@@ -29,7 +29,7 @@ public:
 
 
 protected:
-	CCubeTex*		m_pBufferCom = nullptr;
+	//CCubeTex*		m_pBufferCom = nullptr;
 	CTexture*		m_pTextureCom = nullptr;
 	CTransform*		m_pTransCom = nullptr;
 	_bool			m_bFire = false;

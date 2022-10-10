@@ -36,6 +36,9 @@
 #include "QuickSlot.h"
 #include "Inventory.h"
 #include "EquipWindow.h"
+#include "MapUI.h"
+#include "MiniMap.h"
+
 // Font
 #include "HPGauge.h"
 #include "TalkWindow.h"
@@ -43,7 +46,6 @@
 // Manager
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
-#include "MapUI.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -100,7 +102,8 @@ void CStage::LateUpdate_Scene(void)
 			//	}
 			//}
 			//CCollisionMgr::GetInstance()->CollisionSphere(pPlayer, pBlock);
-			CCollisionMgr::GetInstance()->CollisionAABB(pPlayer, pBlock);
+			//CCollisionMgr::GetInstance()->CollisionAABB(pPlayer, pBlock);
+			Engine::CollisionTest(pPlayer, pBlock);
 		}
 	}
 
@@ -273,7 +276,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WinkMan", pGameObject), E_FAIL);
 
 	// Blocks
-	string	strPath = "..\\Bin\\Resource\\Map.dat";
+	string	strPath = "..\\Bin\\Resource\\Map_SH.dat";
 	const char* pPath = strPath.c_str();
 	int iLength = strlen(pPath) + 1;
 	TCHAR* wpPath = new TCHAR[iLength];
@@ -368,9 +371,14 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_TalkWindow", pGameObject), E_FAIL);
 
 	// UI_MAP
-	//pGameObject = CMapUI::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Map", pGameObject), E_FAIL);
+	pGameObject = CMapUI::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Map", pGameObject), E_FAIL);
+
+	// UI_MiniMap
+	pGameObject = CMiniMap::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 

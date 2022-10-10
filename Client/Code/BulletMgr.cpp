@@ -60,7 +60,11 @@ HRESULT CBulletMgr::Ready_Proto(LPDIRECT3DDEVICE9 pGraphicDev)
 	// Leaf
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Leaf_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/Leaf_Bullet/Leaf_Bullet%d.png", TEX_NORMAL, 7)), E_FAIL);
 
-	
+	// ArrowBullet
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ArrowBullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Item/Bullet/ArrowBullet.png", TEX_NORMAL)), E_FAIL);
+
+
+
 	return S_OK;
 }
 
@@ -268,7 +272,7 @@ void CBulletMgr::Pre_Setting(BULLETID eID, _float fSet)
 
 	switch (eID)
 	{
-	case BULLET_ARROW:
+	case BULLET_ARROW:	// 화살의 경우 차징에 따라 날아가는 스피드가 달라진다..
 		if (!m_IdxQue[eID].empty())
 		{
 			iIdx = m_IdxQue[eID].front();

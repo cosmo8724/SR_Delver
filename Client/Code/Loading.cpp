@@ -71,6 +71,7 @@ _uint CLoading::Loading_ForMapTool()
 
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformCom", CTransform::Create()), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorCom", CCalculator::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderCom", CCollider::Create(m_pGraphicDev)), E_FAIL);
 
 	//// Particle 원본 텍스쳐
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle0_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle0/particle0_%d.png", TEX_NORMAL, 4)), E_FAIL);
@@ -99,7 +100,7 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcColCom", CRcCol::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexCom", CCubeTex::Create(m_pGraphicDev)), E_FAIL);
 
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/Ma.jpg", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Player/Player%d.png", TEX_NORMAL, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EffectTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Explosion/Explosion%d.png", TEX_NORMAL, 90)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/SkyBox.dds", TEX_CUBE)), E_FAIL);
 	
@@ -212,6 +213,16 @@ _uint CLoading::Loading_ForStage(void)
 
 	// UI_Map
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_Map_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Map/Map_BG.png", TEX_NORMAL, 1)), E_FAIL);
+
+	// UI_MiniMap
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniMap_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Terrain.png", TEX_NORMAL, 1)), E_FAIL);
+
+	// UI_MiniMap_Icon
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniPlayer_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Player.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniMonster_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Monster.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniNPC_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/NPC.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniBlock_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Block.png", TEX_NORMAL, 1)), E_FAIL);
+
 	
 	m_bFinish = true;
 

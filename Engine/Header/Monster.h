@@ -16,9 +16,9 @@ public:
 
 public:
 	virtual HRESULT		Ready_Object(void) { return S_OK; };
-	virtual _int		Update_Object(const _float& fTimeDelta) { return 0; };
+	virtual _int		Update_Object(const _float& fTimeDelta);
 	virtual void		LateUpdate_Object(void) {};
-	virtual void		Render_Obejct(void) {};
+	virtual void		Render_Obejct(void);
 
 protected:
 	virtual HRESULT		Add_Component(void) PURE;
@@ -40,6 +40,8 @@ protected:
 	CTexture*			m_pTextureCom = nullptr;
 	CTransform*			m_pTransCom = nullptr;
 	CAnimator*			m_pAnimtorCom = nullptr;
+
+	_bool					m_bCreateIcon = false;
 };
 
 END

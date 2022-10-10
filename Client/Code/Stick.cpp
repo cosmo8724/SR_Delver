@@ -4,6 +4,7 @@
 #include "Export_Function.h"
 
 #include "BulletMgr.h"
+#include "MiniMap.h"
 
 CStick::CStick(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -44,7 +45,13 @@ HRESULT CStick::Ready_Object(_int iAngerCount)
 
 _int CStick::Update_Object(const _float & fTimeDelta)
 {
-	Engine::CGameObject::Update_Object(fTimeDelta);
+	if (!m_bCreateIcon)
+	{
+		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		m_bCreateIcon = true;
+	}
+	Engine::CMonster::Update_Object(fTimeDelta);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
@@ -105,6 +112,8 @@ void CStick::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	CMonster::Render_Obejct();
 }
 
 HRESULT CStick::Add_Component(void)
@@ -123,6 +132,11 @@ HRESULT CStick::Add_Component(void)
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_StickIDLE_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_StickANGER_Texture");
