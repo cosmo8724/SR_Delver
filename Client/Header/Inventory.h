@@ -37,8 +37,6 @@ private:
 	_matrix		m_matView, m_matWorld;
 
 private:
-	_float		m_fTempPosX, m_fTempPosY = 2022.f;
-
 	// 인벤토리 피킹용 변수
 	_float			m_fInvWidth = 0.f;
 	_float			m_fInvHeight = 0.f;

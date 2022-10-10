@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"
 #include "MiniMap.h"
+#include "Player.h"
 
 CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -326,6 +327,11 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 
 		break;
 	}
+}
+
+void CPinkSlime::CollisionEvent(CGameObject * pObj)
+{
+
 }
 
 void CPinkSlime::Motion_Change()

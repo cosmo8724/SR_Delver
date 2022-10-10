@@ -241,6 +241,9 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon">
       <UniqueIdentifier>{424aea31-d71b-43a1-b988-ff83081e05cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\07. CrossHair">
+      <UniqueIdentifier>{3c39e0b8-07c9-4dec-8fe3-8da03ad038ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -483,6 +486,9 @@
     <ClInclude Include="..\Header\Icon.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CrossHair.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\07. CrossHair</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -706,6 +712,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Icon.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CrossHair.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\07. CrossHair</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,8 @@
 #include "MapUI.h"
 #include "MiniMap.h"
 //#include "ParticleMgr.h"
+#include "CrossHair.h"
+
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)

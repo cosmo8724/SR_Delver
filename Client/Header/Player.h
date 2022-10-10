@@ -42,8 +42,8 @@ private:
 	CTexture*			m_pTextureCom = nullptr;
 	CCalculator*		m_pCalculatorCom = nullptr;
 
-	CBlock*	m_pCurrentBlock = nullptr;
-	_bool		m_bBlockChanged = true;
+	CBlock*				m_pCurrentBlock = nullptr;
+	_bool				m_bBlockChanged = true;
 
 	PLAYER_STATE m_eState = PLAYER_GROUND;
 

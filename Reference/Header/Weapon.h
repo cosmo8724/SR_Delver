@@ -26,6 +26,8 @@ protected:
 	virtual void	Charge(const _float& fTimeDelta) {};
 	virtual void	Attack(const _float& fTimeDelta) {};
 
+public:
+	WEAPONTYPE		Get_WeaponType() { return m_eWeaponType; }
 
 protected:
 	// 무기는 내구도와 레벨링 시스템이 있음.
@@ -43,6 +45,8 @@ protected:
 
 	_matrix		m_matView, m_matWorld;
 	_vec3		m_vPos;
+
+	WEAPONTYPE	m_eWeaponType = WT_END;
 };
 
 END

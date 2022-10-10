@@ -16,9 +16,9 @@ CMonster::~CMonster()
 
 _int CMonster::Update_Object(const _float& fTimeDelta)
 {
-	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
-
 	CGameObject::Update_Object(fTimeDelta);
+
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	return 0;
 }

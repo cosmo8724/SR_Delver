@@ -107,6 +107,11 @@ HRESULT CBlueBat::Add_Component(void)
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
 	m_pAnimtorCom->Add_Component(L"Proto_BlueBatIDLE_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_BlueBatATTACK_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_BlueBatHIT_Texture");

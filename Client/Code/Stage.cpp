@@ -38,6 +38,7 @@
 #include "EquipWindow.h"
 #include "MapUI.h"
 #include "MiniMap.h"
+#include "CrossHair.h"
 
 // Font
 #include "HPGauge.h"
@@ -126,20 +127,25 @@ void CStage::LateUpdate_Scene(void)
 	// ~Collider 테스트
 
 	// Monster Collider
-	CGameObject*			pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+	CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
 	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
-	{
 		Engine::CollisionTest(pSour, bullet);
+	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
+	//	Engine::CollisionTest(pSour, bullet);
 
-	}
+	Engine::CollisionTest(pSour, pPlayer);
+
+	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime");
+	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
+		Engine::CollisionTest(pSour, bullet);
+	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
+	//	Engine::CollisionTest(pSour, bullet);
+
+	Engine::CollisionTest(pSour, pPlayer);
 
 
 
-	// song bullet 이랑 테스트 하고 싶다면
-	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS))
-	//{
 
-	//}
 	
 	Engine::CScene::LateUpdate_Scene();
 }
@@ -387,6 +393,11 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	pGameObject = CMiniMap::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
+
+	// UI_CrossHair
+	pGameObject = CCrossHair::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
