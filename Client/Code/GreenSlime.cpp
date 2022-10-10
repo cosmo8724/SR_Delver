@@ -71,7 +71,7 @@ void CGreenSlime::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);//1
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
@@ -186,6 +186,7 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 		//m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
 	}
 }
+
 void CGreenSlime::Motion_Change(const _float& fTimeDelta)
 {
 	if (m_ePreState != m_eCurState)

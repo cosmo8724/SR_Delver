@@ -24,7 +24,7 @@ public:
 	_bool		CollideAABB(CCollider* _collider);
 	const _vec3&		Get_MinPoint() { return m_vMin; }
 	const _vec3&		Get_MaxPoint() { return m_vMax; }
-	_matrix	Get_WorldMatrix() { return m_matWorld; }
+	_matrix		Get_WorldMatrix() { return m_matWorld; }
 	void		Set_Free(_bool bFree) { m_bFree = bFree; }
 	_bool		Is_Free() { return m_bFree; }
 

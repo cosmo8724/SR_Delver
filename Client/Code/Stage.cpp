@@ -63,7 +63,6 @@ HRESULT CStage::Ready_Scene(void)
 		return E_FAIL;
 
 	FAILED_CHECK_RETURN(Ready_Proto(), E_FAIL);
-
 	FAILED_CHECK_RETURN(Ready_Light(), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -82,7 +81,6 @@ void CStage::LateUpdate_Scene(void)
 {
 	CBlock* pBlock = nullptr;
 	CLayer*	pLayer = m_mapLayer[L"Layer_GameLogic"];
-	//CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
 	CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
 	//vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 
@@ -126,6 +124,16 @@ void CStage::LateUpdate_Scene(void)
 	//Engine::CollisionAABB(pSour, pDest);
 	Engine::CollisionTest(pPlayer, pDest);
 	// ~Collider 테스트
+
+	// Monster Collider
+	CGameObject*			pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
+	{
+		Engine::CollisionTest(pSour, bullet);
+
+	}
+
+
 
 	// song bullet 이랑 테스트 하고 싶다면
 	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS))

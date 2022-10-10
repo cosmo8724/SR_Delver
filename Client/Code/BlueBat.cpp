@@ -4,6 +4,7 @@
 #include "Export_Function.h"
 
 #include "StaticCamera.h"
+#include "MiniMap.h"
 
 CBlueBat::CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -44,14 +45,19 @@ HRESULT CBlueBat::Ready_Object(void)
 
 _int CBlueBat::Update_Object(const _float & fTimeDelta)
 {
-	Engine::CGameObject::Update_Object(fTimeDelta);
+	if (!m_bCreateIcon)
+	{
+		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		m_bCreateIcon = true;
+	}
+	Engine::CMonster::Update_Object(fTimeDelta);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
 	Target_Follow(fTimeDelta);
 	KnockBack(fTimeDelta);
-
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	Motion_Change(fTimeDelta);
 	
@@ -80,6 +86,8 @@ void CBlueBat::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	CMonster::Render_Obejct();
 }
 
 HRESULT CBlueBat::Add_Component(void)
