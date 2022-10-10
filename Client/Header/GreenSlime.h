@@ -10,7 +10,7 @@ private:
 	virtual ~CGreenSlime();
 
 public:
-	virtual HRESULT		Ready_Object(void)						override;
+	virtual HRESULT		Ready_Object(void);
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void)					override;
 	virtual void		Render_Obejct(void)						override;
@@ -25,6 +25,7 @@ private:
 private:
 	STATE				m_ePreState;
 	STATE				m_eCurState;
+
 
 	// Timer
 	_float				m_fTimeAcc;

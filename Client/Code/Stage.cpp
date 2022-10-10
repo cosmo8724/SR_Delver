@@ -18,7 +18,7 @@
 #include "BrownBat.h"
 #include "Stick.h"
 #include "Leaf.h"
-
+#include "SkeletonGhost.h"
 // Boss
 #include "SongBoss.h"
 
@@ -107,7 +107,7 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
-	// Collider 테스트
+	// Collider 테스트( 플레이어와 Arrow0,Arrow1,Wand2)
 	CGameObject* pDest = nullptr;
 
 	for (int i = 0; i < 2; ++i)
@@ -126,6 +126,12 @@ void CStage::LateUpdate_Scene(void)
 	//Engine::CollisionAABB(pSour, pDest);
 	Engine::CollisionTest(pPlayer, pDest);
 	// ~Collider 테스트
+
+	// song bullet 이랑 테스트 하고 싶다면
+	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS))
+	//{
+
+	//}
 	
 	Engine::CScene::LateUpdate_Scene();
 }
@@ -186,8 +192,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Wand", ITEM_WEAPON, _vec3({ 35.f, 1.f, 35.f }));
-
-
+	
 	// Particle
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
@@ -227,6 +232,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CLeaf::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
+
+	// SkeletonGhost
+	pGameObject = CSkeletonGhost::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
 
 	//////////////Boss
 	// SongBoss

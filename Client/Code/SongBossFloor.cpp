@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "..\Header\SongBosFloor.h"
+#include "..\Header\SongBossFloor.h"
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
 
-CSongBosFloor::CSongBosFloor(LPDIRECT3DDEVICE9 pGraphicDev)
+CSongBossFloor::CSongBossFloor(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
 	, m_iBulletCount(0)
 	, m_iTransparency(0)
@@ -12,16 +12,16 @@ CSongBosFloor::CSongBosFloor(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 }
 
-CSongBosFloor::CSongBosFloor(const CSongBosFloor & rhs)
+CSongBossFloor::CSongBossFloor(const CSongBossFloor & rhs)
 	:CBullet(rhs)
 {
 }
 
-CSongBosFloor::~CSongBosFloor()
+CSongBossFloor::~CSongBossFloor()
 {
 }
 
-HRESULT CSongBosFloor::Ready_Object(_int iBulletCount)
+HRESULT CSongBossFloor::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -34,7 +34,7 @@ HRESULT CSongBosFloor::Ready_Object(_int iBulletCount)
 	return S_OK;
 }
 
-HRESULT CSongBosFloor::Add_Component(void)
+HRESULT CSongBossFloor::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -58,7 +58,7 @@ HRESULT CSongBosFloor::Add_Component(void)
 	return S_OK;
 }
 
-_int CSongBosFloor::Update_Object(const _float & fTimeDelta)
+_int CSongBossFloor::Update_Object(const _float & fTimeDelta)
 {
 	if (!m_bFire)
 		return 0;
@@ -96,7 +96,7 @@ _int CSongBosFloor::Update_Object(const _float & fTimeDelta)
 	return iResult;
 }
 
-void CSongBosFloor::LateUpdate_Object(void)
+void CSongBossFloor::LateUpdate_Object(void)
 {
 	if (!m_bFire)
 		return;
@@ -123,7 +123,7 @@ void CSongBosFloor::LateUpdate_Object(void)
 	CGameObject::LateUpdate_Object();
 }
 
-void CSongBosFloor::Render_Obejct(void)
+void CSongBossFloor::Render_Obejct(void)
 {
 	if (!m_bFire)
 		return;
@@ -146,9 +146,9 @@ void CSongBosFloor::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
-CSongBosFloor * CSongBosFloor::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount)
+CSongBossFloor * CSongBossFloor::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount)
 {
-	CSongBosFloor*		pInstance = new CSongBosFloor(pGraphicDev);
+	CSongBossFloor*		pInstance = new CSongBossFloor(pGraphicDev);
 	if (FAILED(pInstance->Ready_Object(iBulletCount)))
 	{
 		Safe_Release(pInstance);
@@ -158,12 +158,12 @@ CSongBosFloor * CSongBosFloor::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulle
 	return pInstance;
 }
 
-void CSongBosFloor::Free(void)
+void CSongBossFloor::Free(void)
 {
 	CGameObject::Free();
 }
 
-void CSongBosFloor::Reset()
+void CSongBossFloor::Reset()
 {
 	m_bFire = false;
 	m_bDead = false;

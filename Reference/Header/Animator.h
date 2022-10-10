@@ -41,6 +41,7 @@ private:
 
 private:
 	_float					m_fFrame;
+	_bool					m_bChange = false;
 };
 
 END

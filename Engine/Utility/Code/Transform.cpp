@@ -46,7 +46,7 @@ void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSp
 	m_matWorld = matScale * matTrans;
 }
 
-void CTransform::ChangeHeight_Target(const _vec3 * pTargetPos, const _float & fSTest, const _float & fSpeed, const _float & fTimeDelta)
+void CTransform::ChangeHeight_Target(const _vec3 * pTargetPos, const _float & fHeight, const _float & fSpeed, const _float & fTimeDelta)
 {
 	_vec3		vDir = *pTargetPos - m_vInfo[INFO_POS];
 
@@ -55,7 +55,7 @@ void CTransform::ChangeHeight_Target(const _vec3 * pTargetPos, const _float & fS
 	_matrix		matScale, matTrans;
 
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
-	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, fSTest, m_vInfo[INFO_POS].z);
+	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, fHeight, m_vInfo[INFO_POS].z);
 
 	m_matWorld = matScale * matTrans;
 }
@@ -71,7 +71,7 @@ const _matrix* Engine::CTransform::Compute_LookAtTarget(const _vec3* pTargetPos)
 	return D3DXMatrixRotationAxis(&matRot, 
 									D3DXVec3Cross(&vAxis, &m_vInfo[INFO_UP], &vLook),
 									acosf(D3DXVec3Dot(D3DXVec3Normalize(&vLook, &vLook), 
-												D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
+									D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
 }
 
 

@@ -6,11 +6,13 @@
 
 CFistBullet::CFistBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
+	, m_bReady(false)
+	, m_fSpeed(0.f)
 {
 }
 
 CFistBullet::CFistBullet(const CFistBullet & rhs)
-	: CBullet(rhs)
+	:CBullet(rhs)
 {
 }
 
@@ -21,7 +23,11 @@ CFistBullet::~CFistBullet()
 HRESULT CFistBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+
+	m_fSpeed = 10.f;
+
 	return S_OK;
 }
 
@@ -44,7 +50,7 @@ HRESULT CFistBullet::Add_Component(void)
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
-	m_pAnimtorCom->Add_Component(L"Proto_FistGreenEffect_Texture");
+	m_pAnimtorCom->Add_Component(L"Proto_Leaf_Bullet_Texture");
 
 	return S_OK;
 }
@@ -58,32 +64,10 @@ _int CFistBullet::Update_Object(const _float & fTimeDelta)
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
-	if (!m_bReady)
-	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Fist", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK_RETURN(pFist, -1);
-
-		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK_RETURN(pPlayer, -1);
-
-		pFist->Get_Info(INFO_POS, &vPos);
-		m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
-
-		pPlayer->Get_Info(INFO_POS, &m_vPlayerPos);
-		m_vPlayerPos.y -= 0.01f;
-
-		m_bReady = true;
-	}
-
-	_vec3	vDir;
-	vDir = m_vPlayerPos - vPos;
-	D3DXVec3Normalize(&vDir, &vDir);
-	vDir *= m_fSpeed * fTimeDelta;
-
-	m_pTransCom->Move_Pos(&vDir);
+	Target(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
-
+	
 	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
@@ -97,7 +81,6 @@ void CFistBullet::LateUpdate_Object(void)
 
 	if (2.f < m_fLifeTime)
 		Reset();
-
 
 	CGameObject::LateUpdate_Object();
 }
@@ -137,7 +120,47 @@ void CFistBullet::Billboard()
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 	// 현재 지금 이 코드는 문제가 없지만 나중에 문제가 될 수 있음
+	//m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
+}
+
+_int CFistBullet::Target(const _float & fTimeDelta)
+{
+	if (!m_bReady)
+	{
+		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf", L"Proto_TransformCom", ID_DYNAMIC));
+		NULL_CHECK_RETURN(pFist, -1);
+
+		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+		NULL_CHECK_RETURN(pPlayer, -1);
+
+		pFist->Get_Info(INFO_POS, &vPos);
+		m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+
+		pPlayer->Get_Info(INFO_POS, &m_vPlayerPos);
+		m_vPlayerPos.y -= 0.01f;
+
+		m_bReady = true;
+	}
+
+	_vec3	vDir;
+	vDir = m_vPlayerPos - vPos;
+	D3DXVec3Normalize(&vDir, &vDir);
+	vDir *= m_fSpeed * fTimeDelta;
+	m_pTransCom->Move_Pos(&vDir);
+
+	return 0;
+}
+
+void CFistBullet::Rotation(const _float & fTimeDelta)
+{
+	_float fRotationValue = 0.f;
+	fRotationValue += 45.f * fTimeDelta;
+	if (fRotationValue >= 360.f)
+		fRotationValue = 0.f;
+
+	m_pTransCom->Rotation(ROT_X, fRotationValue);
+
 }
 
 CFistBullet * CFistBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -162,7 +185,6 @@ void CFistBullet::Reset()
 	m_bFire = false;
 	m_bDead = false;
 	m_fLifeTime = 0.f;
-	m_fFrame = 0.f;
 	m_bReady = false;
-	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_FIST);
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_LEAF);
 }

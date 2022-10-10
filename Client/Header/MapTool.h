@@ -8,7 +8,7 @@ public:
 	~CMapTool();
 
 public:
-	HRESULT	MapTool_Window(const _float& fTimeDelta);
+	HRESULT		MapTool_Window(const _float& fTimeDelta);
 	void		Get_MapInfo(_int* Width, _int* Depth, _int* Interval) { *Width = m_iWidth; *Depth = m_iDepth; *Interval = m_iInterval; }
 
 private:

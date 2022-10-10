@@ -198,6 +198,9 @@
     <ClInclude Include="..\..\Header\Collider.h">
       <Filter>00. Component\00. VIBuffer\06. Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Header\NPC.h">
+      <Filter>01. GameObject\NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\TriCol.cpp">
@@ -289,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Collider.cpp">
       <Filter>00. Component\00. VIBuffer\06. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\NPC.cpp">
+      <Filter>01. GameObject\NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,9 @@ HRESULT CFist::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_tInfo.iHp = 3;
+	m_tInfo.iAttack = 1;
+
 	m_pTransCom->Set_Pos(1.f, 1.f, 30.f);
 
 	m_eCurState = IDLE;
