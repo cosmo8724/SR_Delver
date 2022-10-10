@@ -125,12 +125,12 @@ void CStaticCamera::Target_Renewal(void)
 	D3DXVec3Normalize(&vLook, &vLook);
 
 	// 1ÀÎÄª
-	//m_vEye = vPos + 0.3f * vLook;
-	//m_vAt = vPos + vLook;
+	m_vEye = vPos + 0.3f * vLook;
+	m_vAt = vPos + vLook;
 
-	// 3ÀÎÄª
-	m_vEye = vPos - 5.f * vLook;
-	m_vAt = vPos;
+	//// 3ÀÎÄª
+	//m_vEye = vPos - 5.f * vLook;
+	//m_vAt = vPos;
 }
 
 void CStaticCamera::ShakeY(const _float & fTimeDelta)

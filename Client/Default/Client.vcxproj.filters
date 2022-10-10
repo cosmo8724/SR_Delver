@@ -79,12 +79,6 @@
     <Filter Include="02. GameObject\01. For_Stage\02. Monster">
       <UniqueIdentifier>{87de0e07-45d7-4b52-b998-38517de48bc4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\02. Monster\00. GreenSlime">
-      <UniqueIdentifier>{da4ca73c-5f11-451c-938a-f0981f4a2485}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\02. Monster\01. PinkSlime">
-      <UniqueIdentifier>{bf59f465-c70c-4cb1-b9c3-e2c6520ed16c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item">
       <UniqueIdentifier>{b281a6ee-54ad-49fc-a4dc-a1e4bbd8a058}</UniqueIdentifier>
     </Filter>
@@ -120,15 +114,6 @@
     </Filter>
     <Filter Include="01. Scene\98. Tool_Scene\ParticleTool">
       <UniqueIdentifier>{6e88e087-be33-42b3-beed-f20c9c0f162d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\02. Monster\04. BrownBat">
-      <UniqueIdentifier>{d5d70138-1c16-4a7a-8c6c-f1c3d6bff403}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\02. Monster\02. Fist">
-      <UniqueIdentifier>{5364afbc-47b7-494b-ab93-f376078edd57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\02. Monster\03. BlueBat">
-      <UniqueIdentifier>{3043291d-448d-4727-8552-c3c7dbf0534e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\99. UI\00. HealthBar\00. HPGuage">
       <UniqueIdentifier>{3b436b7b-4dc2-4892-b408-ed264f71f6ea}</UniqueIdentifier>
@@ -181,9 +166,6 @@
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist">
       <UniqueIdentifier>{2d992638-c057-4820-a3c2-6fb05be23569}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\02. Monster\99. SongBoss">
-      <UniqueIdentifier>{49497359-5d52-4df1-9fee-118bae8f1ec2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\Manager">
       <UniqueIdentifier>{ddb1d0bd-3536-442c-880a-032c94a7112c}</UniqueIdentifier>
     </Filter>
@@ -205,12 +187,6 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\05. CrossHair">
       <UniqueIdentifier>{8b76c546-8740-4382-8339-a260941f8583}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\02. Monster\05. Stick">
-      <UniqueIdentifier>{d70d262e-8916-46e3-9774-6d31a3e924e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\02. Monster\06. Leaf">
-      <UniqueIdentifier>{1187f670-7c17-47b1-9c16-7b1272f5b4ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\02. For_Public\02. Particle\Manager">
       <UniqueIdentifier>{eba8f420-befd-42b2-bb7e-0845e53dbacb}</UniqueIdentifier>
     </Filter>
@@ -228,6 +204,39 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. Floor">
       <UniqueIdentifier>{52579f46-3a14-4f77-a0e3-7aae88fcc4f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\98. SongBoss">
+      <UniqueIdentifier>{49497359-5d52-4df1-9fee-118bae8f1ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\01. GreenSlime">
+      <UniqueIdentifier>{da4ca73c-5f11-451c-938a-f0981f4a2485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\02. PinkSlime">
+      <UniqueIdentifier>{bf59f465-c70c-4cb1-b9c3-e2c6520ed16c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\03. Fist">
+      <UniqueIdentifier>{5364afbc-47b7-494b-ab93-f376078edd57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\04. BlueBat">
+      <UniqueIdentifier>{3043291d-448d-4727-8552-c3c7dbf0534e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\05. BrownBat">
+      <UniqueIdentifier>{d5d70138-1c16-4a7a-8c6c-f1c3d6bff403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\06. Stick">
+      <UniqueIdentifier>{d70d262e-8916-46e3-9774-6d31a3e924e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\07. Leaf">
+      <UniqueIdentifier>{1187f670-7c17-47b1-9c16-7b1272f5b4ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\00. Manager">
+      <UniqueIdentifier>{ec588d8e-90b9-4fe8-99b1-4bc6329ed68b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\98. Tool_Scene\InfoTool">
+      <UniqueIdentifier>{5c894ac4-ce7f-4343-9a16-8b06173cd1b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\08. SkeletonGhost">
+      <UniqueIdentifier>{7bfd22dd-8524-4821-a8af-1faf60d017b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -334,16 +343,16 @@
       <Filter>02. GameObject\01. For_Stage\01. Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\GreenSlime.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\00. GreenSlime</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\01. GreenSlime</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\WandBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\PinkSlime.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\01. PinkSlime</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\02. PinkSlime</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Fist.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\02. Fist</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\03. Fist</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\HealthBar.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\00. HealthBar</Filter>
@@ -364,7 +373,7 @@
       <Filter>01. Scene\98. Tool_Scene\ParticleTool</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\BlueBat.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\03. BlueBat</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\04. BlueBat</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\HPGauge.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\00. HealthBar\00. HPGuage</Filter>
@@ -391,7 +400,7 @@
       <Filter>02. GameObject\01. For_Stage\09. NPC\02. GuitarMan</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\BrownBat.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\04. BrownBat</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\05. BrownBat</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\HoodMan.h">
       <Filter>02. GameObject\01. For_Stage\09. NPC\03. HoodMan</Filter>
@@ -414,14 +423,8 @@
     <ClInclude Include="..\Header\SongBossBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\SongBosStun.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Strun</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\SongBosFloor.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. Floor</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\SongBoss.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\99. SongBoss</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\98. SongBoss</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\BulletMgr.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\Manager</Filter>
@@ -439,10 +442,10 @@
       <Filter>02. GameObject\01. For_Stage\06. Item\00. Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Stick.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\05. Stick</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\06. Stick</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Leaf.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\06. Leaf</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\07. Leaf</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ParticleMgr.h">
       <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
@@ -455,6 +458,21 @@
     </ClInclude>
     <ClInclude Include="..\Header\FistBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MonsterMgr.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\00. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SongBossStun.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Strun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SongBossFloor.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\InfoTool.h">
+      <Filter>01. Scene\98. Tool_Scene\InfoTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SkeletonGhost.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\08. SkeletonGhost</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -543,16 +561,16 @@
       <Filter>02. GameObject\01. For_Stage\01. Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GreenSlime.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\00. GreenSlime</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\01. GreenSlime</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\WandBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\PinkSlime.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\01. PinkSlime</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\02. PinkSlime</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Fist.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\02. Fist</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\03. Fist</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\HealthBar.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\00. HealthBar</Filter>
@@ -573,7 +591,7 @@
       <Filter>01. Scene\98. Tool_Scene\ParticleTool</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\BlueBat.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\03. BlueBat</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\04. BlueBat</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\HPGauge.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\00. HealthBar\00. HPGuage</Filter>
@@ -600,7 +618,7 @@
       <Filter>02. GameObject\01. For_Stage\09. NPC\02. GuitarMan</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\BrownBat.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\04. BrownBat</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\05. BrownBat</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\HoodMan.cpp">
       <Filter>02. GameObject\01. For_Stage\09. NPC\03. HoodMan</Filter>
@@ -623,14 +641,8 @@
     <ClCompile Include="..\Code\SongBossBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\SongBosStun.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Strun</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\SongBosFloor.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. Floor</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\SongBoss.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\99. SongBoss</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\98. SongBoss</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\BulletMgr.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\Manager</Filter>
@@ -648,10 +660,10 @@
       <Filter>02. GameObject\01. For_Stage\06. Item\00. Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Stick.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\05. Stick</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\06. Stick</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Leaf.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\06. Leaf</Filter>
+      <Filter>02. GameObject\01. For_Stage\02. Monster\07. Leaf</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ParticleMgr.cpp">
       <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
@@ -664,6 +676,21 @@
     </ClCompile>
     <ClCompile Include="..\Code\FistBulle.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MonsterMgr.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\00. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SongBossStun.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Strun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SongBossFloor.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\InfoTool.cpp">
+      <Filter>01. Scene\98. Tool_Scene\InfoTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SkeletonGhost.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\08. SkeletonGhost</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

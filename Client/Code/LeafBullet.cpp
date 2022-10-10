@@ -24,8 +24,7 @@ HRESULT CLeafBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
-
+	//m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_fSpeed = 10.f;
 
 	return S_OK;
@@ -65,11 +64,11 @@ _int CLeafBullet::Update_Object(const _float & fTimeDelta)
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
 	Target(fTimeDelta);
-	//Rotation(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 	
 	m_fLifeTime += fTimeDelta;
+
 	return iResult;
 }
 
@@ -80,7 +79,7 @@ void CLeafBullet::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	if (2.f < m_fLifeTime)
+	if (5.f < m_fLifeTime)
 		Reset();
 
 	CGameObject::LateUpdate_Object();
@@ -91,7 +90,9 @@ void CLeafBullet::Render_Obejct(void)
 	if (!m_bFire)
 		return;
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+	//m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -119,62 +120,180 @@ void CLeafBullet::Billboard()
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	// 현재 지금 이 코드는 문제가 없지만 나중에 문제가 될 수 있음
+	m_matWorld = matBill * m_matWorld;
 	//m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
-	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld * m_matRot));
 }
 
 _int CLeafBullet::Target(const _float & fTimeDelta)
 {
-	if (!m_bReady)
-	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK_RETURN(pFist, -1);
 
-		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK_RETURN(pPlayer, -1);
+	_vec3	vPlayerPos;
+	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK_RETURN(pPlayer, -1);
 
-		pFist->Get_Info(INFO_POS, &vPos);
-		m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+	pPlayer->Get_Info(INFO_POS, &vPlayerPos);
+	m_pTransCom->Set_Pos(vPlayerPos.x, vPlayerPos.y , vPlayerPos.z);
 
-		pPlayer->Get_Info(INFO_POS, &m_vPlayerPos);
-		m_vPlayerPos.y -= 0.01f;
+	_vec3 vDir, vDistance;
+	vDir = { 0.f, 1.f, 0.f };
+	//D3DXVec3Normalize(&vDir, &vDir); // 단위 벡터로 변경
+	D3DXVec3Normalize(&vDistance, &vDistance);
 
-		m_bReady = true;
-	}
+	_matrix matTrans, matRev;
 
-	_vec3   vDir;
-	vDir = m_vPlayerPos - vPos;
-	D3DXVec3Normalize(&vDir, &vDir);
+	// 이
+	D3DXMatrixTranslation(&matTrans, vDistance.x * 1.5f, vDistance.y * -2.f, vDistance.z * 1.5f);
 
-	static _float fAngle = 0.f;
-	D3DXMatrixIdentity(&m_matRot);
-	D3DXMatrixRotationAxis(&m_matRot, &vDir, D3DXToRadian(fAngle));
-	m_matRot *= 0.05f;
-	fAngle += 5.f;
+	// 공
+	m_fAngle += 0.1f;
+	if (m_fAngle > 360.f)
+		m_fAngle = 0.1f;
+	D3DXMatrixRotationAxis(&matRev, &vDir, m_fAngle);
 
-	vDir *= 2.f * fTimeDelta;
+	_matrix matParent;
+	pPlayer->Get_WorldMatrix(&matParent);
 
-	m_pTransCom->Move_Pos(&vDir);
+	_matrix mat;
+	D3DXMatrixTranslation(&mat, matParent._41, matParent._42, matParent._43);
 
-	// 원래 코드
-	//_vec3	vDir;
-	//vDir = m_vPlayerPos - vPos;
-	//D3DXVec3Normalize(&vDir, &vDir);
-	//vDir *= m_fSpeed * fTimeDelta;
-	//m_pTransCom->Move_Pos(&vDir);
+	matParent = matRev * mat;
+
+	_matrix mat1;
+	mat1 = matTrans * matParent; // 공전하는 행렬
+
+	m_matWorld = mat1;
+
+	//////////////////////// 2 바닥을 도는 나뭇잎
+	//// Bullet의 부모가 될 Leaf의 Transform
+	//// Leaf가 Player를 바라보는 방향을 위해 Leaf, Player
+	//_vec3	vPos, vPlayerPos;
+	//CTransform*		pLeaf = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf", L"Proto_TransformCom", ID_DYNAMIC));
+	//NULL_CHECK_RETURN(pLeaf, -1);
+
+	//CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	//NULL_CHECK_RETURN(pPlayer, -1);
+
+	//pPlayer->Get_Info(INFO_POS, &vPlayerPos);
+	//pLeaf->Get_Info(INFO_POS, &vPos);
+	//m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z); // Bullet의 시작위치
+
+	//_vec3 vDir, vDistance;
+	////vDir = vPlayerPos - vPos; // 몬스터가 플레이어를 바라보는 방향 벡터
+	//vDir = { 0.f, 1.f, 0.f };
+	////D3DXVec3Normalize(&vDir, &vDir); // 단위 벡터로 변경
+	//D3DXVec3Normalize(&vDistance, &vDistance);
+
+	////if (!m_bReady) // 처음 들어 왔을 때 한 번만 받는다
+	////{
+	////	m_vTrans = vPos;
+	////	m_bReady = true;
+	////}
+
+	//_matrix matTrans, matRev, matWorld;
+	//// 스
+	////D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
+
+	//// 이
+	//D3DXMatrixTranslation(&matTrans, vDistance.x * 1.5f, vDistance.y * 1.5f, vDistance.z * 1.5f);
+
+	//// 공
+	//m_fAngle += 0.1f;
+	//if (m_fAngle > 360.f)
+	//	m_fAngle -= 360.f;
+	////m_fAngle = 0.1f;
+	////m_fAngle = m_fAngle % 360.f;
+	//D3DXMatrixRotationAxis(&matRev, &vDir, m_fAngle);
+
+	////matWorld = matTrans * matRev;
+
+	//_matrix matParent;
+	//pLeaf->Get_WorldMatrix(&matParent);
+
+	//_matrix mat;
+	//D3DXMatrixTranslation(&mat, matParent._41, matParent._42, matParent._43);
+
+	//matParent = matRev * mat;
+
+	//_matrix mat1;
+	//mat1 = matTrans * matParent; // 공전하는 행렬
+
+	////m_pTransCom->Set_WorldMatrix(&matWorld);
+
+	////_matrix mat2;
+
+	////if (m_bReady)
+	////{
+	////	m_vTrans += vDir * 0.1f;
+	////	D3DXMatrixTranslation(&mat2, m_vTrans.x, m_vTrans.y, m_vTrans.z);
+	////}
+	//m_matWorld = mat1; //*mat2;
+
+
+	////////////1
+	//// Bullet의 부모가 될 Leaf의 Transform
+	//// Leaf가 Player를 바라보는 방향을 위해 Leaf, Player
+	//_vec3	vPos, vPlayerPos;
+	//CTransform*		pLeaf = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf", L"Proto_TransformCom", ID_DYNAMIC));
+	//NULL_CHECK_RETURN(pLeaf, -1);
+
+	//CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	//NULL_CHECK_RETURN(pPlayer, -1);
+
+	//pPlayer->Get_Info(INFO_POS, &vPlayerPos);
+	//pLeaf->Get_Info(INFO_POS, &vPos);
+	//m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z); // Bullet의 시작위치
+
+	//_vec3 vDir, vDistance;
+	//vDir = vPlayerPos - vPos; // 몬스터가 플레이어를 바라보는 방향 벡터
+	//D3DXVec3Normalize(&vDir, &vDir); // 단위 벡터로 변경
+	//D3DXVec3Normalize(&vDistance, &vDistance);
+
+	//if (!m_bReady) // 처음 들어 왔을 때 한 번만 받는다
+	//{
+	//	m_vTrans = vPos;
+	//	m_bReady = true;
+	//}
+
+	//_matrix matScale, matRot, matTrans, matRev, matWorld;
+	//// 스
+	////D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
+
+	//// 이
+	//D3DXMatrixTranslation(&matTrans, vDistance.x * 0.7f, vDistance.y * 0.7f, vDistance.z * 0.7f);
+
+	//// 공
+	//m_fAngle += 0.1f;
+	//if (m_fAngle > 360.f)
+	//	m_fAngle -= 360.f;
+	//	//m_fAngle = 0.1f;
+	////m_fAngle = m_fAngle % 360.f;
+	//D3DXMatrixRotationAxis(&matRev, &vDir, m_fAngle);
+	//
+	////matWorld = matTrans * matRev;
+
+	//_matrix matParent;
+	//pLeaf->Get_WorldMatrix(&matParent);
+	//
+	//_matrix mat;
+	//D3DXMatrixTranslation(&mat, matParent._41, matParent._42, matParent._43);
+
+	//matParent = matRev;// *mat;
+
+	//_matrix mat1;
+	//mat1 = matTrans * matParent; // 공전하는 행렬
+
+	////m_pTransCom->Set_WorldMatrix(&matWorld);
+
+	//_matrix mat2;
+
+	//if (m_bReady)
+	//{
+	//	m_vTrans += vDir * 0.1f;
+	//	D3DXMatrixTranslation(&mat2, m_vTrans.x, m_vTrans.y, m_vTrans.z);
+	//}
+	//m_matWorld = mat1 * mat2;
 
 	return 0;
-}
-
-void CLeafBullet::Rotation(const _float & fTimeDelta)
-{
-	_float fRotationValue = 0.f;
-	fRotationValue += 45.f * fTimeDelta;
-	if (fRotationValue >= 360.f)
-		fRotationValue = 0.f;
-
-	m_pTransCom->Rotation(ROT_X, fRotationValue);
 }
 
 CLeafBullet * CLeafBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)

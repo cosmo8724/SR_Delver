@@ -16,7 +16,7 @@ private:
 	LPDIRECT3DDEVICE9	m_pGraphicDev = nullptr;
 
 	_int						m_iType = 0;
-	ATTINFO					m_tAttribute;
+	ATTINFO						m_tAttribute;
 	PINFO						m_tInfo;
 
 public:

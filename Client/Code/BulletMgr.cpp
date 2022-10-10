@@ -8,8 +8,8 @@
 #include "WandBullet.h"
 #include "FistBullet.h"
 #include "SongBossBullet.h"
-#include "SongBosStun.h"
-#include "SongBosFloor.h"
+#include "SongBossStun.h"
+#include "SongBossFloor.h"
 #include "ArrowBullet.h"
 #include "LeafBullet.h"
 
@@ -53,7 +53,8 @@ HRESULT CBulletMgr::Ready_Proto(LPDIRECT3DDEVICE9 pGraphicDev)
 	// Fist
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FistGreenEffect_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/Fist_GreenEffect/GreenEffect%d.png", TEX_NORMAL, 15)), E_FAIL);
 	// SongBoss
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Bullet/SongBoss%d.png", TEX_NORMAL, 8)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Bullet/SongBoss%d.png", TEX_NORMAL, 1)), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Bullet/SongBoss%d.png", TEX_NORMAL, 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Stun_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Stun/Stun.png", TEX_NORMAL, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Floor_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Floor/Floor.png", TEX_NORMAL, 1)), E_FAIL);
 	// Leaf
@@ -134,7 +135,7 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 
 	for (int i = 0; i < m_MaxIdx[STUN_SONGBOSS]; ++i)
 	{
-		pGameObject = CSongBosStun::Create(pGraphicDev, i);
+		pGameObject = CSongBossStun::Create(pGraphicDev, i);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
 		objTags[i] = L"SongBoss_Stun";
@@ -153,7 +154,7 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 
 	for (int i = 0; i < m_MaxIdx[FLOOR_SONGBOSS]; ++i)
 	{
-		pGameObject = CSongBosFloor::Create(pGraphicDev, i);
+		pGameObject = CSongBossFloor::Create(pGraphicDev, i);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
 		objTags[i] = L"SongBoss_Floor";

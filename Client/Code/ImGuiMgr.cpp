@@ -78,6 +78,7 @@ void CImGuiMgr::SetupDevice(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_pMapTool = new CMapTool(m_pGraphicDev);
 	m_pParticleTool = new CParticleTool(m_pGraphicDev);
+	m_pInfoTool = new CInfoTool(m_pGraphicDev);
 }
 
 HRESULT CImGuiMgr::ImGui_Map_Tool(LPDIRECT3DDEVICE9 pGraphicDev, const _float & fTimeDelta)
@@ -602,6 +603,11 @@ void CImGuiMgr::ParticleTool()
 	m_pParticleTool->ParticleTool_Window(m_fTimeDelta);
 }
 
+void CImGuiMgr::InfoTool()
+{
+	m_pInfoTool->InfoTool_Window(m_fTimeDelta);
+}
+
 void CImGuiMgr::Free()
 {
 	for (size_t i = 0; i < m_vecObjTags.size(); i++)
@@ -610,6 +616,7 @@ void CImGuiMgr::Free()
 
 	Safe_Delete(m_pMapTool);
 	Safe_Delete(m_pParticleTool);
+	Safe_Delete(m_pInfoTool);
 
 	ImGui_ImplDX9_Shutdown();
 	ImGui_ImplWin32_Shutdown();

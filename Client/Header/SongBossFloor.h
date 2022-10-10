@@ -6,12 +6,12 @@ BEGIN(Engine)
 class CRcTex;
 class CAnimator;
 
-class CSongBosStun : public CBullet
+class CSongBossFloor : public CBullet
 {
 private:
-	explicit CSongBosStun(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CSongBosStun(const CSongBosStun& rhs);
-	virtual ~CSongBosStun();
+	explicit CSongBossFloor(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CSongBossFloor(const CSongBossFloor& rhs);
+	virtual ~CSongBossFloor();
 
 public:
 	virtual HRESULT Ready_Object(_int iBulletCount);
@@ -20,12 +20,9 @@ public:
 	virtual	void	Render_Obejct(void) override;
 	 
 public:
-	static CSongBosStun*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount);
+	static CSongBossFloor*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount);
 	virtual void			Free(void) override;
 	virtual void			Reset() override;
-
-private:
-	void					Billboard();
 
 private:
 	HRESULT					Add_Component(void);
@@ -40,7 +37,12 @@ private:
 	_bool		m_bReady = false;
 	_vec3		m_vPlayerPos = { 0.f,0.f,0.f };
 
-	_uint		m_iBulletCount = 0;
+	_uint		m_iBulletCount;
+	_uint		m_iTransparency;
+
+	// Timer
+	_float		m_fTransparencyTimeAcc;
+
 };
 
 END

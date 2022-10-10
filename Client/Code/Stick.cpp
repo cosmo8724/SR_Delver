@@ -25,6 +25,9 @@ HRESULT CStick::Ready_Object(_int iAngerCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_tInfo.iHp = 5;
+	m_tInfo.iAttack = 2;
+
 	m_pTransCom->Set_Pos(10.f, 1.f, 30.f);
 
 	m_eCurState = IDLE;

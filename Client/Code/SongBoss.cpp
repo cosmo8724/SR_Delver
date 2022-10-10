@@ -26,10 +26,14 @@ HRESULT CSongBoss::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Pos(1.f, 1.f, 50.f);
+	m_tInfo.iHp = 30;
+	m_tInfo.iAttack = 5;
+
+	m_pTransCom->Set_Scale(1.5f, 1.5f, 1.5f);
+	m_pTransCom->Set_Pos(10.f, 1.5f, 45.f);
 
 	m_eCurState = IDLE;
-	m_eSkill = SKILL_END;
+	m_eSkill = SKILL_BULLET;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
@@ -42,7 +46,7 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	m_pTransCom->Set_Y(1.f);
+	//m_pTransCom->Set_Y(1.5f);
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.5f); // TODO 보스의 HIT, DIE의 속도 조절해야함
 
 	Motion_Change(fTimeDelta);

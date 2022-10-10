@@ -30,6 +30,9 @@ HRESULT CBlueBat::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_tInfo.iHp = 5;
+	m_tInfo.iAttack = 2;
+
 	m_pTransCom->Set_Pos(5.f, 1.f, 40.f);
 
 	m_eCurState = IDLE;
@@ -49,7 +52,7 @@ _int CBlueBat::Update_Object(const _float & fTimeDelta)
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
 	Motion_Change(fTimeDelta);
-	Target_Follow(fTimeDelta);
+	//Target_Follow(fTimeDelta);
 	KnockBack(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -188,7 +191,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 
 void CBlueBat::KnockBack(const _float& fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_V))
+	if (Engine::Key_Down(DIK_V)) // ³Ë¹é
 	{
 		if (!m_bKnockBack)
 			m_bKnockBack = true;

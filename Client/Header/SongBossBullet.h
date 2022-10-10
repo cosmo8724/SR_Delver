@@ -26,6 +26,7 @@ public:
 
 private:
 	void					Billboard();
+	_int					Target(const _float& fTimeDelta);
 
 private:
 	HRESULT					Add_Component(void);
@@ -41,6 +42,10 @@ private:
 	_bool		m_bReady = false;
 	_vec3		vPos, m_vPlayerPos = { 0.f,0.f,0.f };
 
+	//
+	_matrix			m_matWorld;
+	_vec3			m_vTrans;
+	_float			m_fAngle = 0.f;
 
 };
 

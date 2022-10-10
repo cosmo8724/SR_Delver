@@ -29,7 +29,7 @@ CComponent * CProtoMgr::Clone_Proto(const _tchar * pProtoTag)
 {
 	CComponent*		pPrototype = Find_Proto(pProtoTag);
 
-	if (pProtoTag == nullptr)
+	if (pPrototype == nullptr) // 확인 필요
 		return nullptr;
 
 	return pPrototype->Clone();

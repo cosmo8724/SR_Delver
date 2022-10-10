@@ -24,6 +24,9 @@ HRESULT CLeaf::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_tInfo.iHp = 5;
+	m_tInfo.iAttack = 1;
+
 	m_OriginalPos = { 10.f, 1.f, 30.f };
 	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
 
@@ -38,12 +41,16 @@ HRESULT CLeaf::Ready_Object(void)
 _int CLeaf::Update_Object(const _float & fTimeDelta)
 {
 	Engine::CGameObject::Update_Object(fTimeDelta * 0.6f);
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
 	Motion_Change(fTimeDelta);
-	SKillTeleporting(fTimeDelta);
+	//SKillTeleporting(fTimeDelta);
+
+	if(Key_Down(DIK_L))
+		CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
 
 	return 0;
 }
@@ -107,12 +114,12 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
-	
-	if (fDist < 5.f) // 몬스터 순간 이동
+
+ 	if (fDist < 5.f) // 몬스터 순간 이동
 	{
 		m_eCurState = ATTACK;
 
-		if (m_pAnimtorCom->Get_Currentframe() >= 12.f) // Leaf의 Attack 이미지가 끝날 때 쯤
+		if (m_pAnimtorCom->Get_Currentframe() >= 12.f && m_pAnimtorCom->Get_Currentframe() < 13.f) // Leaf의 Attack 이미지가 끝날 때 쯤
 			Teleporting(vPlayerPos.x, vPlayerPos.z);
 	}
 	else
@@ -122,7 +129,7 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 		if (fDist < 10.f)
 		{
 			m_fBulletTimeAcc += fTimeDelta;
-			if (2.f < m_fBulletTimeAcc)
+			if (0.3f < m_fBulletTimeAcc)
 			{
 				CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
 				m_fBulletTimeAcc = 0.f;
@@ -134,6 +141,7 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 void CLeaf::Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ)
 {
 	int iRandomNum = rand() % 7 + 2; // 몬스터가 랜덤하게 이동할 좌표
+
 	if (fPlayerPosX == (m_OriginalPos.x + iRandomNum) || fPlayerPosZ == (m_OriginalPos.z + iRandomNum) ||
 		fPlayerPosX == (m_OriginalPos.x - iRandomNum) || fPlayerPosZ == (m_OriginalPos.z - iRandomNum))
 		return; // 만약 몬스터가 이동할 좌표가 플레이어와 같다면 다시 랜덤값을 받는다
@@ -142,15 +150,15 @@ void CLeaf::Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ)
 	{
 		if (iRandomNum < 5) // 짝수인데 5보다 크다면
 			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
-
-		m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
+		else
+			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
 	}
 	else // 홀수
 	{
 		if (iRandomNum < 5) // 홀수인데 5보다 크다면
 			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z - iRandomNum);
-
-		m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
+		else 
+			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
 	}
 }
 

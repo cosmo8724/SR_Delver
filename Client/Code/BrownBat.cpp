@@ -21,13 +21,16 @@ HRESULT CBrownBat::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_tInfo.iHp = 2;
+	m_tInfo.iAttack = 1;
+
 	m_fHeight = 3.f;
 	m_pTransCom->Set_Pos(15.f, m_fHeight, 15.f);
 
 	m_eCurState = IDLE;
 
-	m_fIdle_Speed = 2.f;
-	m_fAttack_Speed = 10.f;
+	m_fIdle_Speed = 5.f;
+	m_fAttack_Speed = 7.f;
 
 	return S_OK;
 }
@@ -37,7 +40,7 @@ _int CBrownBat::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	m_pAnimtorCom->Play_Animation(fTimeDelta * 3.5f);
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 5.f);
 
 	Target_Follow(fTimeDelta);
 	Motion_Change(fTimeDelta);
@@ -123,14 +126,18 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 	}
 	else
 	{
-		// 플레이어를 따라다니지 않을 때 좌우 이동
 		m_eCurState = IDLE;
 
-		_vec3		vRight;
-		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
+		// 플레이어를 따라다니지 않을 때 좌우 이동
+		_vec3 vRight, vUp, vLook;
+		vLook = vPlayerPos - vPos;
+		D3DXVec3Normalize(&vLook, &vLook);
+		vUp = _vec3(0.f, 1.f, 0.f);
+
+		D3DXVec3Cross(&vRight, &vUp, &vLook);
 
 		m_fTimeAcc += fTimeDelta;
-		if (2.f < m_fTimeAcc)
+		if (1.f < m_fTimeAcc)
 		{
 			m_fIdle_Speed *= -1;
 			m_fTimeAcc = 0.f;
