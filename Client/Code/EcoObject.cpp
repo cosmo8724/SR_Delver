@@ -1,31 +1,39 @@
-#include "..\Header\Monster.h"
-
+#include "stdafx.h"
+#include "EcoObject.h"
 #include "Export_Function.h"
 
-CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
-	, m_fIdle_Speed(0.f)
-	, m_fAttack_Speed(0.f)
+
+CEcoObject::CEcoObject(LPDIRECT3DDEVICE9 pGraphicDev)
+	:CGameObject(pGraphicDev)
 {
 }
 
-
-CMonster::~CMonster()
+CEcoObject::~CEcoObject()
 {
 }
 
-_int CMonster::Update_Object(const _float& fTimeDelta)
+HRESULT CEcoObject::Ready_Object(void)
 {
 
-	CGameObject::Update_Object(fTimeDelta);
+	return S_OK;
+}
 
+_int CEcoObject::Update_Object(const _float & fTimeDelta)
+{
+	Engine::CGameObject::Update_Object(fTimeDelta);
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	return 0;
 }
 
-void CMonster::Render_Obejct()
+void CEcoObject::LateUpdate_Object(void)
 {
+	CGameObject::LateUpdate_Object();
+}
+
+void CEcoObject::Render_Obejct(void)
+{
+
 #ifdef _DEBUG
 	// Collider
 	m_pGraphicDev->SetTransform(D3DTS_WORLD,
@@ -34,11 +42,17 @@ void CMonster::Render_Obejct()
 	m_pColliderCom->Render_Buffer();
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 #endif
+
 }
 
-void CMonster::Billboard()
+void CEcoObject::Free(void)
 {
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	CGameObject::Free();
+}
+
+void CEcoObject::Billboard()
+{
+	// ºôº¸µå
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
@@ -52,11 +66,9 @@ void CMonster::Billboard()
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
-}
+	m_matWorld = matBill * matWorld;
 
-void CMonster::Free(void)
-{
-	CGameObject::Free();
+	m_pTransCom->Set_WorldMatrix(&m_matWorld);
+
+
 }

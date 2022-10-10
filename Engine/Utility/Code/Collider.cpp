@@ -239,7 +239,7 @@ void CCollider::Calculate_WorldMatrix(_matrix matWorld)
 
 _bool	CCollider::CollideAABB(CCollider* _collider)
 {
-	if (_collider->Is_Free())
+	if (_collider->Is_Free() || this->Is_Free())
 		return false;
 
 	if ((this->m_vMax.x < _collider->m_vMin.x) || (this->m_vMin.x > _collider->m_vMax.x))

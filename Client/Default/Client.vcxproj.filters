@@ -244,6 +244,15 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\07. CrossHair">
       <UniqueIdentifier>{3c39e0b8-07c9-4dec-8fe3-8da03ad038ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject">
+      <UniqueIdentifier>{62f9a876-dbd3-4e16-912e-3d77abd8d56a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Jar">
+      <UniqueIdentifier>{38e6048f-fc54-41f8-b06f-7d9a3c76b3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger">
+      <UniqueIdentifier>{d1e2faf3-2722-4601-952b-9fb5382577bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -489,6 +498,15 @@
     <ClInclude Include="..\Header\CrossHair.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\07. CrossHair</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\EcoObject.h">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Jar.h">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Jar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Dagger.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -715,6 +733,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\CrossHair.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\07. CrossHair</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\EcoObject.cpp">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Jar.cpp">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Jar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Dagger.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

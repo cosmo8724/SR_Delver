@@ -39,6 +39,8 @@ public:
 	void			Set_Particle(PTYPE _eType);	// 파티클의 타입에 따라 필요한 요소 세팅
 	void			Set_Texture(PTEXTUREID eTex);
 	void			Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
+	void			Set_Information(_bool _bUse, _int _iIdx, CGameObject* _pObj, ATTRIBUTE _att, PINFO _pInfo
+									, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand); 
 	void			ReUse();	// 파티클이 끝나고 풀로 돌아가면 리셋시켜줌.
 
 public:
@@ -75,6 +77,8 @@ private:
 
 	// 추가된 변수
 	CGameObject*	m_pTarget = nullptr;
+
+
 
 };
 

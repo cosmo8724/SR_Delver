@@ -58,9 +58,6 @@ void CUserParticle::Set_Texture(PTEXTUREID eTex)
 		NULL_CHECK(m_pTextureCom);
 		m_mapComponent[ID_STATIC].insert({ str.c_str(), pComponent });
 	}
-
-
-
 }
 
 void CUserParticle::Set_Particle(PTYPE _eType)
@@ -71,9 +68,10 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 		MSG_BOX("파티클 타겟 없음 ㅠㅠ");
 	CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 
-
 	m_eType = _eType;
 
+	m_origin = pCom->Get_Pos();
+	/*
 	switch (_eType)
 	{
 	case PTYPE_SNOW:
@@ -82,16 +80,28 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 		//m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
 		m_maxParticles = 5000;
 		break;
+		
 	case PTYPE_SPOT:
 	{
 		m_maxParticles = 1;
 		m_origin = pCom->Get_Pos();
 		m_bFrameRepeat = true;
 		m_Attribute.fLifeTime = 1.f;
+		m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
 	}
 	break;
 
+	case PTYPE_FOUNTAIN:
+	{
+		m_maxParticles = 20;
+		m_origin = pCom->Get_Pos();
+		m_bFrameRepeat = false;
+		m_Attribute.fLifeTime = 1.f;
+		m_Attribute.tColor = { 1.f, 0.f, 0.f, 1.f };
+	}
+	break;
 	case PTYPE_REMAIN:
+	{
 		// 파티클 수
 		m_maxParticles = 5;
 
@@ -112,6 +122,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 
 		m_fFrameSpeed = 5.f;
 		m_bFrameRepeat = true;
+	}
 	break;
 
 	case PTYPE_TRACER:
@@ -126,6 +137,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 
 		break;
 	}
+	*/
 
 	for (int i = 0; i < m_maxParticles; ++i)
 		addParticle();
@@ -263,10 +275,10 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	case PTYPE_FOUNTAIN:
 	{
 		attribute->bIsAlive = true;
-		attribute->vPosition = { 10.f, 10.f, 10.f };
+		attribute->vPosition = m_origin;
 
-		_vec3 min = { -1.f, 0.f, -1.f };
-		_vec3 max = m_Attribute.vVelocity;
+		_vec3 min = { -1.f, -1.f, -1.f };
+		_vec3 max = { 1.f, 1.f, 1.f };
 
 		GetRandomVector(&attribute->vVelocity, &min, &max);
 
@@ -331,6 +343,12 @@ void CUserParticle::update(_float fTimeDelta)
 	{
 	case PTYPE_FIREWORK:
 	{
+		if (isDead())
+		{
+			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
+			ReUse();
+		}
+
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
@@ -380,18 +398,36 @@ void CUserParticle::update(_float fTimeDelta)
 
 	case PTYPE_FOUNTAIN:	
 	{
+		if (isDead())
+		{
+			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
+			ReUse();
+		}
+
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
 			if (iter->bIsAlive)
 			{
-				iter->vVelocity.y -= GetRandomFloat(0.f, 1.4f);
-				iter->vPosition += (iter->vVelocity * fTimeDelta);
+				iter->vVelocity.y -= GetRandomFloat(0.f, 1.f);
+				iter->vPosition += (0.3f * iter->vVelocity * fTimeDelta); 
 				iter->fAge += fTimeDelta;
 				if (iter->fAge > iter->fLifeTime) // 죽인다.
 					iter->bIsAlive = false;
 			}
 		}
+		//for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
+		//{
+		//	// 생존한 파티클만 갱신
+		//	if (iter->bIsAlive)
+		//	{
+		//		iter->vVelocity.y -= GetRandomFloat(0.f, 1.4f);
+		//		iter->vPosition += (iter->vVelocity * fTimeDelta);
+		//		iter->fAge += fTimeDelta;
+		//		if (iter->fAge > iter->fLifeTime) // 죽인다.
+		//			iter->bIsAlive = false;
+		//	}
+		//}
 	}
 		break;
 
@@ -524,6 +560,26 @@ HRESULT CUserParticle::Add_Component(void)
 
 	return S_OK;
 }
+void CUserParticle::Set_Information(_bool _bUse, _int _iIdx, CGameObject * _pObj, ATTRIBUTE _att, PINFO _pInfo
+				, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand)
+{
+	m_bUse		= _bUse;
+	m_iIndex	= _iIdx;
+	m_pTarget	= _pObj;
+
+	m_Attribute.fLifeTime	= _att._lifeTime;
+	m_Attribute.tColor		= _att._color;
+	m_Attribute.vVelocity	= _att._velocity;
+
+	m_maxParticles	= _pInfo.iMaxParticles;
+	m_fSize			= _pInfo.fSize;
+	
+	m_fFrameSpeed	= _fFrameSpeed;
+	m_bFrameRepeat	= _bFrameRepeat;
+	m_bRand			= _bRand;
+
+}
+
 void CUserParticle::ReUse()
 {
 	m_iIndex = -1;
@@ -535,6 +591,8 @@ void CUserParticle::ReUse()
 	m_bFrameRepeat = false;
 	m_fFrameSpeed = 1.f;
 	m_fSize = 1.f;
+
+	//memset(&m_Attribute, 0, sizeof(ATTINFO));
 
 	removeAllParticles();
 }

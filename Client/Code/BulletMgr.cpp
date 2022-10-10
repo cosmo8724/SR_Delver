@@ -22,7 +22,7 @@ CBulletMgr::CBulletMgr()
 	//	m_CurIdx[i] = 0;
 	//}
 
-	m_MaxIdx[BULLET_WAND] = 10;
+	m_MaxIdx[BULLET_WAND] = 20;
 	m_MaxIdx[BULLET_M_FIST] = 5;
 	m_MaxIdx[BULLET_SONGBOSS] = 5;
 	m_MaxIdx[STUN_SONGBOSS] = 4; // ENUM 선언위치 변경 X
@@ -252,6 +252,7 @@ void CBulletMgr::Fire(BULLETID _eID)
 	if (!m_IdxQue[_eID].empty())
 	{
 		iIdx = m_IdxQue[_eID].front();
+		
 		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Fire(true);
 		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Index(iIdx);
 

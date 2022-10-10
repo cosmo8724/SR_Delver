@@ -24,6 +24,10 @@ namespace Engine
 #define			USING(NAMESPACE)	using namespace NAMESPACE;
 	//
 
+#define			OBJ_NOEVENT			0
+#define			OBJ_DEAD			0
+
+
 #ifdef	ENGINE_EXPORTS
 #define ENGINE_DLL		_declspec(dllexport)
 #else

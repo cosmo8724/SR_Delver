@@ -48,6 +48,9 @@
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 
+// EcoObject
+#include "Jar.h"
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -106,25 +109,48 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
+	// Collider 테스트(Player - 아이템)
 	// Collider 테스트( 플레이어와 Arrow0,Arrow1,Wand2)
-	CGameObject* pDest = nullptr;
+	//CGameObject* pDest = nullptr;
 
-	for (int i = 0; i < 2; ++i)
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	wstring obj = L"Arrow";
+	//	wchar_t index[10];
+	//	_itow_s(i, index, 10);
+	//	obj += index;
+
+	//	pDest = Engine::Get_GameObject(L"Layer_GameLogic", obj.c_str());
+	//	//Engine::CollisionAABB(pSour, pDest);
+	//	Engine::CollisionTest(pPlayer, pDest);
+	//}
+
+	//pDest = Engine::Get_GameObject(L"Layer_GameLogic", L"Wand2");
+	////Engine::CollisionAABB(pSour, pDest);
+	//Engine::CollisionTest(pPlayer, pDest);
+	// ~Collider 테스트
+
+	// 플레이어와 아이템
+	vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items();
+	for (auto& item : *pItems)
 	{
-		wstring obj = L"Arrow";
-		wchar_t index[10];
-		_itow_s(i, index, 10);
-		obj += index;
-
-		pDest = Engine::Get_GameObject(L"Layer_GameLogic", obj.c_str());
-		//Engine::CollisionAABB(pSour, pDest);
-		Engine::CollisionTest(pPlayer, pDest);
+		Engine::CollisionAABB(pPlayer, item);
 	}
 
-	pDest = Engine::Get_GameObject(L"Layer_GameLogic", L"Wand2");
-	//Engine::CollisionAABB(pSour, pDest);
-	Engine::CollisionTest(pPlayer, pDest);
-	// ~Collider 테스트
+	// Bullet 테스트
+	CGameObject* pSour = nullptr;
+	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
+	for (auto& bullet : *pPlayerBullets)
+	{
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+		Engine::CollisionTest(pSour, bullet);
+
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
+		Engine::CollisionTest(pSour, bullet);
+
+
+	}
+
 
 	// Monster Collider
 	CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
@@ -288,6 +314,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CWinkMan::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WinkMan", pGameObject), E_FAIL);
+
+	// EcoObject
+	pGameObject = CJar::Create(m_pGraphicDev, _vec3({30.f, 1.f, 40.f}));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
 	// Blocks
 	string	strPath = "..\\Bin\\Resource\\Map_SH.dat";
