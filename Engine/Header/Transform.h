@@ -40,12 +40,16 @@ public:
 	void				Revolution(const _vec3* pCenter, _matrix _matView, _float fAngle, const _float& fTimeDelta, ITEMSTATE eState);
 	void				KnockBack_Target(_vec3* pTargetLook, const _float& fSpeed, const _float& fTimeDelta); // ³Ë¹é
 	void				Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
+	_bool				Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
 
 
 public:
 	HRESULT				Ready_Transform(void);
 	virtual _int		Update_Component(const _float& fTimeDelta);
 
+public:
+	void			Prepare_Attack() { m_bFinished = false;  m_fAttackAngle = 0.f; }
+	_bool			Is_Finished() { return m_bFinished; }
 public:
 	_vec3			m_vInfo[INFO_END];
 	_vec3			m_vScale;
@@ -55,10 +59,13 @@ public:
 	_float			m_fAngleSpeed;
 
 	_vec3			m_vOldPos;
+	_bool			m_bFinished = false;
+	_float			m_fAttackAngle = 0.f;
+	_float			m_fAttackSpeed;
 
 public:
 	static CTransform*		Create(void);
-	virtual CComponent*	Clone(void);
+	virtual CComponent*		Clone(void);
 private:
 	virtual void Free(void);
 

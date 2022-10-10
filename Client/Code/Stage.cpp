@@ -112,36 +112,30 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
-	// Collider 테스트(Player - 아이템)
-	// Collider 테스트( 플레이어와 Arrow0,Arrow1,Wand2)
-	//CGameObject* pDest = nullptr;
-
-	//for (int i = 0; i < 2; ++i)
-	//{
-	//	wstring obj = L"Arrow";
-	//	wchar_t index[10];
-	//	_itow_s(i, index, 10);
-	//	obj += index;
-
-	//	pDest = Engine::Get_GameObject(L"Layer_GameLogic", obj.c_str());
-	//	//Engine::CollisionAABB(pSour, pDest);
-	//	Engine::CollisionTest(pPlayer, pDest);
-	//}
-
-	//pDest = Engine::Get_GameObject(L"Layer_GameLogic", L"Wand2");
-	////Engine::CollisionAABB(pSour, pDest);
-	//Engine::CollisionTest(pPlayer, pDest);
-	// ~Collider 테스트
 
 	// 플레이어와 아이템
-	vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items();
-	for (auto& item : *pItems)
+	for (int i = 0; i < ITEM_END; ++i)
 	{
-		Engine::CollisionAABB(pPlayer, item);
+		if (i == ITEM_IMG)	// img아이템은 충돌확인xx
+			continue;
+		vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items((ITEMTYPE)i);
+		for (auto& item : *pItems)
+		{
+			Engine::CollisionAABB(pPlayer, item);
+		}
+	}
+
+	// 무기와 환경요소
+	vector<CGameObject*>* pItems = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
+	CGameObject* pSour = nullptr;
+	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
+	for (auto& weapon : *pItems)
+	{
+		Engine::CollisionAABB(pSour, weapon);
+
 	}
 
 	// Bullet 테스트
-	CGameObject* pSour = nullptr;
 	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 	for (auto& bullet : *pPlayerBullets)
 	{

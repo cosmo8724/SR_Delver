@@ -65,7 +65,7 @@ HRESULT CItemMgr::Add_GameObject(const _tchar* pLayerTag, const _tchar* objTag, 
 		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool.push_back(pGameObject);
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 	}
 
 	else
@@ -99,7 +99,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool.push_back(pGameObject);
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 	}
 	else if (objName == L"Wand")
 	{
@@ -110,7 +110,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool.push_back(pGameObject);
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 	}
 	else if (objName == L"Dagger")
 	{
@@ -121,7 +121,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool.push_back(pGameObject);
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 	}
 	else
 	{
@@ -151,7 +151,7 @@ CGameObject* CItemMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, 
 	if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
 		return nullptr;
 	
-	m_vecImgPool.push_back(pGameObject);
+	m_vecItemPool[ITEM_IMG].push_back(pGameObject);
 
 
 	return pGameObject;
@@ -180,7 +180,7 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool.push_back(pGameObject);
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 	}
 
 	else if (objName == L"Potion")
@@ -193,7 +193,7 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool.push_back(pGameObject);
+		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 	}
 
 	else
@@ -229,9 +229,11 @@ inline void CItemMgr::Free(void)
 	m_vecItemTextureTags.clear();
 	m_vecItemTextureTags.swap(vector<TCHAR*>());
 
+	for (int i = 0; i < ITEM_END; ++i)
+	{
+		m_vecItemPool[i].swap(vector<CGameObject*>());
+	}
 
-	m_vecItemPool.swap(vector<CGameObject*>());
-	m_vecImgPool.swap(vector<CGameObject*>());
 
 
 	Safe_Release(m_pGraphicDev);

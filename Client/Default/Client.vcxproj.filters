@@ -106,12 +106,6 @@
     <Filter Include="01. Scene\98. Tool_Scene\MapTool">
       <UniqueIdentifier>{9d8d01b5-b18b-483f-b718-3cfb48375287}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. For_Public\02. Particle">
-      <UniqueIdentifier>{258eb209-7e41-421e-935a-5990fbd9a4f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\02. For_Public\02. Particle\99. UserParticle">
-      <UniqueIdentifier>{06c6df7e-df28-4faf-8f89-402d0e2827ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\98. Tool_Scene\ParticleTool">
       <UniqueIdentifier>{6e88e087-be33-42b3-beed-f20c9c0f162d}</UniqueIdentifier>
     </Filter>
@@ -183,9 +177,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\99. UI\05. CrossHair">
       <UniqueIdentifier>{8b76c546-8740-4382-8339-a260941f8583}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\02. For_Public\02. Particle\Manager">
-      <UniqueIdentifier>{eba8f420-befd-42b2-bb7e-0845e53dbacb}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf">
       <UniqueIdentifier>{fde1a060-1e3e-410e-b32d-020c9302a2fc}</UniqueIdentifier>
@@ -270,6 +261,18 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\03. Jar">
       <UniqueIdentifier>{38e6048f-fc54-41f8-b06f-7d9a3c76b3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. For_Public\03. Particle">
+      <UniqueIdentifier>{258eb209-7e41-421e-935a-5990fbd9a4f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. For_Public\03. Particle\99. UserParticle">
+      <UniqueIdentifier>{06c6df7e-df28-4faf-8f89-402d0e2827ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. For_Public\03. Particle\Manager">
+      <UniqueIdentifier>{eba8f420-befd-42b2-bb7e-0845e53dbacb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. For_Public\02. ObjectCamera">
+      <UniqueIdentifier>{3c5febbc-f7d4-4572-9420-091ba4473abb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -397,10 +400,10 @@
       <Filter>01. Scene\98. Tool_Scene\MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\PSystem.h">
-      <Filter>02. GameObject\02. For_Public\02. Particle</Filter>
+      <Filter>02. GameObject\02. For_Public\03. Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UserParticle.h">
-      <Filter>02. GameObject\02. For_Public\02. Particle\99. UserParticle</Filter>
+      <Filter>02. GameObject\02. For_Public\03. Particle\99. UserParticle</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ParticleTool.h">
       <Filter>01. Scene\98. Tool_Scene\ParticleTool</Filter>
@@ -481,7 +484,7 @@
       <Filter>02. GameObject\01. For_Stage\02. Monster\07. Leaf</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ParticleMgr.h">
-      <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
+      <Filter>02. GameObject\02. For_Public\03. Particle\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ArrowBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
@@ -539,6 +542,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\Tree.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\02. Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ObjectCamera.h">
+      <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -648,10 +654,10 @@
       <Filter>01. Scene\98. Tool_Scene\MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\PSystem.cpp">
-      <Filter>02. GameObject\02. For_Public\02. Particle</Filter>
+      <Filter>02. GameObject\02. For_Public\03. Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UserParticle.cpp">
-      <Filter>02. GameObject\02. For_Public\02. Particle\99. UserParticle</Filter>
+      <Filter>02. GameObject\02. For_Public\03. Particle\99. UserParticle</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ParticleTool.cpp">
       <Filter>01. Scene\98. Tool_Scene\ParticleTool</Filter>
@@ -732,7 +738,7 @@
       <Filter>02. GameObject\01. For_Stage\02. Monster\07. Leaf</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ParticleMgr.cpp">
-      <Filter>02. GameObject\02. For_Public\02. Particle\Manager</Filter>
+      <Filter>02. GameObject\02. For_Public\03. Particle\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ArrowBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
@@ -790,6 +796,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Tree.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\02. Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ObjectCamera.cpp">
+      <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

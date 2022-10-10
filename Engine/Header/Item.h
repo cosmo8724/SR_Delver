@@ -29,6 +29,7 @@ public:
 	wstring		Get_TextureTag() { return m_textureTag; }
 	void		Set_State(ITEMSTATE eState) { m_eState = eState; }
 	ITEMTYPE	Get_ItemType() { return m_eItemType; }
+	ITEMSTATE	Get_State() { return m_eState; }
 
 protected:
 	CRcTex*			m_pBufferCom = nullptr;

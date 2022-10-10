@@ -280,15 +280,15 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 {
 	m_fLBClick += fTimeDelta;
 
-	if ((Engine::Get_DIKeyState(DIK_X) & 0x80) && (0.3f<m_fLBClick))
-	{
-		m_fLBClick = 0.f;
-		_vec3 vPos, vLook;
-		m_pTransCom->Get_Info(INFO_POS, &vPos);
-		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+	//if ((Engine::Get_DIKeyState(DIK_X) & 0x80) && (0.3f<m_fLBClick))
+	//{
+	//	m_fLBClick = 0.f;
+	//	_vec3 vPos, vLook;
+	//	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	//	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
 
-		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
-	}
+	//	CBulletMgr::GetInstance()->Fire(BULLET_WAND);
+	//}
 }
 
 void CPlayer::Set_OnTerrain(void)
@@ -347,7 +347,7 @@ _float CPlayer::Get_Height()
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
-	if (nullptr != pItem)
+	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
 	{
 		CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
 
