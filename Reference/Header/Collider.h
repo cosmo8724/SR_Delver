@@ -1,5 +1,6 @@
 #pragma once
 #include "VIBuffer.h"
+#include "SphereTex.h"
 
 BEGIN(Engine)
 
@@ -22,6 +23,7 @@ public:
 public:
 	void		Calculate_WorldMatrix(_matrix matWorld);
 	_bool		CollideAABB(CCollider* _collider);
+	_bool		CollideSphere(CCollider* _collier);
 	const _vec3&		Get_MinPoint() { return m_vMin; }
 	const _vec3&		Get_MaxPoint() { return m_vMax; }
 	_matrix		Get_WorldMatrix() { return m_matWorld; }
@@ -29,6 +31,8 @@ public:
 	_bool		Is_Free() { return m_bFree; }
 
 private:
+	CSphereTex*		m_pSphereBuffer = nullptr;
+
 	_bool		m_bClone;
 	_vec3*		m_pPos;	// 8개 꼭지점
 
@@ -37,6 +41,7 @@ private:
 	_vec3		m_vMax;
 	_vec3		m_vCenter;
 	_float		m_fRadius;
+	_ulong		m_dwColor;
 
 	_matrix		m_matWorld;
 };
