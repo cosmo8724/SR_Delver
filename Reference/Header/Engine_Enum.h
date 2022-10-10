@@ -5,8 +5,8 @@ namespace Engine
 {
 	enum WINMODE	 { MODE_FULL, MODE_WIN };
 	
-// ID_DYNAMIC : ¸Å ÇÁ·¹ÀÓ¸¶´Ù °»½ÅÀ» ÇØ¾ßÇÏ´Â ÄÄÆ÷³ÍÆ® Áý´Ü
-// ID_STATIC : ÇÑ ¹ø ¸¸µé¸é ±×´ë·Î »ç¿ëÇÒ ÄÄÆ÷³ÍÆ® Áý´Ü
+// ID_DYNAMIC : ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¾ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+// ID_STATIC : ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 	enum COMPONENTID { ID_DYNAMIC, ID_STATIC, ID_END };
 
 	enum RENDERID { RENDER_PRIORITY, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END };
@@ -47,6 +47,8 @@ namespace Engine
 
 	enum OBJECTTYPE { OBJ_PLAYER, OBJ_MONSTER, OBJ_NPC, OBJ_TERRAIN, OBJ_BLOCK, OBJ_END };
 
+	enum ECOOBJTYPE { ECO_STONE, ECO_GRASS, ECO_TREE, ECO_JAR, ECO_JAM, ECO_END };
+	
 	enum POTIONTYPE { POTION_0, POTION_1, POTION_2, POTION_3, POTION_4, POTION_END };
 
 }

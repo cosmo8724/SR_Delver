@@ -54,7 +54,7 @@ void CStaticCamera::LateUpdate_Object(void)
 {
 	if (true == m_bFix)
 	{
-		//Mouse_Fix();
+		Mouse_Fix();
 	}
 	CCamera::LateUpdate_Object();
 }

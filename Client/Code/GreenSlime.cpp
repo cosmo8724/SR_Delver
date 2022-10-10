@@ -28,7 +28,7 @@ HRESULT CGreenSlime::Ready_Object(void)
 	m_tInfo.iHp = 2;
 	m_tInfo.iAttack = 1;
 
-	m_pTransCom->Set_Pos(0.f, 1.f, 30.f);
+	m_pTransCom->Set_Pos(15.f, 1.f, 15.f);
 
 	m_eCurState = IDLE;
 

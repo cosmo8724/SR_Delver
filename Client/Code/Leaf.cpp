@@ -28,7 +28,7 @@ HRESULT CLeaf::Ready_Object(void)
 	m_tInfo.iHp = 5;
 	m_tInfo.iAttack = 1;
 
-	m_OriginalPos = { 10.f, 1.f, 30.f };
+	m_OriginalPos = { 10.f, 1.f, 10.f };
 	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
 
 	m_eCurState = IDLE;
