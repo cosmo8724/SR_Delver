@@ -69,7 +69,7 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 	{
 		iResult = iter.second->Update_Object(fTimeDelta);
 
-		if (iResult & 0x80000000)
+		if (iResult & 0x80000000) //0x80000000 == -1
 			return iResult;
 	}
 

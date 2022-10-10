@@ -20,6 +20,7 @@ private:
 public:
 	static CJar*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);
+	virtual void		CollisionEvent(CGameObject *pObj);
 
 };
 
