@@ -18,7 +18,7 @@ private:
 	HRESULT				Add_Component(void);
 
 public:
-	static CJar*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CJar*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 	virtual void		Free(void);
 
 };

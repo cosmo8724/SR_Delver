@@ -17,6 +17,8 @@ public:
 	void				Rotation(ROTATIONID eID, const _float& fAngle){	*(((_float*)&m_vAngle) + eID) += fAngle;	}
 	void				Get_Info(INFOID eID, _vec3* pInfo) {	memcpy(pInfo, &m_matWorld.m[eID][0], sizeof(_vec3));}
 	const _vec3&		Get_Pos() { return m_vInfo[INFO_POS]; }
+	void				Set_Angle(_float fX, _float fY, _float fZ) { m_vAngle = { fX, fY, fZ }; }
+	const _vec3&		Get_Angle() { return m_vAngle; }
 	void				Set_Scale(_float fX, _float fY, _float fZ){ 	m_vScale = { fX, fY, fZ };	}
 	const _vec3&		Get_Scale() { return m_vScale; }
 	void				Set_Pos(const _float& fX, const _float& fY, const _float& fZ) 
