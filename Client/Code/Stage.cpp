@@ -143,6 +143,17 @@ void CStage::LateUpdate_Scene(void)
 		Engine::CollisionTest(pSour, bullet);
 	}
 
+	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW);
+	for (auto& bullet : *pPlayerBullets)
+	{
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+		Engine::CollisionTest(pSour, bullet);
+
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
+		Engine::CollisionTest(pSour, bullet);
+	}
+
+
 	// Monster Collider
 	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
 	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))

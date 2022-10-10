@@ -44,6 +44,9 @@ private:
 	_float		m_fSpeedY;
 	_float		m_fArrowAngle = 0.f;
 
+	_matrix		m_matWorld;
+	_float		m_fParticleTime = 0.f;
+
 	// 충돌처리용
 private:
 	CCubeTex*	m_pBDBuffer = nullptr;
