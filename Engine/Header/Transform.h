@@ -37,6 +37,8 @@ public:
 	const _matrix*		Compute_LookAtTarget(const _vec3* pTargetPos);
 	void				Revolution(const _vec3* pCenter, _matrix _matView, _float fAngle, const _float& fTimeDelta, ITEMSTATE eState);
 	void				KnockBack_Target(_vec3* pTargetLook, const _float& fSpeed, const _float& fTimeDelta); // ³Ë¹é
+	void				Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
+
 
 public:
 	HRESULT				Ready_Transform(void);
@@ -47,6 +49,10 @@ public:
 	_vec3			m_vScale;
 	_vec3			m_vAngle;
 	_matrix			m_matWorld;
+	_float			m_fAngle = 0.f;
+	_float			m_fAngleSpeed;
+
+	_vec3			m_vOldPos;
 
 public:
 	static CTransform*		Create(void);

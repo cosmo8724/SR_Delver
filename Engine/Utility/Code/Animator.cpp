@@ -29,6 +29,13 @@ HRESULT CAnimator::Ready_Animator()
 
 void CAnimator::Play_Animation(const _float & fTimeDelta, const _float & fTimeSpeed)
 {
+	if (m_bChange)
+	{
+		m_bChange = false;
+		m_fFrame = 0;
+		return;
+	}
+
 	m_fFrame += m_pCurAnim->Get_FrameEnd() * fTimeDelta * fTimeSpeed;
 
 	if (m_fFrame >= m_pCurAnim->Get_FrameEnd() + 1)
@@ -37,6 +44,7 @@ void CAnimator::Play_Animation(const _float & fTimeDelta, const _float & fTimeSp
 
 void CAnimator::Change_Animation(const _tchar * pTectureTag)
 {
+	m_bChange = true;
 	// auto
 	map<const _tchar*, CTexture*>::iterator iter = find_if(m_mapAnimation.begin(), m_mapAnimation.end(), CTag_Finder(pTectureTag));
 

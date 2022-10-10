@@ -7,6 +7,7 @@ USING(Engine)
 CTransform::CTransform()
 	: m_vScale(1.f, 1.f, 1.f)
 	, m_vAngle(0.f, 0.f, 0.f)
+	,m_fAngleSpeed(1.f)
 {
 	ZeroMemory(m_vInfo, sizeof(m_vInfo));
 	D3DXMatrixIdentity(&m_matWorld);
@@ -15,6 +16,7 @@ CTransform::CTransform()
 
 Engine::CTransform::CTransform(const CTransform& rhs)
 	: CComponent(rhs),m_vScale(rhs.m_vScale), m_vAngle(rhs.m_vAngle)
+		, m_fAngleSpeed(rhs.m_fAngleSpeed)
 {
 	for (_uint i = 0; i < INFO_END; ++i)
 		memcpy(m_vInfo[i], rhs.m_vInfo[i], sizeof(_vec3));
@@ -44,7 +46,7 @@ void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSp
 	m_matWorld = matScale * matTrans;
 }
 
-void CTransform::ChangeHeight_Target(const _vec3 * pTargetPos, const _float & fSTest, const _float & fSpeed, const _float & fTimeDelta)
+void CTransform::ChangeHeight_Target(const _vec3 * pTargetPos, const _float & fHeight, const _float & fSpeed, const _float & fTimeDelta)
 {
 	_vec3		vDir = *pTargetPos - m_vInfo[INFO_POS];
 
@@ -53,7 +55,7 @@ void CTransform::ChangeHeight_Target(const _vec3 * pTargetPos, const _float & fS
 	_matrix		matScale, matTrans;
 
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
-	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, fSTest, m_vInfo[INFO_POS].z);
+	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, fHeight, m_vInfo[INFO_POS].z);
 
 	m_matWorld = matScale * matTrans;
 }
@@ -69,7 +71,7 @@ const _matrix* Engine::CTransform::Compute_LookAtTarget(const _vec3* pTargetPos)
 	return D3DXMatrixRotationAxis(&matRot, 
 									D3DXVec3Cross(&vAxis, &m_vInfo[INFO_UP], &vLook),
 									acosf(D3DXVec3Dot(D3DXVec3Normalize(&vLook, &vLook), 
-												D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
+									D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
 }
 
 
@@ -131,6 +133,84 @@ void CTransform::KnockBack_Target(_vec3 * pTargetLook, const _float & fSpeed, co
 {
 	D3DXVec3Normalize(pTargetLook, pTargetLook);
 	m_vInfo[INFO_POS] += *pTargetLook * fSpeed * fTimeDelta;
+}
+
+void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
+{
+	_matrix matParent = _matWorld; // 부모행렬은 플레이어의 월드행렬
+
+	_vec3 vRight, vUp, vLook, vPos;
+
+	vRight	= { matParent._11, matParent._12, matParent._13 };
+	vUp		= { matParent._21, matParent._22, matParent._23 };
+	vLook	= { matParent._31, matParent._32, matParent._33 };
+	vPos	= { matParent._41, matParent._42, matParent._43 };
+	D3DXVec3Normalize(&vRight, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	_matrix matScale;
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+
+	_matrix matRot;	
+	D3DXMatrixRotationY(&matRot, D3DXToRadian(60.f));
+
+	_matrix matTrans;
+	_vec3 vTrans = 0.5f * vRight + 0.8f * vLook - 0.2f * vUp;
+	D3DXMatrixTranslation(&matTrans, vTrans.x, vTrans.y, vTrans.z);
+
+	_matrix matRev;
+	_float fRad=0.f;
+	if (m_vOldPos.y == vPos.y && m_vOldPos != vPos)
+	{
+		m_fAngle += m_fAngleSpeed;
+		if (m_fAngle > 5.f || m_fAngle < -5.f)
+			m_fAngleSpeed *= -1;
+		fRad = D3DXToRadian(m_fAngle);
+	}
+	m_vOldPos = vPos;
+	D3DXMatrixRotationAxis(&matRev, &vRight, fRad);
+
+	_matrix matPos; // parent
+	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
+
+
+	// 빌보드
+	_matrix matBill, matView;
+	D3DXMatrixIdentity(&matBill);
+	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	memcpy(&matBill, &matView, sizeof(_matrix));
+	memset(&matBill._41, 0, sizeof(_vec3));
+	D3DXMatrixInverse(&matBill, 0, &matBill);
+
+	m_matWorld = matScale * matRot * matBill * matTrans * matRev * matPos;
+
+
+
+
+
+	//_matrix matRot;
+	//D3DXMatrixRotationY(&matRot, 45.f);
+
+	//_matrix matPos;
+	//D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
+
+	//_matrix matHand;
+	//D3DXMatrixTranslation(&matHand, 2* vRight.x, 2* vRight.y, 2* vRight.z);
+
+	////matParent = matHand * matParent;
+
+	//_matrix matRadius;
+	//D3DXMatrixTranslation(&matRadius, vLook.x, vLook.y, vLook.z);
+
+	//_matrix matRev;
+	//m_fAngle += 0.05f;
+	//D3DXMatrixRotationAxis(&matRev, &vRight, m_fAngle);
+
+	//// 플레이어의 중심에서 오른쪽을 기준으로 공전할 것임.
+	//m_matWorld = matRadius * matRev * matParent;
+	//matWorld = matRadius * matRev * matRot * matHand * matPos;
+
 }
 
 HRESULT CTransform::Ready_Transform(void)

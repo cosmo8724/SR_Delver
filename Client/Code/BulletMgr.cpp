@@ -8,8 +8,8 @@
 #include "WandBullet.h"
 #include "FistBullet.h"
 #include "SongBossBullet.h"
-#include "SongBosStun.h"
-#include "SongBosFloor.h"
+#include "SongBossStun.h"
+#include "SongBossFloor.h"
 #include "ArrowBullet.h"
 #include "LeafBullet.h"
 
@@ -28,7 +28,7 @@ CBulletMgr::CBulletMgr()
 	m_MaxIdx[STUN_SONGBOSS] = 4; // ENUM 선언위치 변경 X
 	m_MaxIdx[FLOOR_SONGBOSS] = 5; // ENUM 선언위치 변경 X
 	m_MaxIdx[BULLET_ARROW] = 10;
-	m_MaxIdx[BULLET_M_LEAF] = 1;
+	m_MaxIdx[BULLET_M_LEAF] = 5;
 
 	for (int bulletId = 0; bulletId < BULLET_END; ++bulletId)
 	{
@@ -53,13 +53,18 @@ HRESULT CBulletMgr::Ready_Proto(LPDIRECT3DDEVICE9 pGraphicDev)
 	// Fist
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FistGreenEffect_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/Fist_GreenEffect/GreenEffect%d.png", TEX_NORMAL, 15)), E_FAIL);
 	// SongBoss
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Bullet/SongBoss%d.png", TEX_NORMAL, 8)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Bullet/SongBoss%d.png", TEX_NORMAL, 1)), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Bullet/SongBoss%d.png", TEX_NORMAL, 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Stun_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Stun/Stun.png", TEX_NORMAL, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_Floor_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_Floor/Floor.png", TEX_NORMAL, 1)), E_FAIL);
 	// Leaf
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Leaf_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/Leaf_Bullet/Leaf_Bullet%d.png", TEX_NORMAL, 7)), E_FAIL);
 
-	
+	// ArrowBullet
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ArrowBullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Item/Bullet/ArrowBullet.png", TEX_NORMAL)), E_FAIL);
+
+
+
 	return S_OK;
 }
 
@@ -134,7 +139,7 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 
 	for (int i = 0; i < m_MaxIdx[STUN_SONGBOSS]; ++i)
 	{
-		pGameObject = CSongBosStun::Create(pGraphicDev, i);
+		pGameObject = CSongBossStun::Create(pGraphicDev, i);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
 		objTags[i] = L"SongBoss_Stun";
@@ -153,7 +158,7 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 
 	for (int i = 0; i < m_MaxIdx[FLOOR_SONGBOSS]; ++i)
 	{
-		pGameObject = CSongBosFloor::Create(pGraphicDev, i);
+		pGameObject = CSongBossFloor::Create(pGraphicDev, i);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
 		objTags[i] = L"SongBoss_Floor";
@@ -267,7 +272,7 @@ void CBulletMgr::Pre_Setting(BULLETID eID, _float fSet)
 
 	switch (eID)
 	{
-	case BULLET_ARROW:
+	case BULLET_ARROW:	// 화살의 경우 차징에 따라 날아가는 스피드가 달라진다..
 		if (!m_IdxQue[eID].empty())
 		{
 			iIdx = m_IdxQue[eID].front();

@@ -45,6 +45,9 @@ private:
 	_float		m_fNoShakeYTimeAcc;
 	_bool		m_bFix = true;
 
+
+	_bool		m_bSwitch = false;
+
 public:
 	static CStaticCamera*		Create(LPDIRECT3DDEVICE9 pGraphicDev,
 										const _vec3* pEye, 

@@ -89,7 +89,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 		m_bFrameRepeat = true;
 		m_Attribute.fLifeTime = 1.f;
 	}
-		break;
+	break;
 
 	case PTYPE_REMAIN:
 		// 파티클 수
@@ -103,7 +103,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 
 		// 크기
 		m_fSize = 0.1f;
-		
+
 		// 속도
 		m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
 
@@ -112,7 +112,17 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 
 		m_fFrameSpeed = 5.f;
 		m_bFrameRepeat = true;
+	break;
 
+	case PTYPE_TRACER:
+
+		m_maxParticles = (_int)GetRandomFloat(1.f, 3.f);
+		m_origin = pCom->Get_Pos();
+		m_bFrameRepeat = false;
+		m_Attribute.fLifeTime = 1.f;
+		m_fSize = 0.1f;
+		m_Attribute.tColor = { 1.f, 0.f, 0.f, 1.f };
+		m_bRand = false;
 
 		break;
 	}
@@ -120,6 +130,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 	for (int i = 0; i < m_maxParticles; ++i)
 		addParticle();
 	m_bReady = true;
+	
 }
 
 
@@ -279,6 +290,22 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->vPosition = m_origin;
 
 		break;
+
+	case PTYPE_TRACER:
+	{
+		attribute->bIsAlive = true;
+		attribute->vPosition =
+		{
+			m_origin.x + GetRandomFloat(-0.3f, 0.3f),
+			m_origin.y + GetRandomFloat(-0.3f, 0.3f),
+			m_origin.z + GetRandomFloat(-0.3f, 0.3f)
+		};
+		attribute->tColor = m_Attribute.tColor;
+
+	}
+		break;
+
+
 	}
 
 	// 공통
@@ -384,7 +411,7 @@ void CUserParticle::update(_float fTimeDelta)
 		break;
 	case PTYPE_REMAIN: // 잔상 파티클
 
-
+	{
 		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 
 		_float index = 1.f;
@@ -409,7 +436,31 @@ void CUserParticle::update(_float fTimeDelta)
 				}
 			}
 		}
+	}
+		break;
 
+
+	case PTYPE_TRACER:
+	{
+		if (isDead())
+		{
+			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
+			ReUse();
+		}
+		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
+		{
+			// 생존한 파티클만 갱신
+			if (iter->bIsAlive)
+			{
+				iter->fAge += fTimeDelta;
+				if (iter->fAge > iter->fLifeTime) // 죽인다.
+				{
+					iter->bIsAlive = false;
+				}
+			}
+		}
+
+	}
 		break;
 	}
 }

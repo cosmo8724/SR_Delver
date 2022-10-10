@@ -33,6 +33,7 @@ _int CTool_Scene::Update_Scene(const _float & fTimeDelta)
 
 	CImGuiMgr::GetInstance()->MapTool();
 	CImGuiMgr::GetInstance()->ParticleTool();
+	CImGuiMgr::GetInstance()->InfoTool();
 
 	return iResult;
 }
@@ -61,6 +62,7 @@ HRESULT CTool_Scene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Particle", pGameObject), E_FAIL);
 	CImGuiMgr::GetInstance()->Set_Particle(static_cast<CUserParticle*>(pGameObject));
+
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 

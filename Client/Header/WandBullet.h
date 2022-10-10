@@ -25,10 +25,14 @@ private:
 	HRESULT		Add_Component(void);
 
 private:
+	CCubeTex*	m_pBufferCom = nullptr;
 	_float		m_fFrame = 0.f;
-	_float		m_fSpeed = 10.f;
+	_float		m_fSpeed;// = 10.f;
 	_bool		m_bReady = false;
 	_vec3		m_vDirection = { 0.f,0.f,0.f };
+	
+	_float		m_fParticleTime = 0.f;
+	_bool		m_bExplode = false;
 
 	// 충돌처리용
 private:
