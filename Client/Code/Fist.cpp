@@ -26,7 +26,7 @@ HRESULT CFist::Ready_Object(void)
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
 
-	m_pTransCom->Set_Pos(1.f, 1.f, 30.f);
+	m_pTransCom->Set_Pos(3.f, 1.f, 15.f);
 
 	m_eCurState = IDLE;
 

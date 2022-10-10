@@ -80,7 +80,7 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 
 			vector<IDirect3DBaseTexture9*> vecTexture = pTextureCom->Get_Texture();
 
-			for (_uint i = 0; i < 18; ++i)
+			for (_uint i = 0; i < 21; ++i)
 			{
 				if (ImGui::ImageButton((void*)vecTexture[i], ImVec2(32.f, 32.f)))
 				{

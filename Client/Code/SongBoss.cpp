@@ -31,7 +31,7 @@ HRESULT CSongBoss::Ready_Object(void)
 	m_tInfo.iAttack = 5;
 
 	m_pTransCom->Set_Scale(1.5f, 1.5f, 1.5f);
-	m_pTransCom->Set_Pos(10.f, 1.5f, 45.f);
+	m_pTransCom->Set_Pos(10.f, 6.5f, 10.f);
 
 	m_eCurState = IDLE;
 	m_eSkill = SKILL_BULLET;

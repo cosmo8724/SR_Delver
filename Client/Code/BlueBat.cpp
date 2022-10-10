@@ -31,7 +31,7 @@ HRESULT CBlueBat::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Pos(5.f, 1.f, 40.f);
+	m_pTransCom->Set_Pos(15.f, 1.f, 5.f);
 
 	m_eCurState = IDLE;
 

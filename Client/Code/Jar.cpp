@@ -6,14 +6,20 @@
 #include "ItemMgr.h"
 
 CJar::CJar(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CEcoObject(pGraphicDev)
+	: CEcoObject(pGraphicDev)
 {
 }
 
 CJar::CJar(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
-	:CEcoObject(pGraphicDev)
+	: CEcoObject(pGraphicDev)
 {
+	m_eType = ECO_JAR;
 	m_vPos = vPos;
+}
+
+CJar::CJar(const CEcoObject & rhs)
+	: CEcoObject(rhs)
+{
 }
 
 CJar::~CJar()
@@ -24,7 +30,8 @@ HRESULT CJar::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	if (!m_bClone)
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	return S_OK;
 }
@@ -72,7 +79,7 @@ void CJar::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 
-	m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(m_iTexture);
 	m_pBufferCom->Render_Buffer();
 
 	// 알파값 변화 해제
@@ -92,17 +99,20 @@ HRESULT CJar::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
 
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_EcoObject0_Texture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_EcoJar_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_EcoObject0_Texture", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Proto_EcoJar_Texture", pComponent });
 
 
 	return S_OK;
@@ -111,6 +121,19 @@ HRESULT CJar::Add_Component(void)
 CJar * CJar::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CJar *	pInstance = new CJar(pGraphicDev, vPos);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CJar * CJar::Create(CEcoObject * pEcoObject)
+{
+	CJar *	pInstance = new CJar(*pEcoObject);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{
