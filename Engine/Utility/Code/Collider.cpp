@@ -237,3 +237,19 @@ _bool	CCollider::CollideAABB(CCollider* _collider)
 
 	return true;
 }
+
+_bool	CCollider::CollideSphere(CCollider* _collider)
+{
+	if (_collider->Is_Free())
+		return false;
+
+	if (pow(this->m_vCenter.x - _collider->m_vCenter.x, 2)
+		+ pow(this->m_vCenter.y - _collider->m_vCenter.y, 2)
+		+ pow(this->m_vCenter.z - _collider->m_vCenter.z, 2)
+		< pow(this->m_fRadius + _collider->m_fRadius, 2))
+	{
+		return true;
+	}
+
+	return false;
+}

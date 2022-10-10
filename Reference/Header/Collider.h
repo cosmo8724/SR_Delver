@@ -22,6 +22,7 @@ public:
 public:
 	void		Calculate_WorldMatrix(_matrix matWorld);
 	_bool		CollideAABB(CCollider* _collider);
+	_bool		CollideSphere(CCollider* _collier);
 	const _vec3&		Get_MinPoint() { return m_vMin; }
 	const _vec3&		Get_MaxPoint() { return m_vMax; }
 	_matrix	Get_WorldMatrix() { return m_matWorld; }

@@ -56,13 +56,15 @@ void CCollisionMgr::CollisionTest(CGameObject * _pDest, CGameObject * _pSour)
 
 	CCollider*	pDestCol = static_cast<CCollider*>(_pDest->Get_Component(L"Proto_ColliderCom", ID_STATIC));
 	CCollider*	pSourCol = static_cast<CCollider*>(_pSour->Get_Component(L"Proto_ColliderCom", ID_STATIC));
-
-	if (true == pDestCol->CollideAABB(pSourCol))
+	
+	if (pDestCol->CollideSphere(pSourCol))
 	{
-		_pDest->CollisionEvent(_pSour);
-		_pSour->CollisionEvent(_pDest);
+		if (true == pDestCol->CollideAABB(pSourCol))
+		{
+			_pDest->CollisionEvent(_pSour);
+			_pSour->CollisionEvent(_pDest);
+		}
 	}
-
 }
 
 void CCollisionMgr::Free(void)
