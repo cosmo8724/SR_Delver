@@ -25,7 +25,7 @@ HRESULT CLeafBullet::Ready_Object(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	//m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
-	m_fSpeed = 10.f;
+	m_fSpeed = 20.f;
 
 	return S_OK;
 }

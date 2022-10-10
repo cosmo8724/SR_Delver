@@ -3,6 +3,7 @@
 #include "InvImg.h"
 #include "Export_Function.h"
 #include "Potion.h"
+#include "CrossHair.h"
 
 CInventory::CInventory(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
@@ -205,33 +206,33 @@ void  CInventory::Pick()
 
 			if (PtInRect(&rcUI, ptMouse))
 			{
-				if (nullptr == m_ppPickedItem && nullptr != m_Inventory[i][j]) // ¼±ÅÃÇÑ ¾ÆÀÌÅÛÀÌ ¾ø´Â »óÈ²¿¡¼­ ¾ÆÀÌÅÛ Å¬¸¯
+				if (nullptr == m_ppPickedItem && nullptr != m_Inventory[i][j]) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½
 				{
 					m_ppPickedItem = &m_Inventory[i][j];
 					static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(true);
 				}
-				else if (nullptr != m_ppPickedItem && nullptr == m_Inventory[i][j]) // ¼±ÅÃÇÑ ¾ÆÀÌÅÛÀÌ ÀÖ´Â »óÈ²¿¡¼­ ºó Ä­À» Å¬¸¯
+				else if (nullptr != m_ppPickedItem && nullptr == m_Inventory[i][j]) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ä­ï¿½ï¿½ Å¬ï¿½ï¿½
 				{
 					m_Inventory[i][j] = *m_ppPickedItem;
-					static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y); // À§Ä¡ º¯°æ
-					static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);	// °íÁ¤
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y); // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);	// ï¿½ï¿½ï¿½ï¿½
 
-																				// ¼±ÅÃÇÑ ¾ÆÀÌÅÛÀÌ ÀÖ´ø ±âÁ¸ Å¸ÀÏÀº null
+																				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ null
 					(*m_ppPickedItem) = nullptr;
 					m_ppPickedItem = nullptr;
 				}
-				else if (nullptr != m_ppPickedItem&& nullptr != m_Inventory[i][j]) // ¼±ÅÃÇÑ ¾ÆÀÌÅÛÀÌ ÀÖ´Â »óÈ²¿¡¼­ ¾ÆÀÌÅÛÀ» Å¬¸¯ÇßÀ» ¶§
+				else if (nullptr != m_ppPickedItem&& nullptr != m_Inventory[i][j]) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 				{
 					_vec2 vOrigin = static_cast<CInvImg*>(*m_ppPickedItem)->Get_InvPos();
 
 					CItem* pTemp = m_Inventory[i][j];
 
 					m_Inventory[i][j] = *m_ppPickedItem;
-					static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y); // À§Ä¡ º¯°æ
-					static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);	// °íÁ¤
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y); // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+					static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);	// ï¿½ï¿½ï¿½ï¿½
 
 					(*m_ppPickedItem) = pTemp;
-					static_cast<CInvImg*>(pTemp)->Set_InvPos(vOrigin.x, vOrigin.y); // À§Ä¡ º¯°æ
+					static_cast<CInvImg*>(pTemp)->Set_InvPos(vOrigin.x, vOrigin.y); // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
 
 					m_ppPickedItem = nullptr;
 				}
@@ -244,7 +245,7 @@ void  CInventory::Pick()
 
 void CInventory::Set_ItemEquip()
 {
-	if (nullptr != m_ppPickedItem) // ¼±ÅÃÇÑ ¾ÆÀÌÅÛÀÌ ÀÖ´Ù¸é ´õºíÅ¬¸¯ ½Ã ½ÇÇàµÇÁö ¾Ê°Ô ÇÏÀÚ.
+	if (nullptr != m_ppPickedItem) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		return;
 
 
@@ -274,13 +275,26 @@ void CInventory::Set_ItemEquip()
 						if (nullptr != m_pEquipped)
 							static_cast<CInvImg*>(m_pEquipped)->Get_TargetObj()->Set_State(STATE_INV);
 						m_pEquipped = m_Inventory[i][j];
+						if (WT_AD == static_cast<CWeapon*>(pItem)->Get_WeaponType())
+						{
+							CCrossHair* pCrossHair = dynamic_cast<CCrossHair*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CrossHair"));
+							pCrossHair->Set_CrossHair(true);
+						}
+						else
+						{
+							CCrossHair* pCrossHair = dynamic_cast<CCrossHair*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CrossHair"));
+							pCrossHair->Set_CrossHair(false);
+						}
+
+
 						break;
-					case ITEM_POTION:	// ÇØ´ç ÀÎº¥Åä¸®¾ÆÀÌÅÛÀ» »èÁ¦ÇØ¾ß ÇÑ´Ù.
+					case ITEM_POTION:
 					{
 						m_Inventory[i][j]->Set_Dead(true);
 						m_Inventory[i][j] = nullptr;
 					}
 						break;
+
 					}
 				}
 			}

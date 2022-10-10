@@ -17,6 +17,7 @@ public:
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void)					override;
 	virtual void		Render_Obejct(void)						override;
+	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
 private:
 	virtual HRESULT		Add_Component(void) override;
@@ -41,6 +42,8 @@ private:
 
 	_float				m_fScale;
 	_float				m_fHeight;
+
+	_bool				m_bHit = false;
 
 	// 스킬 순서
 	_float				m_bSkillJumpStart = false;

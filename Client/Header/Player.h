@@ -6,7 +6,7 @@ namespace Engine
 	class CTransform;
 	class CRcTex;
 	class CTexture;
-	class CCalculator;	// ¿©±â¿¡ ¼±¾ðÇÏÁö ¾ÊÀ¸¸é Çü½ÄÁöÁ¤ÀÚ°¡ ¾ø´Ù´Â ¿¡·¯°¡ ¶ã ¼ö ÀÖ´Ù.
+	class CCalculator;	// ï¿½ï¿½ï¿½â¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½Ù´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½.
 	class CItem;
 }
 class CBlock;
@@ -45,8 +45,8 @@ private:
 	CTexture*			m_pTextureCom = nullptr;
 	CCalculator*		m_pCalculatorCom = nullptr;
 
-	CBlock*		m_pCurrentBlock = nullptr;
-	_bool		m_bBlockChanged = true;
+	CBlock*				m_pCurrentBlock = nullptr;
+	_bool				m_bBlockChanged = true;
 
 	PLAYER_STATE	m_eState = PLAYER_GROUND;
 
@@ -54,20 +54,20 @@ private:
 	_float				m_fSpeed = 5.f;
 	_float				m_fScale = 1.f;
 
-	// Á¡ÇÁ °ü·Ã º¯¼ö
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	_bool				m_bJump = false;
-	_float				m_fJSpeed; 		// Á¡ÇÁ ¼Óµµ
-	_float				m_fJSpeed0; 	// Á¡ÇÁ ÃÊ±â ¼Óµµ
-	_float				m_fAccel;		// Áß·Â°¡¼Óµµ
+	_float				m_fJSpeed; 		// ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+	_float				m_fJSpeed0; 	// ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½Óµï¿½
+	_float				m_fAccel;		// ï¿½ß·Â°ï¿½ï¿½Óµï¿½
 	_float				m_fJTimeDelta = 0.f;
 
-	// ¸¶¿ì½º ÀÔ·Â °ü·Ã º¯¼ö
+	// ï¿½ï¿½ï¿½ì½º ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	_float				m_fLBClick = 0.f;
 	_float				m_fTimeDelta = 0.f;
 
-	// ÀåÂøÅÛ °ü·Ã º¯¼ö
-	CItem*				m_pRight	= nullptr;	// ¿À¸¥¼ÕÅÛ
-	CItem*				m_pLeft		= nullptr;	// ¿Þ¼ÕÅÛ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	CItem*				m_pRight	= nullptr;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	CItem*				m_pLeft		= nullptr;	// ï¿½Þ¼ï¿½ï¿½ï¿½
 
 	PLAYERINFO			m_tInfo;
 

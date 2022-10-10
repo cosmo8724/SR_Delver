@@ -60,17 +60,17 @@ _uint CLoading::Loading_ForMapTool()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorCom", CCalculator::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderCom", CCollider::Create(m_pGraphicDev)), E_FAIL);
 
-	//// Particle ø¯∫ª ≈ÿΩ∫√ƒ
+	//// Particle ÔøΩÔøΩÔøΩÔøΩ ÔøΩÿΩÔøΩÔøΩÔøΩ
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle0_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle0/particle0_%d.png", TEX_NORMAL, 4)), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle1_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle1/particle1_%d.png", TEX_NORMAL, 3)), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle2_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle2/particle2_%d.png", TEX_NORMAL, 8)), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle3_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle3/particle3_%d.png", TEX_NORMAL, 9)), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle4_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle4/particle4_%d.png", TEX_NORMAL, 12)), E_FAIL);
 
-	//// Particle πˆ∆€ƒƒ∆˜≥Õ∆Æ
+	//// Particle ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ∆Æ
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PtBufferCom", CPtBuffer::Create(m_pGraphicDev)), E_FAIL);
 
-	// ∆ƒ∆º≈¨ ∏≈¥œ¿˙
+	// ÔøΩÔøΩ∆º≈¨ ÔøΩ≈¥ÔøΩÔøΩÔøΩ
 	FAILED_CHECK_RETURN(CParticleMgr::GetInstance()->Ready_Proto(), -1);
 
 
@@ -92,7 +92,6 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EffectTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Explosion/Explosion%d.png", TEX_NORMAL, 90)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/SkyBox.dds", TEX_CUBE)), E_FAIL);
 	
-
 	// Logics
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformCom", CTransform::Create()), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorCom", CCalculator::Create(m_pGraphicDev)), E_FAIL);
@@ -211,7 +210,10 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniNPC_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/NPC.png", TEX_NORMAL, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_MiniBlock_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Minimap/Block.png", TEX_NORMAL, 1)), E_FAIL);
 
-	// »Ø∞Ê ø¿∫Í¡ß∆ÆµÈ
+	// UI_CrossHair
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_CrossHair_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/CrossHair/CrossHair.png", TEX_NORMAL, 1)), E_FAIL);
+	
+	// Eco Object
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoObject0_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject0_0.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoObject1_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject1_0.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoObject2_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject2_0.png", TEX_NORMAL)), E_FAIL);

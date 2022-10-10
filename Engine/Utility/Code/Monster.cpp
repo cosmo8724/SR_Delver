@@ -38,7 +38,7 @@ void CMonster::Render_Obejct()
 
 void CMonster::Billboard()
 {
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
@@ -52,7 +52,7 @@ void CMonster::Billboard()
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	// ÇöÀç Áö±Ý ÀÌ ÄÚµå´Â ¹®Á¦°¡ ¾øÁö¸¸ ³ªÁß¿¡ ¹®Á¦°¡ µÉ ¼ö ÀÖÀ½
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 
