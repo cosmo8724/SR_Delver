@@ -52,7 +52,7 @@ HRESULT CPinkSlime::Ready_Object(void)
 	m_fScale = 2.f;
 	m_fHeight = 2.f;
 
-	// ���� ���� ���� �ʱ�ȭ
+	// jump variable
 	m_fJSpeed = 5.f;
 	m_fJSpeed0 = 5.f;
 	m_fAccel = 0.1f;
@@ -138,7 +138,6 @@ HRESULT CPinkSlime::Add_Component(void)
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeATTACK_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeHIT_Texture");
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeDIE_Texture");
-	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeIDLE_Texture");
 
 	return S_OK;
 }
@@ -181,7 +180,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 			m_bJump = true;
 			m_eSkill = SKILL_JUMP;
 
-			// TODO �÷��̾� �˹� �־����
+			// TODO : Player KnockBack
 		}
 		if (2.f < m_SkillJumpTimeAcc)
 		{

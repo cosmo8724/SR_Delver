@@ -53,7 +53,7 @@ _int CLeaf::Update_Object(const _float & fTimeDelta)
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
 	Motion_Change(fTimeDelta);
-	//SKillTeleporting(fTimeDelta);
+	SKillTeleporting(fTimeDelta);
 
 	if(Key_Down(DIK_L))
 		CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
@@ -142,7 +142,7 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 		if (fDist < 10.f)
 		{
 			m_fBulletTimeAcc += fTimeDelta;
-			if (0.3f < m_fBulletTimeAcc)
+			if (0.5f < m_fBulletTimeAcc)
 			{
 				CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
 				m_fBulletTimeAcc = 0.f;
