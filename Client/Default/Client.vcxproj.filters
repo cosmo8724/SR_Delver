@@ -253,6 +253,9 @@
     <Filter Include="02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger">
       <UniqueIdentifier>{d1e2faf3-2722-4601-952b-9fb5382577bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Potion">
+      <UniqueIdentifier>{ec9c8099-79a2-465a-a1f5-704697f0ff81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -507,6 +510,9 @@
     <ClInclude Include="..\Header\Dagger.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Potion.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Potion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -742,6 +748,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Dagger.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Potion.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Potion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

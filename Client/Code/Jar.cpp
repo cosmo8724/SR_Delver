@@ -137,6 +137,10 @@ void CJar::CollisionEvent(CGameObject * pObj)
 		1.f, { 1.f,1.f,1.f,1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_6);
 
+	//CItemMgr::GetInstance()->Add_RandomObject(
+	//	L"Layer_GameLogic", L"Arrow", ITEM_WEAPON, m_pTransCom->Get_Pos());
+
 	CItemMgr::GetInstance()->Add_RandomObject(
-		L"Layer_GameLogic", L"Arrow", ITEM_WEAPON, m_pTransCom->Get_Pos());
+		L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+
 }

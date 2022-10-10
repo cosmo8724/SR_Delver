@@ -33,7 +33,7 @@ protected:
 	CTexture*		m_pTextureCom = nullptr;
 	CTransform*		m_pTransCom = nullptr;
 	_bool			m_bFire = false;
-	_bool			m_bDead = false;
+	//_bool			m_bDead = false;
 	_float			m_fLifeTime = 0.f;
 
 	_int			m_iIndex = -1;// 매니저 인덱스 회수용

@@ -48,7 +48,7 @@ private:
 	// 분신 변수
 	_int				m_iAngerCount = 0;
 	_float				m_fFrame = 0.f;
-	_bool				m_bDead = false;
+	//_bool				m_bDead = false;
 	_bool				m_bFire = false;
 	_bool				m_bReady = false;
 	_float				m_fLifeTime = 0.f;
