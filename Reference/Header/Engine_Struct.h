@@ -148,6 +148,7 @@ namespace Engine
 											// ex) 단계 1이 0부터 499라면, 단계2로의 오프셋은 500
 		_ulong			dwVbBatchSize;	// 렌더링에 이용됨
 											// 단계 하나에 정의된 파티클 수
+
 	} PINFO;
 }
 

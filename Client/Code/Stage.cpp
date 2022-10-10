@@ -107,7 +107,7 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
-	// Collider 테스트
+	// Collider 테스트(Player - 아이템)
 	CGameObject* pDest = nullptr;
 
 	for (int i = 0; i < 2; ++i)
@@ -126,6 +126,16 @@ void CStage::LateUpdate_Scene(void)
 	//Engine::CollisionAABB(pSour, pDest);
 	Engine::CollisionTest(pPlayer, pDest);
 	// ~Collider 테스트
+
+	// Bullet 테스트
+	CGameObject* pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
+	for (auto& bullet : *pPlayerBullets)
+	{
+		Engine::CollisionTest(pSour, bullet);
+	}
+
+
 	
 	Engine::CScene::LateUpdate_Scene();
 }
