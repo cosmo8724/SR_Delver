@@ -43,8 +43,6 @@ private:
 	_float				m_fScale;
 	_float				m_fHeight;
 
-	_bool				m_bHit = false;
-
 	// 스킬 순서
 	_float				m_bSkillJumpStart = false;
 	_float				m_bSkillFollowStart = false;

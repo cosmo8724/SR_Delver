@@ -90,6 +90,10 @@ void CBlueBat::Render_Obejct(void)
 	CMonster::Render_Obejct();
 }
 
+void CBlueBat::CollisionEvent(CGameObject * pObj)
+{
+}
+
 HRESULT CBlueBat::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;

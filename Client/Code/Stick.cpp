@@ -116,6 +116,10 @@ void CStick::Render_Obejct(void)
 	CMonster::Render_Obejct();
 }
 
+void CStick::CollisionEvent(CGameObject * pObj)
+{
+}
+
 HRESULT CStick::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;

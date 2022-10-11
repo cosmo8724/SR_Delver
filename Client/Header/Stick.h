@@ -19,6 +19,7 @@ public:
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void)					override;
 	virtual void		Render_Obejct(void)						override;
+	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
 public:
 	void				Reset();

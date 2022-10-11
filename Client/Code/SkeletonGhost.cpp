@@ -88,6 +88,10 @@ void CSkeletonGhost::Render_Obejct(void)
 	CMonster::Render_Obejct();
 }
 
+void CSkeletonGhost::CollisionEvent(CGameObject * pObj)
+{
+}
+
 HRESULT CSkeletonGhost::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;

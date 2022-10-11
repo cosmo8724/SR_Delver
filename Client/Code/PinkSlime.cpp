@@ -78,11 +78,15 @@ _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pTransCom->Set_Y(m_fHeight);
-
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
-	SKill_Update(fTimeDelta);
+	CMonster::Hit(fTimeDelta);
 
+	if (!m_bHit)
+	{
+		SKill_Update(fTimeDelta);
+
+	}
 
 	Motion_Change();
 
@@ -186,15 +190,15 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 			m_eSkill = SKILL_FOLLOW;
 		}
 
-		if (Engine::Key_Down(DIK_P))
+		if (18 >= m_tInfo.iHp)
 		{
 			m_eSkill_Scale = SKILLSCALE_BIG;
 		}
-		if (Engine::Key_Down(DIK_P))
+		else if (14 >= m_tInfo.iHp)
 		{
 			m_eSkill_Scale = SKILLSCALE_MEDIUM;
 		}
-		if (Engine::Key_Down(DIK_P))
+		else if (8 >= m_tInfo.iHp)
 		{
 			m_eSkill_Scale = SKILLSCALE_SMALL;
 		}

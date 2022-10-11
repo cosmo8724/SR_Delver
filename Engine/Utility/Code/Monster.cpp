@@ -20,6 +20,7 @@ _int CMonster::Update_Object(const _float& fTimeDelta)
 	CGameObject::Update_Object(fTimeDelta);
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+	//Hit(fTimeDelta);
 
 	return 0;
 }
@@ -38,7 +39,6 @@ void CMonster::Render_Obejct()
 
 void CMonster::Billboard()
 {
-	// ������
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
@@ -52,7 +52,6 @@ void CMonster::Billboard()
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	// ���� ���� �� �ڵ�� ������ ������ ���߿� ������ �� �� ����
 	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 

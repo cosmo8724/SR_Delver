@@ -25,6 +25,10 @@ protected:
 	virtual void		Billboard();
 
 	virtual void		Target_Follow(const _float& fTimeDelta) {};
+	virtual void		Hit(const _float& fTimeDelta) {};
+
+public:
+	virtual void		Free(void);
 
 protected:
 	_float				m_fIdle_Speed;
@@ -32,8 +36,8 @@ protected:
 
 	CINFO				m_tInfo;
 
-public:
-	virtual void		Free(void);
+	_bool				m_bHit = false;
+	_float				m_fHitTimeAcc = 0.f;
 
 protected:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -41,7 +45,7 @@ protected:
 	CTransform*			m_pTransCom = nullptr;
 	CAnimator*			m_pAnimtorCom = nullptr;
 
-	_bool					m_bCreateIcon = false;
+	_bool				m_bCreateIcon = false;
 };
 
 END

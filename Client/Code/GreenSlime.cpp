@@ -56,6 +56,8 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	//if (m_fFrame >= m_pTextureCom->Get_FrameEnd())
 	//	m_fFrame = 0;
 
+	Motion_Change(fTimeDelta);
+
 	if (0 >= m_tInfo.iHp)
 	{
 		m_eCurState = DIE;
@@ -64,10 +66,10 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 
 	Hit(fTimeDelta);
 	
-  	Target_Follow(fTimeDelta);
-	Motion_Change(fTimeDelta);
-
-
+	if (!m_bHit)
+	{
+		Target_Follow(fTimeDelta);
+	}	
 	return 0;
 }
 
@@ -148,9 +150,6 @@ HRESULT CGreenSlime::Add_Component(void)
 
 void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 {
-	if (m_bHit)
-		return;
-
 	// 플레이어 따라가기
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
@@ -222,9 +221,9 @@ void CGreenSlime::Hit(const _float & fTimeDelta)
 void CGreenSlime::CollisionEvent(CGameObject * pObj)
 {
 	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
-	//CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
-	//if (nullptr != pPlayer)
-	//	m_bHit = true;
+	CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+	if (nullptr != pPlayer)
+		m_bHit = true;
 
 	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
 	{

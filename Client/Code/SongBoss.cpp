@@ -101,6 +101,10 @@ void CSongBoss::Render_Obejct(void)
 	CMonster::Render_Obejct();
 }
 
+void CSongBoss::CollisionEvent(CGameObject * pObj)
+{
+}
+
 HRESULT CSongBoss::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
