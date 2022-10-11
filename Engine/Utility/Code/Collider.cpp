@@ -152,8 +152,8 @@ HRESULT CCollider::Ready_Buffer(void)
 	m_pIB->Unlock();
 
 
-	m_vMin = pVertex[3].vPos;
-	m_vMax = pVertex[5].vPos;
+	m_vMin = m_pPos[3];
+	m_vMax = m_pPos[5];
 	m_vCenter = { m_vMin.x + 1.f, m_vMin.y + 1.f, m_vMin.z + 1.f };
 	m_fRadius = 2.f;
 
@@ -166,7 +166,7 @@ HRESULT CCollider::Ready_Buffer(void)
 void CCollider::Render_Buffer(void)
 {
 	static	_bool	bDrawCube = true;
-	static	_bool	bDrawSphere = true;
+	static	_bool	bDrawSphere = false;
 
 	if (Key_Down(DIK_F2))
 		bDrawCube = !bDrawCube;
