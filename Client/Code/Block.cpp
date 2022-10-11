@@ -16,6 +16,7 @@ CBlock::CBlock(const CBlock& rhs)
 	, m_bClone(true)
 	, m_eCurrentType(rhs.m_eCurrentType)
 	, m_eLastType(rhs.m_eLastType)
+	, m_fScale(rhs.m_fScale)
 	, m_iTexture(rhs.m_iTexture)
 {
 	//memcpy(&m_bdBox, &rhs.m_bdBox, sizeof(BDBOX));
@@ -86,7 +87,7 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 
 		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 	}
-
+	m_fScale = 0.5f;
 	_vec3 vPos, vScale;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	vScale = m_pTransCom->Get_Scale();

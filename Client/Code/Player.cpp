@@ -429,16 +429,21 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		_vec3	PlayerPos;
 		m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
 
-		if (fabs(fabs(fDistX) - fabs(fDistZ)) < 0.15f)
-			return;
+		//if (fabs(fabs(fDistX) - fabs(fDistZ)) < 0.15f)
+		//	return;
+		
 
-		if ((PlayerPos.x < BlockBox.vMin.x || PlayerPos.x > BlockBox.vMax.x) && (PlayerPos.z < BlockBox.vMin.z || PlayerPos.z > BlockBox.vMax.z))
+		if ((PlayerPos.x < BlockBox.vMin.x || PlayerPos.x > BlockBox.vMax.x) && (PlayerPos.z < BlockBox.vMin.z || PlayerPos.z > BlockBox.vMax.z) && fabs(fDistX) > 0.0001f && fabs(fDistZ) > 0.0001f)
 		{
+			if (sqrtf(fDistX * fDistX + fDistZ * fDistZ) < fabs(BlockBox.vMax.x - BlockBox.vMin.x) * 0.2f)
+				return;
 			if (fabs(fDistX) > fabs(fDistZ))
 				fDistX = 0.f;
 			else if (fabs(fDistX) < fabs(fDistZ))
 				fDistZ = 0.f;
 		}
+		else
+			return;
 		
 
 		
@@ -448,6 +453,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		PlayerLook.y = 0.f;
 
 		m_pTransCom->Set_Pos(PlayerPos.x + fDistX, PlayerPos.y, PlayerPos.z + fDistZ);
+		//m_pTransCom->Move_Pos(&(_vec3(fDistX, 0.f, fDistZ) * m_fTimeDelta));
 	}
 }
 
