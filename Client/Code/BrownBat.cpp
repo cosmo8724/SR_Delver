@@ -82,6 +82,10 @@ void CBrownBat::Render_Obejct(void)
 	CMonster::Render_Obejct();
 }
 
+void CBrownBat::CollisionEvent(CGameObject * pObj)
+{
+}
+
 HRESULT CBrownBat::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;

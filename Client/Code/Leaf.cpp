@@ -87,6 +87,10 @@ void CLeaf::Render_Obejct(void)
 	CMonster::Render_Obejct();
 }
 
+void CLeaf::CollisionEvent(CGameObject * pObj)
+{
+}
+
 HRESULT CLeaf::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;

@@ -44,10 +44,20 @@ _int CFist::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Set_Y(1.f);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
+	if (0 >= m_tInfo.iHp)
+	{
+		m_eCurState = DIE;
+		return OBJ_DEAD;
+	}
+
+	CMonster::Hit(fTimeDelta);
+
+	if (!m_bHit)
+	{
+		Target_Follow(fTimeDelta);
+	}
+
 	Motion_Change(fTimeDelta);
-	Attack_Distance(fTimeDelta);
-
-
 	return 0;
 }
 
@@ -75,6 +85,10 @@ void CFist::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	CMonster::Render_Obejct();
+}
+
+void CFist::CollisionEvent(CGameObject * pObj)
+{
 }
 
 HRESULT CFist::Add_Component(void)
@@ -107,7 +121,7 @@ HRESULT CFist::Add_Component(void)
 	return S_OK;
 }
 
-void CFist::Attack_Distance(const _float & fTimeDelta)
+void CFist::Target_Follow(const _float & fTimeDelta)
 {
 	// 플레이어 따라가기
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -118,7 +132,6 @@ void CFist::Attack_Distance(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
-
 
 	// 플레이어가 일정 거리 안 으로 들어왔을 경우 뒤로 물러남
 	if (fDist < 5.f)
