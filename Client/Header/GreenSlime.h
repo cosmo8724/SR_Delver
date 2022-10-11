@@ -19,7 +19,7 @@ public:
 private:
 	virtual HRESULT		Add_Component(void) override;
 	virtual void		Target_Follow(const _float& fTimeDelta);
-	virtual void		Hit(const _float& fTimeDelta);
+	virtual void		OnHit(const _float& fTimeDelta);
 
 	void				Motion_Change(const _float& fTimeDelta);
 

@@ -25,6 +25,11 @@ public:
 	virtual void		LateUpdate_Object(void) override;
 	virtual void		Render_Obejct(void) override;
 
+public:
+	void				Set_HpPlus() { m_tInfo.iHp += 1; }
+	void				OnHit(_int _HpMinus); // sh
+	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
+	PLAYERINFO			Get_PlayerInfo() { return m_tInfo; } // sh
 
 private:
 	HRESULT				Add_Component(void);
@@ -35,9 +40,6 @@ private:
 	void				Jump(const _float& fTimeDelta);
 	_float				Get_Height();
 	void				CollisionEvent(CGameObject * pOtherObj);
-	
-public:
-	void				Set_HpPlus() { m_tInfo.iHp += 1; }
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -48,17 +50,17 @@ private:
 	CBlock*				m_pCurrentBlock = nullptr;
 	_bool				m_bBlockChanged = true;
 
-	PLAYER_STATE	m_eState = PLAYER_GROUND;
+	PLAYER_STATE		m_eState = PLAYER_GROUND;
 
 	_vec3				m_vDirection;
 	_float				m_fSpeed = 5.f;
 	_float				m_fScale = 1.f;
 
-	// ���� ���� ����
+	// 점프 관련 변수
 	_bool				m_bJump = false;
-	_float				m_fJSpeed; 		// ���� �ӵ�
-	_float				m_fJSpeed0; 	// ���� �ʱ� �ӵ�
-	_float				m_fAccel;		// �߷°��ӵ�
+	_float				m_fJSpeed; 		// 점프 속도
+	_float				m_fJSpeed0; 	// 점프 초기 속도
+	_float				m_fAccel;		// 중력가속도
 	_float				m_fJTimeDelta = 0.f;
 
 	// ���콺 �Է� ���� ����
@@ -70,6 +72,8 @@ private:
 	CItem*				m_pLeft		= nullptr;	// �޼���
 
 	PLAYERINFO			m_tInfo;
+
+	_float				InvincibilityTimeAcc = 0.1f;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

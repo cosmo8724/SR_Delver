@@ -219,6 +219,9 @@ _uint CLoading::Loading_ForStage(void)
 	// UI_CrossHair
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_CrossHair_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/CrossHair/CrossHair.png", TEX_NORMAL, 1)), E_FAIL);
 	
+	// UI_HitBackGround
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_HitBackGround_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/HitBackGround/HitBackGround.png", TEX_NORMAL, 1)), E_FAIL);
+
 	// Eco Object
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoStone_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject0_0.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoGrass_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject1_%d.png", TEX_NORMAL, 6)), E_FAIL);

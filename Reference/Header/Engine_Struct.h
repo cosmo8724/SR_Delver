@@ -149,7 +149,7 @@ namespace Engine
 		_int		iHp;
 		_int		iAttack;
 
-	}CINFO;
+	}MONTSERINFO;
 
 	typedef struct tPlayerInfo
 	{

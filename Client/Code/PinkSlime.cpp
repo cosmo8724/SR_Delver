@@ -52,15 +52,15 @@ HRESULT CPinkSlime::Ready_Object(void)
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
 
-	m_fScale = 1.f;
-	m_fHeight = 1.f;
+	m_fScale = 2.f; // TODO 2·Î ÁáÀ» ‹š State°¡ DIE
+	m_fHeight = 2.f;
 
 	// jump variable
 	m_fJSpeed = 5.f;
 	m_fJSpeed0 = 5.f;
 	m_fAccel = 0.1f;
 
-	m_pTransCom->Set_Pos(10.f, m_fHeight, 10.f);
+	m_pTransCom->Set_Pos(7.f, m_fHeight, 10.f);
 	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	return S_OK;
@@ -79,16 +79,22 @@ _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 
 	m_pTransCom->Set_Y(m_fHeight);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	Motion_Change();
 
-	CMonster::Hit(fTimeDelta);
+	if (0 >= m_tInfo.iHp)
+	{
+		m_eCurState = DIE;
+		m_bDead = true;
+
+		return OBJ_DEAD;
+	}
+
+	OnHit(fTimeDelta);
 
 	if (!m_bHit)
 	{
 		SKill_Update(fTimeDelta);
-
 	}
-
-	Motion_Change();
 
 	return 0;
 }
@@ -174,7 +180,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 			m_bJump = true;
 			m_eSkill = SKILL_JUMP;
 
-			// TODO : Player KnockBack
+		// TODO : Player KnockBack
 		}
 		if (2.f < m_SkillJumpTimeAcc)
 		{
@@ -190,18 +196,21 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 			m_eSkill = SKILL_FOLLOW;
 		}
 
-		if (18 >= m_tInfo.iHp)
-		{
-			m_eSkill_Scale = SKILLSCALE_BIG;
-		}
-		else if (14 >= m_tInfo.iHp)
-		{
-			m_eSkill_Scale = SKILLSCALE_MEDIUM;
-		}
-		else if (8 >= m_tInfo.iHp)
-		{
-			m_eSkill_Scale = SKILLSCALE_SMALL;
-		}
+		//if (18 >= m_tInfo.iHp)
+		//{
+		//	m_eSkill = SKILL_SCALE;
+		//	m_eSkill_Scale = SKILLSCALE_BIG;
+		//}
+		//else if (14 >= m_tInfo.iHp)
+		//{
+		//	m_eSkill = SKILL_SCALE;
+		//	m_eSkill_Scale = SKILLSCALE_MEDIUM;
+		//}
+		//else if (8 >= m_tInfo.iHp)
+		//{
+		//	m_eSkill = SKILL_SCALE;
+		//	m_eSkill_Scale = SKILLSCALE_SMALL;
+		//}
 	}
 
 
@@ -258,12 +267,12 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 
 	CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 
-	//if (Engine::Get_DIKeyState(DIK_0))
-	//{
-	//	pLayer->Delete_GameObject(L"PinkSlime0");
-	//	pLayer->Delete_GameObject(L"PinkSlime1");
-	//	pLayer->Delete_GameObject(L"PinkSlime2");
-	//}
+	if (m_bDead)
+	{
+		pLayer->Delete_GameObject(L"PinkSlime0");
+		pLayer->Delete_GameObject(L"PinkSlime1");
+		pLayer->Delete_GameObject(L"PinkSlime2");
+	}
 
 	switch (m_eSkill_Scale)
 	{
@@ -275,7 +284,7 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 			MSG_BOX("PinkSlime Create Failure");
 			return;
 		}
-		pLayer->Add_GameObject(L"PinkSlime0", pGameObject);
+		pLayer->Add_GameObject(L"PinkSlime_0", pGameObject);
 
 		fSize = 0.9f;
 
@@ -292,7 +301,7 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 			MSG_BOX("PinkSlime Create Failure");
 			return;
 		}
-		pLayer->Add_GameObject(L"PinkSlime1", pGameObject);
+		pLayer->Add_GameObject(L"PinkSlime_1", pGameObject);
 
 		fSize = 0.7f;
 
@@ -309,7 +318,7 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 			MSG_BOX("PinkSlime Create Failure");
 			return;
 		}
-		pLayer->Add_GameObject(L"PinkSlime2", pGameObject);
+		pLayer->Add_GameObject(L"PinkSlime_2", pGameObject);
 
 		fSize = 0.5f;
 
@@ -320,13 +329,25 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 	}
 }
 
+void CPinkSlime::OnHit(const _float & fTimeDelta)
+{
+	if (!m_bHit)
+		return;
+
+	m_eCurState = HIT;
+
+	m_fHitTimeAcc += fTimeDelta;
+	if (1.f < m_fHitTimeAcc)
+	{
+		m_tInfo.iHp--;
+		m_bHit = false;
+		m_fHitTimeAcc = 0.f;
+	}
+}
+
 void CPinkSlime::CollisionEvent(CGameObject * pObj)
 {
-	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
-	{
-		if (nullptr != bullet)
-			m_bHit = true;
-	}
+	m_bHit = true;
 }
 
 void CPinkSlime::Motion_Change()

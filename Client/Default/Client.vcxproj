@@ -182,6 +182,7 @@
     <ClInclude Include="..\Header\GreenSlime.h" />
     <ClInclude Include="..\Header\GuitarMan.h" />
     <ClInclude Include="..\Header\HealthBar.h" />
+    <ClInclude Include="..\Header\HitBackGround.h" />
     <ClInclude Include="..\Header\HoodMan.h" />
     <ClInclude Include="..\Header\HPGauge.h" />
     <ClInclude Include="..\Header\Icon.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="..\Code\GreenSlime.cpp" />
     <ClCompile Include="..\Code\GuitarMan.cpp" />
     <ClCompile Include="..\Code\HealthBar.cpp" />
+    <ClCompile Include="..\Code\HitBackGround.cpp" />
     <ClCompile Include="..\Code\HoodMan.cpp" />
     <ClCompile Include="..\Code\HPGauge.cpp" />
     <ClCompile Include="..\Code\Icon.cpp" />

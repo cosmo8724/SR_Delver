@@ -35,6 +35,9 @@ HRESULT CCrossHair::Ready_Object(void)
 
 _int CCrossHair::Update_Object(const _float & fTimeDelta)
 {
+	if (!m_bWeapon)
+		return 0;
+
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
@@ -44,12 +47,15 @@ _int CCrossHair::Update_Object(const _float & fTimeDelta)
 
 void CCrossHair::LateUpdate_Object(void)
 {
+	if (!m_bWeapon)
+		return;
+
 	Engine::CGameObject::LateUpdate_Object();
 }
 
 void CCrossHair::Render_Obejct(void)
 {
-	if (!m_Weapon)
+	if (!m_bWeapon)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);

@@ -49,6 +49,7 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
+	m_pTransCom->Set_Y(1.f);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	//// 애니메이션 변화
 	//m_fFrame += m_pTextureCom->Get_FrameEnd()  * fTimeDelta;
@@ -64,7 +65,7 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	}
 
-	Hit(fTimeDelta);
+	OnHit(fTimeDelta);
 	
 	if (!m_bHit)
 	{
@@ -202,7 +203,7 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 	}
 }
 
-void CGreenSlime::Hit(const _float & fTimeDelta)
+void CGreenSlime::OnHit(const _float & fTimeDelta)
 {
 	if (!m_bHit)
 		return;
@@ -212,26 +213,34 @@ void CGreenSlime::Hit(const _float & fTimeDelta)
 	m_fHitTimeAcc += fTimeDelta;
 	if (1.f < m_fHitTimeAcc)
 	{
-		m_tInfo.iHp--;
+		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		m_tInfo.iHp -= pPlayer->Get_PlayerAttack();
 		m_bHit = false;
 		m_fHitTimeAcc = 0.f;
 	}
 }
 
-void CGreenSlime::CollisionEvent(CGameObject * pObj)
+void CGreenSlime::CollisionEvent(CGameObject* pObj)
 {
-	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
-	CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
-	if (nullptr != pPlayer)
+	CPlayer*		pPlayer = dynamic_cast<CPlayer*>(pObj);
+	//CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+
+	if (pObj == pPlayer)
+	{
+		if (nullptr != pPlayer)
+		{
+			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+			pPlayer->OnHit(m_tInfo.iAttack);
+		}
+	}
+	else
 		m_bHit = true;
 
-	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
-	{
-		if (nullptr != bullet)
-			m_bHit = true;
-	}
-
-
+	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
+	//{
+	//	if (nullptr != bullet)
+	//		m_bHit = true;
+	//}
 }
 
 void CGreenSlime::Motion_Change(const _float& fTimeDelta)
