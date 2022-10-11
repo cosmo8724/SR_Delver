@@ -4,6 +4,7 @@
 #include "Export_Function.h"
 
 #include "MapTool.h"
+#include "ObjectTool.h"
 #include "ParticleTool.h"
 #include "InfoTool.h"
 
@@ -30,6 +31,7 @@ public:
 public:
 	HRESULT		ImGui_Map_Tool(LPDIRECT3DDEVICE9 pGraphicDev, const _float& fTimeDelta);
 	void		MapTool();
+	void		ObjectTool();
 	void		ParticleTool();
 	void		InfoTool();
 
@@ -47,6 +49,7 @@ private:
 
 	LPDIRECT3DDEVICE9		m_pGraphicDev = nullptr;
 	CMapTool*				m_pMapTool = nullptr;
+	CObjectTool*				m_pObjectTool = nullptr;
 	CParticleTool*			m_pParticleTool = nullptr;
 	CInfoTool*				m_pInfoTool = nullptr;
 

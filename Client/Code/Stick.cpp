@@ -29,7 +29,7 @@ HRESULT CStick::Ready_Object(_int iAngerCount)
 	m_tInfo.iHp = 5;
 	m_tInfo.iAttack = 2;
 
-	m_pTransCom->Set_Pos(10.f, 1.f, 30.f);
+	m_pTransCom->Set_Pos(11.f, 1.f, 12.f);
 
 	m_eCurState = IDLE;
 	m_eSkill = SKILL_ANGER;

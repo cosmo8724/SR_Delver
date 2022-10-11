@@ -26,7 +26,7 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 	m_tInfo.iAttack = 1;
 
 	m_fHeight = 3.f;
-	m_pTransCom->Set_Pos(0.f, m_fHeight, 55.f);
+	m_pTransCom->Set_Pos(20.f, m_fHeight, 20.f);
 
 	m_eCurState = IDLE;
 

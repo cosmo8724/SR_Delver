@@ -20,6 +20,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fJSpeed0(0.15f)
 	, m_fJSpeed(0.3f)
 {
+	memset(&m_tInfo, 0, sizeof(PLAYERINFO));
 }
 
 CPlayer::~CPlayer()
@@ -31,13 +32,26 @@ HRESULT CPlayer::Ready_Object(void)
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(25.f, 1.f, 25.f);
+	m_pTransCom->Set_Pos(3.f, 1.f, 3.f);
 
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	//m_fScale = 0.4f;
-	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+	m_fScale = 0.6f;
+	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+
+	// 플레이어 스탯정보
+	//m_tInfo.iHp = 20;
+	m_tInfo.iHp = 10;
+	m_tInfo.iHpMax = m_tInfo.iHp;
+	m_tInfo.iAtk = 10;
+	m_tInfo.iDef = 10;
+	m_tInfo.iExp = 0;
+	m_tInfo.iExpMax = 10;
+	m_tInfo.iHunger = 30;
+	m_tInfo.fSpeed = 1;
+	m_tInfo.iLevel = 1;
+
 	return S_OK;
 }
 
@@ -66,6 +80,8 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	Add_RenderGroup(RENDER_NONALPHA, this);
+
+	_int iHp = m_tInfo.iHp;
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
@@ -264,15 +280,15 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 {
 	m_fLBClick += fTimeDelta;
 
-	if ((Engine::Get_DIKeyState(DIK_X) & 0x80) && (0.3f<m_fLBClick))
-	{
-		m_fLBClick = 0.f;
-		_vec3 vPos, vLook;
-		m_pTransCom->Get_Info(INFO_POS, &vPos);
-		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+	//if ((Engine::Get_DIKeyState(DIK_X) & 0x80) && (0.3f<m_fLBClick))
+	//{
+	//	m_fLBClick = 0.f;
+	//	_vec3 vPos, vLook;
+	//	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	//	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
 
-		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
-	}
+	//	CBulletMgr::GetInstance()->Fire(BULLET_WAND);
+	//}
 }
 
 void CPlayer::Set_OnTerrain(void)
@@ -325,13 +341,13 @@ _float CPlayer::Get_Height()
 	Engine::CTerrainTex*	pTerrainTexCom = dynamic_cast<Engine::CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"Proto_TerrainTexCom", ID_STATIC));
 	NULL_CHECK_RETURN(pTerrainTexCom, 0.f);
 
-	return m_pCalculatorCom->HeightOnTerrain(&vPos, pTerrainTexCom->Get_VtxPos(), iWidth, iDepth) + 1 * m_fScale;
+	return m_pCalculatorCom->HeightOnTerrain(&vPos, pTerrainTexCom->Get_VtxPos(), 20, 20) + 1.f * m_fScale;
 }
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
-	if (nullptr != pItem)
+	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
 	{
 		CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
 

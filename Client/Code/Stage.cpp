@@ -49,6 +49,9 @@
 #include "ParticleMgr.h"
 
 // EcoObject
+#include "Stone.h"
+#include "Grass.h"
+#include "Tree.h"
 #include "Jar.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -109,36 +112,47 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
-	// Collider 테스트(Player - 아이템)
-	// Collider 테스트( 플레이어와 Arrow0,Arrow1,Wand2)
-	//CGameObject* pDest = nullptr;
-
-	//for (int i = 0; i < 2; ++i)
-	//{
-	//	wstring obj = L"Arrow";
-	//	wchar_t index[10];
-	//	_itow_s(i, index, 10);
-	//	obj += index;
-
-	//	pDest = Engine::Get_GameObject(L"Layer_GameLogic", obj.c_str());
-	//	//Engine::CollisionAABB(pSour, pDest);
-	//	Engine::CollisionTest(pPlayer, pDest);
-	//}
-
-	//pDest = Engine::Get_GameObject(L"Layer_GameLogic", L"Wand2");
-	////Engine::CollisionAABB(pSour, pDest);
-	//Engine::CollisionTest(pPlayer, pDest);
-	// ~Collider 테스트
 
 	// 플레이어와 아이템
-	vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items();
-	for (auto& item : *pItems)
+	for (int i = 0; i < ITEM_END; ++i)
 	{
-		Engine::CollisionAABB(pPlayer, item);
+		if (i == ITEM_IMG)	// img아이템은 충돌확인xx
+			continue;
+		vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items((ITEMTYPE)i);
+		for (auto& item : *pItems)
+		{
+			Engine::CollisionAABB(pPlayer, item);
+		}
+	}
+
+	// 무기와 환경요소
+	vector<CGameObject*>* pItems = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
+	CGameObject* pSour = nullptr;
+	CGameObject* pSour2 = nullptr;
+	CGameObject* pSour3 = nullptr;
+	CGameObject* pSour4 = nullptr;
+	CGameObject* pSour5 = nullptr;
+
+	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
+	pSour2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_0");
+	pSour3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_1");
+	pSour4 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_2");
+	pSour5 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_3");
+
+	for (auto& weapon : *pItems)
+	{
+		Engine::CollisionAABB(pSour, weapon);
+
+		Engine::CollisionAABB(pSour2, weapon);
+
+		Engine::CollisionAABB(pSour3, weapon);
+
+		Engine::CollisionAABB(pSour4, weapon);
+
+		Engine::CollisionAABB(pSour5, weapon);
 	}
 
 	// Bullet 테스트
-	CGameObject* pSour = nullptr;
 	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 	for (auto& bullet : *pPlayerBullets)
 	{
@@ -147,7 +161,34 @@ void CStage::LateUpdate_Scene(void)
 
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
 		Engine::CollisionTest(pSour, bullet);
+
+		Engine::CollisionTest(pSour2, bullet);
+
+		Engine::CollisionTest(pSour3, bullet);
+
+		Engine::CollisionTest(pSour4, bullet);
+
+		Engine::CollisionTest(pSour5, bullet);
 	}
+
+	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW);
+	for (auto& bullet : *pPlayerBullets)
+	{
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+		Engine::CollisionTest(pSour, bullet);
+
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
+		Engine::CollisionTest(pSour, bullet);
+
+		Engine::CollisionTest(pSour2, bullet);
+
+		Engine::CollisionTest(pSour3, bullet);
+
+		Engine::CollisionTest(pSour4, bullet);
+
+		Engine::CollisionTest(pSour5, bullet);
+	}
+
 
 	// Monster Collider
 	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
@@ -227,7 +268,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Item
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
-	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
+	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Dagger", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Wand", ITEM_WEAPON, _vec3({ 35.f, 1.f, 35.f }));
 	
 	// Particle
@@ -318,60 +359,135 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
 	// Blocks
-	string	strPath = "..\\Bin\\Resource\\Map_SH.dat";
-	const char* pPath = strPath.c_str();
-	int iLength = strlen(pPath) + 1;
-	TCHAR* wpPath = new TCHAR[iLength];
-	size_t	Temp;
-	mbstowcs_s(&Temp, wpPath, iLength, pPath, iLength);
-
-	HANDLE	hFile = CreateFile(wpPath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-
-	if (INVALID_HANDLE_VALUE == hFile)
-		return E_FAIL;
-
-	DWORD	dwByte = 0;
-	DWORD	dwStrByte = 0;
-	CBlock*	pBlock = CBlock::Create(m_pGraphicDev);
-	CGameObject*	pTemp = nullptr;
-
-	while (true)
 	{
-		if (pBlock)
+		string	strPath = "..\\..\\Data\\Map.dat";
+		const char* pPath = strPath.c_str();
+		int iLength = strlen(pPath) + 1;
+		TCHAR* wpPath = new TCHAR[iLength];
+		size_t	Temp;
+		mbstowcs_s(&Temp, wpPath, iLength, pPath, iLength);
+
+		HANDLE	hFile = CreateFile(wpPath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+		if (INVALID_HANDLE_VALUE == hFile)
+			return E_FAIL;
+
+		DWORD	dwByte = 0;
+		DWORD	dwStrByte = 0;
+		CBlock*	pBlock = CBlock::Create(m_pGraphicDev);
+		CGameObject*	pTemp = nullptr;
+
+		while (true)
+		{
+			if (pBlock)
+			{
+				ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+				TCHAR*	pName = new TCHAR[dwStrByte];
+				ReadFile(hFile, pName, dwStrByte, &dwByte, nullptr);
+
+				ReadFile(hFile, &pBlock->m_pTransCom->m_vInfo[INFO_RIGHT], sizeof(_vec3), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_pTransCom->m_vInfo[INFO_UP], sizeof(_vec3), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_pTransCom->m_vInfo[INFO_LOOK], sizeof(_vec3), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_pTransCom->m_vInfo[INFO_POS], sizeof(_vec3), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_pTransCom->m_vAngle, sizeof(_vec3), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_pTransCom->m_vScale, sizeof(_vec3), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_pTransCom->m_matWorld, sizeof(_matrix), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_eCurrentType, sizeof(BLOCKTYPE), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_iTexture, sizeof(_int), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_fScale, sizeof(_float), &dwByte, nullptr);
+				ReadFile(hFile, &pBlock->m_bSet, sizeof(_bool), &dwByte, nullptr);
+
+				if (0 == dwByte)
+				{
+					Safe_Release(pBlock);
+					Safe_Delete_Array(wpPath);
+					Safe_Delete_Array(pName);
+					break;
+				}
+				vecObjTags.push_back(pName);
+				pTemp = CBlock::Create(*pBlock);
+				pLayer->Add_GameObject(vecObjTags.back(), pTemp);
+			}
+		}
+		CloseHandle(hFile);
+		Safe_Release(pBlock);
+		m_mapLayer.insert({ pLayerTag, pLayer });
+	}
+
+	// Eco Object
+	{
+		string	strPath = "..\\..\\Data\\EcoObject.dat";
+		const char* pPath = strPath.c_str();
+		int iLength = strlen(pPath) + 1;
+		TCHAR* wpPath = new TCHAR[iLength];
+		size_t	Temp;
+		mbstowcs_s(&Temp, wpPath, iLength, pPath, iLength);
+
+		HANDLE	hFile = CreateFile(wpPath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+		if (INVALID_HANDLE_VALUE == hFile)
+			return E_FAIL;
+
+		DWORD	dwByte = 0;
+		DWORD	dwStrByte = 0;
+		CEcoObject* pEcoObject = CEcoObject::Create(m_pGraphicDev);
+		CEcoObject* pCloneObject = nullptr;
+		CTransform*	pTransCom = dynamic_cast<CTransform*>(pEcoObject->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+
+		while (true)
 		{
 			ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
 
 			TCHAR*	pName = new TCHAR[dwStrByte];
 			ReadFile(hFile, pName, dwStrByte, &dwByte, nullptr);
 
-			ReadFile(hFile, &pBlock->m_pTransCom->m_vInfo[INFO_RIGHT], sizeof(_vec3), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_pTransCom->m_vInfo[INFO_UP], sizeof(_vec3), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_pTransCom->m_vInfo[INFO_LOOK], sizeof(_vec3), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_pTransCom->m_vInfo[INFO_POS], sizeof(_vec3), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_pTransCom->m_vAngle, sizeof(_vec3), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_pTransCom->m_vScale, sizeof(_vec3), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_pTransCom->m_matWorld, sizeof(_matrix), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_eCurrentType, sizeof(BLOCKTYPE), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_iTexture, sizeof(_int), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_fScale, sizeof(_float), &dwByte, nullptr);
-			ReadFile(hFile, &pBlock->m_bSet, sizeof(_bool), &dwByte, nullptr);
+			ReadFile(hFile, &pEcoObject->m_eType, sizeof(ECOOBJTYPE), &dwByte, nullptr);
+			ReadFile(hFile, &pTransCom->m_vInfo[INFO_RIGHT], sizeof(_vec3), &dwByte, nullptr);
+			ReadFile(hFile, &pTransCom->m_vInfo[INFO_UP], sizeof(_vec3), &dwByte, nullptr);
+			ReadFile(hFile, &pTransCom->m_vInfo[INFO_LOOK], sizeof(_vec3), &dwByte, nullptr);
+			ReadFile(hFile, &pTransCom->m_vInfo[INFO_POS], sizeof(_vec3), &dwByte, nullptr);
+			ReadFile(hFile, &pTransCom->m_vAngle, sizeof(_vec3), &dwByte, nullptr);
+			ReadFile(hFile, &pTransCom->m_vScale, sizeof(_vec3), &dwByte, nullptr);
+			ReadFile(hFile, &pTransCom->m_matWorld, sizeof(_matrix), &dwByte, nullptr);
+			_int	iTexture = 0;
+			ReadFile(hFile, &iTexture, sizeof(_int), &dwByte, nullptr);
+			pEcoObject->Set_CurrentTexture(iTexture);
 
 			if (0 == dwByte)
 			{
-				Safe_Release(pBlock);
+				Safe_Release(pEcoObject);
 				Safe_Delete_Array(wpPath);
 				Safe_Delete_Array(pName);
 				break;
 			}
-			vecObjTags.push_back(pName);
-			pTemp = CBlock::Create(*pBlock);
-			pLayer->Add_GameObject(vecObjTags.back(), pTemp);
-		}
-	}
-	CloseHandle(hFile);
-	Safe_Release(pBlock);
-	m_mapLayer.insert({ pLayerTag, pLayer });
 
+			vecObjTags.push_back(pName);
+			switch (pEcoObject->m_eType)
+			{
+			case ECO_STONE:
+				pCloneObject = CStone::Create(pEcoObject);
+				break;
+
+			case ECO_GRASS:
+				pCloneObject = CGrass::Create(pEcoObject);
+				break;
+
+			case ECO_TREE:
+				pCloneObject = CTree::Create(pEcoObject);
+				break;
+
+			case ECO_JAR:
+				pCloneObject = CJar::Create(pEcoObject);
+				break;
+
+			case ECO_JAM:
+				break;
+			}
+			pLayer->Add_GameObject(vecObjTags.back(), pCloneObject);
+		}
+		CloseHandle(hFile);
+	}
 	return S_OK;
 }
 
@@ -434,7 +550,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 HRESULT CStage::Ready_Proto(void)
 {
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Terrain/Tile/textures_%d.png", TEX_NORMAL, 18)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Terrain/Tile/textures_%d.png", TEX_NORMAL, 21)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cave_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cave/textures_%d.dds", TEX_CUBE, 7)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cave_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cave/textures_%d.png", TEX_NORMAL, 7)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cold_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cold/textures_%d.dds", TEX_CUBE, 16)), E_FAIL);
@@ -452,7 +568,7 @@ HRESULT CStage::Ready_Proto(void)
 
 	_int	iWidth, iDepth, iInterval;
 	CImGuiMgr::GetInstance()->Get_MapWidth(&iWidth, &iDepth, &iInterval);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexCom", CTerrainTex::Create(m_pGraphicDev, iWidth, iDepth, iInterval)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexCom", CTerrainTex::Create(m_pGraphicDev, 20, 20, iInterval)), E_FAIL);
 
 	return S_OK;
 }

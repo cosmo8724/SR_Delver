@@ -33,6 +33,9 @@ protected:
 	map<const _tchar*, CComponent*>		m_mapComponent[ID_END];
 
 public:
+	void		Set_Dead(_bool bDead) { m_bDead = bDead; }
+
+public:
 	virtual void	Free(void);
 
 protected:
@@ -40,6 +43,7 @@ protected:
 	BDSPHERE	m_bdSphere;
 
 	CCollider*	m_pColliderCom;
+	_bool		m_bDead = false;
 };
 
 END

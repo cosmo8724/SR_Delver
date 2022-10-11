@@ -46,7 +46,7 @@ private:
 	_bool		m_bFix = true;
 
 
-	_bool		m_bSwitch = false;
+	//_bool		m_bSwitch = false;
 
 public:
 	static CStaticCamera*		Create(LPDIRECT3DDEVICE9 pGraphicDev,

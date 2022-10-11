@@ -7,12 +7,12 @@
 CArrowBullet::CArrowBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
 	, m_fMinSpeed(10.f)
-	, m_fMaxSpeed(20.f)
+	, m_fMaxSpeed(25.f)
 {
 	memset(&m_bdBox, 0, sizeof(BDBOX));
 	memset(&m_bdSphere, 0, sizeof(BDSPHERE));
 	m_fSpeed = m_fMinSpeed;
-	m_fSpeedY = m_fMinSpeed;
+	m_fSpeedY = m_fMinSpeed + 15.f;
 }
 
 CArrowBullet::CArrowBullet(const CArrowBullet & rhs)
@@ -61,6 +61,8 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 		CTransform*		pWeapon = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Arrow0", L"Proto_TransformCom", ID_DYNAMIC));
 			//dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pWeapon, -1);
+		m_matWorld = *pWeapon->Get_WorldMatrixPointer();
+		m_pTransCom->Set_WorldMatrix(&m_matWorld);
 
 		_vec3 vPos;
 		pWeapon->Get_Info(INFO_POS, &vPos);
@@ -87,68 +89,48 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 
 	}
 
-	
+
+
 	_vec3 vMove;
 	vMove.x = m_fSpeed * fTimeDelta * m_vDirection.x;
 
 	if (m_vDirection.y < 0.f)
 		m_vDirection.y = 0.1f;
-	//m_fSpeedY = m_fSpeedY - 1.5f;
+	m_fSpeedY = m_fSpeedY - 1.5f;
 	vMove.y = m_fSpeedY *fTimeDelta * m_vDirection.y;
 
 	vMove.z = m_fSpeed * fTimeDelta * m_vDirection.z;
 	
 	m_pTransCom->Move_Pos(&vMove);
 
+	_vec3 vRight, vUp, vLook;
+	D3DXVec3Normalize(&vMove, &vMove);
+	vRight = -vMove;
+	D3DXVec3Cross(&vLook, &vRight, &_vec3({ 0.f, 1.f, 0.f }));
+	D3DXVec3Normalize(&vLook, &vLook);
 
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
 
+	m_pTransCom->Set_Info(vRight, vUp, vLook);
 
-
-	// ÅØ½ºÃÄ ºôº¸µå
-	_matrix matScaleInv, matScale, matRot, matBill, matView, matWorld;
-	
-	m_pTransCom->Get_WorldMatrix(&matWorld);
-
-	_vec3 vScale = m_pTransCom->Get_Scale();
-	D3DXMatrixScaling(&matScale, vScale.x, vScale.y, vScale.z);
-	D3DXMatrixInverse(&matScaleInv, 0, &matScale);
-
-	_matrix matRotY, matRotZ, matRotDir;
-	D3DXMatrixRotationY(&matRotY, D3DXToRadian(60.f));
-	D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(-45.f));
-
-	//_vec3 vec1, vec2;
-	//D3DXVec3Normalize(&vec1, &m_vDirection);
-	//D3DXVec3Normalize(&vec2, &vMove);
-
-	//_float fRad = D3DXVec3Dot(&vec1, &vec2);
-
-	D3DXMatrixIdentity(&matRotDir);
-	//D3DXMatrixRotationZ(&matRotDir, -vMove.y / 180.f);
-	//m_fArrowAngle += 0.01f;
-	//if (m_fArrowAngle > 30.f)
-	//	m_fArrowAngle = 30.f;
-	//D3DXMatrixRotationZ(&matRotDir, -D3DXToRadian(40.f));
-	
-	matRot = matRotY * matRotZ * matRotDir;
-
-
-	// ºôº¸µå
-	D3DXMatrixIdentity(&matBill);
-	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	//memcpy(&matBill, &matView, sizeof(_matrix));
-	//memset(&matBill._41, 0, sizeof(_vec3));
-	//D3DXMatrixInverse(&matBill, 0, &matBill);
-
-
-	_matrix newMatWorld = matScale *  matRot * matBill *matScaleInv * matWorld;
-
-	m_pTransCom->Set_WorldMatrix(&newMatWorld);
+	m_fParticleTime += fTimeDelta;
+	if (0.1f < m_fParticleTime)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.1f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f },
+			1.f, false, false);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_0);
+		m_fParticleTime = 0.f;
+	}
 
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_fLifeTime += fTimeDelta;
+
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
 
 	return iResult;
 }
@@ -198,7 +180,14 @@ void CArrowBullet::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
 }
 
 CArrowBullet * CArrowBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -227,6 +216,7 @@ void CArrowBullet::Reset()
 	m_bReady = false;
 	m_fSpeed = m_fMinSpeed;
 	m_fSpeedY = m_fMinSpeed;
+	m_pColliderCom->Set_Free(false);
 
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_ARROW);
 }
@@ -249,6 +239,11 @@ HRESULT CArrowBullet::Add_Component(void)
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	return S_OK;
 }

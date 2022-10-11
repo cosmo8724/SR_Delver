@@ -15,6 +15,7 @@ CWand::CWand(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	m_vPos = vPos;
 	m_ObjTag = L"Wand";
+	m_eItemType = ITEM_WEAPON;
 	m_eWeaponType = WT_AD;
 
 }
@@ -26,7 +27,8 @@ CWand::~CWand()
 HRESULT CWand::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	m_pTransCom->Set_Pos(6.f, 0.5f, 15.f);
 	m_eState = STATE_GROUND;
 
 	//_vec3 vScale;
@@ -44,18 +46,18 @@ HRESULT CWand::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ÅØ½ºÃÄ ÄÄ°´Ã¼ ÄÄÆ÷³ÍÆ®
+	// ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½Ä°ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Wand1Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_Wand1Texture", pComponent });
 	m_textureTag = L"Proto_Wand1Texture";
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -117,22 +119,22 @@ void CWand::Charge(const _float & fTimeDelta)
 
 	}
 
-	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)	// ¿ÞÂÊ ¹öÆ°ÀÌ ´­·È´Ù.
+	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½È´ï¿½.
 	{
 		m_bClick = true;
 		m_fChargeTime += m_fTimeDelta;
 
-		if (m_fChargeTime > 0.3f)	// Â÷Â¡»óÈ²ÀÌ¶ó¸é
+		if (m_fChargeTime > 0.3f)	// ï¿½ï¿½Â¡ï¿½ï¿½È²ï¿½Ì¶ï¿½ï¿½
 		{
-			m_bClick = false;		// Å¬¸¯ÀÌ ¾Æ´Ï¶ó Â÷Â¡ÀÌ´Ù.
+			m_bClick = false;		// Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ ï¿½ï¿½Â¡ï¿½Ì´ï¿½.
 			m_bCharge = true;
 		}
 	}
 	else
 	{
-		if (true == m_bClick)	// ¿ÞÂÊ ¹öÆ°ÀÌ ´­·ÁÀÖÁö´Â ¾ÊÁö¸¸ ÀÌÀü¿¡ ´­·È¾ú´Ù¸é
+		if (true == m_bClick)	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½È¾ï¿½ï¿½Ù¸ï¿½
 		{
-			m_fFrame += frameEnd * fTimeDelta * 3.f;	// ´Ü¼ø °ø°ÝÀ» ÇÑ´Ù.
+			m_fFrame += frameEnd * fTimeDelta * 3.f;	// ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 			if (m_fFrame >= frameEnd)
 			{
 				m_fFrame = 0.f;
@@ -141,7 +143,7 @@ void CWand::Charge(const _float & fTimeDelta)
 				m_fChargeTime = 0.f;
 			}
 		}
-		else if (true == m_bCharge)  // Â÷Áö ÁßÀÎ »óÈ²ÀÌ¾ú´Ù¸é Â÷Â¡°ø°ÝÀ» ÇÑ´Ù.
+		else if (true == m_bCharge)  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È²ï¿½Ì¾ï¿½ï¿½Ù¸ï¿½ ï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 		{
 			m_fFrame = 0.f;
 			m_bCharge = false;
@@ -196,7 +198,7 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 	switch (m_eState)
 	{
 	case STATE_GROUND:
-		m_pTransCom->Set_Scale(1.f, 1.f, 1.f);
+		m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 		m_pTransCom->Revolution(pPlayerInfo, matView, 0.f, m_fTimeDelta, STATE_GROUND);
 		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
 		break;

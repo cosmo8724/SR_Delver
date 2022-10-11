@@ -54,7 +54,7 @@ void CStaticCamera::LateUpdate_Object(void)
 {
 	if (true == m_bFix)
 	{
-		//Mouse_Fix();
+		Mouse_Fix();
 	}
 	CCamera::LateUpdate_Object();
 }
@@ -108,7 +108,7 @@ void CStaticCamera::Key_Input(const _float& fTimeDelta)
 			m_fFov = D3DXToRadian(75.f);
 	}
 
-	if (Key_Down(DIK_T))
+	if (Key_Down(DIK_Z))
 		m_bFPS = !m_bFPS;
 }
 

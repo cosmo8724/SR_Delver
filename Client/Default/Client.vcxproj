@@ -178,6 +178,7 @@
     <ClInclude Include="..\Header\FontLogo.h" />
     <ClInclude Include="..\Header\FontStart.h" />
     <ClInclude Include="..\Header\GrandFather.h" />
+    <ClInclude Include="..\Header\Grass.h" />
     <ClInclude Include="..\Header\GreenSlime.h" />
     <ClInclude Include="..\Header\GuitarMan.h" />
     <ClInclude Include="..\Header\HealthBar.h" />
@@ -202,10 +203,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h" />
+    <ClInclude Include="..\Header\ObjectTool.h" />
+    <ClInclude Include="..\Header\ObjectCamera.h" />
     <ClInclude Include="..\Header\ParticleMgr.h" />
     <ClInclude Include="..\Header\ParticleTool.h" />
     <ClInclude Include="..\Header\PinkSlime.h" />
     <ClInclude Include="..\Header\Player.h" />
+    <ClInclude Include="..\Header\Potion.h" />
     <ClInclude Include="..\Header\PSystem.h" />
     <ClInclude Include="..\Header\QuickSlot.h" />
     <ClInclude Include="..\Header\SkeletonGhost.h" />
@@ -218,9 +222,11 @@
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\StaticCamera.h" />
     <ClInclude Include="..\Header\Stick.h" />
+    <ClInclude Include="..\Header\Stone.h" />
     <ClInclude Include="..\Header\TalkWindow.h" />
     <ClInclude Include="..\Header\Terrain.h" />
     <ClInclude Include="..\Header\Tool_Scene.h" />
+    <ClInclude Include="..\Header\Tree.h" />
     <ClInclude Include="..\Header\UserParticle.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -270,6 +276,7 @@
     <ClCompile Include="..\Code\FontLogo.cpp" />
     <ClCompile Include="..\Code\FontStart.cpp" />
     <ClCompile Include="..\Code\GrandFather.cpp" />
+    <ClCompile Include="..\Code\Grass.cpp" />
     <ClCompile Include="..\Code\GreenSlime.cpp" />
     <ClCompile Include="..\Code\GuitarMan.cpp" />
     <ClCompile Include="..\Code\HealthBar.cpp" />
@@ -294,10 +301,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Code\MiniMap.cpp" />
+    <ClCompile Include="..\Code\ObjectTool.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Default/stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Default/stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\Code\ObjectCamera.cpp" />
     <ClCompile Include="..\Code\ParticleMgr.cpp" />
     <ClCompile Include="..\Code\ParticleTool.cpp" />
     <ClCompile Include="..\Code\PinkSlime.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
+    <ClCompile Include="..\Code\Potion.cpp" />
     <ClCompile Include="..\Code\PSystem.cpp" />
     <ClCompile Include="..\Code\QuickSlot.cpp" />
     <ClCompile Include="..\Code\SkeletonGhost.cpp" />
@@ -310,9 +323,11 @@
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\StaticCamera.cpp" />
     <ClCompile Include="..\Code\Stick.cpp" />
+    <ClCompile Include="..\Code\Stone.cpp" />
     <ClCompile Include="..\Code\TalkWindow.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
     <ClCompile Include="..\Code\Tool_Scene.cpp" />
+    <ClCompile Include="..\Code\Tree.cpp" />
     <ClCompile Include="..\Code\UserParticle.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>

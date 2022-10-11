@@ -52,15 +52,15 @@ HRESULT CPinkSlime::Ready_Object(void)
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
 
-	m_fScale = 2.f;
-	m_fHeight = 2.f;
+	m_fScale = 1.f;
+	m_fHeight = 1.f;
 
 	// jump variable
 	m_fJSpeed = 5.f;
 	m_fJSpeed0 = 5.f;
 	m_fAccel = 0.1f;
 
-	m_pTransCom->Set_Pos(10.f, m_fHeight, 25.f);
+	m_pTransCom->Set_Pos(10.f, m_fHeight, 10.f);
 	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	return S_OK;

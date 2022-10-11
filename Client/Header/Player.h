@@ -35,6 +35,9 @@ private:
 	void				Jump(const _float& fTimeDelta);
 	_float				Get_Height();
 	void				CollisionEvent(CGameObject * pOtherObj);
+	
+public:
+	void				Set_HpPlus() { m_tInfo.iHp += 1; }
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -45,7 +48,7 @@ private:
 	CBlock*				m_pCurrentBlock = nullptr;
 	_bool				m_bBlockChanged = true;
 
-	PLAYER_STATE m_eState = PLAYER_GROUND;
+	PLAYER_STATE	m_eState = PLAYER_GROUND;
 
 	_vec3				m_vDirection;
 	_float				m_fSpeed = 5.f;
@@ -65,6 +68,8 @@ private:
 	// ������ ���� ����
 	CItem*				m_pRight	= nullptr;	// ��������
 	CItem*				m_pLeft		= nullptr;	// �޼���
+
+	PLAYERINFO			m_tInfo;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
