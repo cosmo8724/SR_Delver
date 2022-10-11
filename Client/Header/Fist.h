@@ -14,11 +14,12 @@ public:
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void)					override;
 	virtual void		Render_Obejct(void)						override;
+	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
 private:
 	virtual HRESULT		Add_Component(void) override;
+	virtual void		Target_Follow(const _float& fTimeDelta);
 
-	void				Attack_Distance(const _float& fTimeDelta);
 	void				Motion_Change(const _float& fTimeDelta);
 
 private:
