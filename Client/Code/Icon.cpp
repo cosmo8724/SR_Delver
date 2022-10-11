@@ -194,7 +194,7 @@ void CIcon::RotateByPlayer()
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Get_GameObject(L"Layer_GameLogic", L"Player"));
 		CTransform* pPlayerTrans = dynamic_cast<CTransform*>(pPlayer->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 		_vec3		vPlayerPos = pPlayerTrans->Get_Pos();
-		_float		fWidth = (vParentPos.x - vPlayerPos.x) * (8000.f / WINCX);
+		_float		fWidth = (vParentPos.x - vPlayerPos.x) * (8000.f / WINCY);
 		_float		fHeight = (vParentPos.z - vPlayerPos.z) * (8000.f / WINCY);
 
 		m_fPosX = ((WINCX >> 1) - 180.f) + fWidth;
