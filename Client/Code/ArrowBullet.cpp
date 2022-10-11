@@ -3,6 +3,7 @@
 #include "Export_Function.h"
 #include "BulletMgr.h"
 #include "ParticleMgr.h"
+#include "CameraMgr.h"
 
 CArrowBullet::CArrowBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -83,6 +84,8 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 		//CParticleMgr::GetInstance()->Set_Info(this);
 		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_REMAIN, TEXTURE_0);
 
+		CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC, CAM_OBJECT);
+		CCameraMgr::GetInstance()->Set_Camera(this, -10.f, -1.f);
 
 		m_bReady = true;
 
@@ -118,7 +121,7 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 	if (0.1f < m_fParticleTime)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.1f,
-			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f },
+			_vec3({ 0.f, 0.f, 0.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f },
 			1.f, false, false);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_0);
 		m_fParticleTime = 0.f;
@@ -218,6 +221,7 @@ void CArrowBullet::Reset()
 	m_fSpeedY = m_fMinSpeed;
 	m_pColliderCom->Set_Free(false);
 
+	CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT, CAM_STATIC);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_ARROW);
 }
 

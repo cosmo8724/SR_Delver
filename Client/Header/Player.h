@@ -6,7 +6,7 @@ namespace Engine
 	class CTransform;
 	class CRcTex;
 	class CTexture;
-	class CCalculator;	// ���⿡ �������� ������ ���������ڰ� ���ٴ� ������ �� �� �ִ�.
+	class CCalculator;	
 	class CItem;
 }
 class CBlock;
@@ -38,6 +38,8 @@ private:
 	
 public:
 	void				Set_HpPlus() { m_tInfo.iHp += 1; }
+	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
+	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -54,20 +56,20 @@ private:
 	_float				m_fSpeed = 5.f;
 	_float				m_fScale = 1.f;
 
-	// ���� ���� ����
+	// Related to Jump
 	_bool				m_bJump = false;
-	_float				m_fJSpeed; 		// ���� �ӵ�
-	_float				m_fJSpeed0; 	// ���� �ʱ� �ӵ�
-	_float				m_fAccel;		// �߷°��ӵ�
+	_float				m_fJSpeed; 		
+	_float				m_fJSpeed0; 	
+	_float				m_fAccel;		
 	_float				m_fJTimeDelta = 0.f;
 
-	// ���콺 �Է� ���� ����
+	// click Test?
 	_float				m_fLBClick = 0.f;
 	_float				m_fTimeDelta = 0.f;
 
-	// ������ ���� ����
-	CItem*				m_pRight	= nullptr;	// ��������
-	CItem*				m_pLeft		= nullptr;	// �޼���
+	// Releated to Item
+	CItem*				m_pRight	= nullptr;	
+	CItem*				m_pLeft		= nullptr;	
 
 	PLAYERINFO			m_tInfo;
 

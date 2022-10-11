@@ -47,6 +47,7 @@
 // Manager
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
+#include "CameraMgr.h"
 
 // EcoObject
 #include "Stone.h"
@@ -114,10 +115,8 @@ void CStage::LateUpdate_Scene(void)
 
 
 	// 플레이어와 아이템
-	for (int i = 0; i < ITEM_END; ++i)
+	for (int i = 0; i < ITEM_IMG; ++i)
 	{
-		if (i == ITEM_IMG)	// img아이템은 충돌확인xx
-			continue;
 		vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items((ITEMTYPE)i);
 		for (auto& item : *pItems)
 		{
@@ -226,15 +225,8 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	
 	CGameObject*		pGameObject = nullptr;
 
-	// DynamicCamera
-	/*pGameObject = CDynamicCamera::Create(m_pGraphicDev, &_vec3(0.f, 10.f, -10.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", pGameObject), E_FAIL);*/
-
-	// StaticCamera
-	pGameObject = CStaticCamera::Create(m_pGraphicDev, &_vec3(0.f, 20.f, -10.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StaticCamera", pGameObject), E_FAIL);
+	// CameraMgr
+	CCameraMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// skybox
 	pGameObject = CSkyBox::Create(m_pGraphicDev);
@@ -270,7 +262,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Dagger", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
 	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Wand", ITEM_WEAPON, _vec3({ 35.f, 1.f, 35.f }));
-	
+	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Key", ITEM_KEY, _vec3({ 5.f, 1.f, 10.f }));
+
 	// Particle
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
