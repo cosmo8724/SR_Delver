@@ -254,4 +254,5 @@ HRESULT CArrowBullet::Add_Component(void)
 
 void CArrowBullet::CollisionEvent(CGameObject * pObj)
 {
+	//Reset();
 }
