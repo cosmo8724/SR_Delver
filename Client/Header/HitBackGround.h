@@ -1,11 +1,11 @@
 #pragma once
 #include "UI.h"
 
-class CCrossHair : public CUI
+class CHitBackGround : public CUI
 {
 private:
-	explicit CCrossHair(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CCrossHair();
+	explicit CHitBackGround(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CHitBackGround();
 
 public:
 	virtual HRESULT			Ready_Object(void)						override;
@@ -14,17 +14,17 @@ public:
 	virtual void			Render_Obejct(void)						override;
 
 public:
-	void					Set_CrossHair(_bool bWeapon) { m_bWeapon = bWeapon; }
+	void					Set_HitBackGround(_bool bHit) { m_bHit = bHit; }
 
 private:
 	virtual HRESULT			Add_Component(void);
 
 public:
-	static CCrossHair*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CHitBackGround*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void			Free(void);
 
 private:
 	_matrix					m_matWorld, m_matView;
 
-	_bool					m_bWeapon = false;
+	_bool					m_bHit = false;
 };

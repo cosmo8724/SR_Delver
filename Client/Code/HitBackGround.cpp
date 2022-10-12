@@ -1,81 +1,62 @@
 #include "stdafx.h"
-#include "..\Header\HPGauge.h"
-
+#include "..\Header\HitBackGround.h"
 #include "Export_Function.h"
-#include "Player.h"
 
-CHPGauge::CHPGauge(LPDIRECT3DDEVICE9 pGraphicDev)
+CHitBackGround::CHitBackGround(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
-	, m_iHp(0)
-	, m_iMinusHp(0)
-	, m_iMaxHp(0)
-	, m_iMinHp(0)
-{
-	ZeroMemory(m_szHpNumber, sizeof(m_szHpNumber));
-}
-
-CHPGauge::~CHPGauge()
 {
 }
 
-HRESULT CHPGauge::Ready_Object(void)
+
+CHitBackGround::~CHitBackGround()
+{
+}
+
+HRESULT CHitBackGround::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matWorld);
 
-	/////////// 고정할 값들
-	m_fScaleX = 120.f;
-	m_fScaleY = 30.f;
+	m_fScaleX = WINCX;
+	m_fScaleY = WINCY;
 
-	m_fPosX = WINCX / -2.5 - 57.f / 64.f * 120.f;
-	m_fPosY = WINCY / -2.5;
+	m_fPosX = 0.f;
+	m_fPosY = 0.f;
 
-	// 스케일 값
 	D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
 
-	// 포지션
 	m_matView._41 = m_fPosX;
 	m_matView._42 = m_fPosY;
 
 	return S_OK;
 }
 
-_int CHPGauge::Update_Object(const _float & fTimeDelta)
+_int CHitBackGround::Update_Object(const _float & fTimeDelta)
 {
+	if (!m_bHit)
+		return 0;
+
 	Engine::CGameObject::Update_Object(fTimeDelta);
+
 	Engine::Add_RenderGroup(RENDER_UI, this);
-
-	//PlayerInfo
-	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-	tPlayerInfo = pPlayer->Get_PlayerInfo();
-
-	// ▶ 입력하는 숫자가 게이지와 나눠질 값
-	m_iHp = tPlayerInfo.iHp;
-	m_iMaxHp = tPlayerInfo.iHpMax;
-
-	m_fScaleX = _float(2.f * 120.f * m_iHp / m_iMaxHp);
-	//m_fPosX = -((120.f - m_fScaleX) * 0.5f + 640.f) - 57.f / 128.f;
-
-	D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
-
-	m_matView._41 = m_fPosX;
-	m_matView._42 = m_fPosY;
-
-	// 폰트
-	swprintf_s(m_szHpNumber, L"%d / %d", m_iHp, m_iMaxHp);
 
 	return 0;
 }
 
-void CHPGauge::LateUpdate_Object(void)
+void CHitBackGround::LateUpdate_Object(void)
 {
+	if (!m_bHit)
+		return;
+
 	Engine::CGameObject::LateUpdate_Object();
 }
 
-void CHPGauge::Render_Obejct(void)
+void CHitBackGround::Render_Obejct(void)
 {
+	if (!m_bHit)
+		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
@@ -93,11 +74,9 @@ void CHPGauge::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-	Render_Font(L"Font_Jinji", m_szHpNumber, &_vec2(145, 802), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
 
-HRESULT CHPGauge::Add_Component(void)
+HRESULT CHitBackGround::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 
@@ -110,27 +89,26 @@ HRESULT CHPGauge::Add_Component(void)
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
 	// m_pTextureCom	
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UI_HPGauge_Texture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UI_HitBackGround_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_UI_HPGauge_Texture", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Proto_UI_HitBackGround_Texture", pComponent });
 
 	return S_OK;
 }
 
-CHPGauge * CHPGauge::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CHitBackGround * CHitBackGround::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CHPGauge *	pInstance = new CHPGauge(pGraphicDev);
+	CHitBackGround*	pInstance = new CHitBackGround(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
 	}
-
 	return pInstance;
 }
 
-void CHPGauge::Free(void)
+void CHitBackGround::Free(void)
 {
 	CUI::Free();
 }

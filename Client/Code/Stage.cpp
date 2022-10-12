@@ -39,6 +39,7 @@
 #include "MapUI.h"
 #include "MiniMap.h"
 #include "CrossHair.h"
+#include "HitBackGround.h"
 
 // Font
 #include "HPGauge.h"
@@ -140,6 +141,23 @@ void CStage::LateUpdate_Scene(void)
 
 	for (auto& weapon : *pItems)
 	{
+		// sh_Monster Test
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+		Engine::CollisionTest(pSour, weapon);
+
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime");
+		Engine::CollisionTest(pSour, weapon);
+
+		//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime_0");
+		//Engine::CollisionTest(pSour, weapon);
+
+		//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime_1");
+		//Engine::CollisionTest(pSour, weapon);
+
+		//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime_2");
+		//Engine::CollisionTest(pSour, weapon);
+
+		// Eco
 		Engine::CollisionAABB(pSour, weapon);
 
 		Engine::CollisionAABB(pSour2, weapon);
@@ -155,9 +173,10 @@ void CStage::LateUpdate_Scene(void)
 	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 	for (auto& bullet : *pPlayerBullets)
 	{
-		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Fist"); // sh_확인 필요
 		Engine::CollisionTest(pSour, bullet);
 
+		// Eco
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
 		Engine::CollisionTest(pSour, bullet);
 
@@ -173,9 +192,18 @@ void CStage::LateUpdate_Scene(void)
 	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW);
 	for (auto& bullet : *pPlayerBullets)
 	{
+		// sh_Monster Test
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
 		Engine::CollisionTest(pSour, bullet);
+		Engine::CollisionTest(pSour, pPlayer); // 몬스터 플레이어
 
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"BrownBat");
+		Engine::CollisionTest(pSour, bullet);
+
+		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Fist");
+		Engine::CollisionTest(pSour, bullet);
+
+		// Eco
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
 		Engine::CollisionTest(pSour, bullet);
 
@@ -189,22 +217,22 @@ void CStage::LateUpdate_Scene(void)
 	}
 
 
-	// Monster Collider
-	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
-	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
-		Engine::CollisionTest(pSour, bullet);
-	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
+	//// Monster Collider
+	//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
+	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
 	//	Engine::CollisionTest(pSour, bullet);
+	////for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
+	////	Engine::CollisionTest(pSour, bullet);
 
-	Engine::CollisionTest(pSour, pPlayer);
+	
 
-	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime");
-	for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
-		Engine::CollisionTest(pSour, bullet);
-	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
+	//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime");
+	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
 	//	Engine::CollisionTest(pSour, bullet);
+	////for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
+	////	Engine::CollisionTest(pSour, bullet);
 
-	Engine::CollisionTest(pSour, pPlayer);
+	//Engine::CollisionTest(pSour, pPlayer);
 
 
 
@@ -535,6 +563,11 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	pGameObject = CCrossHair::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", pGameObject), E_FAIL);
+
+	// UI_HitBackGround
+	pGameObject = CHitBackGround::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_HitBackGround", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 

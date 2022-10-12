@@ -274,6 +274,9 @@
     <Filter Include="02. GameObject\02. For_Public\02. ObjectCamera">
       <UniqueIdentifier>{3c5febbc-f7d4-4572-9420-091ba4473abb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\08. HitBackGround">
+      <UniqueIdentifier>{cc1ac141-c8c0-41e4-a35c-d1f2c8c469e3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\03. Armor">
       <UniqueIdentifier>{325a6f15-9fb1-4333-9660-7d50586dbfc9}</UniqueIdentifier>
     </Filter>
@@ -558,6 +561,9 @@
     <ClInclude Include="..\Header\ObjectCamera.h">
       <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\HitBackGround.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\08. HitBackGround</Filter>
+      </ClInclude>
     <ClInclude Include="..\Header\Armor.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Armor</Filter>
     </ClInclude>
@@ -826,6 +832,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ObjectCamera.cpp">
       <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\HitBackGround.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\08. HitBackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Armor.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Armor</Filter>

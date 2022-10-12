@@ -25,7 +25,8 @@ HRESULT CDagger::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	m_pTransCom->Set_Pos(9.f, 0.5f, 12.f);
+	m_pTransCom->Set_Pos(9.f, 0.5f, 7.f); // sh Test z를 12에 두면 안 보였어요..
+	//m_pTransCom->Set_Pos(9.f, 0.5f, 12.f);
 	m_eState = STATE_GROUND;
 	return S_OK;
 }

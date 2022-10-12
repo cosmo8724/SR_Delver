@@ -21,14 +21,14 @@ public:
 
 private:
 	virtual HRESULT		Add_Component(void) override;
+	virtual void		OnHit(const _float& fTimeDelta);
+
+	void				Motion_Change();
 
 	void				SKill_Update(const _float & fTimeDelta);
 	void				SKillJump_Update(const _float& fTimeDelta);
 	void				SKillFollow_Update(const _float& fTimeDelta, _float fDist, _vec3* vPlayerPos);
 	void				SKillScale_Update(const _float& fTimeDelta);
-
-
-	void				Motion_Change();
 
 private:
 	CGameObject*		pGameObject = nullptr;
@@ -62,6 +62,7 @@ private:
 	// 중간 생성 관련 변수
 	_float				m_fTime = 0.f; 
 	_bool				m_bClone = false;
+	_bool				m_bDead = false;
 
 public:
 	static CPinkSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev);

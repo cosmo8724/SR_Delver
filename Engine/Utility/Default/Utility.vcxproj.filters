@@ -67,9 +67,6 @@
     <Filter Include="04. Manager\04. LightMgr\Light">
       <UniqueIdentifier>{535efaac-35b1-43f7-a194-6502f28bdd55}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. GameObject\Item">
-      <UniqueIdentifier>{de9a0722-2ddf-49e1-9212-64c48f7b8cf4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. GameObject\Bullet">
       <UniqueIdentifier>{bc7d2104-9b02-4a06-8a7f-ae06d4d05a58}</UniqueIdentifier>
     </Filter>
@@ -78,9 +75,6 @@
     </Filter>
     <Filter Include="01. GameObject\Effect">
       <UniqueIdentifier>{33e63dbc-bb62-4a58-80b7-8af8b3f1e202}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. GameObject\Item\Weapon">
-      <UniqueIdentifier>{13d47400-4dae-4c7f-9842-40f74e1e471e}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Manager\05. Particle">
       <UniqueIdentifier>{584de8b8-65df-4088-9c46-ed9bcf90e455}</UniqueIdentifier>
@@ -105,6 +99,12 @@
     </Filter>
     <Filter Include="00. Component\00. VIBuffer\05. SphereTex">
       <UniqueIdentifier>{ed566c01-6569-4746-bc2a-35c4d380a078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. GameObject\Item">
+      <UniqueIdentifier>{de9a0722-2ddf-49e1-9212-64c48f7b8cf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. GameObject\Item\Weapon">
+      <UniqueIdentifier>{13d47400-4dae-4c7f-9842-40f74e1e471e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

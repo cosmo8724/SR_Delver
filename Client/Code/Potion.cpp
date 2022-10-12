@@ -62,6 +62,12 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 		if (1.f < m_fDotTime)
 		{
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+			
+			// sh_Test
+			PLAYERINFO tPlayerInfo = pPlayer->Get_PlayerInfo();
+			if (tPlayerInfo.iHp >= tPlayerInfo.iHpMax)
+				return iResult;
+			
 			pPlayer->Set_HpPlus();
 			m_iDot++;
 			m_fDotTime = 0.f;
