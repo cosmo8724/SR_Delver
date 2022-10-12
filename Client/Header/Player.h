@@ -42,7 +42,6 @@ private:
 	void				CollisionEvent(CGameObject * pOtherObj);
 	
 public:
-	void				Set_HpPlus() { m_tInfo.iHp += 1; }
 	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
 	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
 

@@ -155,7 +155,7 @@ void CSkeletonGhost::Circle()
 	NULL_CHECK_RETURN(pPlayer);
 
 	pPlayer->Get_Info(INFO_POS, &vPlayerPos);
-	m_pTransCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z);
+	//m_pTransCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z);
 
 	_vec3 vDir, vDistance;
 	vDir = { 0.f, 1.f, 0.f };
@@ -185,7 +185,7 @@ void CSkeletonGhost::Circle()
 	mat1 = matTrans * matParent; // 공전하는 행렬
 
 	m_matWorld = mat1;
-
+	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 }
 
 void CSkeletonGhost::Billboard()

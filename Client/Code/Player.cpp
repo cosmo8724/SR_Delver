@@ -20,7 +20,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_vDirection(0.f, 0.f, 0.f)
 	, m_fAccel(0.01f)
 	, m_fJSpeed0(0.15f)
-	, m_fJSpeed(0.3f)
+	, m_fJSpeed(0.15f)
 {
 	memset(&m_tInfo, 0, sizeof(PLAYERINFO));
 }
