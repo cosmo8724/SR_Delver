@@ -6,6 +6,7 @@
 #include "InvImg.h"
 #include "Potion.h"
 #include "Dagger.h"
+#include "Key.h"
 
 IMPLEMENT_SINGLETON(CItemMgr)
 
@@ -31,7 +32,7 @@ HRESULT CItemMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Arrow1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Arrow/Arrow1/Arrow1_%d.png", TEX_NORMAL, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Potion_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Potion/Potion%d.png", TEX_NORMAL, 5)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Dagger_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Dagger/Dagger%d.png", TEX_NORMAL, 4)), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Key_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/key.png", TEX_NORMAL)), E_FAIL);
 
 	return S_OK;
 }
@@ -99,7 +100,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+		m_vecItemPool[eType].push_back(pGameObject);
 	}
 	else if (objName == L"Wand")
 	{
@@ -110,7 +111,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+		m_vecItemPool[eType].push_back(pGameObject);
 	}
 	else if (objName == L"Dagger")
 	{
@@ -121,7 +122,18 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+		m_vecItemPool[eType].push_back(pGameObject);
+	}
+	else if (objName == L"Key")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CKey::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[eType].push_back(pGameObject);
 	}
 	else
 	{
@@ -221,7 +233,7 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 inline void CItemMgr::Free(void)
 {
 	// ¹«±â
-	for (int i = 0; i < WEAPON_END; ++i)
+	for (int i = 0; i < ITEM_END; ++i)
 	{
 		for (auto& tag : m_vecItemObjTags[i])
 		{

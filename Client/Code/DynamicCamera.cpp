@@ -30,6 +30,8 @@ HRESULT CDynamicCamera::Ready_Object(const _vec3* pEye,
 	m_fNear = fNear;
 	m_fFar = fFar;
 
+	m_eID = CAM_DYNAMIC;
+
 	FAILED_CHECK_RETURN(CCamera::Ready_Object(), E_FAIL);
 
 	return S_OK;
@@ -37,6 +39,9 @@ HRESULT CDynamicCamera::Ready_Object(const _vec3* pEye,
 
 Engine::_int CDynamicCamera::Update_Object(const _float& fTimeDelta)
 {
+	if (!m_bSwitch)
+		return 0;
+
 	Key_Input(fTimeDelta);
 
 	_int iExit = CCamera::Update_Object(fTimeDelta);
@@ -46,6 +51,9 @@ Engine::_int CDynamicCamera::Update_Object(const _float& fTimeDelta)
 
 void CDynamicCamera::LateUpdate_Object(void)
 {
+	if (!m_bSwitch)
+		return;
+
 	if (false == m_bFix)
 	{
 		Mouse_Fix();
