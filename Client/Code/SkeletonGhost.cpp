@@ -152,7 +152,7 @@ void CSkeletonGhost::Circle()
 
 	_vec3	vPlayerPos;
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK_RETURN(pPlayer);
+	NULL_CHECK_RETURN(pPlayer, );
 
 	pPlayer->Get_Info(INFO_POS, &vPlayerPos);
 	//m_pTransCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z);

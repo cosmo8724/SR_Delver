@@ -132,11 +132,11 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
- 	if (fDist < 5.f) // ���� ���� �̵�
+ 	if (fDist < 5.f)
 	{
 		m_eCurState = ATTACK;
 
-		if (m_pAnimtorCom->Get_Currentframe() >= 12.f && m_pAnimtorCom->Get_Currentframe() < 13.f) // Leaf�� Attack �̹����� ���� �� ��
+		if (m_pAnimtorCom->Get_Currentframe() >= 12.f && m_pAnimtorCom->Get_Currentframe() < 13.f)
 			Teleporting(vPlayerPos.x, vPlayerPos.z);
 	}
 	else
@@ -157,22 +157,22 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 
 void CLeaf::Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ)
 {
-	int iRandomNum = rand() % 7 + 2; // ���Ͱ� �����ϰ� �̵��� ��ǥ
+	int iRandomNum = rand() % 7 + 2; 
 
 	if (fPlayerPosX == (m_OriginalPos.x + iRandomNum) || fPlayerPosZ == (m_OriginalPos.z + iRandomNum) ||
 		fPlayerPosX == (m_OriginalPos.x - iRandomNum) || fPlayerPosZ == (m_OriginalPos.z - iRandomNum))
-		return; // ���� ���Ͱ� �̵��� ��ǥ�� �÷��̾�� ���ٸ� �ٽ� �������� �޴´�f
+		return; 
 
-	if (iRandomNum % 2 == 0) // ¦��
+	if (iRandomNum % 2 == 0)
 	{
-		if (iRandomNum < 5) // ¦���ε� 5���� ũ�ٸ�
+		if (iRandomNum < 5) 
 			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
 		else
 			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
 	}
-	else // Ȧ��
+	else 
 	{
-		if (iRandomNum < 5) // Ȧ���ε� 5���� ũ�ٸ�
+		if (iRandomNum < 5) 
 			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z - iRandomNum);
 		else 
 			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
