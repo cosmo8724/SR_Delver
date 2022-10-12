@@ -19,17 +19,39 @@ public:
 	void		Get_ProjectMatrix(_matrix& _ProjMat) { _ProjMat = m_matProj; }
 	void		Set_Switch(_bool bSwitch) { m_bSwitch = bSwitch; }
 	_bool		Get_Switch() { return m_bSwitch; }
+	void		Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
+	void		Set_Dist(_float fEyeDist, _float fAtDist) {
+		m_fEyeDist = fEyeDist; m_fAtDist = fAtDist;
+	}
 
 public:
 	virtual HRESULT Ready_Object(void)						override;
 	virtual _int Update_Object(const _float& fTimeDelta)	override;
 	virtual void LateUpdate_Object(void)					override;
+	
+public:
+	virtual	void Reset() { m_pTarget = nullptr; 
+						m_fEyeDist = 1.f;
+						m_fAtDist = 1.f;
+	}
+
+	// these functions will be used for objectCamera 
+	// but made them virtual function for convenience.
+	virtual void Set_RevAngle(_float fAngle) {};
+	virtual void Revoution() {};
 
 protected:
 	_vec3		m_vEye, m_vAt, m_vUp;
 	_float		m_fFov, m_fAspect, m_fNear, m_fFar;
 	_matrix		m_matView, m_matProj;
 	_bool		m_bSwitch = false;
+	CAMERAID	m_eID	= CAM_END;
+	CGameObject*	m_pTarget = nullptr;
+
+	_float		m_fEyeDist = 1.f;
+	_float		m_fAtDist = 1.f;
+
+
 	
 protected:
 	virtual void		Free(void);

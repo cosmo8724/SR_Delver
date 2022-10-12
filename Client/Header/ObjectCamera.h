@@ -16,14 +16,27 @@ public:
 	virtual _int Update_Object(const _float& fTimeDelta) override;
 	virtual void LateUpdate_Object(void) override;
 
+
+public:
+	virtual	void Reset() {
+		CCamera::Reset();
+		m_fRevAngle = 0.f;
+		m_fCurAngle = 0.f;
+	}
 private:
 	void		Target_Renewal(void);
+
+public:
+	virtual void		Set_RevAngle(_float fAngle) { m_fRevAngle = fAngle; }
+	virtual void		Revolution();
 
 private:
 	_float			m_fDistance		= 10.f;
 	_float			m_fSpeed		= 10.f;
 	_float			m_fAngle		= 0.f;
-	//_bool			m_bSwitch		= false;
+	_float			m_fRevAngle		= 0.f;
+	_float			m_fCurAngle = 0.f;
+
 
 public:
 	static CObjectCamera*		Create(LPDIRECT3DDEVICE9 pGraphicDev,

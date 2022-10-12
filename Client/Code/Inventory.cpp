@@ -4,6 +4,7 @@
 #include "Export_Function.h"
 #include "Potion.h"
 #include "CrossHair.h"
+#include "Player.h"
 
 CInventory::CInventory(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
@@ -245,8 +246,8 @@ void  CInventory::Pick()
 
 void CInventory::Set_ItemEquip()
 {
-	if (nullptr != m_ppPickedItem) // ������ �������� �ִٸ� ����Ŭ�� �� ������� �ʰ� ����.
-		return;
+	if (nullptr != m_ppPickedItem) // if you picked something, you can't equip anything.
+		return;						// It means you have to do double click very well.
 
 
 	POINT		ptMouse;
@@ -275,6 +276,10 @@ void CInventory::Set_ItemEquip()
 						if (nullptr != m_pEquipped)
 							static_cast<CInvImg*>(m_pEquipped)->Get_TargetObj()->Set_State(STATE_INV);
 						m_pEquipped = m_Inventory[i][j];
+						{	// weapon must be on player's right hand
+							CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+							pPlayer->Set_Right(pItem);
+						}
 						if (WT_AD == static_cast<CWeapon*>(pItem)->Get_WeaponType())
 						{
 							CCrossHair* pCrossHair = dynamic_cast<CCrossHair*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CrossHair"));
@@ -294,6 +299,12 @@ void CInventory::Set_ItemEquip()
 						m_Inventory[i][j] = nullptr;
 					}
 						break;
+					case ITEM_KEY:
+					{
+						m_Inventory[i][j]->Set_Dead(true);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
 
 					}
 				}

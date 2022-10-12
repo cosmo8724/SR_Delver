@@ -34,13 +34,26 @@ HRESULT CStaticCamera::Ready_Object(const _vec3* pEye,
 	m_fNear = fNear;
 	m_fFar = fFar;
 
+	m_eID = CAM_STATIC;
+
 	FAILED_CHECK_RETURN(CCamera::Ready_Object(), E_FAIL);
+
+	m_bSwitch = true;
 
 	return S_OK;
 }
 
 Engine::_int CStaticCamera::Update_Object(const _float& fTimeDelta)
 {
+	if (!m_bSwitch)
+	{
+		m_fFov += 0.05f;
+		if (m_fFov >= D3DXToRadian(75.f))
+			m_fFov = D3DXToRadian(75.f);
+		return 0;
+	}
+
+
 	Key_Input(fTimeDelta);
 	ShakeY(fTimeDelta);
 	Target_Renewal();
@@ -52,6 +65,10 @@ Engine::_int CStaticCamera::Update_Object(const _float& fTimeDelta)
 
 void CStaticCamera::LateUpdate_Object(void)
 {
+	if (!m_bSwitch)
+		return;
+
+
 	if (true == m_bFix)
 	{
 		Mouse_Fix();

@@ -24,6 +24,8 @@ HRESULT CObjectCamera::Ready_Object(const _vec3 * pEye, const _vec3 * pAt, const
 	m_fNear = fNear;
 	m_fFar = fFar;
 
+	m_eID = CAM_OBJECT;
+
 	FAILED_CHECK_RETURN(CCamera::Ready_Object(), E_FAIL);
 
 	return S_OK;
@@ -31,7 +33,15 @@ HRESULT CObjectCamera::Ready_Object(const _vec3 * pEye, const _vec3 * pAt, const
 
 _int CObjectCamera::Update_Object(const _float & fTimeDelta)
 {
+	if (!m_bSwitch)
+		return 0;
+
+
 	Target_Renewal();
+
+	Revolution();
+
+
 	_int iExit = CCamera::Update_Object(fTimeDelta);
 	return iExit;
 
@@ -39,29 +49,45 @@ _int CObjectCamera::Update_Object(const _float & fTimeDelta)
 
 void CObjectCamera::LateUpdate_Object(void)
 {
+	if (!m_bSwitch)
+		return;
+
 	CCamera::LateUpdate_Object();
 }
 
 void CObjectCamera::Target_Renewal(void)
 {
-	CTransform*   pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK(pPlayerTransform);
+	if (nullptr == m_pTarget)
+		return;
+
+
+	CTransform* pTransform = dynamic_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pTransform);
 
 	_vec3   vPos;
-	pPlayerTransform->Get_Info(INFO_POS, &vPos);
+	pTransform->Get_Info(INFO_POS, &vPos);
 
 	_vec3   vLook;
-	pPlayerTransform->Get_Info(INFO_LOOK, &vLook);
+	pTransform->Get_Info(INFO_LOOK, &vLook);
 	D3DXVec3Normalize(&vLook, &vLook);
 
+	m_vEye = vPos	+ m_fEyeDist * vLook;
+	m_vAt = vPos	+ m_fAtDist	* vLook;
 
+	//m_vEye = vPos - 5.f * vLook;
+	//m_vAt = vPos;
 
-		m_vEye = vPos + 0.3f * vLook;
-		m_vAt = vPos + vLook;
+}
 
-		//m_vEye = vPos - 5.f * vLook;
-		//m_vAt = vPos;
-
+void CObjectCamera::Revolution()
+{
+	if (m_fCurAngle < m_fRevAngle)
+	{
+		_matrix matRot;
+		m_fCurAngle += 0.5f;
+		D3DXMatrixRotationY(&matRot, D3DXToRadian(m_fCurAngle));
+		D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matRot);
+	}
 }
 
 CObjectCamera * CObjectCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3 * pEye, const _vec3 * pAt, const _vec3 * pUp, const _float & fFov, const _float & fAspect, const _float & fNear, const _float & fFar)

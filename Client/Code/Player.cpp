@@ -11,6 +11,7 @@
 #include "MiniMap.h"
 //#include "ParticleMgr.h"
 #include "CrossHair.h"
+#include "CameraMgr.h"
 
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -138,6 +139,18 @@ void CPlayer::LateUpdate_Object(void)
 				m_pCurrentBlock = nullptr;
 		}
 	}
+
+
+
+	// camera change Test
+	wstring pObjTag = (m_pRight != nullptr ? m_pRight->Get_ObjTag() : L"");
+	if (L"Arrow" == pObjTag && Get_DIMouseState(DIM_RB) & 0x80)
+	{
+		// 총알 발사시 카메라 전환
+	}
+
+
+
 }
 
 void CPlayer::Render_Obejct(void)
@@ -259,6 +272,20 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		else
 			pMap->Set_OpenMap();
 	}
+
+	// camera test
+	if (Key_Down(DIK_C))
+	{
+		CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT);
+		CCameraMgr::GetInstance()->Set_Camera(this, 3.f, 0.f);
+		CCameraMgr::GetInstance()->Action_Camera(360.f);
+
+	}
+	if (Key_Down(DIK_V))
+	{
+		CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
+	}
+
 }
 
 void CPlayer::Mouse_Move(void)
