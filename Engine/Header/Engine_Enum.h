@@ -50,6 +50,8 @@ namespace Engine
 	enum POTIONTYPE { POTION_0, POTION_1, POTION_2, POTION_3, POTION_4, POTION_END };
 
 	enum CAMERAID	{ CAM_DYNAMIC, CAM_STATIC, CAM_OBJECT, CAM_END };
+
+	enum CAMACTION	{ ACTION_REVOL, ACTION_END };
 }
 
 #endif // Engine_Enum_h__

@@ -40,6 +40,7 @@ public:
 	void				Set_HpPlus() { m_tInfo.iHp += 1; }
 	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
 	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
+	_bool				Is_Snippered() { return m_bSnipper; }
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -70,6 +71,8 @@ private:
 	// Releated to Item
 	CItem*				m_pRight	= nullptr;	
 	CItem*				m_pLeft		= nullptr;	
+
+	_bool				m_bSnipper = false;
 
 	PLAYERINFO			m_tInfo;
 
