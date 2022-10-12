@@ -47,11 +47,22 @@ _int CBrownBat::Update_Object(const _float & fTimeDelta)
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	m_pAnimtorCom->Play_Animation(fTimeDelta * 5.f);
-
-	Target_Follow(fTimeDelta);
-	
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 3.f);
 	Motion_Change(fTimeDelta);
+
+	if (0 >= m_tInfo.iHp)
+	{
+		m_eCurState = DIE;
+		m_pTransCom->Set_Y(1.f);
+		return OBJ_DEAD;
+	}
+
+	OnHit(fTimeDelta);
+
+	if (!m_bHit)
+	{
+		Target_Follow(fTimeDelta);
+	}
 
 	return 0;
 }
@@ -80,10 +91,6 @@ void CBrownBat::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	CMonster::Render_Obejct();
-}
-
-void CBrownBat::CollisionEvent(CGameObject * pObj)
-{
 }
 
 HRESULT CBrownBat::Add_Component(void)
@@ -167,6 +174,27 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 	}
 }
 
+void CBrownBat::OnHit(const _float & fTimeDelta)
+{
+	if (!m_bHit)
+		return;
+
+	m_eCurState = HIT;
+
+	m_fHitTimeAcc += fTimeDelta;
+	if (1.f < m_fHitTimeAcc)
+	{
+		m_tInfo.iHp--;
+		m_bHit = false;
+		m_fHitTimeAcc = 0.f;
+	}
+}
+
+void CBrownBat::CollisionEvent(CGameObject * pObj)
+{
+	m_bHit = true;
+}
+
 void CBrownBat::Motion_Change(const _float& fTimeDelta)
 {
 	if (m_ePreState != m_eCurState)
@@ -178,14 +206,17 @@ void CBrownBat::Motion_Change(const _float& fTimeDelta)
 			break;
 
 		case ATTACK:
+			m_pAnimtorCom->Play_Animation(fTimeDelta);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatATTACK_Texture");
 			break;
 
 		case HIT:
+			m_pAnimtorCom->Play_Animation(fTimeDelta);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatHIT_Texture");
 			break;
 
 		case DIE:
+			m_pAnimtorCom->Play_Animation(fTimeDelta);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatDIE_Texture");
 			break;
 		}

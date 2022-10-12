@@ -25,6 +25,11 @@ public:
 	virtual void		LateUpdate_Object(void) override;
 	virtual void		Render_Obejct(void) override;
 
+public:
+	void				Set_HpPlus() { m_tInfo.iHp += 1; }
+	void				OnHit(_int _HpMinus); // sh
+	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
+	PLAYERINFO			Get_PlayerInfo() { return m_tInfo; } // sh
 
 private:
 	HRESULT				Add_Component(void);
@@ -50,7 +55,7 @@ private:
 	CBlock*				m_pCurrentBlock = nullptr;
 	_bool				m_bBlockChanged = true;
 
-	PLAYER_STATE	m_eState = PLAYER_GROUND;
+	PLAYER_STATE		m_eState = PLAYER_GROUND;
 
 	_vec3				m_vDirection;
 	_float				m_fSpeed = 5.f;
@@ -72,6 +77,8 @@ private:
 	CItem*				m_pLeft		= nullptr;	
 
 	PLAYERINFO			m_tInfo;
+
+	_float				InvincibilityTimeAcc = 0.1f;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

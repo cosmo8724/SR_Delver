@@ -48,13 +48,13 @@ private:
 	_float				m_fBSpeed0 = 0.1f;
 	_float				m_fBAccel = 0.01f;
 	_float				m_fKnockBackSpeed;
+	_float				m_fBTimeDelta = 0.f;
 
 	//Timer
 	_float				m_fTimeAcc;
 	_float				m_fJumpTimeAcc;
 	_float				m_fIdleTimeAcc;
 	_float				m_fSkillTimeAcc;
-	_float				m_fBTimeDelta = 0.f;
 	_float				m_fJumpTime = 0.f;
 
 public:

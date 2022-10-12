@@ -14,7 +14,7 @@ public:
 	virtual void			Render_Obejct(void)						override;
 
 public:
-	void					Set_CrossHair(_bool bWeapon) { m_Weapon = bWeapon; }
+	void					Set_CrossHair(_bool bWeapon) { m_bWeapon = bWeapon; }
 
 private:
 	virtual HRESULT			Add_Component(void);
@@ -26,5 +26,5 @@ public:
 private:
 	_matrix					m_matWorld, m_matView;
 
-	_bool					m_Weapon = false;
+	_bool					m_bWeapon = false;
 };

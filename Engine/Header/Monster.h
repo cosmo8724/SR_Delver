@@ -15,7 +15,7 @@ public:
 	virtual ~CMonster();
 
 public:
-	virtual HRESULT		Ready_Object(void) { return S_OK; };
+	virtual HRESULT			Ready_Object(void) { return S_OK; };
 	virtual _int			Update_Object(const _float& fTimeDelta);
 	virtual void			LateUpdate_Object(void) {};
 	virtual void			Render_Obejct(void);
@@ -24,7 +24,7 @@ protected:
 	virtual HRESULT		Add_Component(void) PURE;
 	virtual void		Billboard();
 	virtual void		Target_Follow(const _float& fTimeDelta) {};
-	virtual void		Hit(const _float& fTimeDelta) {};
+	virtual void		OnHit(const _float& fTimeDelta) {};
 
 public:
 	virtual void		Free(void);
@@ -33,7 +33,10 @@ protected:
 	_float				m_fIdle_Speed;
 	_float				m_fAttack_Speed;
 
-	CINFO				m_tInfo;
+	MONTSERINFO			m_tInfo;
+
+	wstring				m_ObjTag;
+	wstring				m_textureTag;
 
 	_bool				m_bHit = false;
 	_float				m_fHitTimeAcc = 0.f;

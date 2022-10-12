@@ -10,6 +10,7 @@
 #include "MapUI.h"
 #include "MiniMap.h"
 //#include "ParticleMgr.h"
+#include "HitBackGround.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
 
@@ -44,8 +45,10 @@ HRESULT CPlayer::Ready_Object(void)
 	// 플레이어 스탯정보
 	//m_tInfo.iHp = 20;
 	m_tInfo.iHp = 10;
-	m_tInfo.iHpMax = m_tInfo.iHp;
-	m_tInfo.iAtk = 10;
+	m_tInfo.iHpMax = 20;
+	//m_tInfo.iHpMax = m_tInfo.iHp; // sh
+	m_tInfo.iAtk = 1;
+	//m_tInfo.iAtk = 10; // sh
 	m_tInfo.iDef = 10;
 	m_tInfo.iExp = 0;
 	m_tInfo.iExpMax = 10;
@@ -77,7 +80,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
-	
+
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	Add_RenderGroup(RENDER_NONALPHA, this);
@@ -86,6 +89,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
+	InvincibilityTimeAcc += fTimeDelta; // sh...
 	return 0;
 }
 
@@ -481,6 +485,31 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 
 		m_pTransCom->Set_Pos(PlayerPos.x + fDistX, PlayerPos.y, PlayerPos.z + fDistZ);
 		//m_pTransCom->Move_Pos(&(_vec3(fDistX, 0.f, fDistZ) * m_fTimeDelta));
+	}
+}
+
+void CPlayer::OnHit(_int _HpMinus)
+{
+	if (0 > m_tInfo.iHp)
+	{
+		m_tInfo.iHp = 0;
+		return;
+	}
+
+	// HitBackGround
+	CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
+
+	if (0.3f < InvincibilityTimeAcc)
+		pHitBackGround->Set_HitBackGround(false);
+	else
+		pHitBackGround->Set_HitBackGround(true);
+
+	// 플레이어는 3초간 무적
+	if (3.f < InvincibilityTimeAcc)
+	{
+		m_bJump = true;
+		m_tInfo.iHp -= _HpMinus;
+		InvincibilityTimeAcc = 0.f;
 	}
 }
 

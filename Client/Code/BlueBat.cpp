@@ -38,7 +38,7 @@ HRESULT CBlueBat::Ready_Object(void)
 	m_fHeight = 1.f;
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
-	m_fKnockBackSpeed = 5.f;
+	m_fKnockBackSpeed = 10.f;
 
 	return S_OK;
 }
@@ -56,7 +56,7 @@ _int CBlueBat::Update_Object(const _float & fTimeDelta)
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
-	Target_Follow(fTimeDelta);
+	//Target_Follow(fTimeDelta);
 	KnockBack(fTimeDelta);
 
 	Motion_Change(fTimeDelta);
@@ -172,7 +172,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 		_vec3 vPos;
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-		if (m_fJumpTimeAcc > 0.1f && m_fHeight >= vPos.y)
+		if (m_fJumpTimeAcc > 0.3f && m_fHeight >= vPos.y)
 		{
 			m_bJump = false;
 			m_fJumpTimeAcc = 0.f;

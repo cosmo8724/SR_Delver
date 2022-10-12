@@ -27,14 +27,11 @@ private:
 	_matrix				m_matView, m_matWorld/*, m_matOrtho*/;
 
 private:
-	_uint				m_iHp;
-	_uint				m_iMinusHp;
-	_uint				m_iMaxHp, m_iMinHp;
+	_int				m_iHp;
+	_int				m_iMinusHp;
+	_int				m_iMaxHp, m_iMinHp;
 
 	_tchar				m_szHpNumber[128];
-
-	// Timer
-	_float				m_fLBClick;
-
+	PLAYERINFO			tPlayerInfo;
 };
 

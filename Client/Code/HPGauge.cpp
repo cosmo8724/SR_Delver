@@ -2,6 +2,7 @@
 #include "..\Header\HPGauge.h"
 
 #include "Export_Function.h"
+#include "Player.h"
 
 CHPGauge::CHPGauge(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
@@ -9,7 +10,6 @@ CHPGauge::CHPGauge(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_iMinusHp(0)
 	, m_iMaxHp(0)
 	, m_iMinHp(0)
-	, m_fLBClick(0.f)
 {
 	ZeroMemory(m_szHpNumber, sizeof(m_szHpNumber));
 }
@@ -29,7 +29,7 @@ HRESULT CHPGauge::Ready_Object(void)
 	m_fScaleX = 120.f;
 	m_fScaleY = 30.f;
 
-	m_fPosX = WINCX / -2.5;
+	m_fPosX = WINCX / -2.5 - 57.f / 64.f * 120.f;
 	m_fPosY = WINCY / -2.5;
 
 	// 스케일 값
@@ -39,42 +39,33 @@ HRESULT CHPGauge::Ready_Object(void)
 	m_matView._41 = m_fPosX;
 	m_matView._42 = m_fPosY;
 
-	// ▶ 입력하는 숫자가 게이지와 나눠질 값
-	m_iHp = 20;
-	m_iMaxHp = 20;
-
-	// 수정된 값으로 HP 조절
-	m_iMinusHp = _uint(((m_fScaleX) / m_iHp) - 0.7); // -1.f> 왼쪽 하트 때문에 
-
 	return S_OK;
 }
 
 _int CHPGauge::Update_Object(const _float & fTimeDelta)
 {
 	Engine::CGameObject::Update_Object(fTimeDelta);
-
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
-	m_fLBClick += fTimeDelta;
-	if (Engine::Get_DIKeyState(DIK_B) & 0x80 && (0.1f < m_fLBClick))
-	{
-		if (20.f > m_fScaleX) // 게이지가 왼쪽으로 넘어가지 않도록
-			return 0;
-		m_iHp--;
+	//PlayerInfo
+	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	tPlayerInfo = pPlayer->Get_PlayerInfo();
 
-		m_fScaleX -= _float(m_iMinusHp);
-		m_fPosX -= _float(m_iMinusHp);
+	// ▶ 입력하는 숫자가 게이지와 나눠질 값
+	m_iHp = tPlayerInfo.iHp;
+	m_iMaxHp = tPlayerInfo.iHpMax;
 
-		D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
+	m_fScaleX = _float(2.f * 120.f * m_iHp / m_iMaxHp);
+	//m_fPosX = -((120.f - m_fScaleX) * 0.5f + 640.f) - 57.f / 128.f;
 
-		m_matView._41 = m_fPosX;
-		m_matView._42 = m_fPosY;
+	D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
 
-		m_fLBClick = 0.f;
-	}
+	m_matView._41 = m_fPosX;
+	m_matView._42 = m_fPosY;
 
-	//// 폰트
+	// 폰트
 	swprintf_s(m_szHpNumber, L"%d / %d", m_iHp, m_iMaxHp);
+
 	return 0;
 }
 
@@ -103,7 +94,7 @@ void CHPGauge::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-	Render_Font(L"Font_Jinji", m_szHpNumber, &_vec2(150, 804), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szHpNumber, &_vec2(145, 802), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
 
 HRESULT CHPGauge::Add_Component(void)

@@ -43,6 +43,7 @@ _int CFist::Update_Object(const _float & fTimeDelta)
 
 	m_pTransCom->Set_Y(1.f);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	Motion_Change(fTimeDelta);
 
 	if (0 >= m_tInfo.iHp)
 	{
@@ -50,14 +51,14 @@ _int CFist::Update_Object(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	}
 
-	CMonster::Hit(fTimeDelta);
+	OnHit(fTimeDelta);
 
 	if (!m_bHit)
 	{
 		Target_Follow(fTimeDelta);
 	}
 
-	Motion_Change(fTimeDelta);
+
 	return 0;
 }
 
@@ -85,10 +86,6 @@ void CFist::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	CMonster::Render_Obejct();
-}
-
-void CFist::CollisionEvent(CGameObject * pObj)
-{
 }
 
 HRESULT CFist::Add_Component(void)
@@ -161,6 +158,27 @@ void CFist::Target_Follow(const _float & fTimeDelta)
 	}
 	else
 		m_eCurState = IDLE;
+}
+
+void CFist::OnHit(const _float & fTimeDelta)
+{
+	if (!m_bHit)
+		return;
+
+	m_eCurState = HIT;
+
+	m_fHitTimeAcc += fTimeDelta;
+	if (1.f < m_fHitTimeAcc)
+	{
+		m_tInfo.iHp--;
+		m_bHit = false;
+		m_fHitTimeAcc = 0.f;
+	}
+}
+
+void CFist::CollisionEvent(CGameObject * pObj)
+{
+	m_bHit = true;
 }
 
 void CFist::Motion_Change(const _float & fTimeDelta)
