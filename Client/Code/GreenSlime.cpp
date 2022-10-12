@@ -7,7 +7,8 @@
 
 // Ãæµ¹
 #include "Player.h"
-#include "BulletMgr.h"
+#include "ParticleMgr.h"
+#include "ItemMgr.h"
 
 CGreenSlime::CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -15,6 +16,7 @@ CGreenSlime::CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_eCurState(MOTION_END)
 	, m_fTimeAcc(0.f)
 {
+	m_ObjTag = L"GreenSlime";
 }
 
 CGreenSlime::~CGreenSlime()
@@ -61,7 +63,7 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 
 	if (0 >= m_tInfo.iHp)
 	{
-		m_eCurState = DIE;
+		OnDIe();
 		return OBJ_DEAD;
 	}
 
@@ -220,21 +222,61 @@ void CGreenSlime::OnHit(const _float & fTimeDelta)
 	}
 }
 
+void CGreenSlime::OnDIe()
+{
+	m_eCurState = DIE;
+
+	/*CParticleMgr::GetInstance()->Set_Info(this, 
+		1, 
+		0.1f, 
+		{ 5.f, 5.f, 5.f },
+		0.1f, 
+		{ 1.f,0.f,0.f,0.f },
+		0.5f);*/
+	/*CParticleMgr::GetInstance()->Set_Info(this, 
+		20,
+		1.f, 
+		{ 0.1f, 0.1f, 0.1f },
+		1.f, 
+		{ 1.f,1.f,1.f,1.f });*/
+	/*CParticleMgr::GetInstance()->Set_Info(this, 
+		1, 
+		0.1f,
+		_vec3({ 1.f, 1.f, 1.f }), 
+		1.f, 
+		D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f },
+		1.f, 
+		false, 
+		false);*/
+	CParticleMgr::GetInstance()->Set_Info(this, 
+		1, 
+		0.1f, 
+		{ 1.f, 1.f, 1.f },
+		1.f, 
+		{ 1.f,0.f,0.f,1.f },
+		0.5f);
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+
+	if (!m_bItemTemp)
+	{
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+		m_bItemTemp = true;
+	}
+}
+
 void CGreenSlime::CollisionEvent(CGameObject* pObj)
 {
 	CPlayer*		pPlayer = dynamic_cast<CPlayer*>(pObj);
 	//CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
 
-	if (pObj == pPlayer)
+	if (pObj == pPlayer && nullptr != pPlayer)
 	{
-		if (nullptr != pPlayer)
-		{
-			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-			pPlayer->OnHit(m_tInfo.iAttack);
-		}
+		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		pPlayer->OnHit(m_tInfo.iAttack);
 	}
 	else
 		m_bHit = true;
+
 
 	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
 	//{

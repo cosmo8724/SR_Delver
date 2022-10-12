@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"
 
+// Monster
 #include "GreenSlime.h"
 #include "PinkSlime.h"
 #include "Fist.h"
@@ -10,6 +11,9 @@
 #include "BrownBat.h"
 #include "Stick.h"
 #include "Leaf.h"
+#include "SkeletonGhost.h"
+// Boss
+#include "SongBoss.h"
 
 #include "SongBoss.h"
 

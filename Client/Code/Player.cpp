@@ -462,7 +462,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	// HitBackGround
 	CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
 
-	if (0.7f < InvincibilityTimeAcc)
+	if (0.3f < InvincibilityTimeAcc)
 		pHitBackGround->Set_HitBackGround(false);
 	else
 		pHitBackGround->Set_HitBackGround(true);

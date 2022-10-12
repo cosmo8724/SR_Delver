@@ -93,7 +93,7 @@ _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 
 	if (!m_bHit)
 	{
-		SKill_Update(fTimeDelta);
+		//SKill_Update(fTimeDelta);
 	}
 
 	return 0;

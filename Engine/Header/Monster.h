@@ -35,6 +35,9 @@ protected:
 
 	MONTSERINFO			m_tInfo;
 
+	wstring				m_ObjTag;
+	wstring				m_textureTag;
+
 	_bool				m_bHit = false;
 	_float				m_fHitTimeAcc = 0.f;
 
