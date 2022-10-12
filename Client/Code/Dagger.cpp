@@ -226,6 +226,8 @@ void CDagger::Attack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_pColliderCom->Set_Free(true);
 	}
+	else
+		Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);
 
 
 }

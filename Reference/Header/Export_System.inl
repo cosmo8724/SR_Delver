@@ -100,10 +100,40 @@ void	Render_Font(const _tchar* pFontTag,
 	CFontMgr::GetInstance()->Render_Font(pFontTag, pString, pPos, Color);
 }
 
+// SoundMgr
+HRESULT	Ready_Sound()
+{
+	return CSoundMgr::GetInstance()->Ready_Sound();
+}
 
+HRESULT	Play_Sound(const _tchar* pSoundKey, CHANNELID eID, _float fVolume)
+{
+	return CSoundMgr::GetInstance()->Play_Sound(pSoundKey, eID, fVolume);
+}
+
+HRESULT	PlayBGM(const _tchar* pSoundKey, _float fVolume)
+{
+	return CSoundMgr::GetInstance()->PlayBGM(pSoundKey, fVolume);
+}
+
+HRESULT	StopSound(CHANNELID eID)
+{
+	return CSoundMgr::GetInstance()->StopSound(eID);
+}
+
+HRESULT	StopAllSound()
+{
+	return CSoundMgr::GetInstance()->StopAllSound();
+}
+
+void			Set_ChannelVolume(CHANNELID eID, _float fVolume)
+{
+	CSoundMgr::GetInstance()->Set_ChannelVolume(eID, fVolume);
+}
 
 inline void			Release_System(void)
 {
+	CSoundMgr::GetInstance()->DestroyInstance();
 	CFontMgr::GetInstance()->DestroyInstance();
 	CInputDev::GetInstance()->DestroyInstance();
 	CFrameMgr::GetInstance()->DestroyInstance();
