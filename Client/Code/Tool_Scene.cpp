@@ -2,6 +2,7 @@
 #include "..\Header\Tool_Scene.h"
 #include "ImGuiMgr.h"
 #include "DynamicCamera.h"
+#include "CameraMgr.h"
 
 
 CTool_Scene::CTool_Scene(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -55,9 +56,12 @@ HRESULT CTool_Scene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	
 	CGameObject*		pGameObject = nullptr;
 
-	pGameObject = CDynamicCamera::Create(m_pGraphicDev, &_vec3(0.f, 10.f, -10.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
+	/*pGameObject = CDynamicCamera::Create(m_pGraphicDev, &_vec3(0.f, 10.f, -10.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", pGameObject), E_FAIL);*/
+
+	CCameraMgr::GetInstance()->Add_GameObject(pLayer);
+	CCameraMgr::GetInstance()->Change_Camera(CAM_DYNAMIC);
 
 	pGameObject = CUserParticle::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

@@ -37,7 +37,6 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 		}
 		m_RenderGroup[i].clear();
 	}
-
 }
 
 void CRenderer::Clear_RenderGroup(void)
@@ -92,7 +91,6 @@ void CRenderer::Set_RenderState(LPDIRECT3DDEVICE9 & pGraphicDev, _int _i)
 			//pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
 			pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 		}
-
 	}
 }
 

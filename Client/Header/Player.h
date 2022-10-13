@@ -27,8 +27,6 @@ public:
 
 public:
 	void				Set_HpPlus() { m_tInfo.iHp += 1; }
-	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
-	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
 	void				Set_Stun() { m_bStun = true; }
 
 	void				OnHit(_int _HpMinus); // sh
