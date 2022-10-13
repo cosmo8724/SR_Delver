@@ -38,6 +38,7 @@ _int CObjectCamera::Update_Object(const _float & fTimeDelta)
 
 
 	Target_Renewal();
+	DeadMotion();
 
 	//Revolution();
 
@@ -61,14 +62,14 @@ void CObjectCamera::Target_Renewal(void)
 		return;
 
 
-	CTransform* pTransform = dynamic_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK(pTransform);
+	m_pTargetTransCom = dynamic_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(m_pTargetTransCom);
 
 	_vec3   vPos;
-	pTransform->Get_Info(INFO_POS, &vPos);
+	m_pTargetTransCom->Get_Info(INFO_POS, &vPos);
 
 	_vec3   vLook;
-	pTransform->Get_Info(INFO_LOOK, &vLook);
+	m_pTargetTransCom->Get_Info(INFO_LOOK, &vLook);
 	D3DXVec3Normalize(&vLook, &vLook);
 
 	//m_vEye = vPos	+ m_fEyeDist * vLook;
@@ -91,6 +92,29 @@ void CObjectCamera::Target_Renewal(void)
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matWorld);
 
 
+}
+
+void CObjectCamera::DeadMotion()
+{
+	if (true == m_bDeadMotion)
+	{
+		_vec3 vLook;
+		m_pTargetTransCom->Get_Info(INFO_LOOK,&vLook);
+		D3DXVec3Normalize(&vLook, &vLook);
+
+		_matrix matRot;
+		m_fCurAngle += 1.f;
+		if (m_fCurAngle >= 89.f)
+		{
+			m_fCurAngle = 89.f;
+			//m_bDeadMotion = false;
+		}
+		D3DXMatrixRotationAxis(&matRot, &vLook, D3DXToRadian(m_fCurAngle));
+
+		_vec3 vUp = { 0.f, 1.f, 0.f };
+		D3DXVec3TransformCoord(&m_vUp, &vUp, &matRot);
+		//m_vUp = { -1.f, 0.f, 0.f };
+	}
 }
 
 void CObjectCamera::Revolution()

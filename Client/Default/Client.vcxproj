@@ -165,10 +165,12 @@
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Block.h" />
     <ClInclude Include="..\Header\BlueBat.h" />
+    <ClInclude Include="..\Header\BonFire.h" />
     <ClInclude Include="..\Header\BrownBat.h" />
     <ClInclude Include="..\Header\BulletMgr.h" />
     <ClInclude Include="..\Header\CameraMgr.h" />
     <ClInclude Include="..\Header\CrossHair.h" />
+    <ClInclude Include="..\Header\CurlingMgr.h" />
     <ClInclude Include="..\Header\Dagger.h" />
     <ClInclude Include="..\Header\Dog.h" />
     <ClInclude Include="..\Header\DynamicCamera.h" />
@@ -269,10 +271,12 @@
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Block.cpp" />
     <ClCompile Include="..\Code\BlueBat.cpp" />
+    <ClCompile Include="..\Code\BonFire.cpp" />
     <ClCompile Include="..\Code\BrownBat.cpp" />
     <ClCompile Include="..\Code\BulletMgr.cpp" />
     <ClCompile Include="..\Code\CameraMgr.cpp" />
     <ClCompile Include="..\Code\CrossHair.cpp" />
+    <ClCompile Include="..\Code\CurlingMgr.cpp" />
     <ClCompile Include="..\Code\Dagger.cpp" />
     <ClCompile Include="..\Code\Dog.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />

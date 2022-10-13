@@ -120,26 +120,6 @@ HRESULT CKey::Add_Component(void)
 	return S_OK;
 }
 
-void CKey::Billboard()
-{
-	// ºôº¸µå
-	_matrix		matWorld, matView, matBill;
-	D3DXMatrixIdentity(&matBill);
-
-	m_pTransCom->Get_WorldMatrix(&matWorld);
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
-
-	D3DXMatrixInverse(&matBill, 0, &matBill);
-
-	m_matWorld = matBill * matWorld;
-
-	m_pTransCom->Set_WorldMatrix(&m_matWorld);
-}
 
 CKey * CKey::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {

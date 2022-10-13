@@ -134,14 +134,14 @@ void CStaticCamera::Target_Renewal(void)
 	if (m_bShakeY)
 		return;
 
-	CTransform*   pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK(pPlayerTransform);
+	m_pPlayerTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(m_pPlayerTransCom);
 
 	_vec3   vPos;
-	pPlayerTransform->Get_Info(INFO_POS, &vPos);
+	m_pPlayerTransCom->Get_Info(INFO_POS, &vPos);
 
 	_vec3   vLook;
-	pPlayerTransform->Get_Info(INFO_LOOK, &vLook);
+	m_pPlayerTransCom->Get_Info(INFO_LOOK, &vLook);
 	D3DXVec3Normalize(&vLook, &vLook);
 
 	// 1��Ī

@@ -266,16 +266,17 @@ void CGreenSlime::OnDIe()
 
 void CGreenSlime::CollisionEvent(CGameObject* pObj)
 {
-	CPlayer*		pPlayer = dynamic_cast<CPlayer*>(pObj);
-	//CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+	//CPlayer*		pPlayer = dynamic_cast<CPlayer*>(pObj);
+	////CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
 
-	if (pObj == pPlayer && nullptr != pPlayer)
-	{
-		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-		pPlayer->OnHit(m_tInfo.iAttack);
-	}
-	else
-		m_bHit = true;
+	//if (pObj == pPlayer && nullptr != pPlayer)
+	//{
+	//	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	//	pPlayer->OnHit(m_tInfo.iAttack);
+	//}
+	//else
+	//	m_bHit = true;
+
 
 
 	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))

@@ -48,6 +48,7 @@ protected:
 	CAnimator*			m_pAnimtorCom = nullptr;
 
 	_bool				m_bCreateIcon = false;
+	_matrix				m_matOldBill;
 };
 
 END

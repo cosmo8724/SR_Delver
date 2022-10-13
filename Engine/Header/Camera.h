@@ -33,6 +33,8 @@ public:
 	virtual	void Reset() { m_pTarget = nullptr; 
 						m_fEyeDist = 1.f;
 						m_fAtDist = 1.f;
+						m_fRevAngle = 0.f;
+						m_fCurAngle = 0.f;
 	}
 
 	// these functions will be used for objectCamera 
@@ -51,6 +53,8 @@ protected:
 	_float		m_fEyeDist = 1.f;
 	_float		m_fAtDist = 1.f;
 
+	_float		m_fRevAngle = 0.f;
+	_float		m_fCurAngle = 0.f;
 
 	
 protected:
