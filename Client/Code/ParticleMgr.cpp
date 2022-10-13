@@ -38,7 +38,7 @@ HRESULT CParticleMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle4_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle4/particle4_%d.png", TEX_NORMAL, 12)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle5_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle5/particle5_0.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle6_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle6/particle6_%d.png", TEX_NORMAL, 3)), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle7_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle7/particle7_%d.png", TEX_NORMAL, 4)), E_FAIL);
 
 
 	return S_OK;
@@ -61,8 +61,6 @@ HRESULT CParticleMgr::Add_GameObject(CLayer * pLayer)
 		m_vecObjTag.push_back(szObjTag);
 		m_ParticlePool.push_back(pGameObject);
 	}
-
-
 
 	return S_OK;
 }

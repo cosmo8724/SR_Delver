@@ -6,21 +6,25 @@
 #include "StaticCamera.h"
 #include "MiniMap.h"
 
+// 충돌
+#include "Player.h"
+#include "ParticleMgr.h"
+#include "ItemMgr.h"
+
 CBlueBat::CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
 	, m_ePreState(MOTION_END)
 	, m_eCurState(MOTION_END)
 	, m_bIdle(false)
-	, m_fHeight(0.f)
 	, m_fJSpeed(0.2f)
 	, m_fJSpeed0(0.2f)
 	, m_fAccel(0.015f)
-	, m_fKnockBackSpeed(0.f)
 	, m_fTimeAcc(0.f)
 	, m_fJumpTimeAcc(0.f)
 	, m_fIdleTimeAcc(0.f)
 	, m_fSkillTimeAcc(0.f)
 {
+	m_ObjTag = L"BlueBat";
 }
 
 CBlueBat::~CBlueBat()
@@ -31,14 +35,15 @@ HRESULT CBlueBat::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_tInfo.iHp = 3;
+	m_tInfo.iAttack = 2;
+
 	m_pTransCom->Set_Pos(15.f, 1.f, 5.f);
 
 	m_eCurState = IDLE;
 
-	m_fHeight = 1.f;
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
-	m_fKnockBackSpeed = 10.f;
 
 	return S_OK;
 }
@@ -55,12 +60,25 @@ _int CBlueBat::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
-
-	//Target_Follow(fTimeDelta);
-	KnockBack(fTimeDelta);
-
 	Motion_Change(fTimeDelta);
-	
+
+	if (0 >= m_tInfo.iHp)
+	{
+		Dead();
+		m_fRenderOFFTimeAcc += fTimeDelta;
+		if (1.5f < m_fRenderOFFTimeAcc)
+		{
+			m_bRenderOFF = true;
+			m_fRenderOFFTimeAcc = 0.f;
+		}
+		return OBJ_DEAD;
+	}
+
+	OnHit(fTimeDelta);
+
+	if (!m_bHit)
+		Target_Follow(fTimeDelta);
+
 	return 0;
 }
 
@@ -72,26 +90,8 @@ void CBlueBat::LateUpdate_Object(void)
 
 void CBlueBat::Render_Obejct(void)
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-	m_pAnimtorCom->Set_Texture();
-	m_pBufferCom->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-	CMonster::Render_Obejct();
-}
-
-void CBlueBat::CollisionEvent(CGameObject * pObj)
-{
+	if (!m_bRenderOFF)
+		CMonster::Render_Obejct();
 }
 
 HRESULT CBlueBat::Add_Component(void)
@@ -140,7 +140,7 @@ void CBlueBat::Target_Follow(const _float & fTimeDelta)
 		m_eCurState = IDLE;
 
 		m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
-		m_pTransCom->Set_Y(1.f);
+		m_pTransCom->Set_Y(m_fHeight);
 	}
 	else if (fDist < 4.f && fDist > 1.f) // Jump
 	{
@@ -172,7 +172,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 		_vec3 vPos;
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-		if (m_fJumpTimeAcc > 0.3f && m_fHeight >= vPos.y)
+		if (m_fJumpTimeAcc > 0.2f && m_fHeight >= vPos.y)
 		{
 			m_bJump = false;
 			m_fJumpTimeAcc = 0.f;
@@ -187,7 +187,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 			m_pTransCom->Plus_PosY(m_fJSpeed);
 			m_fJumpTimeAcc += 0.01f;
 
-			if (m_pAnimtorCom->Get_Currentframe() >= 7.f && m_pAnimtorCom->Get_Currentframe() < 8.f)
+			if (m_pAnimtorCom->Get_Currentframe() >= 7.f && m_pAnimtorCom->Get_Currentframe() < 8.f) // CameraShake
 			{
 				CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 				NULL_CHECK(pStaticCamera);
@@ -206,39 +206,58 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 	}
 }
 
-void CBlueBat::KnockBack(const _float& fTimeDelta)
+void CBlueBat::OnHit(const _float & fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_V)) // TODO : PlayerAttack -> KnockBack
-	{
-		if (!m_bKnockBack)
-			m_bKnockBack = true;
-	}
-
-	if (!m_bKnockBack)
+	if (!m_bHit)
 		return;
 
-	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK(pPlayerTransformCom);
-
-	_vec3 vPos, vTargetLook;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	pPlayerTransformCom->Get_Info(INFO_LOOK, &vTargetLook);
-
-	if (m_fBTimeDelta > 0.3f && m_fHeight >= vPos.y)
+	if (!m_bOneCheck)
 	{
-		m_bKnockBack = false;
-		m_fBTimeDelta = 0.f;
+		m_eCurState = HIT;
+		CMonster::Set_KnockBack();
+		m_bOneCheck = true;
+	}
 
-		m_pTransCom->Set_Y(m_fHeight);
-		m_pTransCom->KnockBack_Target(&vTargetLook, m_fKnockBackSpeed, fTimeDelta);
-		m_fBSpeed = m_fBSpeed0;
-	}
-	else
+	m_fHitTimeAcc += fTimeDelta;
+	if (0.7f < m_fHitTimeAcc) // 0.7 > Monster Hit Time
 	{
-		m_fBSpeed -= m_fBAccel;
-		m_pTransCom->Plus_PosY(m_fBSpeed);
-		m_fBTimeDelta += 0.1f;
+		// MinusHp
+		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		m_tInfo.iHp -= pPlayer->Get_PlayerAttack();
+
+		// Initialization
+		m_bHit = false;
+		m_bOneCheck = false;
+		m_fHitTimeAcc = 0.f;
 	}
+}
+
+void CBlueBat::Dead()
+{
+	if (m_bDead)
+		return;
+
+	m_eCurState = DIE;
+
+	CParticleMgr::GetInstance()->Set_Info(this,
+		50,
+		0.1f,
+		{ 0.5f, 0.5f, 0.5f },
+		1.f,
+		{ 1.f, 0.f, 0.f, 1.f });
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+
+	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+
+	m_pColliderCom->Set_Free(true);
+	m_bDead = true;
+}
+
+void CBlueBat::CollisionEvent(CGameObject* pObj)
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+	if (pPlayer != pObj)
+		m_bHit = true;
 }
 
 void CBlueBat::Motion_Change(const _float& fTimeDelta)

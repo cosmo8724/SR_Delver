@@ -16,8 +16,9 @@ CSongBoss::CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fIdleTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
 {
-}
+	m_ObjTag = L"SongBoss";
 
+}
 
 CSongBoss::~CSongBoss()
 {

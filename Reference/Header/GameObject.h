@@ -34,6 +34,7 @@ protected:
 
 public:
 	void		Set_Dead(_bool bDead) { m_bDead = bDead; }
+	_bool		Is_Dead() { return m_bDead; }
 
 public:
 	virtual void	Free(void);
