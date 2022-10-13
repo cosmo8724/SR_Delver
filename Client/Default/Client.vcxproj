@@ -204,10 +204,11 @@
     <ClInclude Include="..\Header\MapTool.h" />
     <ClInclude Include="..\Header\MapUI.h" />
     <ClInclude Include="..\Header\MonsterMgr.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h" />
+    <ClInclude Include="..\Header\NPCMgr.h" />
     <ClInclude Include="..\Header\ObjectTool.h" />
     <ClInclude Include="..\Header\ObjectCamera.h" />
     <ClInclude Include="..\Header\ParticleMgr.h" />
@@ -233,6 +234,7 @@
     <ClInclude Include="..\Header\Terrain.h" />
     <ClInclude Include="..\Header\Tool_Scene.h" />
     <ClInclude Include="..\Header\Tree.h" />
+    <ClInclude Include="..\Header\UIMgr.h" />
     <ClInclude Include="..\Header\UserParticle.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -308,10 +310,11 @@
     <ClCompile Include="..\Code\MapTool.cpp" />
     <ClCompile Include="..\Code\MapUI.cpp" />
     <ClCompile Include="..\Code\MonsterMgr.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Code\MiniMap.cpp" />
+    <ClCompile Include="..\Code\NPCMgr.cpp" />
     <ClCompile Include="..\Code\ObjectTool.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Default/stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Default/stdafx.h</PrecompiledHeaderFile>
@@ -340,6 +343,7 @@
     <ClCompile Include="..\Code\Terrain.cpp" />
     <ClCompile Include="..\Code\Tool_Scene.cpp" />
     <ClCompile Include="..\Code\Tree.cpp" />
+    <ClCompile Include="..\Code\UIMgr.cpp" />
     <ClCompile Include="..\Code\UserParticle.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>

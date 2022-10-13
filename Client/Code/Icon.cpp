@@ -72,6 +72,11 @@ HRESULT CIcon::Ready_Object()
 
 _int CIcon::Update_Object(const _float & fTimeDelta)
 {
+	if (m_pParentObj->Is_Dead())
+	{
+		m_bDead = true;
+		return OBJ_DEAD;
+	}
 	D3DXMatrixIdentity(&m_matWorld);
 
 	RotateByPlayer();
@@ -85,13 +90,13 @@ _int CIcon::Update_Object(const _float & fTimeDelta)
 		m_bOnMinimap = false;
 
 	if (!m_bOnMinimap)
-		return 0;
+		return 1;
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
-	return 0;
+	return 1;
 }
 
 void CIcon::LateUpdate_Object(void)

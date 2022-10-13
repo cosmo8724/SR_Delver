@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CFistBullet::CFistBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -61,13 +62,13 @@ _int CFistBullet::Update_Object(const _float & fTimeDelta)
 		return 0;
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
 	Target(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 	
+	m_fParticleTime += fTimeDelta;
 	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
@@ -78,7 +79,16 @@ void CFistBullet::LateUpdate_Object(void)
 		return;
 
 	if (1.f < m_fLifeTime)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 
+			20, 
+			0.3f, 
+			{ 1.f, 1.f, 1.f },
+			1.f, 
+			{ 0.f,1.f,0.f,1.f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_5);
 		Reset();
+	}
 
 	Billboard();
 
@@ -146,6 +156,14 @@ _int CFistBullet::Target(const _float & fTimeDelta)
 	D3DXVec3Normalize(&vDir, &vDir);
 	vDir *= m_fSpeed * fTimeDelta;
 	m_pTransCom->Move_Pos(&vDir);
+
+	if (0.1f < m_fParticleTime)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+		m_fParticleTime = 0.f;
+	}
 
 	return 0;
 }

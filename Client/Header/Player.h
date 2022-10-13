@@ -40,7 +40,8 @@ private:
 	void				Jump(const _float& fTimeDelta);
 	_float				Get_Height();
 	void				CollisionEvent(CGameObject * pOtherObj);
-	
+	void				KnockBack(const _float& fTimeDelta); // sh
+
 public:
 	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
 	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
@@ -66,6 +67,9 @@ private:
 	_float				m_fJSpeed0; 	
 	_float				m_fAccel;		
 	_float				m_fJTimeDelta = 0.f;
+
+	// KnockBack
+	_bool				m_bKnockBack = false;
 
 	// click Test?
 	_float				m_fLBClick = 0.f;
