@@ -17,6 +17,11 @@
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>
 
+#include "io.h"
+#include "fmod.h"
+#include "fmod.hpp"
+#pragma comment(lib, "fmodex_vc.lib")
+
 #include "Engine_Typedef.h"
 #include "Engine_Enum.h"
 #include "Engine_Macro.h"

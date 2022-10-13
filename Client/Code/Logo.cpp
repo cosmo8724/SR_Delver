@@ -35,6 +35,13 @@ HRESULT CLogo::Ready_Scene(void)
 
 Engine::_int CLogo::Update_Scene(const _float& fTimeDelta)
 {
+	static _bool bBGM = false;
+	if (!bBGM)
+	{
+		Engine::PlayBGM(L"BGM_Logo.mp3", 1.f);
+		bBGM = true;
+	}
+
 	_int iResult = Engine::CScene::Update_Scene(fTimeDelta);
 
 	// 로딩 클래스 생성

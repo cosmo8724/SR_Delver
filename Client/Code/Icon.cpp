@@ -81,7 +81,7 @@ _int CIcon::Update_Object(const _float & fTimeDelta)
 
 	RotateByPlayer();
 
-	POINT		pt = { (WINCX >> 1) - 180.f, (WINCY >> 1) - 180.f };
+	POINT		pt = { LONG((WINCX >> 1) - 180.f), LONG((WINCY >> 1) - 180.f) };
 
 	if (m_fPosX < pt.x + 130.f && m_fPosX > pt.x - 130.f
 		&& m_fPosY < pt.y + 130.f && m_fPosY > pt.y - 130.f)

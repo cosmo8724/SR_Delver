@@ -7,6 +7,7 @@
 #include "FrameMgr.h"
 #include "InputDev.h"
 #include "FontMgr.h"
+#include "SoundMgr.h"
 
 BEGIN(Engine)
 
@@ -51,6 +52,14 @@ inline void	Render_Font(const _tchar* pFontTag,
 	const _tchar* pString,
 	const _vec2* pPos,
 	D3DXCOLOR Color);
+
+// SoundMgr
+inline HRESULT	Ready_Sound();
+inline HRESULT	Play_Sound(const _tchar* pSoundKey, CHANNELID eID, _float fVolume);
+inline HRESULT	PlayBGM(const _tchar* pSoundKey, _float fVolume);
+inline HRESULT	StopSound(CHANNELID eID);
+inline HRESULT	StopAllSound();
+inline void			Set_ChannelVolume(CHANNELID eID, _float fVolume);
 
 
 inline void			Release_System(void);

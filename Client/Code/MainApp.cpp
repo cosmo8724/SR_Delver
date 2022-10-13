@@ -89,6 +89,9 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 	//FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"µ¸¿ò", 7, 18, FW_NORMAL), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"±Ã¼­", 7, 18, FW_NORMAL), E_FAIL);
 
+	// FMOD
+	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
+
 	// Init ImGui
 	CImGuiMgr::GetInstance()->DefaultSetting_ImGui(m_pGraphicDev);
 	// *Init ImGui

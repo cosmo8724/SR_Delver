@@ -126,7 +126,7 @@ HRESULT CSkeletonGhost::Add_Component(void)
 
 void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 {
-	// ÇÃ·¹ÀÌ¾î µû¶ó°¡±â
+	// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ó°¡±ï¿½
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
 
@@ -161,15 +161,15 @@ void CSkeletonGhost::Circle()
 
 	_vec3 vDir, vDistance;
 	vDir = { 0.f, 1.f, 0.f };
-	//D3DXVec3Normalize(&vDir, &vDir); // ´ÜÀ§ º¤ÅÍ·Î º¯°æ
+	//D3DXVec3Normalize(&vDir, &vDir); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½ï¿½ï¿½
 	D3DXVec3Normalize(&vDistance, &vDistance);
 
 	_matrix matTrans, matRev;
 
-	// ÀÌ
+	// ï¿½ï¿½
 	D3DXMatrixTranslation(&matTrans, vDistance.x * 7.f, vDistance.y * -2.f, vDistance.z * 2.f);
 
-	// °ø
+	// ï¿½ï¿½
 	m_fAngle += 0.01f;
 	if (m_fAngle > 360.f)
 		m_fAngle = 0.01f;
@@ -184,7 +184,7 @@ void CSkeletonGhost::Circle()
 	matParent = matRev * mat;
 
 	_matrix mat1;
-	mat1 = matTrans * matParent; // °øÀüÇÏ´Â Çà·Ä
+	mat1 = matTrans * matParent; // ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
 
 	m_matWorld = mat1;
 	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
@@ -192,7 +192,7 @@ void CSkeletonGhost::Circle()
 
 void CSkeletonGhost::Billboard()
 {
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 

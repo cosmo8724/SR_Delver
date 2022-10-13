@@ -156,7 +156,7 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 
 void CLeaf::Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ)
 {
-	int iRandomNum = rand() % 7 + 2; // ���Ͱ� �����ϰ� �̵��� ��ǥ
+	int iRandomNum = rand() % 7 + 2; 
 
 	if (fPlayerPosX == (m_OriginalPos.x + iRandomNum) || fPlayerPosZ == (m_OriginalPos.z + iRandomNum) ||
 		fPlayerPosX == (m_OriginalPos.x - iRandomNum) || fPlayerPosZ == (m_OriginalPos.z - iRandomNum))
