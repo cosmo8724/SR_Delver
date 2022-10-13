@@ -64,6 +64,8 @@ public:
 	_float			m_fAttackAngle = 0.f;
 	_float			m_fAttackSpeed;
 
+	_matrix			m_matOldBill;
+
 public:
 	static CTransform*		Create(void);
 	virtual CComponent*		Clone(void);

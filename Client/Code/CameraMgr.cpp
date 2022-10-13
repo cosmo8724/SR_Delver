@@ -79,6 +79,18 @@ void CCameraMgr::Action_Camera(_float fAngle)
 	m_vecCamera[m_CurId]->Set_RevAngle(fAngle);
 }
 
+void CCameraMgr::Action_PlayerDie()
+{
+	// release previous camera
+	m_vecCamera[m_CurId]->Set_Switch(false);
+	m_vecCamera[m_CurId]->Reset();
+
+	m_CurId = CAM_OBJECT;
+	m_vecCamera[m_CurId]->Set_Switch(true);
+	static_cast<CObjectCamera*>(m_vecCamera[m_CurId])->Set_DeadMotionTrue();
+
+}
+
 inline void CCameraMgr::Free(void)
 {
 	m_vecCamera.swap(vector<CCamera*>());

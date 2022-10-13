@@ -5,7 +5,7 @@
 #include "WandBullet.h"
 #include "MiniMap.h"
 
-// Ãæµ¹
+
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
@@ -52,7 +52,7 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
-	//// ¾Ö´Ï¸ÞÀÌ¼Ç º¯È­
+	//// ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½È­
 	//m_fFrame += m_pTextureCom->Get_FrameEnd()  * fTimeDelta;
 
 	//if (m_fFrame >= m_pTextureCom->Get_FrameEnd())
@@ -141,7 +141,7 @@ HRESULT CGreenSlime::Add_Component(void)
 
 void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 {
-	// ÇÃ·¹ÀÌ¾î µû¶ó°¡±â
+	// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ó°¡±ï¿½
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
 
@@ -178,7 +178,7 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 		D3DXVec3Normalize(&vRight, &vRight);
 		m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
 
-		//// ¸ó½ºÅÍ ÁÂ¿ì·Î ÀÌµ¿ÇÏ±â
+		//// ï¿½ï¿½ï¿½ï¿½ ï¿½Â¿ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï±ï¿½
 		//_vec3		vRight;
 		//m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
 
@@ -222,7 +222,7 @@ void CGreenSlime::OnHit(const _float & fTimeDelta)
 
 void CGreenSlime::Dead()
 {
-	if (m_bDead) // ÇÑ ¹ø¸¸ ½ÇÇàµÊ
+	if (m_bDead) // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 		return;
 
 	m_eCurState = DIE;
@@ -243,6 +243,7 @@ void CGreenSlime::Dead()
 
 void CGreenSlime::CollisionEvent(CGameObject* pObj)
 {
+
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 	if(pPlayer != pObj)
 		m_bHit = true;		

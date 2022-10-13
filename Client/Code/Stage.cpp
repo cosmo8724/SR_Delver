@@ -23,6 +23,7 @@
 #include "Grass.h"
 #include "Tree.h"
 #include "Jar.h"
+#include "BonFire.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -246,6 +247,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CJar::Create(m_pGraphicDev, _vec3({30.f, 1.f, 40.f}));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
+
+	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 3.f, 1.f, 3.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bonfire", pGameObject), E_FAIL);
+
 
 	// Blocks
 	{

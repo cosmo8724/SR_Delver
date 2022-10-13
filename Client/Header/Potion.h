@@ -17,7 +17,6 @@ public:
 
 private:
 	virtual HRESULT		Add_Component(void);
-	void				Billboard();
 
 public:
 	static CPotion*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType);
@@ -30,7 +29,6 @@ public:
 
 private:
 	_vec3				m_vPos;
-	_matrix				m_matWorld;
 	_int				m_iTextureIdx = 0;
 	_float				m_fDotTime = 0.f;
 	_int				m_iDot = 0;

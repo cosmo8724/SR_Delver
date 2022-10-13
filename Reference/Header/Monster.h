@@ -68,8 +68,9 @@ protected:
 	CTransform*			m_pTransCom = nullptr;
 	CAnimator*			m_pAnimtorCom = nullptr;
 
+	_matrix				m_matOldBill;
+
 private:
-	// 넉백 관련 변수
 	_bool				m_bKnockBack = false;
 	_float				m_fBSpeed = 0.1f;
 	_float				m_fBSpeed0 = 0.1f;

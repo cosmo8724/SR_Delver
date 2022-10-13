@@ -13,6 +13,8 @@
 #include "HitBackGround.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
+#include "BonFire.h"
+
 #include "Monster.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -71,6 +73,25 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	}
 	// *Create Minimap Icon
 
+//	
+	if (!m_bDeadMotion && m_bDead)
+	{
+		CCameraMgr::GetInstance()->Action_PlayerDie();
+		CCameraMgr::GetInstance()->Set_Camera(this, 0.3f, 1.f);
+		m_bDeadMotion = true;
+	}
+
+	if (m_bDead)
+	{
+		m_fDeathTime += fTimeDelta;
+		if (5.f < m_fDeathTime)
+		{
+			Respawn();
+		}
+		return 0;
+	}
+
+
 	m_fTimeDelta = fTimeDelta;
 
 	if (!(GetKeyState(VK_TAB) & 0x80))		// Except Open Inventory
@@ -80,6 +101,8 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
+	
+
 	KnockBack(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
@@ -96,6 +119,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 void CPlayer::LateUpdate_Object(void)
 {
+
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
@@ -150,9 +174,9 @@ void CPlayer::LateUpdate_Object(void)
 	// camera change Test
 	wstring pObjTag = (m_pRight != nullptr ? m_pRight->Get_ObjTag() : L"");
 	if (L"Arrow" == pObjTag && Get_DIMouseState(DIM_RB) & 0x80)
-	{
-		// 총알 발사시 카메라 전환
-	}
+		m_bSnipper = true; 
+	else
+		m_bSnipper = false;
 
 
 
@@ -277,9 +301,16 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	// camera test
 	if (Key_Down(DIK_C))
 	{
-		CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT);
-		CCameraMgr::GetInstance()->Set_Camera(this, 3.f, 0.f);
-		CCameraMgr::GetInstance()->Action_Camera(360.f);
+		// 한바퀴 돌기
+		//CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT);
+		//CCameraMgr::GetInstance()->Set_Camera(this, 3.f, 0.f);
+		//CCameraMgr::GetInstance()->Action_Camera(360.f);
+
+		// Deadmotion
+		m_bDead = true;
+		//CCameraMgr::GetInstance()->Action_PlayerDie();
+		//CCameraMgr::GetInstance()->Set_Camera(this, 0.3f, 1.f);
+
 
 	}
 	if (Key_Down(DIK_V))
@@ -483,6 +514,22 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		m_pTransCom->Set_Pos(PlayerPos.x + fDistX, PlayerPos.y, PlayerPos.z + fDistZ);
 		//m_pTransCom->Move_Pos(&(_vec3(fDistX, 0.f, fDistZ) * m_fTimeDelta));
 	}
+}
+
+void CPlayer::Respawn()
+{
+	m_bDead = false;
+	m_bDeadMotion = false;
+	m_fDeathTime = 0.f;
+
+	CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
+
+	CTransform* pTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Bonfire", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pTransCom);
+
+	_vec3 vPos = pTransCom->Get_Pos();
+	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+
 }
 
 void CPlayer::KnockBack(const _float & fTimeDelta)

@@ -193,21 +193,6 @@
     <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Potion">
       <UniqueIdentifier>{ec9c8099-79a2-465a-a1f5-704697f0ff81}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\00. Stone">
-      <UniqueIdentifier>{a89b5ba4-f6ce-4dd9-9724-abca813b1aa4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\01. Grass">
-      <UniqueIdentifier>{cc5db7df-2558-4913-a296-f2c26fed52b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\02. Tree">
-      <UniqueIdentifier>{a66897d4-b917-4d24-83c8-a1537f068ff0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\04. Jam">
-      <UniqueIdentifier>{4bfbd67f-b2a0-4a2c-871c-1d978053d351}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\03. Jar">
-      <UniqueIdentifier>{38e6048f-fc54-41f8-b06f-7d9a3c76b3c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\02. For_Public\03. Particle">
       <UniqueIdentifier>{258eb209-7e41-421e-935a-5990fbd9a4f4}</UniqueIdentifier>
     </Filter>
@@ -231,6 +216,36 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\08. Shield">
       <UniqueIdentifier>{417ab719-2141-4004-9e9e-3ada34cd58bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless">
+      <UniqueIdentifier>{f591e478-1da9-46a9-8780-bb2d726cfb2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\04. Jam">
+      <UniqueIdentifier>{4bfbd67f-b2a0-4a2c-871c-1d978053d351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\00. Stone">
+      <UniqueIdentifier>{a89b5ba4-f6ce-4dd9-9724-abca813b1aa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\01. Grass">
+      <UniqueIdentifier>{cc5db7df-2558-4913-a296-f2c26fed52b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\02. Tree">
+      <UniqueIdentifier>{a66897d4-b917-4d24-83c8-a1537f068ff0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\03. Jar">
+      <UniqueIdentifier>{38e6048f-fc54-41f8-b06f-7d9a3c76b3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Trap">
+      <UniqueIdentifier>{6c17df79-ee94-4bfb-81c6-185fdbf2556b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Trick">
+      <UniqueIdentifier>{1415d2ec-3a18-4d9e-a898-008772ce8fa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Bonfire">
+      <UniqueIdentifier>{5dd7e48e-0fc0-432a-8341-664198550958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Manager">
+      <UniqueIdentifier>{99117cfd-19f6-4c2b-bf10-7a88c66cc98f}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\09. NPC\01. Dog">
       <UniqueIdentifier>{fdf7a437-d8f0-44fd-aff6-9776c096b308}</UniqueIdentifier>
@@ -538,7 +553,7 @@
       <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Jar.h">
-      <Filter>02. GameObject\01. For_Stage\10. EcoObject\03. Jar</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\03. Jar</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Dagger.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger</Filter>
@@ -547,13 +562,13 @@
       <Filter>02. GameObject\01. For_Stage\06. Item\02. Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Stone.h">
-      <Filter>02. GameObject\01. For_Stage\10. EcoObject\00. Stone</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\00. Stone</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Grass.h">
-      <Filter>02. GameObject\01. For_Stage\10. EcoObject\01. Grass</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\01. Grass</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Tree.h">
-      <Filter>02. GameObject\01. For_Stage\10. EcoObject\02. Tree</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\02. Tree</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ObjectCamera.h">
       <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
@@ -575,6 +590,12 @@
     </ClInclude>
     <ClInclude Include="..\Header\CameraMgr.h">
       <Filter>02. GameObject\02. For_Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\BonFire.h">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Bonfire</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CurlingMgr.h">
+      <Filter>97. Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MonsterMgr.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\00. Manager</Filter>
@@ -816,7 +837,7 @@
       <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Jar.cpp">
-      <Filter>02. GameObject\01. For_Stage\10. EcoObject\03. Jar</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\03. Jar</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Dagger.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\Dagger</Filter>
@@ -825,13 +846,13 @@
       <Filter>02. GameObject\01. For_Stage\06. Item\02. Potion</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Stone.cpp">
-      <Filter>02. GameObject\01. For_Stage\10. EcoObject\00. Stone</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\00. Stone</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Grass.cpp">
-      <Filter>02. GameObject\01. For_Stage\10. EcoObject\01. Grass</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\01. Grass</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Tree.cpp">
-      <Filter>02. GameObject\01. For_Stage\10. EcoObject\02. Tree</Filter>
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\02. Tree</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ObjectCamera.cpp">
       <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
@@ -853,6 +874,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\CameraMgr.cpp">
       <Filter>02. GameObject\02. For_Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\BonFire.cpp">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Bonfire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CurlingMgr.cpp">
+      <Filter>97. Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MonsterMgr.cpp">
       <Filter>02. GameObject\01. For_Stage\02. Monster\00. Manager</Filter>

@@ -45,6 +45,8 @@ private:
 public:
 	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
 	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
+	_bool				Is_Snippered() { return m_bSnipper; }
+	void				Respawn();
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -79,9 +81,15 @@ private:
 	CItem*				m_pRight	= nullptr;	
 	CItem*				m_pLeft		= nullptr;	
 
+	_bool				m_bSnipper = false;
+
 	PLAYERINFO			m_tInfo;
 
 	_float				InvincibilityTimeAcc = 0.1f;
+
+	// Related to Death & Respawn
+	_float				m_fDeathTime = 0.f;
+	_bool				m_bDeadMotion = false;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
