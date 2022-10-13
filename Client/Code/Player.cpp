@@ -607,38 +607,6 @@ void CPlayer::OnHit(_int _HpMinus)
 	}
 }
 
-void CPlayer::KnockBack(const _float & fTimeDelta)
-{
-	if (!m_bKnockBack)
-		return;
-
-	_vec3 vPos, vLook;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
-
-	_float fHeight = Get_Height();
-
-	if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
-	{
-		m_bKnockBack = false;
-		m_pCurrentBlock = nullptr;
-
-		m_eState = PLAYER_GROUND;
-		m_fJTimeDelta = 0.f;
-
-		m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
-		m_fJSpeed = m_fJSpeed0;
-	}
-	else
-	{
-		m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta); // -3.f -> KnockBack Distance
-
-		m_fJSpeed -= m_fAccel;
-		m_pTransCom->Plus_PosY(m_fJSpeed);
-		m_fJTimeDelta += 0.1f;
-	}
-}
-
 void CPlayer::Stun(const _float & fTimeDelta)
 {
 	if (Engine::Key_Down(DIK_0))
