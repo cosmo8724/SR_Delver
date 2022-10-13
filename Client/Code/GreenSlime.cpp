@@ -5,7 +5,7 @@
 #include "WandBullet.h"
 #include "MiniMap.h"
 
-// Ãæµ¹
+
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
@@ -51,28 +51,31 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	m_pTransCom->Set_Y(1.f);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
-	//// ¾Ö´Ï¸ÞÀÌ¼Ç º¯È­
+	//// ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½È­
 	//m_fFrame += m_pTextureCom->Get_FrameEnd()  * fTimeDelta;
 
 	//if (m_fFrame >= m_pTextureCom->Get_FrameEnd())
 	//	m_fFrame = 0;
 
-	Motion_Change(fTimeDelta);
+	Motion_Change();
 
 	if (0 >= m_tInfo.iHp)
 	{
-		OnDIe();
+		Dead();
+		m_fRenderOFFTimeAcc += fTimeDelta;
+		if (1.5f < m_fRenderOFFTimeAcc)
+		{
+			m_bRenderOFF = true;
+			m_fRenderOFFTimeAcc = 0.f;
+		}
 		return OBJ_DEAD;
 	}
 
 	OnHit(fTimeDelta);
-	
+
 	if (!m_bHit)
-	{
 		Target_Follow(fTimeDelta);
-	}	
 	return 0;
 }
 
@@ -84,23 +87,8 @@ void CGreenSlime::LateUpdate_Object(void)
 
 void CGreenSlime::Render_Obejct(void)
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-	m_pAnimtorCom->Set_Texture();
-	//m_pTextureCom->Set_Texture((_ulong)m_fFrame);	// ÅØ½ºÃ³ Á¤º¸ ¼¼ÆÃÀ» ¿ì¼±ÀûÀ¸·Î ÇÑ´Ù.
-	m_pBufferCom->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-	CMonster::Render_Obejct();
+	if (!m_bRenderOFF)
+		CMonster::Render_Obejct();
 }
 
 HRESULT CGreenSlime::Add_Component(void)
@@ -153,7 +141,7 @@ HRESULT CGreenSlime::Add_Component(void)
 
 void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 {
-	// ÇÃ·¹ÀÌ¾î µû¶ó°¡±â
+	// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ó°¡±ï¿½
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
 
@@ -166,6 +154,7 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 	if (fDist < 8.f)
 	{
 		m_eCurState = ATTACK;
+		m_pTransCom->Set_Y(m_fHeight);
 		m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
 	}
 	else
@@ -188,8 +177,8 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 
 		D3DXVec3Normalize(&vRight, &vRight);
 		m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
-		
-		//// ¸ó½ºÅÍ ÁÂ¿ì·Î ÀÌµ¿ÇÏ±â
+
+		//// ï¿½ï¿½ï¿½ï¿½ ï¿½Â¿ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï±ï¿½
 		//_vec3		vRight;
 		//m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
 
@@ -210,83 +199,57 @@ void CGreenSlime::OnHit(const _float & fTimeDelta)
 	if (!m_bHit)
 		return;
 
-	m_eCurState = HIT;
+	if (!m_bOneCheck)
+	{
+		m_eCurState = HIT;
+		CMonster::Set_KnockBack();
+		m_bOneCheck = true;
+	}
 
 	m_fHitTimeAcc += fTimeDelta;
-	if (1.f < m_fHitTimeAcc)
+	if (0.7f < m_fHitTimeAcc) // 0.7 > Monster Hit Time
 	{
+		// MinusHp
 		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		m_tInfo.iHp -= pPlayer->Get_PlayerAttack();
+
+		// Initialization
 		m_bHit = false;
+		m_bOneCheck = false;
 		m_fHitTimeAcc = 0.f;
 	}
 }
 
-void CGreenSlime::OnDIe()
+void CGreenSlime::Dead()
 {
+	if (m_bDead) // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+		return;
+
 	m_eCurState = DIE;
 
-	/*CParticleMgr::GetInstance()->Set_Info(this, 
-		1, 
-		0.1f, 
-		{ 5.f, 5.f, 5.f },
-		0.1f, 
-		{ 1.f,0.f,0.f,0.f },
-		0.5f);*/
-	/*CParticleMgr::GetInstance()->Set_Info(this, 
-		20,
-		1.f, 
-		{ 0.1f, 0.1f, 0.1f },
-		1.f, 
-		{ 1.f,1.f,1.f,1.f });*/
-	/*CParticleMgr::GetInstance()->Set_Info(this, 
-		1, 
+	CParticleMgr::GetInstance()->Set_Info(this,
+		50,
 		0.1f,
-		_vec3({ 1.f, 1.f, 1.f }), 
-		1.f, 
-		D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f },
-		1.f, 
-		false, 
-		false);*/
-	CParticleMgr::GetInstance()->Set_Info(this, 
-		1, 
-		0.1f, 
-		{ 1.f, 1.f, 1.f },
-		1.f, 
-		{ 1.f,0.f,0.f,1.f },
-		0.5f);
+		{ 0.5f, 0.5f, 0.5f },
+		1.f,
+		{ 0.f, 1.f, 0.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	if (!m_bItemTemp)
-	{
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
-		m_bItemTemp = true;
-	}
+	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+
+	m_pColliderCom->Set_Free(true);
+	m_bDead = true;
 }
 
 void CGreenSlime::CollisionEvent(CGameObject* pObj)
 {
-	//CPlayer*		pPlayer = dynamic_cast<CPlayer*>(pObj);
-	////CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
 
-	//if (pObj == pPlayer && nullptr != pPlayer)
-	//{
-	//	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-	//	pPlayer->OnHit(m_tInfo.iAttack);
-	//}
-	//else
-	//	m_bHit = true;
-
-
-
-	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
-	//{
-	//	if (nullptr != bullet)
-	//		m_bHit = true;
-	//}
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+	if(pPlayer != pObj)
+		m_bHit = true;		
 }
 
-void CGreenSlime::Motion_Change(const _float& fTimeDelta)
+void CGreenSlime::Motion_Change()
 {
 	if (m_ePreState != m_eCurState)
 	{

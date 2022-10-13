@@ -18,8 +18,9 @@ public:
 	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
 private:
-	virtual HRESULT		Add_Component(void) override;
-	
+	virtual HRESULT		Add_Component(void)						override;
+	//virtual void		Dead()									override;
+
 	void				SKill_Update(const _float & fTimeDelta);
 	void				SKillBullet_Update(const _float& fTimeDelta);
 	void				SKillStun_Update(const _float& fTimeDelta);

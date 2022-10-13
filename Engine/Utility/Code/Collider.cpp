@@ -165,7 +165,7 @@ HRESULT CCollider::Ready_Buffer(void)
 
 void CCollider::Render_Buffer(void)
 {
-	static	_bool	bDrawCube = true;
+	static	_bool	bDrawCube = false;
 	static	_bool	bDrawSphere = false;
 
 	if (Key_Down(DIK_F2))

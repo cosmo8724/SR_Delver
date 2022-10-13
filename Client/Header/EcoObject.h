@@ -17,8 +17,8 @@ protected:
 
 public:
 	CTexture*	Get_TextureCom() { return m_pTextureCom; }
-	const _int&	Get_CurrentTexture() { return m_iTexture; }
-	void			Set_CurrentTexture(_int iTexture) { m_iTexture = iTexture; }
+	const _uint&	Get_CurrentTexture() { return m_iTexture; }
+	void			Set_CurrentTexture(_uint iTexture) { m_iTexture = iTexture; }
 	void	PlusTexture() { if (m_iTexture < m_pTextureCom->Get_FrameEnd()) m_iTexture++; }
 	void	MinusTexture() { if (m_iTexture > 0) m_iTexture--; }
 
@@ -45,7 +45,7 @@ protected:
 	//_bool				m_bDead			= false;
 	_matrix			m_matWorld;
 	_int				m_iTransparency	= 255;
-	_int				m_iTexture = 0;
+	_uint				m_iTexture = 0;
 	_bool				m_bClone = false;
 	_matrix				m_matOldBill;
 

@@ -165,7 +165,7 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 			GetClientRect(g_hWnd, &rt);
 			POINT lt{ rt.left, rt.top };
 			ClientToScreen(g_hWnd, &lt);
-			ImGuizmo::SetRect(lt.x, lt.y, io.DisplaySize.x, io.DisplaySize.y);
+			ImGuizmo::SetRect(float(lt.x), float(lt.y), io.DisplaySize.x, io.DisplaySize.y);
 
 			ImGuizmo::Manipulate(matView, matProj, CurGuizmoType, ImGuizmo::WORLD, matWorld);
 			ImGuizmo::DecomposeMatrixToComponents(matWorld, vPos, vAngle, vScale);

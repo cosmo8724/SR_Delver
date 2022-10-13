@@ -4,6 +4,11 @@
 #include "Export_Function.h"
 #include "MiniMap.h"
 
+// Ãæµ¹
+#include "Player.h"
+#include "ParticleMgr.h"
+#include "ItemMgr.h"
+
 CBrownBat::CBrownBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
 	, m_ePreState(MOTION_END)
@@ -12,6 +17,8 @@ CBrownBat::CBrownBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
 {
+	m_ObjTag = L"BrownBat";
+
 }
 
 CBrownBat::~CBrownBat()
@@ -48,21 +55,25 @@ _int CBrownBat::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 3.f);
-	Motion_Change(fTimeDelta);
+	Motion_Change();
+
 
 	if (0 >= m_tInfo.iHp)
 	{
-		m_eCurState = DIE;
-		m_pTransCom->Set_Y(1.f);
+		Dead();
+		m_fRenderOFFTimeAcc += fTimeDelta;
+		if (1.5f < m_fRenderOFFTimeAcc)
+		{
+			m_bRenderOFF = true;
+			m_fRenderOFFTimeAcc = 0.f;
+		}
 		return OBJ_DEAD;
 	}
 
 	OnHit(fTimeDelta);
 
 	if (!m_bHit)
-	{
 		Target_Follow(fTimeDelta);
-	}
 
 	return 0;
 }
@@ -75,22 +86,8 @@ void CBrownBat::LateUpdate_Object(void)
 
 void CBrownBat::Render_Obejct(void)
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-	m_pAnimtorCom->Set_Texture();
-	m_pBufferCom->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-	CMonster::Render_Obejct();
+	if (!m_bRenderOFF)
+		CMonster::Render_Obejct();
 }
 
 HRESULT CBrownBat::Add_Component(void)
@@ -179,23 +176,56 @@ void CBrownBat::OnHit(const _float & fTimeDelta)
 	if (!m_bHit)
 		return;
 
-	m_eCurState = HIT;
+	if (!m_bOneCheck)
+	{
+		m_eCurState = HIT;
+		CMonster::Set_KnockBack();
+		m_bOneCheck = true;
+	}
 
 	m_fHitTimeAcc += fTimeDelta;
-	if (1.f < m_fHitTimeAcc)
+	if (0.7f < m_fHitTimeAcc) // 0.7 > Monster Hit Time
 	{
-		m_tInfo.iHp--;
+		// MinusHp
+		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		m_tInfo.iHp -= pPlayer->Get_PlayerAttack();
+
+		// Initialization
 		m_bHit = false;
+		m_bOneCheck = false;
 		m_fHitTimeAcc = 0.f;
 	}
 }
 
-void CBrownBat::CollisionEvent(CGameObject * pObj)
+void CBrownBat::Dead()
 {
-	m_bHit = true;
+	if (m_bDead)
+		return;
+
+	m_eCurState = DIE;
+
+	CParticleMgr::GetInstance()->Set_Info(this,
+		50,
+		0.1f,
+		{ 0.5f, 0.5f, 0.5f },
+		1.f,
+		{ 1.f, 0.f, 0.f, 1.f });
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+
+	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+
+	m_pColliderCom->Set_Free(true);
+	m_bDead = true;
 }
 
-void CBrownBat::Motion_Change(const _float& fTimeDelta)
+void CBrownBat::CollisionEvent(CGameObject* pObj)
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+	if (pPlayer != pObj)
+		m_bHit = true;
+}
+
+void CBrownBat::Motion_Change()
 {
 	if (m_ePreState != m_eCurState)
 	{
@@ -206,17 +236,14 @@ void CBrownBat::Motion_Change(const _float& fTimeDelta)
 			break;
 
 		case ATTACK:
-			m_pAnimtorCom->Play_Animation(fTimeDelta);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatATTACK_Texture");
 			break;
 
 		case HIT:
-			m_pAnimtorCom->Play_Animation(fTimeDelta);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatHIT_Texture");
 			break;
 
 		case DIE:
-			m_pAnimtorCom->Play_Animation(fTimeDelta);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatDIE_Texture");
 			break;
 		}

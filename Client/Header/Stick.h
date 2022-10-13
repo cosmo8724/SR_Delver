@@ -21,22 +21,19 @@ public:
 	virtual void		Render_Obejct(void)						override;
 	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
-public:
-	void				Reset();
-	void				Set_Fire(_bool _bFire) { m_bFire = _bFire; m_bDead = false; }
-
 private:
-	virtual HRESULT		Add_Component(void) override;
+	virtual HRESULT		Add_Component(void)						override;
 	virtual void		Target_Follow(const _float& fTimeDelta) override;
+	virtual void		OnHit(const _float& fTimeDelta)			override;
+	virtual void		Dead()									override;
 
 	void				Skill_Update(const _float& fTimeDelta);
 	void				SkillMove_Update(const _float& fTimeDelta);
 	void				SkillAttack_Update(const _float& fTimeDelta);
 	void				SkillAnger_Update(const _float& fTimeDelta);
+	void				Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ);
 
-
-
-	void				Motion_Change(const _float& fTimeDelta);
+	void				Motion_Change();
 
 private:
 	STATE				m_ePreState;
@@ -44,21 +41,12 @@ private:
 
 	SKILL				m_eSkill;
 
-	_uint				m_iTransparency;
+	_vec3				m_OriginalPos;
 
-	// 분신 변수
-	_int				m_iAngerCount = 0;
-	_float				m_fFrame = 0.f;
-	//_bool				m_bDead = false;
-	_bool				m_bFire = false;
-	_bool				m_bReady = false;
-	_float				m_fLifeTime = 0.f;
+	_bool				m_bParticle = false;
 
 	//Timer
-	_float				m_fTimeAcc;
-	_float				m_fTransparencyTimeAcc;
-	_float				m_AngerTimeAcc;
-
+	_float				m_fMoveTimeAcc;
 
 public:
 	static CStick*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iAngerCount);

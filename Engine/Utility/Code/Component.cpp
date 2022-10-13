@@ -13,7 +13,7 @@ CComponent::CComponent(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_bClone(false)
 {
 	if (m_pGraphicDev)
-		m_pGraphicDev->AddRef();
+ 		m_pGraphicDev->AddRef();
 }
 
 CComponent::CComponent(const CComponent & rhs)

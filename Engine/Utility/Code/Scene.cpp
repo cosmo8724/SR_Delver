@@ -1,4 +1,5 @@
 #include "..\..\Header\Scene.h"
+#include "SoundMgr.h"
 
 USING(Engine)
 
@@ -71,6 +72,8 @@ void CScene::LateUpdate_Scene(void)
 
 void Engine::CScene::Free(void)
 {
+	CSoundMgr::GetInstance()->StopAllSound();
+
 	for_each(m_mapLayer.begin(), m_mapLayer.end(), CDeleteMap());
 	m_mapLayer.clear();
 

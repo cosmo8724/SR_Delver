@@ -6,6 +6,9 @@
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 #include "CameraMgr.h"
+#include "MonsterMgr.h"
+#include "NPCMgr.h"
+#include "UIMgr.h"
 
 USING(Engine)
 CMainApp::CMainApp()	
@@ -55,8 +58,7 @@ void CMainApp::LateUpdate_MainApp(void)
 }
 
 void CMainApp::Render_MainApp(void)
-{
-	
+{	
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	Engine::Render_Begin(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
@@ -87,6 +89,9 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 	//FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"µ¸¿ò", 7, 18, FW_NORMAL), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"±Ã¼­", 7, 18, FW_NORMAL), E_FAIL);
 
+	// FMOD
+	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
+
 	// Init ImGui
 	CImGuiMgr::GetInstance()->DefaultSetting_ImGui(m_pGraphicDev);
 	// *Init ImGui
@@ -116,6 +121,9 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 	CItemMgr::GetInstance()->Ready_ItemMgr(m_pGraphicDev);
 	CParticleMgr::GetInstance()->Ready_ParticleMgr(m_pGraphicDev);
 	CCameraMgr::GetInstance()->Ready_CameraMgr(m_pGraphicDev);
+	CMonsterMgr::GetInstance()->Ready_MonsterMgr(m_pGraphicDev);
+	CNPCMgr::GetInstance()->Ready_NPC(m_pGraphicDev);
+	CUIMgr::GetInstance()->Ready_UI(m_pGraphicDev);
 
 	return S_OK;
 }
@@ -142,6 +150,9 @@ void CMainApp::Free(void)
 	CItemMgr::DestroyInstance();
 	CParticleMgr::DestroyInstance();
 	CCameraMgr::DestroyInstance();
+	CMonsterMgr::DestroyInstance();
+	CNPCMgr::DestroyInstance();
+	CUIMgr::DestroyInstance();
 
 	Safe_Release(m_pGraphicDev);
 	Safe_Release(m_pDeviceClass);

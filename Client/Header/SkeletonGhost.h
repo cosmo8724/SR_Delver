@@ -18,11 +18,13 @@ public:
 	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
 private:
-	virtual HRESULT		Add_Component(void) override;
-	virtual void		Target_Follow(const _float& fTimeDelta);
-	void				Billboard();
+	virtual HRESULT		Add_Component(void)						override;
+	virtual void		Target_Follow(const _float& fTimeDelta)	override;
+	//virtual void		OnHit(const _float& fTimeDelta)			override;
+	//virtual void		Dead()									override;
 
 
+	void				Billboard()								override;
 	void				Circle();
 	
 	void				Motion_Change(const _float& fTimeDelta);

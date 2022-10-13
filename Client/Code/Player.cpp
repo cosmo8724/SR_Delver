@@ -15,6 +15,7 @@
 #include "CameraMgr.h"
 #include "BonFire.h"
 
+#include "Monster.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -102,6 +103,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	Jump(fTimeDelta);
 	
 
+	KnockBack(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
@@ -214,22 +216,18 @@ HRESULT CPlayer::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// �������� ���� ������Ʈ
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// �ؽ��� �İ�ü ���� ������Ʈ
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_PlayerTexture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_PlayerTexture", pComponent });
 
-	// ������� ��ȯ Ʈ������ ������Ʈ
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
-	// ����Ÿ��� ��� ������Ʈ
 	pComponent = m_pCalculatorCom = dynamic_cast<CCalculator*>(Clone_Proto(L"Proto_CalculatorCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_CalculatorCom", pComponent });
@@ -407,6 +405,10 @@ _float CPlayer::Get_Height()
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
+	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	if (pMonster == pOtherObj)
+		OnHit(pMonster->Get_MonsterAttack());
+
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
 	{
@@ -417,7 +419,6 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 
 		pInv->Set_Inventory(pImg);
 	}
-
 
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
 	if (pBlock)
@@ -504,10 +505,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 				fDistZ = 0.f;
 		}
 		else
-			return;
-		
-
-		
+			return;		
 
 		_vec3	PlayerLook;
 		m_pTransCom->Get_Info(INFO_LOOK, &PlayerLook);
@@ -534,28 +532,67 @@ void CPlayer::Respawn()
 
 
 
+void CPlayer::KnockBack(const _float & fTimeDelta)
+{
+	if (!m_bKnockBack)
+		return;
+
+	_vec3 vPos, vLook;
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+
+	_float fHeight = Get_Height();
+
+	if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
+	{
+		m_bKnockBack = false;
+		m_pCurrentBlock = nullptr;
+
+		m_eState = PLAYER_GROUND;
+		m_fJTimeDelta = 0.f;
+
+		m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
+		m_fJSpeed = m_fJSpeed0;
+	}
+	else
+	{
+		m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta); // -3.f -> KnockBack Distance
+
+		m_fJSpeed -= m_fAccel;
+		m_pTransCom->Plus_PosY(m_fJSpeed);
+		m_fJTimeDelta += 0.1f;
+	}
 }
 
 void CPlayer::OnHit(_int _HpMinus)
 {
-	if (0 > m_tInfo.iHp)
+	if (0 >= m_tInfo.iHp)
 	{
+		m_bKnockBack = true;
 		m_tInfo.iHp = 0;
 		return;
 	}
 
-	// HitBackGround
-	CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
+	//// HitBackGround
+	//CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
 
-	if (0.3f < InvincibilityTimeAcc)
-		pHitBackGround->Set_HitBackGround(false);
-	else
-		pHitBackGround->Set_HitBackGround(true);
+	//if (0.3f < InvincibilityTimeAcc)
+	//	pHitBackGround->Set_HitBackGround(false);
+	//else
+	//	pHitBackGround->Set_HitBackGround(true);
 
-	// 플레이어는 3초간 무적
-	if (3.f < InvincibilityTimeAcc)
+	// 플레이어는 2초간 무적
+	if (2.f < InvincibilityTimeAcc)
 	{
-		m_bJump = true;
+		//CParticleMgr::GetInstance()->Set_Info(this,
+		//	1,
+		//	1.f,
+		//	{ 1.f, 1.f, 1.f },
+		//	2.f,
+		//	{ 1.f, 0.f, 0.f, 0.01f });
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_7);
+
+		m_bKnockBack = true;
 		m_tInfo.iHp -= _HpMinus;
 		InvincibilityTimeAcc = 0.f;
 	}

@@ -97,9 +97,6 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI">
       <UniqueIdentifier>{0758a204-ed0e-4c65-9180-0770401000fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\00. HealthBar">
-      <UniqueIdentifier>{2c46c06b-f831-4e12-a7db-0af35d00b7f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\98. Tool_Scene">
       <UniqueIdentifier>{ea75e0e8-0c5e-4a5c-b456-b81471342084}</UniqueIdentifier>
     </Filter>
@@ -109,41 +106,8 @@
     <Filter Include="01. Scene\98. Tool_Scene\ParticleTool">
       <UniqueIdentifier>{6e88e087-be33-42b3-beed-f20c9c0f162d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\00. HealthBar\00. HPGuage">
-      <UniqueIdentifier>{3b436b7b-4dc2-4892-b408-ed264f71f6ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\01. QuickSlot">
-      <UniqueIdentifier>{b3af3aed-9c25-4989-bd32-817c324163ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\02. Inventory">
-      <UniqueIdentifier>{b56b08a5-9d99-46e0-b416-efa83ef3cda5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\03. EquipWindow">
-      <UniqueIdentifier>{cd74d213-132b-40a3-bc5d-ca800781f4e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\04. TalkWindow">
-      <UniqueIdentifier>{d82f777e-f28d-4ebb-820a-d05174a7b27d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\09. NPC">
       <UniqueIdentifier>{ece81f9f-eabb-48ac-a655-651ea4aa0e51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\09. NPC\00. Dog">
-      <UniqueIdentifier>{fdf7a437-d8f0-44fd-aff6-9776c096b308}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\09. NPC\01. GrandFather">
-      <UniqueIdentifier>{9dd2a5c8-5af6-4571-800a-b44c345cf790}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\09. NPC\02. GuitarMan">
-      <UniqueIdentifier>{64b1f1dc-5b43-4df4-b85a-ca178f18cbc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\09. NPC\03. HoodMan">
-      <UniqueIdentifier>{eb93b291-017a-433b-95f0-24f8bcff9ce2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\09. NPC\04. WinkMan">
-      <UniqueIdentifier>{0e134f05-7d6f-4bcf-a278-72cb98337f80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\09. NPC\04. SmileMan">
-      <UniqueIdentifier>{ce6c1cbb-d9dc-49e6-8254-79a480d917ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\00. For_Logo\01. FontLogo">
       <UniqueIdentifier>{1a45a041-662b-4c58-93fe-b2f277d25ffd}</UniqueIdentifier>
@@ -151,14 +115,8 @@
     <Filter Include="02. GameObject\00. For_Logo\02. FontStart">
       <UniqueIdentifier>{a7ef1797-7010-4732-a2b8-22f0444e7528}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\05. Map">
-      <UniqueIdentifier>{bf3b0050-192f-4082-96d8-2e038e1d5adc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist">
       <UniqueIdentifier>{2d992638-c057-4820-a3c2-6fb05be23569}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\Manager">
-      <UniqueIdentifier>{ddb1d0bd-3536-442c-880a-032c94a7112c}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\01. Weapon">
       <UniqueIdentifier>{0b7afc21-769a-4ff7-b426-671a3dde5d8d}</UniqueIdentifier>
@@ -174,9 +132,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\05. InvImage">
       <UniqueIdentifier>{0e4bafe4-b250-4dd8-aa8f-a7f1a45768f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\05. CrossHair">
-      <UniqueIdentifier>{8b76c546-8740-4382-8339-a260941f8583}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf">
       <UniqueIdentifier>{fde1a060-1e3e-410e-b32d-020c9302a2fc}</UniqueIdentifier>
@@ -226,17 +181,8 @@
     <Filter Include="02. GameObject\01. For_Stage\02. Monster\08. SkeletonGhost">
       <UniqueIdentifier>{7bfd22dd-8524-4821-a8af-1faf60d017b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\06. MiniMap">
-      <UniqueIdentifier>{15a9784d-142f-4831-97d4-2aeb67c7edad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon">
-      <UniqueIdentifier>{424aea31-d71b-43a1-b988-ff83081e05cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\98. Tool_Scene\ObjectTool">
       <UniqueIdentifier>{eea8e898-3bef-48e3-b45f-4dc259f2193b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\07. CrossHair">
-      <UniqueIdentifier>{3c39e0b8-07c9-4dec-8fe3-8da03ad038ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject">
       <UniqueIdentifier>{62f9a876-dbd3-4e16-912e-3d77abd8d56a}</UniqueIdentifier>
@@ -258,9 +204,6 @@
     </Filter>
     <Filter Include="02. GameObject\02. For_Public\02. ObjectCamera">
       <UniqueIdentifier>{3c5febbc-f7d4-4572-9420-091ba4473abb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\08. HitBackGround">
-      <UniqueIdentifier>{cc1ac141-c8c0-41e4-a35c-d1f2c8c469e3}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\03. Armor">
       <UniqueIdentifier>{325a6f15-9fb1-4333-9660-7d50586dbfc9}</UniqueIdentifier>
@@ -303,6 +246,66 @@
     </Filter>
     <Filter Include="97. Manager">
       <UniqueIdentifier>{99117cfd-19f6-4c2b-bf10-7a88c66cc98f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\09. NPC\01. Dog">
+      <UniqueIdentifier>{fdf7a437-d8f0-44fd-aff6-9776c096b308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\09. NPC\02. GrandFather">
+      <UniqueIdentifier>{9dd2a5c8-5af6-4571-800a-b44c345cf790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\09. NPC\03. GuitarMan">
+      <UniqueIdentifier>{64b1f1dc-5b43-4df4-b85a-ca178f18cbc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\09. NPC\04. HoodMan">
+      <UniqueIdentifier>{eb93b291-017a-433b-95f0-24f8bcff9ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\09. NPC\05. SmileMan">
+      <UniqueIdentifier>{ce6c1cbb-d9dc-49e6-8254-79a480d917ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\09. NPC\06. WinkMan">
+      <UniqueIdentifier>{0e134f05-7d6f-4bcf-a278-72cb98337f80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\09. NPC\00. Manager">
+      <UniqueIdentifier>{943e564a-55e4-4011-a658-eb4d235532fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\01. HealthBar">
+      <UniqueIdentifier>{2c46c06b-f831-4e12-a7db-0af35d00b7f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\01. HealthBar\00. HPGuage">
+      <UniqueIdentifier>{3b436b7b-4dc2-4892-b408-ed264f71f6ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\02. QuickSlot">
+      <UniqueIdentifier>{b3af3aed-9c25-4989-bd32-817c324163ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\03. Inventory">
+      <UniqueIdentifier>{b56b08a5-9d99-46e0-b416-efa83ef3cda5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\04. EquipWindow">
+      <UniqueIdentifier>{cd74d213-132b-40a3-bc5d-ca800781f4e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\05. TalkWindow">
+      <UniqueIdentifier>{d82f777e-f28d-4ebb-820a-d05174a7b27d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\06. CrossHair">
+      <UniqueIdentifier>{8b76c546-8740-4382-8339-a260941f8583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\07. Map">
+      <UniqueIdentifier>{bf3b0050-192f-4082-96d8-2e038e1d5adc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\08. MiniMap">
+      <UniqueIdentifier>{15a9784d-142f-4831-97d4-2aeb67c7edad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\08. MiniMap\Icon">
+      <UniqueIdentifier>{424aea31-d71b-43a1-b988-ff83081e05cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\09. HitBackGround">
+      <UniqueIdentifier>{cc1ac141-c8c0-41e4-a35c-d1f2c8c469e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\00. Manager">
+      <UniqueIdentifier>{d0b8c2b9-44d3-421d-9a96-5ed255dc04df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\Manager">
+      <UniqueIdentifier>{ddb1d0bd-3536-442c-880a-032c94a7112c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -421,7 +424,7 @@
       <Filter>02. GameObject\01. For_Stage\02. Monster\03. Fist</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\HealthBar.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\00. HealthBar</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\01. HealthBar</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Tool_Scene.h">
       <Filter>01. Scene\98. Tool_Scene</Filter>
@@ -442,40 +445,40 @@
       <Filter>02. GameObject\01. For_Stage\02. Monster\04. BlueBat</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\HPGauge.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\00. HealthBar\00. HPGuage</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\01. HealthBar\00. HPGuage</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\QuickSlot.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\01. QuickSlot</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\02. QuickSlot</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Inventory.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\02. Inventory</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\03. Inventory</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\EquipWindow.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\03. EquipWindow</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\04. EquipWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Dog.h">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\00. Dog</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\01. Dog</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\GrandFather.h">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\01. GrandFather</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\02. GrandFather</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\TalkWindow.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\04. TalkWindow</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\05. TalkWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\GuitarMan.h">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\02. GuitarMan</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\03. GuitarMan</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\BrownBat.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\05. BrownBat</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\HoodMan.h">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\03. HoodMan</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\04. HoodMan</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SmileMan.h">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\04. SmileMan</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\05. SmileMan</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\WinkMan.h">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\04. WinkMan</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\06. WinkMan</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\FontLogo.h">
       <Filter>02. GameObject\00. For_Logo\01. FontLogo</Filter>
@@ -484,7 +487,7 @@
       <Filter>02. GameObject\00. For_Logo\02. FontStart</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MapUI.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\05. Map</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\07. Map</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SongBossBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet</Filter>
@@ -525,9 +528,6 @@
     <ClInclude Include="..\Header\FistBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\MonsterMgr.h">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\00. Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\SongBossStun.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Strun</Filter>
     </ClInclude>
@@ -541,16 +541,13 @@
       <Filter>02. GameObject\01. For_Stage\02. Monster\08. SkeletonGhost</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\08. MiniMap</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Icon.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\08. MiniMap\Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ObjectTool.h">
       <Filter>01. Scene\98. Tool_Scene\ObjectTool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CrossHair.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\07. CrossHair</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\EcoObject.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
@@ -577,7 +574,7 @@
       <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\HitBackGround.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\08. HitBackGround</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\09. HitBackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Armor.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Armor</Filter>
@@ -599,6 +596,18 @@
     </ClInclude>
     <ClInclude Include="..\Header\CurlingMgr.h">
       <Filter>97. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MonsterMgr.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\00. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\NPCMgr.h">
+      <Filter>02. GameObject\01. For_Stage\09. NPC\00. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CrossHair.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\06. CrossHair</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIMgr.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\00. Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -699,7 +708,7 @@
       <Filter>02. GameObject\01. For_Stage\02. Monster\03. Fist</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\HealthBar.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\00. HealthBar</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\01. HealthBar</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Tool_Scene.cpp">
       <Filter>01. Scene\98. Tool_Scene</Filter>
@@ -720,40 +729,40 @@
       <Filter>02. GameObject\01. For_Stage\02. Monster\04. BlueBat</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\HPGauge.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\00. HealthBar\00. HPGuage</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\01. HealthBar\00. HPGuage</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\QuickSlot.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\01. QuickSlot</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\02. QuickSlot</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Inventory.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\02. Inventory</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\03. Inventory</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\EquipWindow.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\03. EquipWindow</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\04. EquipWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Dog.cpp">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\00. Dog</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\01. Dog</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GrandFather.cpp">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\01. GrandFather</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\02. GrandFather</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\TalkWindow.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\04. TalkWindow</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\05. TalkWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GuitarMan.cpp">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\02. GuitarMan</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\03. GuitarMan</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\BrownBat.cpp">
       <Filter>02. GameObject\01. For_Stage\02. Monster\05. BrownBat</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\HoodMan.cpp">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\03. HoodMan</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\04. HoodMan</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SmileMan.cpp">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\04. SmileMan</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\05. SmileMan</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\WinkMan.cpp">
-      <Filter>02. GameObject\01. For_Stage\09. NPC\04. WinkMan</Filter>
+      <Filter>02. GameObject\01. For_Stage\09. NPC\06. WinkMan</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\FontLogo.cpp">
       <Filter>02. GameObject\00. For_Logo\01. FontLogo</Filter>
@@ -762,7 +771,7 @@
       <Filter>02. GameObject\00. For_Logo\02. FontStart</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MapUI.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\05. Map</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\07. Map</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SongBossBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet</Filter>
@@ -803,9 +812,6 @@
     <ClCompile Include="..\Code\FistBulle.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\MonsterMgr.cpp">
-      <Filter>02. GameObject\01. For_Stage\02. Monster\00. Manager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\SongBossStun.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Strun</Filter>
     </ClCompile>
@@ -819,16 +825,13 @@
       <Filter>02. GameObject\01. For_Stage\02. Monster\08. SkeletonGhost</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MiniMap.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\08. MiniMap</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Icon.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\06. MiniMap\Icon</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\08. MiniMap\Icon</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ObjectTool.cpp">
       <Filter>01. Scene\98. Tool_Scene\ObjectTool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CrossHair.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\07. CrossHair</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\EcoObject.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject</Filter>
@@ -855,7 +858,7 @@
       <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\HitBackGround.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\08. HitBackGround</Filter>
+      <Filter>02. GameObject\01. For_Stage\99. UI\09. HitBackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Armor.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Armor</Filter>
@@ -877,6 +880,18 @@
     </ClCompile>
     <ClCompile Include="..\Code\CurlingMgr.cpp">
       <Filter>97. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MonsterMgr.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\00. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\NPCMgr.cpp">
+      <Filter>02. GameObject\01. For_Stage\09. NPC\00. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CrossHair.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\06. CrossHair</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIMgr.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\00. Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
