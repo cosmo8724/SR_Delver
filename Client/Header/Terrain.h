@@ -33,7 +33,7 @@ private:
 
 private:
 	CTerrainTex*		m_pBufferCom = nullptr;
-	CTransform*			m_pTransCom = nullptr;
+	CTransform*		m_pTransCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
 
 	_vec3				m_vDirection;
@@ -44,4 +44,3 @@ public:
 	static CTerrain*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void	Free(void);
 };
-

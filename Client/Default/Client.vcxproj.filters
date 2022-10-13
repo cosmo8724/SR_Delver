@@ -289,6 +289,9 @@
     <Filter Include="02. GameObject\01. For_Stage\06. Item\08. Shield">
       <UniqueIdentifier>{417ab719-2141-4004-9e9e-3ada34cd58bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. For_Public\04. BlockBuffer">
+      <UniqueIdentifier>{581df993-7ceb-485d-a437-67400f10e345}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -563,7 +566,7 @@
     </ClInclude>
     <ClInclude Include="..\Header\HitBackGround.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\08. HitBackGround</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Header\Armor.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Armor</Filter>
     </ClInclude>
@@ -578,6 +581,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\CameraMgr.h">
       <Filter>02. GameObject\02. For_Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\BlockVIBuffer.h">
+      <Filter>02. GameObject\02. For_Public\04. BlockBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -850,6 +856,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\CameraMgr.cpp">
       <Filter>02. GameObject\02. For_Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\BlockVIBuffer.cpp">
+      <Filter>02. GameObject\02. For_Public\04. BlockBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

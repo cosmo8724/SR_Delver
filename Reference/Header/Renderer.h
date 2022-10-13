@@ -23,6 +23,7 @@ public:
 
 private:
 	list<CGameObject*>			m_RenderGroup[RENDER_END];
+	_uint							m_iBlockCount = 0;
 
 private:
 	virtual CComponent*	Clone(void) { return nullptr; }

@@ -6,6 +6,7 @@
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 #include "CameraMgr.h"
+#include "BlockVIBuffer.h"
 
 USING(Engine)
 CMainApp::CMainApp()	
@@ -145,6 +146,7 @@ void CMainApp::Free(void)
 	CItemMgr::DestroyInstance();
 	CParticleMgr::DestroyInstance();
 	CCameraMgr::DestroyInstance();
+	CBlockVIBuffer::DestroyInstance();
 
 	Safe_Release(m_pGraphicDev);
 	Safe_Release(m_pDeviceClass);
