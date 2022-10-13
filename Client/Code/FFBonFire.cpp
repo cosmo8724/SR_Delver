@@ -1,82 +1,38 @@
 #include "stdafx.h"
-#include "Potion.h"
+#include "FFBonFire.h"
 #include "Export_Function.h"
-#include "Player.h"
-
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev)
+/*
+CBonFire::CBonFire(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	:CItem(pGraphicDev)
 {
 	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
-}
-
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
-	:CItem(pGraphicDev)
-{
 	m_vPos = vPos;
-	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
-	m_eItemType = ITEM_POTION;
-
+	m_ObjTag = L"BonFire";
+	m_eItemType = ITEM_FIRE;
 }
 
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
-	:CItem(pGraphicDev)
-{
-	m_vPos = vPos;
-	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
-	m_iTextureIdx = _eType;
-
-}
-
-CPotion::~CPotion()
+CBonFire::~CBonFire()
 {
 }
 
-HRESULT CPotion::Ready_Object(void)
+HRESULT CBonFire::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-
 	m_eState = STATE_GROUND;
-	m_tInfo.iAbility = 10;
-	m_eItemType = ITEM_POTION;
 	return S_OK;
 }
 
-_int CPotion::Update_Object(const _float & fTimeDelta)
+_int CBonFire::Update_Object(const _float & fTimeDelta)
 {
 	if (m_eState == STATE_INV)
 		return 0;
 
-	if (m_bDead)
-		return OBJ_DEAD;
-
 	int iResult = CItem::Update_Object(fTimeDelta);
 
-	if (STATE_EQUIP == m_eState)
-	{
-		m_fDotTime += fTimeDelta;
-		if (1.f < m_fDotTime)
-		{
-			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-			
-			// sh_Test
-			PLAYERINFO tPlayerInfo = pPlayer->Get_PlayerInfo();
-			if (tPlayerInfo.iHp >= tPlayerInfo.iHpMax)
-				return iResult;
-			
-			pPlayer->Set_HpPlus();
-			m_iDot++;
-			m_fDotTime = 0.f;
-		}
-	}
-	else if (STATE_GROUND == m_eState)
+	if (STATE_GROUND == m_eState)
 	{
 		m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
-		m_pTransCom->Set_Y(m_vPos.y - 0.3f);
 	}
 
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -86,21 +42,17 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 	return iResult;
 }
 
-void CPotion::LateUpdate_Object(void)
+void CBonFire::LateUpdate_Object(void)
 {
 	if (m_eState != STATE_GROUND)
 		return;
-
-	if (m_iDot > m_tInfo.iAbility)
-		m_bDead = true;
 
 	Billboard();
 	CGameObject::LateUpdate_Object();
 }
 
-void CPotion::Render_Obejct(void)
+void CBonFire::Render_Obejct(void)
 {
-
 	if (m_eState != STATE_GROUND)
 		return;
 
@@ -110,7 +62,7 @@ void CPotion::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	m_pTextureCom->Set_Texture(m_iTextureIdx);
+	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -127,7 +79,7 @@ void CPotion::Render_Obejct(void)
 #endif
 }
 
-HRESULT CPotion::Add_Component(void)
+HRESULT CBonFire::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -137,10 +89,10 @@ HRESULT CPotion::Add_Component(void)
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
 	// 텍스쳐 컴객체 컴포넌트
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Potion_Texture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Key_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Potion_Texture", pComponent });
-	m_textureTag = L"Proto_Potion_Texture";
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Key_Texture", pComponent });
+	m_textureTag = L"Proto_Key_Texture";
 
 	// 월드행렬 컴포넌트
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
@@ -155,10 +107,9 @@ HRESULT CPotion::Add_Component(void)
 	return S_OK;
 }
 
-
-CPotion * CPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
+CBonFire * CBonFire::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CPotion*	pInstance = new CPotion(pGraphicDev, vPos, _eType);
+	CBonFire*	pInstance = new CBonFire(pGraphicDev, vPos);
 	if (FAILED(pInstance->Ready_Object()))
 	{
 		Safe_Release(pInstance);
@@ -167,17 +118,19 @@ CPotion * CPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType
 	return pInstance;
 }
 
-void CPotion::Free(void)
+void CBonFire::Free(void)
 {
 	CGameObject::Free();
+
 }
 
-void CPotion::CollisionEvent(CGameObject * pObj)
+void CBonFire::CollisionEvent(CGameObject * pObj)
 {
 	if (STATE_GROUND == m_eState)
 	{
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
 	}
-
 }
+
+*/

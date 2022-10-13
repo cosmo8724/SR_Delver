@@ -3,6 +3,10 @@
 #include "Camera.h"
 #include "Engine_Include.h"
 
+BEGIN(Engine)
+class CTransform;
+END
+
 class CStaticCamera : public Engine::CCamera
 {
 private:
@@ -22,6 +26,9 @@ public:
 	virtual _int Update_Object(const _float& fTimeDelta) override;
 
 	virtual void LateUpdate_Object(void) override;
+	virtual	void Reset() {
+		CCamera::Reset();
+	}
 
 private:
 	void		Key_Input(const _float& fTimeDelta);
@@ -46,7 +53,8 @@ private:
 	_bool		m_bFix = true;
 
 
-	//_bool		m_bSwitch = false;
+	// Releated to Motion
+	CTransform* m_pPlayerTransCom = nullptr;
 
 public:
 	static CStaticCamera*		Create(LPDIRECT3DDEVICE9 pGraphicDev,

@@ -12,6 +12,8 @@ CTransform::CTransform()
 {
 	ZeroMemory(m_vInfo, sizeof(m_vInfo));
 	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixIdentity(&m_matOldBill);
+
 }
 
 
@@ -26,6 +28,7 @@ Engine::CTransform::CTransform(const CTransform& rhs)
 
 	memcpy(m_matWorld, rhs.m_matWorld, sizeof(_matrix));
 	
+	memcpy(m_matOldBill, rhs.m_matOldBill, sizeof(_matrix));
 
 
 }
@@ -110,10 +113,23 @@ void CTransform::Revolution(const _vec3* pCenter, _matrix _matView, _float fAngl
 	//m_vInfo[INFO_POS] = { 50.f, 5.f ,  50.f };
 
 	// ºôº¸µå
-	_matrix		matBill;
-	D3DXMatrixIdentity(&matBill);
-	memcpy(&matBill, &_matView, sizeof(_matrix));
-	memset(&matBill._41, 0, sizeof(_vec3));
+	_matrix matBill;
+	if (_matView._21 > 0.f)
+	{
+		matBill = m_matOldBill;
+	}
+	else
+	{
+		D3DXMatrixIdentity(&matBill);
+		matBill._11 = _matView._11;
+		matBill._13 = _matView._13;
+		matBill._31 = _matView._31;
+		matBill._33 = _matView._33;
+
+		m_matOldBill = matBill;
+	}
+
+
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 

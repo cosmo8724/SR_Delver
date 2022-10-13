@@ -32,6 +32,8 @@ public:
 	ITEMTYPE	Get_ItemType() { return m_eItemType; }
 	ITEMSTATE	Get_State() { return m_eState; }
 
+	void		Billboard();
+
 protected:
 	CRcTex*			m_pBufferCom = nullptr;
 	CTexture*		m_pTextureCom = nullptr;
@@ -55,6 +57,10 @@ protected:
 	ITEMTYPE		m_eItemType = ITEM_END;
 	ITEMINFO		m_tInfo;
 	//_bool			m_bDead = false;
+
+	_matrix			m_matOldBill;
+	_matrix			m_matWorld;
+
 };
 
 END

@@ -35,6 +35,8 @@ protected:
 
 	_bool					m_bDetected = false;
 	_bool					m_bCreateIcon = false;
+
+	_matrix				m_matOldBill;
 };
 
 END

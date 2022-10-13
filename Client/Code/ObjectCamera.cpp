@@ -38,8 +38,9 @@ _int CObjectCamera::Update_Object(const _float & fTimeDelta)
 
 
 	Target_Renewal();
+	DeadMotion();
 
-	Revolution();
+	//Revolution();
 
 
 	_int iExit = CCamera::Update_Object(fTimeDelta);
@@ -61,33 +62,68 @@ void CObjectCamera::Target_Renewal(void)
 		return;
 
 
-	CTransform* pTransform = dynamic_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK(pTransform);
+	m_pTargetTransCom = dynamic_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(m_pTargetTransCom);
 
 	_vec3   vPos;
-	pTransform->Get_Info(INFO_POS, &vPos);
+	m_pTargetTransCom->Get_Info(INFO_POS, &vPos);
 
 	_vec3   vLook;
-	pTransform->Get_Info(INFO_LOOK, &vLook);
+	m_pTargetTransCom->Get_Info(INFO_LOOK, &vLook);
 	D3DXVec3Normalize(&vLook, &vLook);
 
-	m_vEye = vPos	+ m_fEyeDist * vLook;
-	m_vAt = vPos	+ m_fAtDist	* vLook;
+	//m_vEye = vPos	+ m_fEyeDist * vLook;
+	m_vAt = vPos+ m_fAtDist	* vLook;
 
-	//m_vEye = vPos - 5.f * vLook;
-	//m_vAt = vPos;
+	_matrix matRot, matWorld, matTrans, matPos;
+	D3DXMatrixTranslation(&matTrans, m_fEyeDist*vLook.x, m_fEyeDist*vLook.y, m_fEyeDist*vLook.z);
+	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
+	
+	D3DXMatrixIdentity(&matRot);
+	if (m_fCurAngle < m_fRevAngle)
+	{
+		m_fCurAngle += 5.f;
+		D3DXMatrixRotationY(&matRot, D3DXToRadian(m_fCurAngle));
+	}
 
+	matWorld = matTrans * matRot * matPos;
+
+	m_vEye = { 0.f,0.f,0.f };
+	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matWorld);
+
+
+}
+
+void CObjectCamera::DeadMotion()
+{
+	if (true == m_bDeadMotion)
+	{
+		_vec3 vLook;
+		m_pTargetTransCom->Get_Info(INFO_LOOK,&vLook);
+		D3DXVec3Normalize(&vLook, &vLook);
+
+		_matrix matRot;
+		m_fCurAngle += 1.f;
+		if (m_fCurAngle >= 89.f)
+		{
+			m_fCurAngle = 89.f;
+			//m_bDeadMotion = false;
+		}
+		D3DXMatrixRotationAxis(&matRot, &vLook, D3DXToRadian(m_fCurAngle));
+
+		_vec3 vUp = { 0.f, 1.f, 0.f };
+		D3DXVec3TransformCoord(&m_vUp, &vUp, &matRot);
+		//m_vUp = { -1.f, 0.f, 0.f };
+	}
 }
 
 void CObjectCamera::Revolution()
 {
-	if (m_fCurAngle < m_fRevAngle)
-	{
-		_matrix matRot;
-		m_fCurAngle += 0.5f;
-		D3DXMatrixRotationY(&matRot, D3DXToRadian(m_fCurAngle));
-		D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matRot);
-	}
+	//if (m_fCurAngle < m_fRevAngle)
+	//{
+	//	m_fCurAngle += 0.5f;
+	//	D3DXMatrixRotationY(&matRot, D3DXToRadian(m_fCurAngle));
+	//}
 }
 
 CObjectCamera * CObjectCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3 * pEye, const _vec3 * pAt, const _vec3 * pUp, const _float & fFov, const _float & fAspect, const _float & fNear, const _float & fFar)

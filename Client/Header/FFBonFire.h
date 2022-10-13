@@ -1,12 +1,11 @@
 #pragma once
 #include "Item.h"
-
-class CKey : public CItem
+/*
+class CFFBonFire : public CItem
 {
 private:
-	explicit CKey(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CKey(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
-	virtual ~CKey();
+	explicit CBonFire(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	virtual ~CBonFire();
 
 public:
 	virtual HRESULT		Ready_Object(void)						override;
@@ -18,7 +17,7 @@ private:
 	virtual HRESULT		Add_Component(void);
 
 public:
-	static CKey*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CBonFire*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);
 	virtual void		CollisionEvent(CGameObject *pObj);
 
@@ -27,3 +26,4 @@ private:
 	_matrix				m_matWorld;
 };
 
+*/
