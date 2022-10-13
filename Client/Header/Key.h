@@ -16,7 +16,6 @@ public:
 
 private:
 	virtual HRESULT		Add_Component(void);
-	void				Billboard();
 
 public:
 	static CKey*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

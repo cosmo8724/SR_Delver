@@ -28,7 +28,7 @@ CBlock::CBlock(const CBlock& rhs)
 	m_mapComponent[ID_STATIC].insert({ L"Proto_BlockTexCom", m_pBufferCom });
 
 	switch (m_eCurrentType)
-	{
+																																						{
 	case BLOCK_CAVE:
 		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cave_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Cave_BlockTexture", m_pTextureCom });
@@ -134,7 +134,7 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 					_vec3			vCameraPos = pCamera->Get_Eye();
 
 					_vec3 ParentCubePos = pGameObject->m_pTransCom->Get_Pos();
-					_float fDistance = D3DXVec3Length(&(ParentCubePos - vCameraPos));	// Ä«¸Þ¶ó À§Ä¡ºÎÅÍ Å¥ºê±îÁö °Å¸®
+					_float fDistance = D3DXVec3Length(&(ParentCubePos - vCameraPos));	// Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ Å¥ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
 
 					if (bFirst)
 					{

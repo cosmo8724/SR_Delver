@@ -20,8 +20,9 @@ public:
 	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
 private:
-	virtual HRESULT		Add_Component(void) override;
-	virtual void		OnHit(const _float& fTimeDelta);
+	virtual HRESULT		Add_Component(void)						override;
+	virtual void		OnHit(const _float& fTimeDelta)			override;
+	virtual void		Dead()									override;
 
 	void				Motion_Change();
 

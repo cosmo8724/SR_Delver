@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "MonsterMgr.h"
-
 #include "Export_Function.h"
 
 // Monster
@@ -15,12 +14,6 @@
 // Boss
 #include "SongBoss.h"
 
-#include "SongBoss.h"
-
-#include "Arrow.h"
-#include "Wand.h"
-#include "InvImg.h"
-
 IMPLEMENT_SINGLETON(CMonsterMgr)
 
 CMonsterMgr::CMonsterMgr()
@@ -32,7 +25,7 @@ CMonsterMgr::~CMonsterMgr()
 	Free();
 }
 
-void CMonsterMgr::Ready_ItemMgr(LPDIRECT3DDEVICE9 pGraphicDev)
+void CMonsterMgr::Ready_MonsterMgr(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	m_pGraphicDev = pGraphicDev;
 	m_pGraphicDev->AddRef();
@@ -61,7 +54,7 @@ HRESULT CMonsterMgr::Ready_Proto()
 
 	// BlueBat_Texture 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlueBatIDLE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/BlueBat/Idle/BlueBat%d.png", TEX_NORMAL, 4)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlueBatATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/BlueBat/Attack/BlueBat%d.png", TEX_NORMAL, 10)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlueBatATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/BlueBat/Attack/BlueBat%d.png", TEX_NORMAL, 12)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlueBatHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/BlueBat/Hit/BlueBat%d.png", TEX_NORMAL, 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlueBatDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/BlueBat/Die/BlueBat%d.png", TEX_NORMAL, 3)), E_FAIL);
 
@@ -85,6 +78,12 @@ HRESULT CMonsterMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LeafHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Leaf/Hit/Leaf%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LeafDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Leaf/Die/Leaf%d.png", TEX_NORMAL, 3)), E_FAIL);
 
+	// SkeletonGhost_Texture 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonGhostIDLE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SkeletonGhost/Idle/SkeletonGhost%d.png", TEX_NORMAL, 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonGhostATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SkeletonGhost/Attack/SkeletonGhost%d.png", TEX_NORMAL, 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonGhostHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SkeletonGhost/Hit/SkeletonGhost%d.png", TEX_NORMAL, 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonGhostDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SkeletonGhost/Die/SkeletonGhost%d.png", TEX_NORMAL, 3)), E_FAIL);
+
 	////////////// Boss
 	// SongBoss_Texture 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossMOVE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Move/SongBoss%d.png", TEX_NORMAL, 16)), E_FAIL);
@@ -96,138 +95,71 @@ HRESULT CMonsterMgr::Ready_Proto()
 	return S_OK;
 }
 
-HRESULT CMonsterMgr::Ready_Clone(CLayer * pLayer)
+HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 {
-	return S_OK;
-}
+	CGameObject*		pGameObject = nullptr;
 
-HRESULT CMonsterMgr::Add_GameObject(const _tchar* pLayerTag, const _tchar* objTag, ITEMTYPE eType, _vec3 vPos)
-{
-	wstring tag = objTag;
-	tag += L"%d";
+	//////////// Monster
+	//// GreenSlime
+	//pGameObject = CGreenSlime::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
-	wsprintf(szObjTag, objTag);
-	_tcscat_s(szObjTag, MAX_PATH, L"%d");
-	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
+	//// PinkSlime
+	//pGameObject = CPinkSlime::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
+	//// Fist
+	//pGameObject = CFist::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Fist", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	wstring objName = objTag;
-	if (objName == L"Arrow")
-	{
-		m_vecItemObjTags[eType].push_back(szObjTag);
+	//// BlueBat
+	//pGameObject = CBlueBat::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BlueBat", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-		CGameObject* pGameObject = CArrow::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//// BrownBat
+	//pGameObject = CBrownBat::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+	//// Stick
+	//pGameObject = CStick::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Stick", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-		m_vecItemPool.push_back(pGameObject);
-	}
+	//// Leaf
+	//pGameObject = CLeaf::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	else
-	{
-		delete[] szObjTag;
-		szObjTag = nullptr;
-	}
+	//// SkeletonGhost
+	//pGameObject = CSkeletonGhost::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	return S_OK;
-}
+	//////////////Boss
+	// SongBoss
+	pGameObject = CSongBoss::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
-
-HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYPE eType, _vec3 vPos)
-{
-	wstring tag = objTag;
-	tag += L"%d";
-
-	TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
-	wsprintf(szObjTag, objTag);
-	_tcscat_s(szObjTag, MAX_PATH, L"%d");
-	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
-
-	wstring objName = objTag;
-	if (objName == L"Arrow")
-	{
-		m_vecItemObjTags[eType].push_back(szObjTag);
-
-		CGameObject* pGameObject = CArrow::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
-
-		m_vecItemPool.push_back(pGameObject);
-	}
-	else if (objName == L"Wand")
-	{
-		m_vecItemObjTags[eType].push_back(szObjTag);
-
-		CGameObject* pGameObject = CWand::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
-
-		m_vecItemPool.push_back(pGameObject);
-	}
-
-	else
-	{
-		delete[] szObjTag;
-		szObjTag = nullptr;
-	}
-
-	return S_OK;
-}
-
-CGameObject* CMonsterMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, CItem * pObj)
-{
-	// 오브젝트 명
-	TCHAR*	szObjTag = new TCHAR[MAX_PATH];
-	wsprintf(szObjTag, L"InvImg%d", m_vecItemObjTags[ITEM_IMG].size());
-	m_vecItemObjTags[ITEM_IMG].push_back(szObjTag);
-
-	// 텍스쳐 컴포넌트명
-	TCHAR   *   szTexTag = new TCHAR[MAX_PATH];
-	wsprintf(szTexTag, texTag.c_str());
-	m_vecItemTextureTags.push_back(szTexTag);
-
-	CGameObject* pGameObject = CInvImg::Create(m_pGraphicDev, szTexTag, pObj);
-	NULL_CHECK_RETURN(pGameObject, nullptr);
-
-	CLayer* pLayer = Engine::Get_Layer(pLayerTag);
-	if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
-		return nullptr;
-
-	m_vecItemPool.push_back(pGameObject);
-
-	return pGameObject;
+	return E_NOTIMPL;
 }
 
 inline void CMonsterMgr::Free(void)
 {
-	// 무기
-	for (int i = 0; i < WEAPON_END; ++i)
-	{
-		for (auto& tag : m_vecItemObjTags[i])
-		{
-			delete[] tag;
-			tag = nullptr;
-		}
-		m_vecItemObjTags[i].clear();
-		m_vecItemObjTags[i].swap(vector<TCHAR*>());
-	}
-
-	for (auto& tag : m_vecItemTextureTags)
-	{
-		delete[] tag;
-		tag = nullptr;
-	}
-	m_vecItemTextureTags.clear();
-	m_vecItemTextureTags.swap(vector<TCHAR*>());
-
-
-	m_vecItemPool.swap(vector<CGameObject*>());
-
+	m_vecMonster.swap(vector<CGameObject*>());
 	Safe_Release(m_pGraphicDev);
-
 }

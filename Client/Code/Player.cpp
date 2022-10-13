@@ -9,11 +9,14 @@
 #include "Block.h"
 #include "MapUI.h"
 #include "MiniMap.h"
-//#include "ParticleMgr.h"
+#include "ParticleMgr.h"
 #include "HitBackGround.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
+#include "BonFire.h"
 
+#include "Monster.h"
+#include "Bullet.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -71,6 +74,25 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	}
 	// *Create Minimap Icon
 
+//	
+	if (!m_bDeadMotion && m_bDead)
+	{
+		CCameraMgr::GetInstance()->Action_PlayerDie();
+		CCameraMgr::GetInstance()->Set_Camera(this, 0.3f, 1.f);
+		m_bDeadMotion = true;
+	}
+
+	if (m_bDead)
+	{
+		m_fDeathTime += fTimeDelta;
+		if (5.f < m_fDeathTime)
+		{
+			Respawn();
+		}
+		return 0;
+	}
+
+
 	m_fTimeDelta = fTimeDelta;
 
 	if (!(GetKeyState(VK_TAB) & 0x80))		// Except Open Inventory
@@ -80,6 +102,10 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
+	
+
+	KnockBack(fTimeDelta);
+	Stun(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
@@ -95,6 +121,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 void CPlayer::LateUpdate_Object(void)
 {
+
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
@@ -149,9 +176,9 @@ void CPlayer::LateUpdate_Object(void)
 	// camera change Test
 	wstring pObjTag = (m_pRight != nullptr ? m_pRight->Get_ObjTag() : L"");
 	if (L"Arrow" == pObjTag && Get_DIMouseState(DIM_RB) & 0x80)
-	{
-		// 총알 발사시 카메라 전환
-	}
+		m_bSnipper = true; 
+	else
+		m_bSnipper = false;
 
 
 
@@ -217,6 +244,9 @@ HRESULT CPlayer::Add_Component(void)
 
 void CPlayer::Key_Input(const _float & fTimeDelta)
 {
+	if (m_bStun) // sh
+		return;
+
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
 
 	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	
@@ -276,9 +306,16 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	// camera test
 	if (Key_Down(DIK_C))
 	{
-		CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT);
-		CCameraMgr::GetInstance()->Set_Camera(this, 3.f, 0.f);
-		CCameraMgr::GetInstance()->Action_Camera(360.f);
+		// 한바퀴 돌기
+		//CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT);
+		//CCameraMgr::GetInstance()->Set_Camera(this, 3.f, 0.f);
+		//CCameraMgr::GetInstance()->Action_Camera(360.f);
+
+		// Deadmotion
+		m_bDead = true;
+		//CCameraMgr::GetInstance()->Action_PlayerDie();
+		//CCameraMgr::GetInstance()->Set_Camera(this, 0.3f, 1.f);
+
 
 	}
 	if (Key_Down(DIK_V))
@@ -373,6 +410,14 @@ _float CPlayer::Get_Height()
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
+	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	if (pMonster == pOtherObj)
+		OnHit(pMonster->Get_MonsterAttack());
+
+	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	if (pBullet == pOtherObj)
+		OnHit(pBullet->Get_BulletAttack());
+
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
 	{
@@ -383,7 +428,6 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 
 		pInv->Set_Inventory(pImg);
 	}
-
 
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
 	if (pBlock)
@@ -470,10 +514,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 				fDistZ = 0.f;
 		}
 		else
-			return;
-		
-
-		
+			return;		
 
 		_vec3	PlayerLook;
 		m_pTransCom->Get_Info(INFO_LOOK, &PlayerLook);
@@ -484,28 +525,137 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	}
 }
 
+void CPlayer::Respawn()
+{
+	m_bDead = false;
+	m_bDeadMotion = false;
+	m_fDeathTime = 0.f;
+
+	CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
+
+	CTransform* pTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Bonfire", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pTransCom);
+
+	_vec3 vPos = pTransCom->Get_Pos();
+	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+
+}
+
+void CPlayer::KnockBack(const _float & fTimeDelta)
+{
+	if (!m_bKnockBack)
+		return;
+
+	_vec3 vPos, vLook;
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+
+	_float fHeight = Get_Height();
+
+	if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
+	{
+		m_bKnockBack = false;
+		m_pCurrentBlock = nullptr;
+
+		m_eState = PLAYER_GROUND;
+		m_fJTimeDelta = 0.f;
+
+		m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
+		m_fJSpeed = m_fJSpeed0;
+	}
+	else
+	{
+		m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta); // -3.f -> KnockBack Distance
+
+		m_fJSpeed -= m_fAccel;
+		m_pTransCom->Plus_PosY(m_fJSpeed);
+		m_fJTimeDelta += 0.1f;
+	}
+}
+
 void CPlayer::OnHit(_int _HpMinus)
 {
-	if (0 > m_tInfo.iHp)
+	if (0 >= m_tInfo.iHp)
 	{
+		m_bKnockBack = true;
 		m_tInfo.iHp = 0;
 		return;
 	}
 
-	// HitBackGround
-	CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
+	//// HitBackGround
+	//CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
 
-	if (0.3f < InvincibilityTimeAcc)
-		pHitBackGround->Set_HitBackGround(false);
-	else
-		pHitBackGround->Set_HitBackGround(true);
+	//if (0.3f < InvincibilityTimeAcc)
+	//	pHitBackGround->Set_HitBackGround(false);
+	//else
+	//	pHitBackGround->Set_HitBackGround(true);
 
-	// 플레이어는 3초간 무적
-	if (3.f < InvincibilityTimeAcc)
+	// 플레이어는 2초간 무적
+	if (2.f < InvincibilityTimeAcc)
 	{
-		m_bJump = true;
+		//CParticleMgr::GetInstance()->Set_Info(this,
+		//	1,
+		//	1.f,
+		//	{ 1.f, 1.f, 1.f },
+		//	2.f,
+		//	{ 1.f, 0.f, 0.f, 0.01f });
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_7);
+
+		m_bKnockBack = true;
 		m_tInfo.iHp -= _HpMinus;
 		InvincibilityTimeAcc = 0.f;
+	}
+}
+
+void CPlayer::KnockBack(const _float & fTimeDelta)
+{
+	if (!m_bKnockBack)
+		return;
+
+	_vec3 vPos, vLook;
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+
+	_float fHeight = Get_Height();
+
+	if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
+	{
+		m_bKnockBack = false;
+		m_pCurrentBlock = nullptr;
+
+		m_eState = PLAYER_GROUND;
+		m_fJTimeDelta = 0.f;
+
+		m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
+		m_fJSpeed = m_fJSpeed0;
+	}
+	else
+	{
+		m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta); // -3.f -> KnockBack Distance
+
+		m_fJSpeed -= m_fAccel;
+		m_pTransCom->Plus_PosY(m_fJSpeed);
+		m_fJTimeDelta += 0.1f;
+	}
+}
+
+void CPlayer::Stun(const _float & fTimeDelta)
+{
+	if (Engine::Key_Down(DIK_0))
+		m_bStun = true;
+
+	if (!m_bStun)
+		return;
+
+	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f,
+		_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_3);
+
+	m_fStunTimeAcc += fTimeDelta;
+	if (3.f < m_fStunTimeAcc) // 3.f ->StunTime
+	{
+		m_bStun = false;
+		m_fStunTimeAcc = 0.f;
 	}
 }
 

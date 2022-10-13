@@ -14,7 +14,7 @@ public:
 	virtual void			Render_Obejct(void)						override;
 
 private:
-	virtual HRESULT		Add_Component(void);
+	virtual HRESULT			Add_Component(void);
 	void					RotateByPlayer();
 
 public:
@@ -22,9 +22,9 @@ public:
 	virtual void			Free(void);
 
 private:
-	_matrix				m_matWorld, m_matView;
-	CGameObject*		m_pParentObj = nullptr;
-	OBJECTTYPE			m_eType = OBJ_END;
+	_matrix					m_matWorld, m_matView;
+	CGameObject*			m_pParentObj = nullptr;
+	OBJECTTYPE				m_eType = OBJ_END;
 	_bool					m_bOnMinimap = true;
 };
 

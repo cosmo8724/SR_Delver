@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CFistBullet::CFistBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -24,9 +25,10 @@ HRESULT CFistBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
-
+	m_tInfo.iAttack = 1.f;
 	m_fSpeed = 10.f;
+
+	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 
 	return S_OK;
 }
@@ -52,6 +54,11 @@ HRESULT CFistBullet::Add_Component(void)
 
 	m_pAnimtorCom->Add_Component(L"Proto_FistGreenEffect_Texture");
 
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
 	return S_OK;
 }
 
@@ -61,13 +68,13 @@ _int CFistBullet::Update_Object(const _float & fTimeDelta)
 		return 0;
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-
+	Add_RenderGroup(RENDER_ALPHA, this);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	Target(fTimeDelta);
-
-	Add_RenderGroup(RENDER_ALPHA, this);
 	
+	m_fParticleTime += fTimeDelta;
 	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
@@ -78,7 +85,11 @@ void CFistBullet::LateUpdate_Object(void)
 		return;
 
 	if (1.f < m_fLifeTime)
-		Reset();
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5); Reset();
+	}
 
 	Billboard();
 
@@ -100,6 +111,15 @@ void CFistBullet::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
 }
 
 void CFistBullet::Billboard()
@@ -146,6 +166,14 @@ _int CFistBullet::Target(const _float & fTimeDelta)
 	D3DXVec3Normalize(&vDir, &vDir);
 	vDir *= m_fSpeed * fTimeDelta;
 	m_pTransCom->Move_Pos(&vDir);
+
+	if (0.1f < m_fParticleTime)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+		m_fParticleTime = 0.f;
+	}
 
 	return 0;
 }

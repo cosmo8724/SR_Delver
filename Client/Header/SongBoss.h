@@ -17,9 +17,13 @@ public:
 	virtual void		Render_Obejct(void)						override;
 	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
+public:
+	void				Set_StunCount() { m_iStunCount += 1; }
+
 private:
-	virtual HRESULT		Add_Component(void) override;
-	
+	virtual HRESULT		Add_Component(void)						override;
+	//virtual void		Dead()									override;
+
 	void				SKill_Update(const _float & fTimeDelta);
 	void				SKillBullet_Update(const _float& fTimeDelta);
 	void				SKillStun_Update(const _float& fTimeDelta);
@@ -33,10 +37,14 @@ private:
 
 	SKILL				m_eSkill;
 
+	_int				m_iStunCount = 0;
+	_float				m_fStunTimeAcc = 0.f;
+
 	// Timer
 	_float				m_fTimeAcc ;
 	_float				m_fIdleTimeAcc;
 	_float				m_fAttackTimeAcc;
+	_float				m_fLightningTimeAcc = 0.f;
 
 public:
 	static CSongBoss*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

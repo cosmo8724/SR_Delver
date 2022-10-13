@@ -37,8 +37,6 @@ HRESULT CItemMgr::Ready_Proto()
 	return S_OK;
 }
 
-
-
 HRESULT CItemMgr::Ready_Clone(CLayer * pLayer)
 {
 	return S_OK;

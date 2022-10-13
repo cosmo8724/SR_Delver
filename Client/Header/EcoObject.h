@@ -47,6 +47,7 @@ protected:
 	_int				m_iTransparency	= 255;
 	_uint				m_iTexture = 0;
 	_bool				m_bClone = false;
+	_matrix				m_matOldBill;
 
 public:
 	ECOOBJTYPE		m_eType = ECO_END;

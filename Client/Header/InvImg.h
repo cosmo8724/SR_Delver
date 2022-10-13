@@ -35,7 +35,7 @@ private:
 
 	CItem*				m_pObj;		// 실제로 설정값들을 가지고 있는 객체
 	wstring				m_TexTag;
-	_matrix				m_matView, m_matWorld;
+	_matrix				m_matView;
 	_bool				m_bOn = false;
 	_float				m_fFrame = 0.f;
 

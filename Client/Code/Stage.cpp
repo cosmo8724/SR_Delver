@@ -10,52 +10,21 @@
 #include "GameObject.h"
 #include "Block.h"
 
-// Monster
-#include "GreenSlime.h"
-#include "PinkSlime.h"
-#include "Fist.h"
-#include "BlueBat.h"
-#include "BrownBat.h"
-#include "Stick.h"
-#include "Leaf.h"
-#include "SkeletonGhost.h"
-// Boss
-#include "SongBoss.h"
-
-// NPC
-#include "Dog.h"
-#include "Grandfather.h"
-#include "GuitarMan.h"
-#include "HoodMan.h"
-#include "SmileMan.h"
-#include "WinkMan.h"
-
-// UI
-#include "HealthBar.h"
-#include "HPGauge.h"
-#include "QuickSlot.h"
-#include "Inventory.h"
-#include "EquipWindow.h"
-#include "MapUI.h"
-#include "MiniMap.h"
-#include "CrossHair.h"
-#include "HitBackGround.h"
-
-// Font
-#include "HPGauge.h"
-#include "TalkWindow.h"
-
 // Manager
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 #include "CameraMgr.h"
 #include "BlockVIBuffer.h"
+#include "MonsterMgr.h"
+#include "NPCMgr.h"
+#include "UIMgr.h"
 
 // EcoObject
 #include "Stone.h"
 #include "Grass.h"
 #include "Tree.h"
 #include "Jar.h"
+#include "BonFire.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -149,7 +118,6 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
-
 	// 플레이어와 아이템
 	for (int i = 0; i < ITEM_IMG; ++i)
 	{
@@ -159,6 +127,28 @@ void CStage::LateUpdate_Scene(void)
 			Engine::CollisionAABB(pPlayer, item);
 		}
 	}
+
+	// Player / Monster
+	vector<CGameObject*>* pMonster = CMonsterMgr::GetInstance()->Get_Monster();
+	for (auto& monster : *pMonster)
+		Engine::CollisionAABB(pPlayer, monster);
+
+	// Player / MonsterBullet
+	vector<CGameObject*>*	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_FIST);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_LEAF);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
+	for (auto& bullet : *pMonsterBullet)
+ 		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(FLOOR_SONGBOSS);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
 
 	// 무기와 환경요소
 	vector<CGameObject*>* pItems = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
@@ -176,21 +166,13 @@ void CStage::LateUpdate_Scene(void)
 
 	for (auto& weapon : *pItems)
 	{
-		// sh_Monster Test
-		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
-		Engine::CollisionTest(pSour, weapon);
+		for (auto& monster : *pMonster)
+			Engine::CollisionAABB(monster, weapon);
 
-		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime");
-		Engine::CollisionTest(pSour, weapon);
-
-		//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime_0");
-		//Engine::CollisionTest(pSour, weapon);
-
-		//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime_1");
-		//Engine::CollisionTest(pSour, weapon);
-
-		//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime_2");
-		//Engine::CollisionTest(pSour, weapon);
+		// 보스 스킬, 무기
+		vector<CGameObject*>*	pMonsterullets = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+		for (auto& bullet : *pMonsterullets)
+			Engine::CollisionAABB(bullet, weapon);
 
 		// Eco
 		Engine::CollisionAABB(pSour, weapon);
@@ -208,8 +190,8 @@ void CStage::LateUpdate_Scene(void)
 	vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 	for (auto& bullet : *pPlayerBullets)
 	{
-		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Fist"); // sh_확인 필요
-		Engine::CollisionTest(pSour, bullet);
+		for (auto& monster : *pMonster)
+			Engine::CollisionAABB(monster, bullet);
 
 		// Eco
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
@@ -227,16 +209,8 @@ void CStage::LateUpdate_Scene(void)
 	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW);
 	for (auto& bullet : *pPlayerBullets)
 	{
-		// sh_Monster Test
-		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
-		Engine::CollisionTest(pSour, bullet);
-		Engine::CollisionTest(pSour, pPlayer); // 몬스터 플레이어
-
-		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"BrownBat");
-		Engine::CollisionTest(pSour, bullet);
-
-		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Fist");
-		Engine::CollisionTest(pSour, bullet);
+		for (auto& monster : *pMonster)
+			Engine::CollisionAABB(monster, bullet);
 
 		// Eco
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
@@ -252,22 +226,7 @@ void CStage::LateUpdate_Scene(void)
 	}
 
 
-	//// Monster Collider
-	//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"GreenSlime");
-	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
-	//	Engine::CollisionTest(pSour, bullet);
-	////for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
-	////	Engine::CollisionTest(pSour, bullet);
 
-	
-
-	//pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"PinkSlime");
-	//for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND))
-	//	Engine::CollisionTest(pSour, bullet);
-	////for (auto& bullet : *CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW))
-	////	Engine::CollisionTest(pSour, bullet);
-
-	//Engine::CollisionTest(pSour, pPlayer);
 
 
 
@@ -362,89 +321,21 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	// Particle
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
+	// Monster
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
 
-	//////////// Monster
-	// GreenSlime
-	pGameObject = CGreenSlime::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
-
-	// PinkSlime
-	pGameObject = CPinkSlime::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
-
-	// Fist
-	pGameObject = CFist::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Fist", pGameObject), E_FAIL);
-
-	// BlueBat
-	pGameObject = CBlueBat::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BlueBat", pGameObject), E_FAIL);
-
-	// BrownBat
-	pGameObject = CBrownBat::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat", pGameObject), E_FAIL);
-
-	// Stick
-	pGameObject = CStick::Create(m_pGraphicDev, 1);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Stick", pGameObject), E_FAIL);
-
-	// Leaf
-	pGameObject = CLeaf::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
-
-	// SkeletonGhost
-	pGameObject = CSkeletonGhost::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
-
-	//////////////Boss
-	// SongBoss
-	pGameObject = CSongBoss::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
-
-	//////////////////NPC
-	// Dog
-	pGameObject = CDog::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Dog", pGameObject), E_FAIL);
-
-	// Grandfather
-	pGameObject = CGrandfather::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Grandfather", pGameObject), E_FAIL);
-
-	// GuitarMan
-	pGameObject = CGuitarMan::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GuitarMan", pGameObject), E_FAIL);
-
-	// HoodMan
-	pGameObject = CHoodMan::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HoodMan", pGameObject), E_FAIL);
-
-	// SmileMan
-	pGameObject = CSmileMan::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SmileMan", pGameObject), E_FAIL);
-
-	// WinkMan
-	pGameObject = CWinkMan::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WinkMan", pGameObject), E_FAIL);
+	// NPC
+	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// EcoObject
 	pGameObject = CJar::Create(m_pGraphicDev, _vec3({30.f, 1.f, 40.f}));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
+
+	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 5.f, 0.9f, 5.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bonfire", pGameObject), E_FAIL);
+
 
 	// Blocks
 	{
@@ -576,6 +467,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		}
 		CloseHandle(hFile);
 	}
+
+
 	return S_OK;
 }
 
@@ -586,55 +479,8 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	// UI_HPGauge
-	pGameObject = CHPGauge::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_HPGauge", pGameObject), E_FAIL);
-
-	// UI_HealthBar
-	pGameObject = CHealthBar::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_HealthBar", pGameObject), E_FAIL);
-
-	// UI_QuickSlot
-	pGameObject = CQuickSlot::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_QuickSlot", pGameObject), E_FAIL);
-
-	// UI_Inventory
-	pGameObject = CInventory::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Inventory", pGameObject), E_FAIL);
-
-	// UI_EquipWindow
-	pGameObject = CEquipWindow::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_EquipWindow", pGameObject), E_FAIL);
-
-	// NPC_TalkWindow
-	pGameObject = CTalkWindow::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_TalkWindow", pGameObject), E_FAIL);
-
-	// UI_MAP
-	pGameObject = CMapUI::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Map", pGameObject), E_FAIL);
-
-	// UI_MiniMap
-	pGameObject = CMiniMap::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
-
-	// UI_CrossHair
-	pGameObject = CCrossHair::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", pGameObject), E_FAIL);
-
-	// UI_HitBackGround
-	pGameObject = CHitBackGround::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_HitBackGround", pGameObject), E_FAIL);
+	// UI
+	CUIMgr::GetInstance()->Add_GameObject(pLayer);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 

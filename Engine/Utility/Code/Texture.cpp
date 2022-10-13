@@ -69,6 +69,7 @@ void CTexture::Set_Texture(const _uint & iIndex)
 
 	m_pGraphicDev->SetTexture(0, m_vecTexture[iIndex]);
 }
+
 CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, TEXTUREID eType, const _uint & iCnt)
 {
 	CTexture *		pInstance = new CTexture(pGraphicDev);

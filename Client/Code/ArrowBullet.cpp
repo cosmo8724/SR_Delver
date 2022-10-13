@@ -4,6 +4,7 @@
 #include "BulletMgr.h"
 #include "ParticleMgr.h"
 #include "CameraMgr.h"
+#include "Player.h"
 
 CArrowBullet::CArrowBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -83,9 +84,13 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 		
 		//CParticleMgr::GetInstance()->Set_Info(this);
 		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_REMAIN, TEXTURE_0);
-
-		CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC, CAM_OBJECT);
-		CCameraMgr::GetInstance()->Set_Camera(this, -10.f, -1.f);
+		
+		CPlayer* player = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		if (player->Is_Snippered())
+		{
+			CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC, CAM_OBJECT);
+			CCameraMgr::GetInstance()->Set_Camera(this, -10.f, -1.f);
+		}
 
 		m_bReady = true;
 
@@ -133,7 +138,6 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 	m_fLifeTime += fTimeDelta;
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
-
 
 	return iResult;
 }

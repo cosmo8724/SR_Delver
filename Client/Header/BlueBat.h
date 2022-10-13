@@ -21,11 +21,12 @@ public:
 	virtual	void		CollisionEvent(CGameObject* pObj)		override;
 
 private:
-	virtual HRESULT		Add_Component(void) override;
-	virtual void		Target_Follow(const _float& fTimeDelta);
+	virtual HRESULT		Add_Component(void)						override;
+	virtual void		Target_Follow(const _float& fTimeDelta)	override;
+	virtual void		OnHit(const _float& fTimeDelta)			override;
+	virtual void		Dead()									override;
 
 	void				Jump(const _float& fTimeDelta);
-	void				KnockBack(const _float& fTimeDelta);
 
 	void				Motion_Change(const _float& fTimeDelta);
 
@@ -37,18 +38,9 @@ private:
 
 	// 점프 관련 변수
 	_bool				m_bJump = false;
-	_float				m_fHeight = 1.f;
 	_float				m_fJSpeed; 			// 점프 속도
 	_float				m_fJSpeed0; 		// 점프 초기 속도
 	_float				m_fAccel;			// 중력가속도
-
-	// 넉백 관련 변수
-	_bool				m_bKnockBack = false;
-	_float				m_fBSpeed = 0.1f;
-	_float				m_fBSpeed0 = 0.1f;
-	_float				m_fBAccel = 0.01f;
-	_float				m_fKnockBackSpeed;
-	_float				m_fBTimeDelta = 0.f;
 
 	//Timer
 	_float				m_fTimeAcc;

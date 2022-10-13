@@ -36,9 +36,27 @@ _int CMiniMap::Update_Object(const _float & fTimeDelta)
 {
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
-	for (size_t i = 0; i < m_vecIcon.size(); ++i)
-		m_vecIcon[i]->Update_Object(fTimeDelta);
+	/*for (size_t i = 0; i < m_vecIcon.size(); ++i)
+	{
+		_int iResult = m_vecIcon[i]->Update_Object(fTimeDelta);
+		if (iResult == OBJ_DEAD)
+		{
+			Safe_Release(m_vecIcon[i]);
+			m_vecIcon.erase()
+		}
+	}*/
 
+	for (auto iter = m_vecIcon.begin(); iter != m_vecIcon.end();)
+	{
+		_int iResult = (*iter)->Update_Object(fTimeDelta);
+		if (iResult == OBJ_DEAD)
+		{
+			Safe_Release(*iter);
+			iter = m_vecIcon.erase(iter);
+		}
+		else
+			++iter;
+	}
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
 	return 0;

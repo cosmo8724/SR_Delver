@@ -39,6 +39,9 @@ private:
 	_float					m_fSpeed;
 	_bool					m_bReady;
 	_vec3					vPos, m_vPlayerPos = { 0.f,0.f,0.f };
+
+	_float					m_fParticleTime = 0.f;
+
 };
 
 END

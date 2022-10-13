@@ -31,6 +31,7 @@ public:
 
 	void			Action_Camera(_float fAngle);
 
+	void			Action_PlayerDie();
 
 
 public:

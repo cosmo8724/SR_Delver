@@ -5,7 +5,8 @@
 
 #include "BulletMgr.h"
 #include "MiniMap.h"
-
+#include "Player.h"
+#include "SongBossFloor.h"
 
 CSongBoss::CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CMonster(pGraphicDev)
@@ -16,8 +17,8 @@ CSongBoss::CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fIdleTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
 {
+	m_ObjTag = L"SongBoss";
 }
-
 
 CSongBoss::~CSongBoss()
 {
@@ -31,10 +32,11 @@ HRESULT CSongBoss::Ready_Object(void)
 	m_tInfo.iAttack = 5;
 
 	m_pTransCom->Set_Scale(1.5f, 1.5f, 1.5f);
-	m_pTransCom->Set_Pos(10.f, 6.5f, 10.f);
+	//m_pTransCom->Set_Pos(10.f, 6.5f, 10.f);
+	m_pTransCom->Set_Pos(10.f, 1.5f, 10.f);
 
 	m_eCurState = IDLE;
-	m_eSkill = SKILL_BULLET;
+	m_eSkill = SKILL_FLOOR;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
@@ -194,6 +196,18 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 
 	if (m_pAnimtorCom->Get_Currentframe() >= 7.f && m_pAnimtorCom->Get_Currentframe() < 8.f)
 		CBulletMgr::GetInstance()->Fire(STUN_SONGBOSS);
+
+	m_fStunTimeAcc += fTimeDelta;
+	if (7.f < m_fStunTimeAcc) // 7.f >> 이내 음표를 못 부시면 스턴 (값 수정시 SongBossStun.cpp > LateUpdate도 수정해야함)
+	{
+		if (m_iStunCount != 4)
+		{
+			int a = m_iStunCount;
+			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+			pPlayer->Set_Stun();
+		}
+		m_fStunTimeAcc = 0.f;
+	}
 }
 
 void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
@@ -201,8 +215,41 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 	// 플레이어를 기준으로 5개의 음표가 생기고 피해야 한다
 	m_eCurState = ATTACK;
 
-	if (m_pAnimtorCom->Get_Currentframe() >= 7.f && m_pAnimtorCom->Get_Currentframe() < 8.f)
+	if (m_pAnimtorCom->Get_Currentframe() >= 8.f)
+	{
 		CBulletMgr::GetInstance()->Fire(FLOOR_SONGBOSS);
+
+		//CAnimator* pFloorAnimator = dynamic_cast<CAnimator*>(Engine::Get_Component(L"Layer_GameLogic", L"SongBoss_FloorLightning", L"Proto_AnimatorCom", ID_DYNAMIC));
+		//NULL_CHECK(pFloorAnimator);
+
+		//pFloorAnimator->Get_Currentframe();
+		m_fLightningTimeAcc += fTimeDelta;
+		if (0.8f < m_fLightningTimeAcc)
+		{
+			CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor0"));
+			NULL_CHECK(pSongBossFloor);
+			pSongBossFloor->Set_Attack();
+
+			pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor1"));
+			NULL_CHECK(pSongBossFloor);
+			pSongBossFloor->Set_Attack();
+
+			pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor2"));
+			NULL_CHECK(pSongBossFloor);
+			pSongBossFloor->Set_Attack();
+
+			pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor3"));
+			NULL_CHECK(pSongBossFloor);
+			pSongBossFloor->Set_Attack();
+
+			pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor4"));
+			NULL_CHECK(pSongBossFloor);
+			pSongBossFloor->Set_Attack();
+
+			CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
+			m_fLightningTimeAcc = 0.f;
+		}
+	}
 }
 
 void CSongBoss::Motion_Change(const _float & fTimeDelta)
