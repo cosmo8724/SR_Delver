@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CSongBossBullet::CSongBossBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -23,10 +24,11 @@ HRESULT CSongBossBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
-
+	m_tInfo.iAttack = 3.f;
 	m_fSpeed = 20.f;
 
+	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	
 	return S_OK;
 }
 
@@ -51,6 +53,11 @@ HRESULT CSongBossBullet::Add_Component(void)
 
 	m_pAnimtorCom->Add_Component(L"Proto_MusicNote_Bullet_Texture");
 
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
 	return S_OK;
 }
 
@@ -60,10 +67,20 @@ _int CSongBossBullet::Update_Object(const _float & fTimeDelta)
 		return 0;
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-
+	Add_RenderGroup(RENDER_ALPHA, this);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	Target(fTimeDelta);
+
+	if (!m_bOneCheck)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 30, 0.5f,
+			_vec3({ 1.f, 1.f, 1.f }), 3.f, D3DXCOLOR{ 0.1f, 0.1f, 0.1f, 1.f },
+			1.f, false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_8);
+		m_bOneCheck = true;
+	}
 
 	//if (!m_bReady)
 	//{
@@ -89,8 +106,6 @@ _int CSongBossBullet::Update_Object(const _float & fTimeDelta)
 
 	//m_pTransCom->Move_Pos(&vDir);
 
-	Add_RenderGroup(RENDER_ALPHA, this);
-	
 	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
@@ -125,6 +140,15 @@ void CSongBossBullet::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
 }
 
 void CSongBossBullet::Billboard()
@@ -202,7 +226,7 @@ _int CSongBossBullet::Target(const _float & fTimeDelta)
 	mat1 = matTrans * matParent; // 공전하는 행렬
 
 	//m_pTransCom->Set_WorldMatrix(&matWorld);
-
+	
 	_matrix mat2;
 
 	if (m_bReady)
@@ -212,6 +236,7 @@ _int CSongBossBullet::Target(const _float & fTimeDelta)
 	}
 	m_matWorld = mat1 * mat2;
 
+	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 	return 0;
 }
 
@@ -239,5 +264,7 @@ void CSongBossBullet::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	m_bOneCheck = false;
+	m_pColliderCom->Set_Free(false);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_SONGBOSS);
 }

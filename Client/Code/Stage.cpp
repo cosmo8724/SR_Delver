@@ -92,15 +92,27 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
-	// Player Monster
+	// Player / Monster
 	vector<CGameObject*>* pMonster = CMonsterMgr::GetInstance()->Get_Monster();
 	for (auto& monster : *pMonster)
 		Engine::CollisionAABB(pPlayer, monster);
 
-	// Player MonsterBullet
-	//vector<CGameObject*>*	pMonsterullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_FIST);
-	//for (auto& bullet : *pMonsterullets)
-	//	Engine::CollisionAABB(pPlayer, bullet);
+	// Player / MonsterBullet
+	vector<CGameObject*>*	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_FIST);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_LEAF);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
+	for (auto& bullet : *pMonsterBullet)
+ 		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(FLOOR_SONGBOSS);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
 
 	// 무기와 환경요소
 	vector<CGameObject*>* pItems = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
@@ -120,6 +132,11 @@ void CStage::LateUpdate_Scene(void)
 	{
 		for (auto& monster : *pMonster)
 			Engine::CollisionAABB(monster, weapon);
+
+		// 보스 스킬, 무기
+		vector<CGameObject*>*	pMonsterullets = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+		for (auto& bullet : *pMonsterullets)
+			Engine::CollisionAABB(bullet, weapon);
 
 		// Eco
 		Engine::CollisionAABB(pSour, weapon);

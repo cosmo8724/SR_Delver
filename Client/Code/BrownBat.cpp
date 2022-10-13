@@ -57,7 +57,6 @@ _int CBrownBat::Update_Object(const _float & fTimeDelta)
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 3.f);
 	Motion_Change();
 
-
 	if (0 >= m_tInfo.iHp)
 	{
 		Dead();
@@ -145,7 +144,11 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 			m_fAttack_Speed *= -1;
 			m_fAttackTimeAcc = 0.f;
 		}
-		m_pTransCom->Chase_Target(&_vec3(vPlayerPos.x, vPlayerPos.y + 2.f, vPlayerPos.z), m_fAttack_Speed, fTimeDelta);
+
+		if (1.f <= vPlayerPos.y) // Player.y가 1.f 이상이면 Height 조정
+			m_pTransCom->Set_Y(m_fHeight);
+
+		m_pTransCom->Chase_Target(&_vec3(vPlayerPos.x, vPlayerPos.y + 1.f, vPlayerPos.z), m_fAttack_Speed, fTimeDelta);
 	}
 	else
 	{

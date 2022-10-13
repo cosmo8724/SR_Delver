@@ -9,11 +9,12 @@
 #include "Block.h"
 #include "MapUI.h"
 #include "MiniMap.h"
-//#include "ParticleMgr.h"
+#include "ParticleMgr.h"
 #include "HitBackGround.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
 #include "Monster.h"
+#include "Bullet.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -81,6 +82,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
 	KnockBack(fTimeDelta);
+	Stun(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
@@ -218,6 +220,9 @@ HRESULT CPlayer::Add_Component(void)
 
 void CPlayer::Key_Input(const _float & fTimeDelta)
 {
+	if (m_bStun) // sh
+		return;
+
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
 
 	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	
@@ -378,6 +383,10 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	if (pMonster == pOtherObj)
 		OnHit(pMonster->Get_MonsterAttack());
 
+	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	if (pBullet == pOtherObj)
+		OnHit(pBullet->Get_BulletAttack());
+
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
 	{
@@ -485,6 +494,40 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	}
 }
 
+void CPlayer::OnHit(_int _HpMinus)
+{
+	if (0 >= m_tInfo.iHp)
+	{
+		m_bKnockBack = true;
+		m_tInfo.iHp = 0;
+		return;
+	}
+
+	//// HitBackGround
+	//CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
+
+	//if (0.3f < InvincibilityTimeAcc)
+	//	pHitBackGround->Set_HitBackGround(false);
+	//else
+	//	pHitBackGround->Set_HitBackGround(true);
+
+	// 플레이어는 2초간 무적
+	if (2.f < InvincibilityTimeAcc)
+	{
+		//CParticleMgr::GetInstance()->Set_Info(this,
+		//	1,
+		//	1.f,
+		//	{ 1.f, 1.f, 1.f },
+		//	2.f,
+		//	{ 1.f, 0.f, 0.f, 0.01f });
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_7);
+
+		m_bKnockBack = true;
+		m_tInfo.iHp -= _HpMinus;
+		InvincibilityTimeAcc = 0.f;
+	}
+}
+
 void CPlayer::KnockBack(const _float & fTimeDelta)
 {
 	if (!m_bKnockBack)
@@ -517,37 +560,23 @@ void CPlayer::KnockBack(const _float & fTimeDelta)
 	}
 }
 
-void CPlayer::OnHit(_int _HpMinus)
+void CPlayer::Stun(const _float & fTimeDelta)
 {
-	if (0 >= m_tInfo.iHp)
-	{
-		m_bKnockBack = true;
-		m_tInfo.iHp = 0;
+	if (Engine::Key_Down(DIK_0))
+		m_bStun = true;
+
+	if (!m_bStun)
 		return;
-	}
 
-	//// HitBackGround
-	//CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
+	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f,
+		_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_3);
 
-	//if (0.3f < InvincibilityTimeAcc)
-	//	pHitBackGround->Set_HitBackGround(false);
-	//else
-	//	pHitBackGround->Set_HitBackGround(true);
-
-	// 플레이어는 2초간 무적
-	if (2.f < InvincibilityTimeAcc)
+	m_fStunTimeAcc += fTimeDelta;
+	if (3.f < m_fStunTimeAcc) // 3.f ->StunTime
 	{
-		//CParticleMgr::GetInstance()->Set_Info(this,
-		//	1,
-		//	1.f,
-		//	{ 1.f, 1.f, 1.f },
-		//	2.f,
-		//	{ 1.f, 0.f, 0.f, 0.01f });
-		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_7);
-
-		m_bKnockBack = true;
-		m_tInfo.iHp -= _HpMinus;
-		InvincibilityTimeAcc = 0.f;
+		m_bStun = false;
+		m_fStunTimeAcc = 0.f;
 	}
 }
 

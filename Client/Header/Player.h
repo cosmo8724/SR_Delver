@@ -27,6 +27,10 @@ public:
 
 public:
 	void				Set_HpPlus() { m_tInfo.iHp += 1; }
+	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
+	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
+	void				Set_Stun() { m_bStun = true; }
+
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
 	PLAYERINFO			Get_PlayerInfo() { return m_tInfo; } // sh
@@ -41,10 +45,7 @@ private:
 	_float				Get_Height();
 	void				CollisionEvent(CGameObject * pOtherObj);
 	void				KnockBack(const _float& fTimeDelta); // sh
-
-public:
-	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
-	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
+	void				Stun(const _float& fTimeDelta); // sh
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -70,6 +71,11 @@ private:
 
 	// KnockBack
 	_bool				m_bKnockBack = false;
+
+	// Stun
+	_bool				m_bStun = false;
+	_bool				m_bStunParticle = false;
+	_float				m_fStunTimeAcc = 0.f;
 
 	// click Test?
 	_float				m_fLBClick = 0.f;

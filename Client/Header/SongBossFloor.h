@@ -24,6 +24,9 @@ public:
 	virtual void			Free(void) override;
 	virtual void			Reset() override;
 
+public:
+	void					Set_Attack() { m_bAttack = true; }
+
 private:
 	HRESULT					Add_Component(void);
 
@@ -32,16 +35,19 @@ private:
 	CAnimator*				m_pAnimtorCom = nullptr;
 
 private:
-	_float		m_fFrame = 0.f;
+	_float					m_fFrame = 0.f;
 
-	_bool		m_bReady = false;
-	_vec3		m_vPlayerPos = { 0.f,0.f,0.f };
+	_bool					m_bReady = false;
+	_vec3					m_vPlayerPos = { 0.f,0.f,0.f };
 
-	_uint		m_iBulletCount;
-	_uint		m_iTransparency;
+	_uint					m_iBulletCount;
+	_uint					m_iTransparency;
 
-	// Timer
-	_float		m_fTransparencyTimeAcc;
+	_bool					m_bAttack = false;
+
+	// Timer			
+	_float					m_fTransparencyTimeAcc;
+	_float					m_fAttackTimeAcc;
 
 };
 

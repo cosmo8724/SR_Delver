@@ -3,6 +3,8 @@
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
+#include "SongBoss.h"
 
 CSongBossStun::CSongBossStun(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -49,6 +51,11 @@ HRESULT CSongBossStun::Add_Component(void)
 
 	m_pAnimtorCom->Add_Component(L"Proto_MusicNote_Stun_Texture");
 
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
 	return S_OK;
 }
 
@@ -58,8 +65,9 @@ _int CSongBossStun::Update_Object(const _float & fTimeDelta)
 		return 0;
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Add_RenderGroup(RENDER_ALPHA, this);
+	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	// 플레이어 주변으로 생기는 음표
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -79,10 +87,9 @@ _int CSongBossStun::Update_Object(const _float & fTimeDelta)
 	else
 		return 0;
 
-	// 음표 좌우로 흔들기
+	// TODO : 시간초가 다 되어갈 때 음표 좌우로 흔들기
 
 	
-	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
 
@@ -93,8 +100,8 @@ void CSongBossStun::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	//if (10.f < m_fLifeTime)
-	//	Reset();
+	if (7.f < m_fLifeTime)
+		Reset();
 
 	CGameObject::LateUpdate_Object();
 }
@@ -102,6 +109,9 @@ void CSongBossStun::LateUpdate_Object(void)
 void CSongBossStun::Render_Obejct(void)
 {
 	if (!m_bFire)
+		return;
+
+	if (m_bRenderOFF)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
@@ -114,6 +124,33 @@ void CSongBossStun::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
+}
+
+void CSongBossStun::CollisionEvent(CGameObject * pObj)
+{
+	m_bRenderOFF = true;
+
+	if (!m_bOneCheck)
+	{
+		// 음표를 부시면 카운트 증가
+		CSongBoss* pSongBoss = dynamic_cast<CSongBoss*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss"));
+		pSongBoss->Set_StunCount();
+
+		CParticleMgr::GetInstance()->Set_Info(this, 20, 0.3f,
+			_vec3({ 1.f, 1.f, 1.f }), 3.f, D3DXCOLOR{ 0.1f, 0.1f, 0.1f, 1.f },
+			1.f, false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_8);
+		m_bOneCheck = true;
+	}
 }
 
 void CSongBossStun::Billboard()
@@ -160,5 +197,8 @@ void CSongBossStun::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	m_bOneCheck = false;
+	m_bRenderOFF = false;
+	m_pColliderCom->Set_Free(false);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, STUN_SONGBOSS);
 }

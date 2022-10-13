@@ -225,6 +225,7 @@
     <ClInclude Include="..\Header\SongBoss.h" />
     <ClInclude Include="..\Header\SongBossBullet.h" />
     <ClInclude Include="..\Header\SongBossFloor.h" />
+    <ClInclude Include="..\Header\SongBossFloorLightning.h" />
     <ClInclude Include="..\Header\SongBossStun.h" />
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\StaticCamera.h" />
@@ -334,6 +335,7 @@
     <ClCompile Include="..\Code\SongBoss.cpp" />
     <ClCompile Include="..\Code\SongBossBullet.cpp" />
     <ClCompile Include="..\Code\SongBossFloor.cpp" />
+    <ClCompile Include="..\Code\SongBossFloorLightning.cpp" />
     <ClCompile Include="..\Code\SongBossStun.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\StaticCamera.cpp" />

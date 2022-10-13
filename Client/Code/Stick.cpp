@@ -13,7 +13,7 @@ CStick::CStick(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
 	, m_ePreState(MOTION_END)
 	, m_eCurState(MOTION_END)
-	, m_eSkill(SKILL_END)
+	, m_bParticle(false)
 	, m_fMoveTimeAcc(0.f)
 
 {
@@ -24,7 +24,7 @@ CStick::~CStick()
 {
 }
 
-HRESULT CStick::Ready_Object(_int iAngerCount)
+HRESULT CStick::Ready_Object()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -33,13 +33,12 @@ HRESULT CStick::Ready_Object(_int iAngerCount)
 
 	m_OriginalPos = { 10.f, 1.f, 10.f };
 	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
-	m_pTransCom->Set_Scale(0.7f, 0.7f, 0.7f);
+	//m_pTransCom->Set_Scale(0.7f, 0.7f, 0.7f);
 
 	m_eCurState = IDLE;
-	m_eSkill = SKILL_ANGER;
 
 	m_fIdle_Speed = 1.f;
-	m_fAttack_Speed = 3.f;
+	m_fAttack_Speed = 5.f;
 
 	return S_OK;
 }
@@ -55,21 +54,8 @@ _int CStick::Update_Object(const _float & fTimeDelta)
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 1.5f);
 	Motion_Change();
-
-	if (!m_bParticle)
-	{
-		CParticleMgr::GetInstance()->Set_Info(this, 5, 1.f, { 1.f, 1.f, 1.f },
-		1.f, { 1.f,1.f,1.f, 0.1f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_7);
-		m_bParticle = true;
-	}
-
-
-
-
-
 
 	if (0 >= m_tInfo.iHp)
 	{
@@ -85,7 +71,7 @@ _int CStick::Update_Object(const _float & fTimeDelta)
 	OnHit(fTimeDelta);
 
 	if (!m_bHit)
-		Skill_Update(fTimeDelta);
+		Target_Follow(fTimeDelta);
 
 	return 0;
 }
@@ -135,68 +121,6 @@ HRESULT CStick::Add_Component(void)
 
 void CStick::Target_Follow(const _float & fTimeDelta)
 {
-	// 플레이어 따라가기
-	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK(pPlayerTransformCom);
-
-	_vec3		vPlayerPos, vPos;
-	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-
-	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
-}
-
-void CStick::Skill_Update(const _float & fTimeDelta)
-{
-	switch (m_eSkill)
-	{
-	case Engine::CStick::SKILL_MOVE:
-		SkillMove_Update(fTimeDelta);
-		break;
-	case Engine::CStick::SKILL_ATTACK:
-		SkillAttack_Update(fTimeDelta);
-		break;
-	case Engine::CStick::SKILL_ANGER:
-		SkillAnger_Update(fTimeDelta);
-		break;
-	case Engine::CStick::SKILL_END:
-		break;
-	}
-}
-
-void CStick::SkillMove_Update(const _float & fTimeDelta)
-{
-	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK(pPlayerTransformCom);
-
-	_vec3		vPlayerPos, vPos;
-	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-
-	_vec3 vRight, vUp, vLook;
-	vLook = vPlayerPos - vPos;
-	D3DXVec3Normalize(&vLook, &vLook);
-	vUp = _vec3(0.f, 1.f, 0.f);
-
-	D3DXVec3Cross(&vRight, &vUp, &vLook);
-
-	m_fMoveTimeAcc += fTimeDelta;
-	if (1.f < m_fMoveTimeAcc)
-	{
-		m_fIdle_Speed *= -1;
-		m_fMoveTimeAcc = 0.f;
-	}
-
-	D3DXVec3Normalize(&vRight, &vRight);
-	m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
-}
-
-void CStick::SkillAttack_Update(const _float & fTimeDelta)
-{
-}
-
-void CStick::SkillAnger_Update(const _float & fTimeDelta)
-{
 	CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransform);
 
@@ -214,45 +138,32 @@ void CStick::SkillAnger_Update(const _float & fTimeDelta)
 		// 다시 분노 후 일정시간 후 플레이어 근처로 빠르게 이동 랜덤 위치로 이동을 반복
 
 		m_fMoveTimeAcc += fTimeDelta;
-		if (2.f < m_fMoveTimeAcc)
+		if (3.f < m_fMoveTimeAcc)
 		{
+			m_eCurState = IDLE;
+			m_pTransCom->Set_Y(m_fHeight);
 			m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
 
-
-
-			m_fMoveTimeAcc = 0.f;
+			if (fDist < 5.f)
+			{
+				m_eCurState = ATTACK;
+				if (!m_bParticle)
+				{
+					CParticleMgr::GetInstance()->Set_Info(this, 10, 1.f, { 1.f, 1.f, 1.f },
+						1.f, { 1.f,1.f,1.f, 0.1f });
+					CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_7);
+					m_bParticle = true;
+				}
+				if (m_pAnimtorCom->Get_Currentframe() >= 5.f)
+				{
+					m_bParticle = false;
+					m_fMoveTimeAcc = 0.f;
+				}
+			}
 		}
-
-
-
-
 	}
 	else
 		m_eCurState = IDLE;
-}
-
-void CStick::Teleporting(const _float & fPlayerPosX, const _float & fPlayerPosZ)
-{
-	int iRandomNum = rand() % 7 + 2;
-
-	if (fPlayerPosX == (m_OriginalPos.x + iRandomNum) || fPlayerPosZ == (m_OriginalPos.z + iRandomNum) ||
-		fPlayerPosX == (m_OriginalPos.x - iRandomNum) || fPlayerPosZ == (m_OriginalPos.z - iRandomNum))
-		return; // PlayerPos == MonsterPos -> return
-
-	if (iRandomNum % 2 == 0) // 짝수
-	{
-		if (iRandomNum < 5) // 5보다 크면으로 한 번 더 렌덤
-			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
-		else
-			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
-	}
-	else // 홀수
-	{
-		if (iRandomNum < 5)
-			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z - iRandomNum);
-		else
-			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
-	}
 }
 
 void CStick::OnHit(const _float & fTimeDelta)
@@ -339,11 +250,11 @@ void CStick::Motion_Change()
 	}
 }
 
-CStick * CStick::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iAngerCount)
+CStick * CStick::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CStick *	pInstance = new CStick(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Object(iAngerCount)))
+	if (FAILED(pInstance->Ready_Object()))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
