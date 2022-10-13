@@ -149,10 +149,10 @@ void CWandBullet::LateUpdate_Object(void)
 	// 아무데도 충돌안해도 일정 시간 후 리셋
 	if (1.f < m_fLifeTime)
 	{
+		Reset();
 		CParticleMgr::GetInstance()->Set_Info(this, 20, 0.3f, { 1.f, 1.f, 1.f },
 			1.f, { 1.f,0.f,0.f,1.f });
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_5);
-		Reset();
 	}
 
 
@@ -235,4 +235,3 @@ void CWandBullet::Reset()
 	m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
 	CBulletMgr::GetInstance()-> Collect_Obj(m_iIndex, BULLET_WAND);
 }
-

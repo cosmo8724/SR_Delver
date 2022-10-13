@@ -24,8 +24,9 @@ HRESULT CLeafBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	//m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_tInfo.iAttack = 1.f;
 	m_fSpeed = 20.f;
+	//m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 
 	return S_OK;
 }
@@ -51,6 +52,11 @@ HRESULT CLeafBullet::Add_Component(void)
 
 	m_pAnimtorCom->Add_Component(L"Proto_Leaf_Bullet_Texture");
 
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
 	return S_OK;
 }
 
@@ -60,15 +66,13 @@ _int CLeafBullet::Update_Object(const _float & fTimeDelta)
 		return 0;
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-
+	Add_RenderGroup(RENDER_ALPHA, this);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	Target(fTimeDelta);
-
-	Add_RenderGroup(RENDER_ALPHA, this);
 	
 	m_fLifeTime += fTimeDelta;
-
 	return iResult;
 }
 
@@ -79,7 +83,7 @@ void CLeafBullet::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	if (5.f < m_fLifeTime)
+	if (3.f < m_fLifeTime)
 		Reset();
 
 	CGameObject::LateUpdate_Object();
@@ -102,6 +106,15 @@ void CLeafBullet::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
 }
 
 void CLeafBullet::Billboard()
@@ -126,7 +139,6 @@ void CLeafBullet::Billboard()
 
 _int CLeafBullet::Target(const _float & fTimeDelta)
 {
-
 	///// 플레이어 머리를 위쪽을 도는 나뭇잎
 	//_vec3	vPlayerPos;
 	//CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -227,6 +239,7 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 	}
 	m_matWorld = mat1 * mat2;
 
+	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 	return 0;
 }
 
@@ -253,5 +266,6 @@ void CLeafBullet::Reset()
 	m_bDead = false;
 	m_fLifeTime = 0.f;
 	m_bReady = false;
+	m_pColliderCom->Set_Free(false);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_LEAF);
 }
