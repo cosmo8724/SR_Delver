@@ -248,7 +248,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
-	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 3.f, 1.f, 3.f }));
+	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 5.f, 0.9f, 5.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bonfire", pGameObject), E_FAIL);
 
@@ -383,6 +383,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		}
 		CloseHandle(hFile);
 	}
+
+
 	return S_OK;
 }
 

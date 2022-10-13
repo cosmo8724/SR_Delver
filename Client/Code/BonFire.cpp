@@ -25,7 +25,7 @@ HRESULT CBonFire::Ready_Object(void)
 	if (!m_bClone)
 		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_pTransCom->Set_Scale(1.f, 1.3f, 1.0f);
 
 	return S_OK;
 }
