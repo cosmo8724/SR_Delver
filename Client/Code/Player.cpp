@@ -530,7 +530,7 @@ void CPlayer::Respawn()
 	_vec3 vPos = pTransCom->Get_Pos();
 	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
-
+}
 
 void CPlayer::KnockBack(const _float & fTimeDelta)
 {
