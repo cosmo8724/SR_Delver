@@ -161,7 +161,11 @@ namespace Engine
 		_int		iHunger;
 		_int		iAtk;
 		_int		iDef;
-		_float		fSpeed; 
+		_float		fSpeed;
+
+		// ป๓ลย
+		_bool		bStun;
+		_bool		bSlow;
 	}PLAYERINFO;
 
 	typedef struct tItemInfo

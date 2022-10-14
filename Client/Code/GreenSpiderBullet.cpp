@@ -1,39 +1,39 @@
 #include "stdafx.h"
-#include "..\Header\FistBullet.h"
+#include "..\Header\GreenSpiderBullet.h"
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
 #include "ParticleMgr.h"
 
-CFistBullet::CFistBullet(LPDIRECT3DDEVICE9 pGraphicDev)
+CGreenSpiderBullet::CGreenSpiderBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
 	, m_bReady(false)
 	, m_fSpeed(0.f)
 {
 }
 
-CFistBullet::CFistBullet(const CFistBullet & rhs)
+CGreenSpiderBullet::CGreenSpiderBullet(const CGreenSpiderBullet & rhs)
 	:CBullet(rhs)
 {
 }
 
-CFistBullet::~CFistBullet()
+CGreenSpiderBullet::~CGreenSpiderBullet()
 {
 }
 
-HRESULT CFistBullet::Ready_Object(void)
+HRESULT CGreenSpiderBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iAttack = 1.f;
+	m_tInfo.iAttack = 1;
 	m_fSpeed = 10.f;
 
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
 
 	return S_OK;
 }
 
-HRESULT CFistBullet::Add_Component(void)
+HRESULT CGreenSpiderBullet::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -52,7 +52,7 @@ HRESULT CFistBullet::Add_Component(void)
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
-	m_pAnimtorCom->Add_Component(L"Proto_FistGreenEffect_Texture");
+	m_pAnimtorCom->Add_Component(L"Proto_GreenSpider_Bullet_Texture");
 
 	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
@@ -62,7 +62,7 @@ HRESULT CFistBullet::Add_Component(void)
 	return S_OK;
 }
 
-_int CFistBullet::Update_Object(const _float & fTimeDelta)
+_int CGreenSpiderBullet::Update_Object(const _float & fTimeDelta)
 {
 	if (!m_bFire)
 		return 0;
@@ -79,24 +79,24 @@ _int CFistBullet::Update_Object(const _float & fTimeDelta)
 	return iResult;
 }
 
-void CFistBullet::LateUpdate_Object(void)
+void CGreenSpiderBullet::LateUpdate_Object(void)
 {
+	Billboard();
+
 	if (!m_bFire)
 		return;
 
 	if (1.f < m_fLifeTime)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
-			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.05f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5); Reset();
 	}
-
-	Billboard();
 
 	CGameObject::LateUpdate_Object();
 }
 
-void CFistBullet::Render_Obejct(void)
+void CGreenSpiderBullet::Render_Obejct(void)
 {
 	if (!m_bFire)
 		return;
@@ -122,7 +122,7 @@ void CFistBullet::Render_Obejct(void)
 #endif
 }
 
-void CFistBullet::Billboard()
+void CGreenSpiderBullet::Billboard()
 {
 	// ºôº¸µå
 	_matrix		matWorld, matView, matBill;
@@ -142,11 +142,11 @@ void CFistBullet::Billboard()
 	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 
-_int CFistBullet::Target(const _float & fTimeDelta)
+_int CGreenSpiderBullet::Target(const _float & fTimeDelta)
 {
 	if (!m_bReady)
 	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Fist", L"Proto_TransformCom", ID_DYNAMIC));
+		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"GreenSpider", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pFist, -1);
 
 		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -169,8 +169,8 @@ _int CFistBullet::Target(const _float & fTimeDelta)
 
 	if (0.1f < m_fParticleTime)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
-			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.05f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 		m_fParticleTime = 0.f;
 	}
@@ -178,9 +178,9 @@ _int CFistBullet::Target(const _float & fTimeDelta)
 	return 0;
 }
 
-CFistBullet * CFistBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CGreenSpiderBullet * CGreenSpiderBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CFistBullet*		pInstance = new CFistBullet(pGraphicDev);
+	CGreenSpiderBullet*		pInstance = new CGreenSpiderBullet(pGraphicDev);
 	if (FAILED(pInstance->Ready_Object()))
 	{
 		Safe_Release(pInstance);
@@ -190,16 +190,16 @@ CFistBullet * CFistBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CFistBullet::Free(void)
+void CGreenSpiderBullet::Free(void)
 {
 	CGameObject::Free();
 }
 
-void CFistBullet::Reset()
+void CGreenSpiderBullet::Reset()
 {
 	m_bFire = false;
 	m_bDead = false;
 	m_fLifeTime = 0.f;
 	m_bReady = false;
-	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_FIST);
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_SPIDER);
 }

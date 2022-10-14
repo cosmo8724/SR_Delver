@@ -7,6 +7,7 @@ class CFist : public CMonster
 
 private:
 	explicit CFist(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CFist(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual ~CFist();
 
 public:
@@ -37,6 +38,6 @@ private:
 	_float				m_fAttackTimeAcc;
 
 public:
-	static CFist*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CFist*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);
 };

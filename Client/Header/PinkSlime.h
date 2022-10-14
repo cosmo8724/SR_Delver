@@ -9,6 +9,7 @@ class CPinkSlime : public CMonster
 
 private:
 	explicit CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	explicit CPinkSlime(const CPinkSlime& rhs);
 	virtual ~CPinkSlime();
 
@@ -66,7 +67,7 @@ private:
 	_bool				m_bDead = false;
 
 public:
-	static CPinkSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPinkSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	static CPinkSlime*	Create(const CPinkSlime& rhs);
 	virtual void		Free(void);
 };

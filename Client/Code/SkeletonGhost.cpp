@@ -13,7 +13,18 @@ CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fAttackTimeAcc(0.f)
 {
 	m_ObjTag = L"SkeletonGhost";
+}
 
+CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+	: CMonster(pGraphicDev)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_fHeight(0.f)
+	, m_fTimeAcc(0.f)
+	, m_fAttackTimeAcc(0.f)
+{
+	m_vPos = vPos;
+	m_ObjTag = L"SkeletonGhost";
 }
 
 CSkeletonGhost::~CSkeletonGhost()
@@ -27,8 +38,9 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 	m_tInfo.iHp = 2;
 	m_tInfo.iAttack = 1;
 
-	m_fHeight = 3.f;
-	m_pTransCom->Set_Pos(20.f, m_fHeight, 20.f);
+	m_fHeight = m_vPos.y; // 3.f;
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(20.f, m_fHeight, 20.f);
 
 	m_eCurState = IDLE;
 
@@ -53,7 +65,7 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 
 	Target_Follow(fTimeDelta);
-	Motion_Change(fTimeDelta);
+	Motion_Change();
 	Circle();
 
 	return 0;
@@ -209,7 +221,7 @@ void CSkeletonGhost::Billboard()
 	m_matWorld = matBill * m_matWorld;
 }
 
-void CSkeletonGhost::Motion_Change(const _float& fTimeDelta)
+void CSkeletonGhost::Motion_Change()
 {
 	if (m_ePreState != m_eCurState)
 	{
@@ -235,9 +247,9 @@ void CSkeletonGhost::Motion_Change(const _float& fTimeDelta)
 	}
 }
 
-CSkeletonGhost * CSkeletonGhost::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CSkeletonGhost * CSkeletonGhost::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CSkeletonGhost *	pInstance = new CSkeletonGhost(pGraphicDev);
+	CSkeletonGhost *	pInstance = new CSkeletonGhost(pGraphicDev, vPos);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

@@ -11,6 +11,7 @@ class CStick : public CMonster
 
 private:
 	explicit CStick(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CStick(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual ~CStick();
 
 public:
@@ -32,14 +33,13 @@ private:
 	STATE				m_ePreState;
 	STATE				m_eCurState;
 
-	_vec3				m_OriginalPos;
 	_bool				m_bParticle;
 
 	//Timer
 	_float				m_fMoveTimeAcc;
 
 public:
-	static CStick*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CStick*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);
 };
 

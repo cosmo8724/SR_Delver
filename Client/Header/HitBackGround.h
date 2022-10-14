@@ -1,11 +1,11 @@
 #pragma once
 #include "UI.h"
 
-class CHitBackGround : public CUI
+class CSpiderBackGround : public CUI
 {
 private:
-	explicit CHitBackGround(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CHitBackGround();
+	explicit CSpiderBackGround(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CSpiderBackGround();
 
 public:
 	virtual HRESULT			Ready_Object(void)						override;
@@ -20,7 +20,7 @@ private:
 	virtual HRESULT			Add_Component(void);
 
 public:
-	static CHitBackGround*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CSpiderBackGround*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void			Free(void);
 
 private:

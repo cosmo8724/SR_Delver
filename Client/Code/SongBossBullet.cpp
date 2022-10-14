@@ -24,7 +24,7 @@ HRESULT CSongBossBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iAttack = 3.f;
+	m_tInfo.iAttack = 3;
 	m_fSpeed = 20.f;
 
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
@@ -79,6 +79,7 @@ _int CSongBossBullet::Update_Object(const _float & fTimeDelta)
 			_vec3({ 1.f, 1.f, 1.f }), 3.f, D3DXCOLOR{ 0.1f, 0.1f, 0.1f, 1.f },
 			1.f, false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_8);
+
 		m_bOneCheck = true;
 	}
 

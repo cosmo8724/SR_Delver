@@ -19,6 +19,16 @@ CGreenSlime::CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_ObjTag = L"GreenSlime";
 }
 
+CGreenSlime::CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+	: CMonster(pGraphicDev)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_fTimeAcc(0.f)
+{
+	m_vPos = vPos;
+	m_ObjTag = L"GreenSlime";
+}
+
 CGreenSlime::~CGreenSlime()
 {
 }
@@ -30,7 +40,8 @@ HRESULT CGreenSlime::Ready_Object(void)
 	m_tInfo.iHp = 2;
 	m_tInfo.iAttack = 1;
 
-	m_pTransCom->Set_Pos(15.f, 1.f, 15.f);
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(15.f, 1.f, 15.f);
 
 	m_eCurState = IDLE;
 
@@ -52,7 +63,7 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
-	//// �ִϸ��̼� ��ȭ
+	//// 기존 이미지 돌리는 코드
 	//m_fFrame += m_pTextureCom->Get_FrameEnd()  * fTimeDelta;
 
 	//if (m_fFrame >= m_pTextureCom->Get_FrameEnd())
@@ -141,7 +152,6 @@ HRESULT CGreenSlime::Add_Component(void)
 
 void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 {
-	// �÷��̾� ���󰡱�
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
 
@@ -178,7 +188,7 @@ void CGreenSlime::Target_Follow(const _float & fTimeDelta)
 		D3DXVec3Normalize(&vRight, &vRight);
 		m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
 
-		//// ���� �¿�� �̵��ϱ�
+		//// 몬스터 좌우로 움직이는
 		//_vec3		vRight;
 		//m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
 
@@ -279,9 +289,22 @@ void CGreenSlime::Motion_Change()
 	}
 }
 
-CGreenSlime * CGreenSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+//CGreenSlime * CGreenSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+//{
+//	CGreenSlime *	pInstance = new CGreenSlime(pGraphicDev);
+//
+//	if (FAILED(pInstance->Ready_Object()))
+//	{
+//		Safe_Release(pInstance);
+//		return nullptr;
+//	}
+//
+//	return pInstance;
+//}
+
+CGreenSlime * CGreenSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CGreenSlime *	pInstance = new CGreenSlime(pGraphicDev);
+	CGreenSlime *	pInstance = new CGreenSlime(pGraphicDev, vPos);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

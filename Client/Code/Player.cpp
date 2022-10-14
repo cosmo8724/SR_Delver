@@ -10,7 +10,7 @@
 #include "MapUI.h"
 #include "MiniMap.h"
 #include "ParticleMgr.h"
-#include "HitBackGround.h"
+#include "SpiderBackGround.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
 #include "BonFire.h"
@@ -244,7 +244,7 @@ HRESULT CPlayer::Add_Component(void)
 
 void CPlayer::Key_Input(const _float & fTimeDelta)
 {
-	if (m_bStun) // sh
+	if (m_tInfo.bStun) // sh
 		return;
 
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
@@ -582,13 +582,13 @@ void CPlayer::OnHit(_int _HpMinus)
 		return;
 	}
 
-	//// HitBackGround
-	//CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
+	// HitBackGround
+	CSpiderBackGround* pSpiderBackGround = dynamic_cast<CSpiderBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
 
-	//if (0.3f < InvincibilityTimeAcc)
-	//	pHitBackGround->Set_HitBackGround(false);
-	//else
-	//	pHitBackGround->Set_HitBackGround(true);
+	if (0.3f < InvincibilityTimeAcc)
+		pSpiderBackGround->Set_HitBackGround(false);
+	else
+		pSpiderBackGround->Set_HitBackGround(true);
 
 	// 플레이어는 2초간 무적
 	if (2.f < InvincibilityTimeAcc)
@@ -607,56 +607,30 @@ void CPlayer::OnHit(_int _HpMinus)
 	}
 }
 
-void CPlayer::KnockBack(const _float & fTimeDelta)
-{
-	if (!m_bKnockBack)
-		return;
-
-	_vec3 vPos, vLook;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
-
-	_float fHeight = Get_Height();
-
-	if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
-	{
-		m_bKnockBack = false;
-		m_pCurrentBlock = nullptr;
-
-		m_eState = PLAYER_GROUND;
-		m_fJTimeDelta = 0.f;
-
-		m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
-		m_fJSpeed = m_fJSpeed0;
-	}
-	else
-	{
-		m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta); // -3.f -> KnockBack Distance
-
-		m_fJSpeed -= m_fAccel;
-		m_pTransCom->Plus_PosY(m_fJSpeed);
-		m_fJTimeDelta += 0.1f;
-	}
-}
-
 void CPlayer::Stun(const _float & fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_0))
-		m_bStun = true;
-
-	if (!m_bStun)
+	if (!m_tInfo.bStun)
 		return;
 
-	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f,
-		_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
+	CParticleMgr::GetInstance()->Set_Info(this, 10, 1.f,
+		_vec3({ 1.f, 1.f, 1.f }), 0.7f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_3);
 
 	m_fStunTimeAcc += fTimeDelta;
 	if (3.f < m_fStunTimeAcc) // 3.f ->StunTime
 	{
-		m_bStun = false;
+		m_tInfo.bStun = false;
 		m_fStunTimeAcc = 0.f;
 	}
+}
+
+void CPlayer::Slow(const _float & fTimeDelta)
+{
+	if (Engine::Key_Down(DIK_0))
+		m_tInfo.bSlow = true;
+
+	if (!m_tInfo.bSlow)
+		return;
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

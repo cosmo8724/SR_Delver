@@ -19,7 +19,18 @@ CFist::CFist(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fAttackTimeAcc(0.f)
 {
 	m_ObjTag = L"Fist";
+}
 
+CFist::CFist(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+	:CMonster(pGraphicDev)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_fTimeAcc(0.f)
+	, m_fIdleTimeAcc(0.f)
+	, m_fAttackTimeAcc(0.f)
+{
+	m_vPos = vPos;
+	m_ObjTag = L"Fist";
 }
 
 CFist::~CFist()
@@ -33,7 +44,8 @@ HRESULT CFist::Ready_Object(void)
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
 
-	m_pTransCom->Set_Pos(3.f, 1.f, 15.f);
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(3.f, 1.f, 15.f);
 
 	m_eCurState = IDLE;
 
@@ -242,9 +254,9 @@ void CFist::Motion_Change()
 	}
 }
 
-CFist * CFist::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CFist * CFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CFist *	pInstance = new CFist(pGraphicDev);
+	CFist *	pInstance = new CFist(pGraphicDev, vPos);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

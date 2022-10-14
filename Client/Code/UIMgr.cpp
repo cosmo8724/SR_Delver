@@ -11,7 +11,7 @@
 #include "MapUI.h"
 #include "MiniMap.h"
 #include "CrossHair.h"
-#include "HitBackGround.h"
+#include "SpiderBackGround.h"
 
 // Font
 #include "HPGauge.h"
@@ -70,7 +70,8 @@ HRESULT CUIMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_CrossHair_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/CrossHair/CrossHair.png", TEX_NORMAL, 1)), E_FAIL);
 
 	// UI_HitBackGround
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_HitBackGround_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/HitBackGround/HitBackGround.png", TEX_NORMAL, 1)), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_HitBackGround_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/HitBackGround/HitBackGround.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_SpiderBackground_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SpiderBackground/SpiderBackground.png", TEX_NORMAL, 1)), E_FAIL);
 
 	
 	return S_OK;
@@ -134,10 +135,10 @@ HRESULT CUIMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);
 
-	// UI_HitBackGround
-	pGameObject = CHitBackGround::Create(m_pGraphicDev);
+	// UI_SpiderBackGround
+	pGameObject = CSpiderBackGround::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_HitBackGround", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_SpiderBackGround", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);
 
 	return E_NOTIMPL;

@@ -13,6 +13,7 @@
 #include "SongBossFloorLightning.h"
 #include "ArrowBullet.h"
 #include "LeafBullet.h"
+#include "GreenSpiderBullet.h"
 
 IMPLEMENT_SINGLETON(CBulletMgr)
 
@@ -31,6 +32,7 @@ CBulletMgr::CBulletMgr()
 	m_MaxIdx[LIGHTNING_SONGBOSS] = 5; // ENUM 선언위치 변경 X
 	m_MaxIdx[BULLET_ARROW] = 10;
 	m_MaxIdx[BULLET_M_LEAF] = 5;
+	m_MaxIdx[BULLET_M_SPIDER] = 5;
 
 	for (int bulletId = 0; bulletId < BULLET_END; ++bulletId)
 	{
@@ -61,6 +63,8 @@ HRESULT CBulletMgr::Ready_Proto(LPDIRECT3DDEVICE9 pGraphicDev)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicNote_FloorLightning_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SongBoss_FloorLightning/Lightning_%d.png", TEX_NORMAL, 9)), E_FAIL);
 	// Leaf
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Leaf_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/Leaf_Bullet/Leaf_Bullet%d.png", TEX_NORMAL, 7)), E_FAIL);
+	// GreenSpider
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenSpider_Bullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/GreenSpider_Bullet/GreenSpider_Bullet.png", TEX_NORMAL, 1)), E_FAIL);
 
 	// ArrowBullet
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ArrowBullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Item/Bullet/ArrowBullet.png", TEX_NORMAL)), E_FAIL);
@@ -225,6 +229,25 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objTags[i].c_str(), pGameObject), E_FAIL);
 
 		m_vecObjPool[BULLET_M_LEAF].push_back(pGameObject);
+	}
+
+	// GreenSpider_Bullet
+	objTags = nullptr;
+	objTags = new wstring[m_MaxIdx[BULLET_M_SPIDER]];
+	m_vecObjTags[BULLET_M_SPIDER].push_back(objTags);
+
+	for (int i = 0; i < m_MaxIdx[BULLET_M_SPIDER]; ++i)
+	{
+		pGameObject = CGreenSpiderBullet::Create(pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		objTags[i] = L"GreenSpider_Bullet";
+		wchar_t index[10];
+		_itow_s(i, index, 10);
+		objTags[i] += index;
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objTags[i].c_str(), pGameObject), E_FAIL);
+
+		m_vecObjPool[BULLET_M_SPIDER].push_back(pGameObject);
 	}
 
 	return S_OK;

@@ -7,6 +7,7 @@ class CGreenSlime : public CMonster
 
 private:
 	explicit CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual ~CGreenSlime();
 
 public:
@@ -32,6 +33,7 @@ private:
 	_float				m_fTimeAcc;
 
 public:
-	static CGreenSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	//static CGreenSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CGreenSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);
 };
