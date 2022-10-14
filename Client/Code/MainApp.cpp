@@ -6,6 +6,7 @@
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 #include "CameraMgr.h"
+#include "BlockVIBuffer.h"
 #include "MonsterMgr.h"
 #include "NPCMgr.h"
 #include "UIMgr.h"
@@ -74,7 +75,7 @@ void CMainApp::Render_MainApp(void)
 
 HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 {
-	// µð¹ÙÀÌ½º ÃÊ±âÈ­
+	// ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½Ê±ï¿½È­
 	FAILED_CHECK_RETURN(Engine::Ready_GraphicDev(g_hWnd, MODE_WIN, WINCX, WINCY, &m_pDeviceClass), E_FAIL);
 	m_pDeviceClass->AddRef();
 
@@ -85,9 +86,9 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 	FAILED_CHECK_RETURN(Engine::Ready_InputDev(g_hInst, g_hWnd), E_FAIL);
 
 	// Font
-	FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"¹ÙÅÁ", 7, 18, FW_HEAVY), E_FAIL);
-	//FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"µ¸¿ò", 7, 18, FW_NORMAL), E_FAIL);
-	//FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"±Ã¼­", 7, 18, FW_NORMAL), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"ï¿½ï¿½ï¿½ï¿½", 7, 18, FW_HEAVY), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"ï¿½ï¿½ï¿½ï¿½", 7, 18, FW_NORMAL), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Font(m_pGraphicDev, L"Font_Jinji", L"ï¿½Ã¼ï¿½", 7, 18, FW_NORMAL), E_FAIL);
 
 	// FMOD
 	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
@@ -96,7 +97,7 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 	CImGuiMgr::GetInstance()->DefaultSetting_ImGui(m_pGraphicDev);
 	// *Init ImGui
 
-	// ÀÌ¹ÌÁö ÇÊÅÍ¸µ
+	// ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½
 	//m_pGraphicDev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_GAUSSIANQUAD);
 	//m_pGraphicDev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_GAUSSIANQUAD);
 
@@ -117,7 +118,7 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 
 	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(pScene), E_FAIL);
 
-	// ¸Å´ÏÀú Å¬·¡½ºµé »ý¼º
+	// ï¿½Å´ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	CItemMgr::GetInstance()->Ready_ItemMgr(m_pGraphicDev);
 	CParticleMgr::GetInstance()->Ready_ParticleMgr(m_pGraphicDev);
 	CCameraMgr::GetInstance()->Ready_CameraMgr(m_pGraphicDev);
@@ -150,6 +151,7 @@ void CMainApp::Free(void)
 	CItemMgr::DestroyInstance();
 	CParticleMgr::DestroyInstance();
 	CCameraMgr::DestroyInstance();
+	CBlockVIBuffer::DestroyInstance();
 	CMonsterMgr::DestroyInstance();
 	CNPCMgr::DestroyInstance();
 	CUIMgr::DestroyInstance();
