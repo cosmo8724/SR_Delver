@@ -582,14 +582,6 @@ void CPlayer::OnHit(_int _HpMinus)
 		return;
 	}
 
-	// HitBackGround
-	CSpiderBackGround* pSpiderBackGround = dynamic_cast<CSpiderBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
-
-	if (0.3f < InvincibilityTimeAcc)
-		pSpiderBackGround->Set_HitBackGround(false);
-	else
-		pSpiderBackGround->Set_HitBackGround(true);
-
 	// 플레이어는 2초간 무적
 	if (2.f < InvincibilityTimeAcc)
 	{
@@ -631,6 +623,14 @@ void CPlayer::Slow(const _float & fTimeDelta)
 
 	if (!m_tInfo.bSlow)
 		return;
+
+	// SpiderBackGround
+	CSpiderBackGround* pSpiderBackGround = dynamic_cast<CSpiderBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
+
+	if (0.3f < InvincibilityTimeAcc)
+		pSpiderBackGround->Set_HitBackGround(false);
+	else
+		pSpiderBackGround->Set_HitBackGround(true);
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
