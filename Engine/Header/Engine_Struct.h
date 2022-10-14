@@ -145,11 +145,11 @@ namespace Engine
 		_ulong			dwVbSize;			// 버텍스 버퍼가 보관할 수 있는 파티클 수
 											// 실제 파티클 시스템 내 파티클 수와는 독립적
 		_ulong			dwVbOffset;		// 렌더링에 이용됨
-											// 버텍스 버퍼에서 복사를 시작할 파티클 내 다음 단계로의 오프셋		
-											// 바이트가 아닌 파티클 단위이다.
-											// ex) 단계 1이 0부터 499라면, 단계2로의 오프셋은 500
+										// 버텍스 버퍼에서 복사를 시작할 파티클 내 다음 단계로의 오프셋		
+										// 바이트가 아닌 파티클 단위이다.
+										// ex) 단계 1이 0부터 499라면, 단계2로의 오프셋은 500
 		_ulong			dwVbBatchSize;	// 렌더링에 이용됨
-											// 단계 하나에 정의된 파티클 수
+										// 단계 하나에 정의된 파티클 수
 
 	} PINFO;
 
@@ -162,7 +162,7 @@ namespace Engine
 
 	typedef struct tPlayerInfo
 	{
-		_int		iHp;	
+		_int		iHp;
 		_int		iHpMax;
 		_int		iLevel;
 		_int		iExp;
@@ -170,7 +170,7 @@ namespace Engine
 		_int		iHunger;
 		_int		iAtk;
 		_int		iDef;
-		_float		fSpeed; 
+		_float		fSpeed;
 	}PLAYERINFO;
 
 	typedef struct tItemInfo
@@ -178,7 +178,12 @@ namespace Engine
 		_int		iHp;	// 내구도
 		_int		iLevel;	// 레벨
 		_int		iExp;
-		_int		iAbility;	// 아이템이 가지고 있는 능력치
+
+		_int		iHpHeal = 0;	// 아이템이 가지고 있는 능력치
+		_int		iDef = 0;
+		_float		fSpeed = 0.f;
+		_int		iHunger = 0;
+		_int		iAtk = 0;
 	}ITEMINFO;
 }
 

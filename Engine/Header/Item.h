@@ -31,6 +31,7 @@ public:
 	void		Set_State(ITEMSTATE eState) { m_eState = eState; }
 	ITEMTYPE	Get_ItemType() { return m_eItemType; }
 	ITEMSTATE	Get_State() { return m_eState; }
+	ITEMINFO	Get_ItemInfo() { return m_tInfo; }
 
 	void		Billboard();
 
