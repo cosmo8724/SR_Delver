@@ -26,7 +26,7 @@ HRESULT CSongBossFloor::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iAttack = 3.f;
+	m_tInfo.iAttack = 3;
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pTransCom->Rotation(ROT_X, 45.555f);
 
