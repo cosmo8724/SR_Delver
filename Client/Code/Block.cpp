@@ -65,7 +65,7 @@ CBlock::CBlock(const CBlock& rhs)
 
 	_matrix	matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, matWorld);
+	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
 }
 
 CBlock::~CBlock()
@@ -134,7 +134,7 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 					_vec3			vCameraPos = pCamera->Get_Eye();
 
 					_vec3 ParentCubePos = pGameObject->m_pTransCom->Get_Pos();
-					_float fDistance = D3DXVec3Length(&(ParentCubePos - vCameraPos));	// ī�޶� ��ġ���� ť����� �Ÿ�
+					_float fDistance = D3DXVec3Length(&(ParentCubePos - vCameraPos));
 
 					if (bFirst)
 					{
@@ -200,9 +200,9 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 		if (!m_bCreateIcon)
 		{
 			// Only For Stage
-			/*CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+			CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 			pMiniMap->Add_Icon(m_pGraphicDev, this);
-			m_bCreateIcon = true;*/
+			m_bCreateIcon = true;
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 		Add_RenderGroup(RENDER_NONALPHA, this);

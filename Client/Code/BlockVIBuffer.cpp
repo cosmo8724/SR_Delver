@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BlockVIBuffer.h"
+#include "CameraMgr.h"
 
 IMPLEMENT_SINGLETON(CBlockVIBuffer)
 
@@ -26,7 +27,7 @@ CBlockVIBuffer::~CBlockVIBuffer()
 	Free();
 }
 
-HRESULT CBlockVIBuffer::Add_Instancing(BLOCKTYPE eType, CTexture* pTextureCom, _int iTexture, _matrix matWorld)
+HRESULT CBlockVIBuffer::Add_Instancing(BLOCKTYPE eType, CTexture* pTextureCom, _int iTexture, CTransform* pTransformCom)
 {
 	NULL_CHECK_RETURN(pTextureCom, E_FAIL);
 
@@ -40,7 +41,7 @@ HRESULT CBlockVIBuffer::Add_Instancing(BLOCKTYPE eType, CTexture* pTextureCom, _
 	m_dwIdxSize = sizeof(INDEX32);
 	m_IdxFmt = D3DFMT_INDEX32;
 
-	pBPT->m_vecMatWorld.push_back(matWorld);
+	pBPT->m_vecMatWorld.push_back(pTransformCom);
 
 	if (pBPT->m_pTexture == nullptr)
 		pBPT->m_pTexture = pTextureCom->Get_Texture()[iTexture];
@@ -82,44 +83,36 @@ HRESULT CBlockVIBuffer::Ready_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eT
 		dwIndex = i * 8;
 
 		// FRONT
-		//pVertex[dwIndex].vPos = { m_vecMatWorld[i]._41 - 1.f, m_vecMatWorld[i]._42 + 1.f, m_vecMatWorld[i]._43 - 1.f };
-		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, 1.f, -1.f), &pBPT->m_vecMatWorld[i]);
+		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, 1.f, -1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { -1.f, 1.f, -1.f };
 		++dwIndex;
 
-		//pVertex[dwIndex].vPos = { m_vecMatWorld[i]._41 + 1.f, m_vecMatWorld[i]._42 + 1.f, m_vecMatWorld[i]._43 - 1.f };
-		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, 1.f, -1.f), &pBPT->m_vecMatWorld[i]);
+		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, 1.f, -1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { 1.f, 1.f, -1.f };
 		++dwIndex;
 
-		//pVertex[dwIndex].vPos = { m_vecMatWorld[i]._41 + 1.f, m_vecMatWorld[i]._42 - 1.f, m_vecMatWorld[i]._43 - 1.f };
-		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, -1.f, -1.f), &pBPT->m_vecMatWorld[i]);
+		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, -1.f, -1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { 1.f, -1.f, -1.f };
 		++dwIndex;
 
-		//pVertex[dwIndex].vPos = { m_vecMatWorld[i]._41 - 1.f, m_vecMatWorld[i]._42 - 1.f, m_vecMatWorld[i]._43 - 1.f };
-		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, -1.f, -1.f), &pBPT->m_vecMatWorld[i]);
+		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, -1.f, -1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { -1.f, -1.f, -1.f };
 		++dwIndex;
 
 		// BACK
-		//pVertex[dwIndex].vPos = { m_vecMatWorld[i]._41 - 1.f, m_vecMatWorld[i]._42 + 1.f, m_vecMatWorld[i]._43 + 1.f };
-		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, 1.f, 1.f), &pBPT->m_vecMatWorld[i]);
+		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, 1.f, 1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { -1.f, 1.f, 1.f };
 		++dwIndex;
 
-		//pVertex[dwIndex].vPos = { m_vecMatWorld[i]._41 + 1.f, m_vecMatWorld[i]._42 + 1.f, m_vecMatWorld[i]._43 + 1.f };
-		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, 1.f, 1.f), &pBPT->m_vecMatWorld[i]);
+		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, 1.f, 1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { 1.f, 1.f, 1.f };
 		++dwIndex;
 
-		//pVertex[dwIndex].vPos = { m_vecMatWorld[i]._41 + 1.f, m_vecMatWorld[i]._42 - 1.f, m_vecMatWorld[i]._43 + 1.f };
-		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, -1.f, 1.f), &pBPT->m_vecMatWorld[i]);
+		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, -1.f, 1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { 1.f, -1.f, 1.f };
 		++dwIndex;
 
-		//pVertex[dwIndex].vPos = { m_vecMatWorld[i]._41 - 1.f, m_vecMatWorld[i]._42 - 1.f, m_vecMatWorld[i]._43 + 1.f };
-		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, -1.f, 1.f), &pBPT->m_vecMatWorld[i]);
+		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, -1.f, 1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { -1.f, -1.f, 1.f };
 		++dwIndex;
 	}
@@ -199,27 +192,19 @@ void CBlockVIBuffer::Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eTyp
 	if (pBPT->m_pVB == nullptr)
 		return;
 
-	CGameObject* pObj = nullptr;
+	CCamera* pObj = nullptr;
+	
+	pObj = CCameraMgr::GetInstance()->Get_CurCamera();
 
-	//if (D3DXMatrixIsIdentity(&m_matView) && D3DXMatrixIsIdentity(&m_matProj))
-	{
-		pObj = CManagement::GetInstance()->Get_GameObject(L"Layer_Environment", L"StaticCamera");
+	if (!pObj)
+		return;
 
-		if (!pObj)
-			pObj = CManagement::GetInstance()->Get_GameObject(L"Layer_Tool_Environment", L"DynamicCamera");
+	D3DXMatrixIdentity(&m_matProj);
+	pObj->Get_ViewMatrix(m_matView);
+	pObj->Get_ProjectMatrix(m_matProj);
 
-		D3DXMatrixIdentity(&m_matProj);
-		if (pObj == nullptr)
-		{
-			pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
-		}
-		else
-		{
-			static_cast<CCamera*>(pObj)->Get_ViewMatrix(m_matView);
-			static_cast<CCamera*>(pObj)->Get_ProjectMatrix(m_matProj);
-		}
-	}
 	_matrix	matWorld = *D3DXMatrixIdentity(&matWorld);
+
 	pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 	pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
