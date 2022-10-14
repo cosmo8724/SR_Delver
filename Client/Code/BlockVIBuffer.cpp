@@ -219,6 +219,8 @@ void CBlockVIBuffer::Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eTyp
 			static_cast<CCamera*>(pObj)->Get_ProjectMatrix(m_matProj);
 		}
 	}
+	_matrix	matWorld = *D3DXMatrixIdentity(&matWorld);
+	pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 	pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
