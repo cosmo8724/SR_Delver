@@ -41,10 +41,10 @@ private:
 
 	// 회전 테스트
 	_matrix					m_matTempRot;
-	_float m_fDistance = 0.0f;
-	_float m_fAngle = 0.f;
-	_matrix			m_matWorld;
-	_vec3			m_vTrans;
+	_float					m_fDistance = 0.0f;
+	_float					m_fAngle = 0.f;
+	_matrix					m_matWorld;
+	_vec3					m_vTrans;
 };
 
 END

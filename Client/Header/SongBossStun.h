@@ -15,32 +15,35 @@ private:
 
 public:
 	virtual HRESULT Ready_Object(_int iBulletCount);
-	virtual _int	Update_Object(const _float& fTimeDelta) override;
-	virtual void	LateUpdate_Object(void) override;
-	virtual	void	Render_Obejct(void) override;
-	 
+	virtual _int	Update_Object(const _float& fTimeDelta)		override;
+	virtual void	LateUpdate_Object(void)						override;
+	virtual	void	Render_Obejct(void)							override;
+	virtual	void	CollisionEvent(CGameObject* pObj)			override;
+
 public:
 	static CSongBossStun*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount);
 	virtual void			Free(void) override;
 	virtual void			Reset() override;
 
 private:
-	void					Billboard();
+	HRESULT					Add_Component(void);
 
 private:
-	HRESULT					Add_Component(void);
+	void					Billboard();
 
 private:
 	CRcTex*					m_pBufferCom = nullptr;
 	CAnimator*				m_pAnimtorCom = nullptr;
 
 private:
-	_float		m_fFrame = 0.f;
+	_float					m_fFrame = 0.f;
 
-	_bool		m_bReady = false;
-	_vec3		m_vPlayerPos = { 0.f,0.f,0.f };
+	_bool					m_bReady = false;
+	_vec3					m_vPlayerPos = { 0.f,0.f,0.f };
 
-	_uint		m_iBulletCount = 0;
+	_uint					m_iBulletCount = 0;
+	_bool					m_bOneCheck = false;
+	_bool					m_bRenderOFF = false;
 };
 
 END

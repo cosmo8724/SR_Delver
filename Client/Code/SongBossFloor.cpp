@@ -9,6 +9,7 @@ CSongBossFloor::CSongBossFloor(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_iBulletCount(0)
 	, m_iTransparency(0)
 	, m_fTransparencyTimeAcc(0.f)
+	, m_fAttackTimeAcc(0.f)
 {
 }
 
@@ -25,6 +26,7 @@ HRESULT CSongBossFloor::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_tInfo.iAttack = 3;
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pTransCom->Rotation(ROT_X, 45.555f);
 
@@ -55,6 +57,11 @@ HRESULT CSongBossFloor::Add_Component(void)
 
 	m_pAnimtorCom->Add_Component(L"Proto_MusicNote_Floor_Texture");
 
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
 	return S_OK;
 }
 
@@ -64,8 +71,21 @@ _int CSongBossFloor::Update_Object(const _float & fTimeDelta)
 		return 0;
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Add_RenderGroup(RENDER_ALPHA, this);
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.5f);
+
+	// 처음에는 충돌처리를 하지 않았다가, 번개가 내리치는 순간 충돌처리
+	if (m_bAttack)
+	{
+		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
+		m_fAttackTimeAcc += fTimeDelta;
+		if (0.5f < m_fAttackTimeAcc)
+		{
+			m_bAttack = false;
+			m_fAttackTimeAcc = 0.f;
+		}
+	}
 
 	// 플레이어 주변으로 생기는 음표
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -102,9 +122,7 @@ void CSongBossFloor::LateUpdate_Object(void)
 		return;
 
 	if (6.f < m_fLifeTime)
-	{
 		Reset();
-	}
 
 	//if (m_iTransparency > 255)
 	//{
@@ -116,7 +134,6 @@ void CSongBossFloor::LateUpdate_Object(void)
 	if (0.1f < m_fTransparencyTimeAcc)
 	{
 		m_iTransparency += 10;
-
 		m_fTransparencyTimeAcc = 0.f;
 	}
 
@@ -144,6 +161,15 @@ void CSongBossFloor::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
 }
 
 CSongBossFloor * CSongBossFloor::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount)
@@ -170,5 +196,7 @@ void CSongBossFloor::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
+	m_bAttack = false;
+	m_pColliderCom->Set_Free(false);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, FLOOR_SONGBOSS);
 }

@@ -164,6 +164,10 @@
     <ClInclude Include="..\Header\ArrowBullet.h" />
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Block.h" />
+    <ClInclude Include="..\Header\BlockVIBuffer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Header\BlueBat.h" />
     <ClInclude Include="..\Header\BonFire.h" />
     <ClInclude Include="..\Header\BrownBat.h" />
@@ -228,6 +232,7 @@
     <ClInclude Include="..\Header\SongBoss.h" />
     <ClInclude Include="..\Header\SongBossBullet.h" />
     <ClInclude Include="..\Header\SongBossFloor.h" />
+    <ClInclude Include="..\Header\SongBossFloorLightning.h" />
     <ClInclude Include="..\Header\SongBossStun.h" />
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\StaticCamera.h" />
@@ -273,6 +278,10 @@
     <ClCompile Include="..\Code\ArrowBullet.cpp" />
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Block.cpp" />
+    <ClCompile Include="..\Code\BlockVIBuffer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Code\BlueBat.cpp" />
     <ClCompile Include="..\Code\BonFire.cpp" />
     <ClCompile Include="..\Code\BrownBat.cpp" />
@@ -340,6 +349,7 @@
     <ClCompile Include="..\Code\SongBoss.cpp" />
     <ClCompile Include="..\Code\SongBossBullet.cpp" />
     <ClCompile Include="..\Code\SongBossFloor.cpp" />
+    <ClCompile Include="..\Code\SongBossFloorLightning.cpp" />
     <ClCompile Include="..\Code\SongBossStun.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\StaticCamera.cpp" />

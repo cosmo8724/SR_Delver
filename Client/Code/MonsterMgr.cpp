@@ -30,6 +30,7 @@ void CMonsterMgr::Ready_MonsterMgr(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_pGraphicDev = pGraphicDev;
 	m_pGraphicDev->AddRef();
 }
+
 HRESULT CMonsterMgr::Ready_Proto()
 {
 	///////// Monster
@@ -99,53 +100,53 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	CGameObject*		pGameObject = nullptr;
 
 	//////////// Monster
-	// GreenSlime
-	pGameObject = CGreenSlime::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//// GreenSlime
+	//pGameObject = CGreenSlime::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	// PinkSlime
+	//// PinkSlime
 	//pGameObject = CPinkSlime::Create(m_pGraphicDev);
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
-	// Fist
-	pGameObject = CFist::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Fist", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//// Fist
+	//pGameObject = CFist::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Fist", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	// BlueBat
-	pGameObject = CBlueBat::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BlueBat", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//// BlueBat
+	//pGameObject = CBlueBat::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BlueBat", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	// BrownBat
-	pGameObject = CBrownBat::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//// BrownBat
+	//pGameObject = CBrownBat::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	// Stick
-	pGameObject = CStick::Create(m_pGraphicDev, 1);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Stick", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//// Stick
+	//pGameObject = CStick::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Stick", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	// Leaf
-	pGameObject = CLeaf::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//// Leaf
+	//pGameObject = CLeaf::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
-	// SkeletonGhost
-	pGameObject = CSkeletonGhost::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//// SkeletonGhost
+	//pGameObject = CSkeletonGhost::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
 	//////////////Boss
 	// SongBoss

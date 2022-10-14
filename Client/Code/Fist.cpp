@@ -135,6 +135,7 @@ void CFist::Target_Follow(const _float & fTimeDelta)
 	if (fDist < 5.f)
 	{
 		m_eCurState = IDLE;
+		m_pTransCom->Set_Y(m_fHeight);
 		m_pTransCom->Chase_Target(&vPlayerPos, -m_fAttack_Speed, fTimeDelta);
 		return;
 	}

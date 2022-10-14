@@ -14,6 +14,7 @@
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 #include "CameraMgr.h"
+#include "BlockVIBuffer.h"
 #include "MonsterMgr.h"
 #include "NPCMgr.h"
 #include "UIMgr.h"
@@ -46,6 +47,40 @@ HRESULT CStage::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+
+	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	{
+		if (i == BLOCK_CAVE)
+		{
+			for (_int j = 0; j < CAVETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_COLD)
+		{
+			for (_int j = 0; j < COLDTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_DUNGEON)
+		{
+			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_ROOM)
+		{
+			for (_int j = 0; j < ROOMTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_SEWER)
+		{
+			for (_int j = 0; j < SEWERTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_TEMPLE)
+		{
+			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+	}
 			
 	return S_OK;
 }
@@ -94,15 +129,27 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
-	// Player Monster
+	// Player / Monster
 	vector<CGameObject*>* pMonster = CMonsterMgr::GetInstance()->Get_Monster();
 	for (auto& monster : *pMonster)
 		Engine::CollisionAABB(pPlayer, monster);
 
-	// Player MonsterBullet
-	//vector<CGameObject*>*	pMonsterullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_FIST);
-	//for (auto& bullet : *pMonsterullets)
-	//	Engine::CollisionAABB(pPlayer, bullet);
+	// Player / MonsterBullet
+	vector<CGameObject*>*	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_FIST);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_LEAF);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
+	for (auto& bullet : *pMonsterBullet)
+ 		Engine::CollisionAABB(pPlayer, bullet);
+
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(FLOOR_SONGBOSS);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
 
 	// 무기와 환경요소
 	vector<CGameObject*>* pItems = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
@@ -122,6 +169,11 @@ void CStage::LateUpdate_Scene(void)
 	{
 		for (auto& monster : *pMonster)
 			Engine::CollisionAABB(monster, weapon);
+
+		// 보스 스킬, 무기
+		vector<CGameObject*>*	pMonsterullets = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+		for (auto& bullet : *pMonsterullets)
+			Engine::CollisionAABB(bullet, weapon);
 
 		// Eco
 		Engine::CollisionAABB(pSour, weapon);
@@ -186,7 +238,39 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
-
+	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	{
+		if (i == BLOCK_CAVE)
+		{
+			for (_int j = 0; j < CAVETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_COLD)
+		{
+			for (_int j = 0; j < COLDTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_DUNGEON)
+		{
+			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_ROOM)
+		{
+			for (_int j = 0; j < ROOMTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_SEWER)
+		{
+			for (_int j = 0; j < SEWERTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_TEMPLE)
+		{
+			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+	}
 }
 
 HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
@@ -251,7 +335,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
-	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 3.f, 1.f, 3.f }));
+	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 5.f, 0.9f, 5.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bonfire", pGameObject), E_FAIL);
 
@@ -386,6 +470,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		}
 		CloseHandle(hFile);
 	}
+
+
 	return S_OK;
 }
 

@@ -48,6 +48,15 @@ namespace Engine
 
 	}INDEX32;
 
+	typedef struct tagTile
+	{
+		tagVertexTex*	pVertex = nullptr;
+		tagIndex32*		pIndex= nullptr;
+		BYTE				byOption = 0;
+		BYTE				byDrawID = 0;
+		_ulong				dwIndex = 0;
+	}TILE;
+
 	// ÆÄÆ¼Å¬
 	typedef struct Particle
 	{
