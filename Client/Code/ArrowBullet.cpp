@@ -60,7 +60,10 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 
 	if (!m_bReady)
 	{
-		CTransform*		pWeapon = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Arrow0", L"Proto_TransformCom", ID_DYNAMIC));
+		CPlayer* pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		CGameObject* pItem = pPlayer->Get_Right();
+
+		CTransform*		pWeapon = static_cast<CTransform*>(pItem->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 			//dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pWeapon, -1);
 		m_matWorld = *pWeapon->Get_WorldMatrixPointer();
@@ -70,9 +73,9 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 		pWeapon->Get_Info(INFO_POS, &vPos);
 		m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
-		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+		CTransform*		pPlayerTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 
-		pPlayer->Get_Info(INFO_LOOK, &m_vDirection);
+		pPlayerTransCom->Get_Info(INFO_LOOK, &m_vDirection);
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		
 		
@@ -85,8 +88,8 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 		//CParticleMgr::GetInstance()->Set_Info(this);
 		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_REMAIN, TEXTURE_0);
 		
-		CPlayer* player = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-		if (player->Is_Snippered())
+		//CPlayer* player = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		if (pPlayer->Is_Snippered())
 		{
 			CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC, CAM_OBJECT);
 			CCameraMgr::GetInstance()->Set_Camera(this, -10.f, -1.f);

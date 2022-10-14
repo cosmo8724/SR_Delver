@@ -532,6 +532,14 @@ void CPlayer::Respawn()
 
 }
 
+void CPlayer::Set_Info(ITEMINFO tInfo, _int iSign)
+{
+	m_tInfo.iAtk	+= iSign * tInfo.iAtk;
+	m_tInfo.iDef	+= iSign * tInfo.iDef;
+	m_tInfo.iHunger += iSign * tInfo.iHunger;
+	m_tInfo.fSpeed += iSign * tInfo.fSpeed;
+}
+
 void CPlayer::KnockBack(const _float & fTimeDelta)
 {
 	if (!m_bKnockBack)

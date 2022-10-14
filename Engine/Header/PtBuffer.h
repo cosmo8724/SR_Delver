@@ -23,12 +23,12 @@ public:
 	void					Set_ParticleList(list<ATTINFO>* pList) { m_pParticles = pList; }
 
 protected:
-	LPDIRECT3DVERTEXBUFFER9	m_pVB;
+	LPDIRECT3DVERTEXBUFFER9		m_pVB;
 
 	_ulong						m_vbSize;
 	_ulong						m_vbOffset;
 	_ulong						m_vbBatchSize;
-	list<ATTINFO>*			m_pParticles;
+	list<ATTINFO>*				m_pParticles;
 };
 
 END

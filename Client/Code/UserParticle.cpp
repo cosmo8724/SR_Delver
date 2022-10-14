@@ -312,8 +312,6 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 			m_origin.y + GetRandomFloat(-0.3f, 0.3f),
 			m_origin.z + GetRandomFloat(-0.3f, 0.3f)
 		};
-		attribute->tColor = m_Attribute.tColor;
-
 	}
 		break;
 
@@ -321,18 +319,18 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	}
 
 	// 공통
-	if (m_bRand)
-	{
-		attribute->tColor = D3DXCOLOR(
-			GetRandomFloat(0.f, m_Attribute.tColor.r),
-			GetRandomFloat(0.f, m_Attribute.tColor.g),
-			GetRandomFloat(0.f, m_Attribute.tColor.b),
-			m_Attribute.tColor.a);
-	}
-	else
-	{
+	//if (m_bRand)
+	//{
+	//	attribute->tColor = D3DXCOLOR(
+	//		GetRandomFloat(0.f, m_Attribute.tColor.r),
+	//		GetRandomFloat(0.f, m_Attribute.tColor.g),
+	//		GetRandomFloat(0.f, m_Attribute.tColor.b),
+	//		m_Attribute.tColor);
+	//}
+	//else
+	//{
 		attribute->tColor = m_Attribute.tColor;
-	}
+	//}
 	attribute->fAge = 0.f;
 	attribute->fLifeTime = m_Attribute.fLifeTime; // 2초 동안의 수명을 가진다.
 }

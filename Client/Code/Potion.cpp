@@ -2,6 +2,7 @@
 #include "Potion.h"
 #include "Export_Function.h"
 #include "Player.h"
+#include "CullingMgr.h"
 
 CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CItem(pGraphicDev)
@@ -41,7 +42,7 @@ HRESULT CPotion::Ready_Object(void)
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eState = STATE_GROUND;
-	m_tInfo.iAbility = 10;
+	m_tInfo.iHpHeal = 10;
 	m_eItemType = ITEM_POTION;
 	return S_OK;
 }
@@ -79,7 +80,6 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 		m_pTransCom->Set_Y(m_vPos.y - 0.3f);
 	}
 
-	Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
@@ -91,7 +91,10 @@ void CPotion::LateUpdate_Object(void)
 	if (m_eState != STATE_GROUND)
 		return;
 
-	if (m_iDot > m_tInfo.iAbility)
+	if (CCullingMgr::GetInstance()->Is_Inside(this))
+		Add_RenderGroup(RENDER_ALPHA, this);
+
+	if (m_iDot > m_tInfo.iHpHeal)
 		m_bDead = true;
 
 	Billboard();

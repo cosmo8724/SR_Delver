@@ -11,7 +11,9 @@ CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_vMin({ 0.f, 0.f, 0.f })
 	, m_vCenter({ 0.f, 0.f, 0.f })
 	, m_fRadius(0.f)
-	, m_dwColor(D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.f))
+	//, m_dwColor(D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.f))
+	, m_dwColor(D3DXCOLOR(1.f, 1.f, 1.f, 1.f))
+
 	, m_bFree(false)
 {
 }

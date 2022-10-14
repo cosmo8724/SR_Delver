@@ -75,6 +75,8 @@ void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 		iIdx = m_IdxQue.front();
 		//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Use(true);
 		//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Index(iIdx);
+		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->ReUse();
+
 		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Texture(eTex);
 		//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Target(m_pTarget);
 		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Information(

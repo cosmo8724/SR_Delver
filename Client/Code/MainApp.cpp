@@ -9,6 +9,7 @@
 #include "MonsterMgr.h"
 #include "NPCMgr.h"
 #include "UIMgr.h"
+#include "CullingMgr.h"
 
 USING(Engine)
 CMainApp::CMainApp()	
@@ -41,6 +42,8 @@ _int CMainApp::Update_MainApp(const _float & fTimeDelta)
 	NULL_CHECK_RETURN(m_pManagementClass, -1);
 		
 	m_pManagementClass->Update_Scene(fTimeDelta);
+
+	CCullingMgr::GetInstance()->Update(fTimeDelta);
 
 	return 0;
 }
@@ -124,6 +127,7 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 	CMonsterMgr::GetInstance()->Ready_MonsterMgr(m_pGraphicDev);
 	CNPCMgr::GetInstance()->Ready_NPC(m_pGraphicDev);
 	CUIMgr::GetInstance()->Ready_UI(m_pGraphicDev);
+	CCullingMgr::GetInstance()->Ready_CullingMgr(m_pGraphicDev);
 
 	return S_OK;
 }
@@ -153,6 +157,8 @@ void CMainApp::Free(void)
 	CMonsterMgr::DestroyInstance();
 	CNPCMgr::DestroyInstance();
 	CUIMgr::DestroyInstance();
+	CCullingMgr::DestroyInstance();
+
 
 	Safe_Release(m_pGraphicDev);
 	Safe_Release(m_pDeviceClass);

@@ -25,6 +25,7 @@ public:
 
 	// 아이템 정적 할당용(스테이지에서 Layer 생성 전 Add GameObject로 미리 삽입되는 경우)
 	HRESULT			Add_GameObject(CLayer* pLayer, const _tchar* objTag, ITEMTYPE eType, _vec3 vPos);
+	HRESULT			Add_GameObject(CLayer* pLayer);
 
 	// 아이템 동적 할당용
 	HRESULT			Add_GameObject(const _tchar* pLayerTag, const _tchar* objTag, ITEMTYPE eType, _vec3 vPos);

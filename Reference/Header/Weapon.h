@@ -43,7 +43,7 @@ protected:
 	_bool		m_bReady = false;
 	_float		m_fTimeDelta = 0.f;
 
-	_matrix		m_matView, m_matWorld;
+	_matrix		m_matView;
 	_vec3		m_vPos;
 
 	WEAPONTYPE	m_eWeaponType = WT_END;
