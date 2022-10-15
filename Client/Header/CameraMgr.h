@@ -14,6 +14,9 @@ private:
 	~CCameraMgr();
 
 public:
+	CCamera*			Get_CurCamera() { return m_vecCamera[m_CurId]; }
+
+public:
 	void			Ready_CameraMgr(LPDIRECT3DDEVICE9 pGraphicDev);
 
 	// add gameobject in stage

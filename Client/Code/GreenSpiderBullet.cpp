@@ -40,12 +40,12 @@ HRESULT CGreenSpiderBullet::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -129,7 +129,7 @@ void CGreenSpiderBullet::Render_Obejct(void)
 
 void CGreenSpiderBullet::Billboard()
 {
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
@@ -143,7 +143,7 @@ void CGreenSpiderBullet::Billboard()
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	// ÇöÀç Áö±Ý ÀÌ ÄÚµå´Â ¹®Á¦°¡ ¾øÁö¸¸ ³ªÁß¿¡ ¹®Á¦°¡ µÉ ¼ö ÀÖÀ½
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 

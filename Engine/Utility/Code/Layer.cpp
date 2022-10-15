@@ -65,12 +65,31 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 {
 	_int iResult = 0;
 
-	for (auto& iter : m_mapObject)
+	//for (auto& iter : m_mapObject)
+	//{
+	//	iResult = iter.second->Update_Object(fTimeDelta);
+
+	//	if (iResult & 0x80000000) //0x80000000 == -1
+	//		return iResult;
+	//}
+	map<const _tchar*, CGameObject*>::iterator iter;
+	for (iter = m_mapObject.begin(); iter != m_mapObject.end();)
 	{
-		iResult = iter.second->Update_Object(fTimeDelta);
+		iResult = iter->second->Update_Object(fTimeDelta);
 
 		if (iResult & 0x80000000) //0x80000000 == -1
 			return iResult;
+
+		if (OBJ_TEST == iResult)
+		{
+			Safe_Release(iter->second);
+			m_mapObject.erase(iter++);
+		}
+		else
+		{
+			++iter;
+		}
+
 	}
 
 	return iResult;

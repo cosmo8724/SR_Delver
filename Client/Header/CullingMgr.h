@@ -1,18 +1,18 @@
 #pragma once
 #include "GameObject.h"
 
-class CCurlingMgr : public CBase
+class CCullingMgr : public CBase
 {
-	DECLARE_SINGLETON(CCurlingMgr)
+	DECLARE_SINGLETON(CCullingMgr)
 
 private:
-	CCurlingMgr();
-	~CCurlingMgr();
+	CCullingMgr();
+	~CCullingMgr();
 
 public:
-	void	Ready_CurlingMgr(LPDIRECT3DDEVICE9 pGraphicDev);
+	void	Ready_CullingMgr(LPDIRECT3DDEVICE9 pGraphicDev);
 	_int	Update(const _float& fTimeDelta);
-	void	LateUpdate(void);
+	//void	LateUpdate(void);
 
 public:
 	_bool	Is_Inside(CGameObject* pObj);

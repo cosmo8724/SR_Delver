@@ -41,6 +41,7 @@ void CUserParticle::Set_Particle_Texture(_int iSelected)
 
 void CUserParticle::Set_Texture(PTEXTUREID eTex)
 {
+	m_eTex = eTex;
 	CComponent* pComponent = nullptr;
 
 	wstring str = L"Proto_Particle";
@@ -70,79 +71,19 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 
 	m_eType = _eType;
 
+	m_pTransCom = pCom;
 	m_origin = pCom->Get_Pos();
-	/*
-	switch (_eType)
-	{
-	case PTYPE_SNOW:
-		//m_bdBox.vMin = { 0.f, 0.f, 0.f };
-		//m_bdBox.vMax = { 10.f, 10.f, 10.f };
-		//m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
-		m_maxParticles = 5000;
-		break;
-		
-	case PTYPE_SPOT:
-	{
-		m_maxParticles = 1;
-		m_origin = pCom->Get_Pos();
-		m_bFrameRepeat = true;
-		m_Attribute.fLifeTime = 1.f;
-		m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
-	}
-	break;
-
-	case PTYPE_FOUNTAIN:
-	{
-		m_maxParticles = 20;
-		m_origin = pCom->Get_Pos();
-		m_bFrameRepeat = false;
-		m_Attribute.fLifeTime = 1.f;
-		m_Attribute.tColor = { 1.f, 0.f, 0.f, 1.f };
-	}
-	break;
-	case PTYPE_REMAIN:
-	{
-		// 파티클 수
-		m_maxParticles = 5;
-
-		// 생성 위치
-		m_origin = pCom->Get_Pos();
-
-		// 생존시간
-		m_Attribute.fLifeTime = 1.f;
-
-		// 크기
-		m_fSize = 0.1f;
-
-		// 속도
-		m_Attribute.vVelocity = { 1.f, 1.f, 1.f };
-
-		// 가속도
-		m_Attribute.vAcceleration = { 0.1f, 0.1f, 0.1f };
-
-		m_fFrameSpeed = 5.f;
-		m_bFrameRepeat = true;
-	}
-	break;
-
-	case PTYPE_TRACER:
-
-		m_maxParticles = (_int)GetRandomFloat(1.f, 3.f);
-		m_origin = pCom->Get_Pos();
-		m_bFrameRepeat = false;
-		m_Attribute.fLifeTime = 1.f;
-		m_fSize = 0.1f;
-		m_Attribute.tColor = { 1.f, 0.f, 0.f, 1.f };
-		m_bRand = false;
-
-		break;
-	}
-	*/
 
 	for (int i = 0; i < m_maxParticles; ++i)
 		addParticle();
-	m_bReady = true;
-	
+
+	m_pBufferCom->Set_ParticleList(&m_particles);
+	//m_bReady = true;
+
+
+
+	m_bUse = true;
+
 }
 
 
@@ -167,8 +108,22 @@ HRESULT CUserParticle::Ready_Object(void)
 
 _int CUserParticle::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bUse || !m_bReady)
+	//if (!m_bUse || !m_bReady)
+	//	return 0;
+	if (!m_bUse)
 		return 0;
+	else
+		m_bReady = true;// component변경이 ready에서 이뤄지지 않으므로 시점을 컨트롤 하기 위함
+
+	if (isDead())
+	{
+		//CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
+		//ReUse();
+		return OBJ_TEST;
+
+	}
+
+
 
 	_float frameEnd = (_float)m_pTextureCom->Get_FrameEnd();
 	m_fFrame += frameEnd * fTimeDelta * m_fFrameSpeed;
@@ -193,11 +148,6 @@ void CUserParticle::LateUpdate_Object(void)
 	if (!m_bUse || !m_bReady)
 		return;
 
-	if (isDead())
-	{
-		CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
-		ReUse();
-	}
 
 	CGameObject::LateUpdate_Object();
 }
@@ -239,7 +189,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 
 		attribute->vVelocity *= m_fVelocityMulti;
 	}
-		break;
+	break;
 
 	case PTYPE_SNOW:
 	{
@@ -259,7 +209,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->vVelocity.z = m_Attribute.vVelocity.z;
 		attribute->vVelocity *= m_fVelocityMulti;
 	}
-		break;
+	break;
 
 	case PTYPE_LASER:
 	{
@@ -270,7 +220,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->vVelocity = 10.f *  m_Attribute.vVelocity;
 		attribute->vVelocity = 10.f * _vec3({ 3.2f, 1.f, 1.f });
 	}
-		break;
+	break;
 
 	case PTYPE_FOUNTAIN:
 	{
@@ -288,14 +238,14 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->vVelocity *= 10.f;
 
 	}
-		break;
+	break;
 
 	case PTYPE_SPOT:
 	{
 		attribute->bIsAlive = true;
-		attribute->vPosition = m_origin;
+
 	}
-		break;
+	break;
 
 	case PTYPE_REMAIN:
 		attribute->bIsAlive = true;
@@ -312,15 +262,17 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 			m_origin.y + GetRandomFloat(-0.3f, 0.3f),
 			m_origin.z + GetRandomFloat(-0.3f, 0.3f)
 		};
-		attribute->tColor = m_Attribute.tColor;
+	}
+	break;
+	case PTYPE_CIRCLING:
+	{
+		attribute->bIsAlive = true;
+	}
+	break;
 
 	}
-		break;
 
-
-	}
-
-	// 공통
+	//공통
 	if (m_bRand)
 	{
 		attribute->tColor = D3DXCOLOR(
@@ -331,7 +283,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	}
 	else
 	{
-		attribute->tColor = m_Attribute.tColor;
+		attribute->tColor = { 1.0f,1.0f,1.0f,1.0f };
 	}
 	attribute->fAge = 0.f;
 	attribute->fLifeTime = m_Attribute.fLifeTime; // 2초 동안의 수명을 가진다.
@@ -343,12 +295,6 @@ void CUserParticle::update(_float fTimeDelta)
 	{
 	case PTYPE_FIREWORK:
 	{
-		if (isDead())
-		{
-			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
-			ReUse();
-		}
-
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
@@ -396,21 +342,15 @@ void CUserParticle::update(_float fTimeDelta)
 	}
 	break;
 
-	case PTYPE_FOUNTAIN:	
+	case PTYPE_FOUNTAIN:
 	{
-		if (isDead())
-		{
-			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
-			ReUse();
-		}
-
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
 			if (iter->bIsAlive)
 			{
 				iter->vVelocity.y -= GetRandomFloat(0.f, 1.f);
-				iter->vPosition += (0.3f * iter->vVelocity * fTimeDelta); 
+				iter->vPosition += (0.3f * iter->vVelocity * fTimeDelta);
 				iter->fAge += fTimeDelta;
 				if (iter->fAge > iter->fLifeTime) // 죽인다.
 					iter->bIsAlive = false;
@@ -429,22 +369,33 @@ void CUserParticle::update(_float fTimeDelta)
 		//	}
 		//}
 	}
-		break;
+	break;
 
 	case PTYPE_SPOT:
 	{
-		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+		_vec3 vRight, vUp, vLook, vPos;
+		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
+		m_pTransCom->Get_Info(INFO_UP, &vUp);
+		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-		auto iter = m_particles.begin();
-		iter->fAge += fTimeDelta;
-		iter->vPosition = pCom->Get_Pos();
-		if (iter->fAge > iter->fLifeTime)
+		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
-			ReUse();
+			if (iter->bIsAlive)
+			{
+				iter->vPosition = vPos + m_Attribute.vVelocity.x * vRight
+					+ m_Attribute.vVelocity.y * vUp
+					+ m_Attribute.vVelocity.z * vLook;
+
+				iter->fAge += fTimeDelta;
+				if (iter->fAge > iter->fLifeTime) // 죽인다.
+					iter->bIsAlive = false;
+			}
+
 		}
+
 	}
-		break;
+	break;
 	case PTYPE_REMAIN: // 잔상 파티클
 
 	{
@@ -467,28 +418,23 @@ void CUserParticle::update(_float fTimeDelta)
 				if (iter->fAge > iter->fLifeTime) // 죽인다.
 				{
 					iter->bIsAlive = false;
-					//CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
-					//ReUse();
 				}
 			}
 		}
 	}
-		break;
+	break;
 
 
 	case PTYPE_TRACER:
 	{
-		if (isDead())
-		{
-			CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
-			ReUse();
-		}
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
 			if (iter->bIsAlive)
 			{
+				//iter->vPosition = pCom->Get_Pos();
 				iter->fAge += fTimeDelta;
+
 				if (iter->fAge > iter->fLifeTime) // 죽인다.
 				{
 					iter->bIsAlive = false;
@@ -497,7 +443,45 @@ void CUserParticle::update(_float fTimeDelta)
 		}
 
 	}
-		break;
+	break;
+
+	case PTYPE_CIRCLING:
+	{
+		_vec3 vRight, vUp, vLook, vPos;
+		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
+		m_pTransCom->Get_Info(INFO_UP, &vUp);
+		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+		m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+		D3DXVec3Normalize(&vRight, &vRight);
+		D3DXVec3Normalize(&vUp, &vUp);
+		D3DXVec3Normalize(&vLook, &vLook);
+
+		_matrix matRot, matTrans, matPos, matWorld;
+		m_fAngle += 0.5f;
+		D3DXMatrixRotationAxis(&matRot, &vLook, D3DXToRadian(45.f));
+		D3DXMatrixTranslation(&matTrans, 0.3f * vRight.x, 0.3f * vRight.y, 0.3f * vRight.z);
+		D3DXMatrixTranslation(&matPos, vPos.x + vLook.x, vPos.y + vLook.y, vPos.z + vLook.z);
+		matWorld = matRot * matPos;
+
+		_vec3 vTemp = { 0.f, 0.f,0.f };
+		D3DXVec3TransformCoord(&vTemp, &vTemp, &matWorld);
+
+		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
+		{
+			if (iter->bIsAlive)
+			{
+				iter->vPosition = vTemp;
+
+				iter->fAge += fTimeDelta;
+				if (iter->fAge > iter->fLifeTime) // 죽인다.
+					iter->bIsAlive = false;
+			}
+
+		}
+	}
+	break;
+
 	}
 }
 
@@ -537,7 +521,13 @@ HRESULT CUserParticle::Add_Component(void)
 	m_mapComponent[ID_STATIC].insert({ L"Proto_PtBufferCom", pComponent });
 
 	// 텍스쳐 컴객체 컴포넌트
-	// 모든 파티클 용 텍스쳐 컴객체를 가지고 있도록 하는건??
+	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle5_Texture"));
+	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle5_Texture", pComponent });
+
+
+
+
 	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle0_Texture"));
 	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle0_Texture", pComponent });
@@ -561,22 +551,22 @@ HRESULT CUserParticle::Add_Component(void)
 	return S_OK;
 }
 void CUserParticle::Set_Information(_bool _bUse, _int _iIdx, CGameObject * _pObj, ATTRIBUTE _att, PINFO _pInfo
-				, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand)
+	, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand)
 {
-	m_bUse		= _bUse;
-	m_iIndex	= _iIdx;
-	m_pTarget	= _pObj;
+	//m_bUse		= _bUse;
+	m_iIndex = _iIdx;
+	m_pTarget = _pObj;
 
-	m_Attribute.fLifeTime	= _att._lifeTime;
-	m_Attribute.tColor		= _att._color;
-	m_Attribute.vVelocity	= _att._velocity;
+	m_Attribute.fLifeTime = _att._lifeTime;
+	m_Attribute.tColor = _att._color;
+	m_Attribute.vVelocity = _att._velocity;
 
-	m_maxParticles	= _pInfo.iMaxParticles;
-	m_fSize			= _pInfo.fSize;
-	
-	m_fFrameSpeed	= _fFrameSpeed;
-	m_bFrameRepeat	= _bFrameRepeat;
-	m_bRand			= _bRand;
+	m_maxParticles = _pInfo.iMaxParticles;
+	m_fSize = _pInfo.fSize;
+
+	m_fFrameSpeed = _fFrameSpeed;
+	m_bFrameRepeat = _bFrameRepeat;
+	m_bRand = _bRand;
 
 }
 
@@ -593,6 +583,13 @@ void CUserParticle::ReUse()
 	m_fSize = 1.f;
 
 	//memset(&m_Attribute, 0, sizeof(ATTINFO));
+	m_pBufferCom->Set_ParticleList(nullptr);
+
+	//for (_uint i = 0; i < ID_END; ++i)
+	//{
+	//	for_each(m_mapComponent[i].begin(), m_mapComponent[i].end(), CDeleteMap());
+	//	m_mapComponent[i].clear();
+	//}
 
 	removeAllParticles();
 }

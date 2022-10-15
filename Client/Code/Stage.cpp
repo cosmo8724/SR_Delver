@@ -14,6 +14,7 @@
 #include "ItemMgr.h"
 #include "ParticleMgr.h"
 #include "CameraMgr.h"
+#include "BlockVIBuffer.h"
 #include "MonsterMgr.h"
 #include "NPCMgr.h"
 #include "UIMgr.h"
@@ -24,6 +25,7 @@
 #include "Tree.h"
 #include "Jar.h"
 #include "BonFire.h"
+#include "ObjectCamera.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -46,6 +48,40 @@ HRESULT CStage::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+
+	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	{
+		if (i == BLOCK_CAVE)
+		{
+			for (_int j = 0; j < CAVETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_COLD)
+		{
+			for (_int j = 0; j < COLDTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_DUNGEON)
+		{
+			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_ROOM)
+		{
+			for (_int j = 0; j < ROOMTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_SEWER)
+		{
+			for (_int j = 0; j < SEWERTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_TEMPLE)
+		{
+			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+	}
 			
 	return S_OK;
 }
@@ -206,7 +242,39 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
-
+	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	{
+		if (i == BLOCK_CAVE)
+		{
+			for (_int j = 0; j < CAVETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_COLD)
+		{
+			for (_int j = 0; j < COLDTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_DUNGEON)
+		{
+			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_ROOM)
+		{
+			for (_int j = 0; j < ROOMTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_SEWER)
+		{
+			for (_int j = 0; j < SEWERTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_TEMPLE)
+		{
+			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+	}
 }
 
 HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
@@ -250,10 +318,12 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(CBulletMgr::GetInstance()->Ready_Clone(pLayer, m_pGraphicDev), E_FAIL);
 
 	// Item
-	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
-	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Dagger", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
-	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Wand", ITEM_WEAPON, _vec3({ 35.f, 1.f, 35.f }));
-	CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Key", ITEM_KEY, _vec3({ 5.f, 1.f, 10.f }));
+	//CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Arrow", ITEM_WEAPON, _vec3({ 30.f, 1.f, 30.f }));
+	//CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Dagger", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
+	//CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Wand", ITEM_WEAPON, _vec3({ 35.f, 1.f, 35.f }));
+	//CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Key", ITEM_KEY, _vec3({ 5.f, 1.f, 10.f }));
+	CItemMgr::GetInstance()->Add_GameObject(pLayer);
+
 
 	// Particle
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);

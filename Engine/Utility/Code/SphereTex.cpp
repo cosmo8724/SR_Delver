@@ -67,6 +67,7 @@ HRESULT CSphereTex::Ready_Buffer(_vec3 vCenterPos, _float _fRadius, _ulong dwCol
 	fTheta = fTheta_Step;
 
 	pVertex[iCurVertex].vPos = { 0.0f, 0.0f, fRadius };
+	// Color
 	pVertex[iCurVertex].dwColor = dwColor;// D3DXCOLOR(0.f, 1.f, 0.f, 1.f);
 	iCurVertex++;
 
@@ -92,6 +93,8 @@ HRESULT CSphereTex::Ready_Buffer(_vec3 vCenterPos, _float _fRadius, _ulong dwCol
 
 			// 이미지 출력영역
 			//pVertex[iCurVertex].vTexUV = { fDeltaU * iSlice, fDeltaV * (iStack + 1) };
+
+			// Color
 			pVertex[iCurVertex].dwColor = dwColor;
 			iCurVertex++;
 
@@ -145,6 +148,8 @@ HRESULT CSphereTex::Ready_Buffer(_vec3 vCenterPos, _float _fRadius, _ulong dwCol
 		}
 	}
 	pVertex[iCurVertex].vPos = { 0.f, 0.f, -fRadius};
+
+	// Color
 	pVertex[iCurVertex].dwColor = dwColor;
 	//pVertex[iCurVertex].vTexUV = { 0.5f,1.f };
 	//pVertex[iCurVertex].vNormal = { 0.f,0.f,-1.f };

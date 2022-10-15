@@ -8,8 +8,8 @@ CParticleMgr::CParticleMgr()
 {
 	m_maxParticle = 50;
 
-	for (int i = 0; i < m_maxParticle; ++i)
-		m_IdxQue.push(i);
+	//for (int i = 0; i < m_maxParticle; ++i)
+	//	m_IdxQue.push(i);
 }
 
 
@@ -46,21 +46,21 @@ HRESULT CParticleMgr::Ready_Proto()
 
 HRESULT CParticleMgr::Add_GameObject(CLayer * pLayer)
 {
-	for (int i = 0; i < m_maxParticle; ++i)
-	{
-		TCHAR*	szObjTag = new TCHAR[MAX_PATH];
-		wsprintf(szObjTag, L"UserParticle");
-		_tcscat_s(szObjTag, MAX_PATH, L"%d");
-		wsprintf(szObjTag, szObjTag, i);
+	//for (int i = 0; i < m_maxParticle; ++i)
+	//{
+	//	TCHAR*	szObjTag = new TCHAR[MAX_PATH];
+	//	wsprintf(szObjTag, L"UserParticle");
+	//	_tcscat_s(szObjTag, MAX_PATH, L"%d");
+	//	wsprintf(szObjTag, szObjTag, i);
 
-		CGameObject* pGameObject = CUserParticle::Create(m_pGraphicDev);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+	//	CGameObject* pGameObject = CUserParticle::Create(m_pGraphicDev);
+	//	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//	
+	//	FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
-		m_vecObjTag.push_back(szObjTag);
-		m_ParticlePool.push_back(pGameObject);
-	}
+	//	m_vecObjTag.push_back(szObjTag);
+	//	m_ParticlePool.push_back(pGameObject);
+	//}
 
 	return S_OK;
 }
@@ -69,19 +69,49 @@ HRESULT CParticleMgr::Add_GameObject(CLayer * pLayer)
 
 void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 {
+	TCHAR*	szObjTag = new TCHAR[MAX_PATH];
+	wsprintf(szObjTag, L"UserParticle%d", m_vecObjTag.size());
+
+	CGameObject* pGameObject = CUserParticle::Create(m_pGraphicDev);
+	NULL_CHECK(pGameObject);
+
+	CLayer*		pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+
+	if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
+	{
+		MSG_BOX("tlqkf");
+		delete[] szObjTag;
+		szObjTag = nullptr;
+	}
+	else
+	{
+		m_vecObjTag.push_back(szObjTag);
+
+		CUserParticle* pParticle = static_cast<CUserParticle*>(pGameObject);
+		pParticle->Set_Texture(eTex);
+		pParticle->Set_Information(
+			true, 0, m_pTarget, m_tAttribute, m_tPInfo, m_fFrameSpeed, m_bFrameRepeat, m_bRand);
+		pParticle->Set_Particle(eType);
+
+	}
+
+	/*
 	_int iIdx = -1;
 	if (!m_IdxQue.empty())
 	{
-		iIdx = m_IdxQue.front();
-		//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Use(true);
-		//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Index(iIdx);
-		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Texture(eTex);
-		//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Target(m_pTarget);
-		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Information(
-			true, iIdx, m_pTarget, m_tAttribute, m_tPInfo, m_fFrameSpeed, m_bFrameRepeat, m_bRand);
-		static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Particle(eType);
-		m_IdxQue.pop();
+	iIdx = m_IdxQue.front();
+	//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Use(true);
+	//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Index(iIdx);
+	//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->ReUse();
+
+	static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Texture(eTex);
+	//static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Target(m_pTarget);
+	static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Information(
+	true, iIdx, m_pTarget, m_tAttribute, m_tPInfo, m_fFrameSpeed, m_bFrameRepeat, m_bRand);
+	static_cast<CUserParticle*>(m_ParticlePool[iIdx])->Set_Particle(eType);
+	m_IdxQue.pop();
 	}
+	*/
 }
 
 void CParticleMgr::Collect_Particle(_int iIdx)
@@ -100,17 +130,17 @@ void CParticleMgr::Set_Info(CGameObject* pObj
 	, _bool		_bRand)						// »ö ·£´ý ¿©ºÎ
 {
 	m_pTarget = pObj;
-	
+
 	m_tPInfo.iMaxParticles = _maxParticles;
 	m_tPInfo.fSize = _fSize;
 
-	m_tAttribute._lifeTime	= _fLifeTime;
-	m_tAttribute._color		= _tColor;
-	m_tAttribute._velocity	= _vVelocity;
+	m_tAttribute._lifeTime = _fLifeTime;
+	m_tAttribute._color = _tColor;
+	m_tAttribute._velocity = _vVelocity;
 
-	m_fFrameSpeed			= _fFrameSpeed;
-	m_bFrameRepeat			= _bFrameRepeat;
-	m_bRand					= _bRand;
+	m_fFrameSpeed = _fFrameSpeed;
+	m_bFrameRepeat = _bFrameRepeat;
+	m_bRand = _bRand;
 
 }
 

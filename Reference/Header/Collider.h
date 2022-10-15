@@ -29,6 +29,7 @@ public:
 	_matrix		Get_WorldMatrix() { return m_matWorld; }
 	void		Set_Free(_bool bFree) { m_bFree = bFree; }
 	_bool		Is_Free() { return m_bFree; }
+	_float		Get_Radius() { return m_fRadius; }
 
 private:
 	CSphereTex*		m_pSphereBuffer = nullptr;

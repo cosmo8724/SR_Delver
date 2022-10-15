@@ -50,8 +50,11 @@ private:
 public:
 	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
 	void				Set_Left(CItem* pLeft) { m_pLeft = pLeft; }
+	CItem*				Get_Right() { return m_pRight; }
+	CItem*				Get_Left() { return m_pLeft; }
 	_bool				Is_Snippered() { return m_bSnipper; }
 	void				Respawn();
+	void				Set_Info(ITEMINFO tInfo, _int iSign);
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;

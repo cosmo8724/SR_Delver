@@ -30,6 +30,12 @@ public:
 	void	Pick();
 	void	Set_ItemEquip();
 
+	CItem** Get_PickedItem() { return m_ppPickedItem; }
+	void	Set_PickedItemNull () {
+		(*m_ppPickedItem) = nullptr;
+		m_ppPickedItem = nullptr;
+	}
+
 private:
 	void		Mouse_Input(const _float& fTimeDelta);
 

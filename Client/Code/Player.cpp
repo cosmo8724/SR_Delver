@@ -100,6 +100,27 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 		Mouse_Move();
 	}
 
+	// test area //////////////////
+
+	if (Key_Down(DIK_P))
+	{
+		//PTYPE_SPOT
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 0.f, 0.0f, 1.0f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
+
+		//PTYPE_CIRCLING
+	/*	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 1.0f }, 10.f);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_5);*/
+
+	}
+
+
+
+
+
+	///////////////////////////
+
+
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
 	
@@ -115,7 +136,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
-	InvincibilityTimeAcc += fTimeDelta; // sh...
+	InvincibilityTimeAcc += fTimeDelta; // sh
 	return 0;
 }
 
@@ -410,13 +431,13 @@ _float CPlayer::Get_Height()
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	if (pMonster == pOtherObj)
-		OnHit(pMonster->Get_MonsterAttack());
+	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	//if (pMonster == pOtherObj)
+	//	OnHit(pMonster->Get_MonsterAttack());
 
-	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	if (pBullet == pOtherObj)
-		OnHit(pBullet->Get_BulletAttack());
+	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	//if (pBullet == pOtherObj)
+	//	OnHit(pBullet->Get_BulletAttack());
 
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
@@ -541,36 +562,12 @@ void CPlayer::Respawn()
 
 }
 
-void CPlayer::KnockBack(const _float & fTimeDelta)
+void CPlayer::Set_Info(ITEMINFO tInfo, _int iSign)
 {
-	if (!m_bKnockBack)
-		return;
-
-	_vec3 vPos, vLook;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
-
-	_float fHeight = Get_Height();
-
-	if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
-	{
-		m_bKnockBack = false;
-		m_pCurrentBlock = nullptr;
-
-		m_eState = PLAYER_GROUND;
-		m_fJTimeDelta = 0.f;
-
-		m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
-		m_fJSpeed = m_fJSpeed0;
-	}
-	else
-	{
-		m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta); // -3.f -> KnockBack Distance
-
-		m_fJSpeed -= m_fAccel;
-		m_pTransCom->Plus_PosY(m_fJSpeed);
-		m_fJTimeDelta += 0.1f;
-	}
+	m_tInfo.iAtk	+= iSign * tInfo.iAtk;
+	m_tInfo.iDef	+= iSign * tInfo.iDef;
+	m_tInfo.iHunger += iSign * tInfo.iHunger;
+	m_tInfo.fSpeed += iSign * tInfo.fSpeed;
 }
 
 void CPlayer::OnHit(_int _HpMinus)
@@ -599,6 +596,37 @@ void CPlayer::OnHit(_int _HpMinus)
 	}
 }
 
+void CPlayer::KnockBack(const _float& fTimeDelta)
+{
+	if (!m_bKnockBack)
+		return;
+
+	_vec3 vPos, vLook;
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+
+	_float fHeight = Get_Height();
+
+	if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
+	{
+		m_bKnockBack = false;
+		m_pCurrentBlock = nullptr;
+		m_eState = PLAYER_GROUND;
+		m_fJTimeDelta = 0.f;
+
+		m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
+		m_fJSpeed = m_fJSpeed0;
+	}
+	else
+	{
+		m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta);
+
+		m_fJSpeed -= m_fAccel;
+		m_pTransCom->Plus_PosY(m_fJSpeed);
+		m_fJTimeDelta += 0.1f;
+	}
+}
+
 void CPlayer::Stun(const _float & fTimeDelta)
 {
 	if (!m_tInfo.bStun)
@@ -609,7 +637,7 @@ void CPlayer::Stun(const _float & fTimeDelta)
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_3);
 
 	m_fStunTimeAcc += fTimeDelta;
-	if (3.f < m_fStunTimeAcc) // 3.f ->StunTime
+	if (3.f < m_fStunTimeAcc) // 3.f -> StunTime
 	{
 		m_tInfo.bStun = false;
 		m_fStunTimeAcc = 0.f;

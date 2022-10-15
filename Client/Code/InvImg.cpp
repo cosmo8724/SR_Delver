@@ -17,6 +17,7 @@ CInvImg::CInvImg(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* texTag, CItem* pOb
 {
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matWorld);
+	m_eState = STATE_INV;
 	m_texTag = texTag;
 }
 
@@ -58,10 +59,15 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 	if (m_bDead)
 		return 0;
 
-	if (Engine::Get_DIKeyState(DIK_TAB) & 0X80)
+	if (m_eState == STATE_INV)
+	{
+		if ((Engine::Get_DIKeyState(DIK_TAB) & 0X80))
+			m_bOn = true;
+		else
+			m_bOn = false;
+	}
+	else if (m_eState == STATE_QUICK)
 		m_bOn = true;
-	else
-		m_bOn = false;
 
 	if (!m_bOn)
 		return 0;

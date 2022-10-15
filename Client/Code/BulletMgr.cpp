@@ -92,7 +92,7 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 		//wstring objTag(L"WandBullet");
 		wchar_t index[10];
 		_itow_s(i, index, 10);
-		objTags[i] += index;
+		objTags[i] = objTags[i] + index;
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objTags[i].c_str(), pGameObject), E_FAIL);
 
 		m_vecObjPool[BULLET_WAND].push_back(pGameObject);

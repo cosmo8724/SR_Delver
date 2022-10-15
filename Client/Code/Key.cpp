@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Key.h"
 #include "Export_Function.h"
+#include "CullingMgr.h"
 
 
 CKey::CKey(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -48,8 +49,6 @@ _int CKey::Update_Object(const _float & fTimeDelta)
 		m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	}
 
-	Add_RenderGroup(RENDER_ALPHA, this);
-
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	return iResult;
@@ -59,6 +58,9 @@ void CKey::LateUpdate_Object(void)
 {
 	if (m_eState != STATE_GROUND)
 		return;
+
+	if (CCullingMgr::GetInstance()->Is_Inside(this))
+		Add_RenderGroup(RENDER_ALPHA, this);
 
 	Billboard();
 	CGameObject::LateUpdate_Object();

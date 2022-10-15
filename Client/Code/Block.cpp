@@ -3,6 +3,7 @@
 #include "Export_Function.h"
 #include "DynamicCamera.h"
 #include "MiniMap.h"
+#include "BlockVIBuffer.h"
 
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -22,7 +23,6 @@ CBlock::CBlock(const CBlock& rhs)
 	//memcpy(&m_bdBox, &rhs.m_bdBox, sizeof(BDBOX));
 	m_pBufferCom = dynamic_cast<CCubeTex*>(rhs.m_pBufferCom->Clone());
 	m_pTransCom = dynamic_cast<CTransform*>(rhs.m_pTransCom->Clone());
-		m_pTextureCom = dynamic_cast<CTexture*>(rhs.m_pTextureCom->Clone()); // Tool!!
 	m_pCalculatorCom = dynamic_cast<CCalculator*>(rhs.m_pCalculatorCom->Clone());
 
 	m_mapComponent[ID_STATIC].insert({ L"Proto_BlockTexCom", m_pBufferCom });
@@ -30,32 +30,42 @@ CBlock::CBlock(const CBlock& rhs)
 	switch (m_eCurrentType)
 																																						{
 	case BLOCK_CAVE:
+		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cave_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Cave_BlockTexture", m_pTextureCom });
 		break;
 
 	case BLOCK_COLD:
+		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cold_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Cold_BlockTexture", m_pTextureCom });
 		break;
 
 	case BLOCK_DUNGEON:
+		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Dungeon_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Dungeon_BlockTexture", m_pTextureCom });
 		break;
 
 	case BLOCK_ROOM:
+		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Room_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Room_BlockTexture", m_pTextureCom });
 		break;
 
 	case BLOCK_SEWER:
+		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Sewer_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Sewer_BlockTexture", m_pTextureCom });
 		break;
 
 	case BLOCK_TEMPLE:
+		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Temple_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Temple_BlockTexture", m_pTextureCom });
 		break;
 	}
 	
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", m_pTransCom });
 	m_mapComponent[ID_STATIC].insert({ L"Proto_CalculatorCom", m_pCalculatorCom });
+
+	_matrix	matWorld;
+	m_pTransCom->Get_WorldMatrix(&matWorld);
+	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
 }
 
 CBlock::~CBlock()
@@ -68,9 +78,6 @@ HRESULT CBlock::Ready_Object(void)
 
 	_vec3 vPos, vScale;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	//m_pTransCom->Get_Scale(&vScale);
-	//m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
-	//m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
 
 	return S_OK;
 }
@@ -127,7 +134,7 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 					_vec3			vCameraPos = pCamera->Get_Eye();
 
 					_vec3 ParentCubePos = pGameObject->m_pTransCom->Get_Pos();
-					_float fDistance = D3DXVec3Length(&(ParentCubePos - vCameraPos));	// 카메라 위치부터 큐브까지 거리
+					_float fDistance = D3DXVec3Length(&(ParentCubePos - vCameraPos));
 
 					if (bFirst)
 					{
@@ -220,7 +227,7 @@ void CBlock::Render_Obejct(void)
 	if (m_bSet && !m_bChanging)
 	{
 		m_pTextureCom->Set_Texture(m_iTexture);
-		m_pBufferCom->Render_Buffer();
+		//m_pBufferCom->Render_Buffer();
 	}
 	else
 	{
