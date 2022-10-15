@@ -33,8 +33,8 @@ HRESULT CDagger::Ready_Object(void)
 
 _int CDagger::Update_Object(const _float & fTimeDelta)
 {
-	if (STATE_INV == m_eState)
-		return 0;
+	//if (STATE_INV == m_eState)
+	//	return 0;
 
 	int iResult = CWeapon::Update_Object(fTimeDelta);
 
@@ -85,7 +85,8 @@ _int CDagger::Update_Object(const _float & fTimeDelta)
 		break;
 	}
 
-	Add_RenderGroup(RENDER_ALPHA, this);
+	if (STATE_INV != m_eState)
+		Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_fTimeDelta = fTimeDelta;
 
@@ -101,15 +102,15 @@ void CDagger::LateUpdate_Object(void)
 {
 	CGameObject::LateUpdate_Object();
 
-	if (STATE_INV == m_eState)
+	/*if (STATE_INV == m_eState)
 		return;
-
+*/
 }
 
 void CDagger::Render_Obejct(void)
 {
-	if (m_eState == STATE_INV)
-		return;
+	//if (m_eState == STATE_INV)
+	//	return;
 
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());

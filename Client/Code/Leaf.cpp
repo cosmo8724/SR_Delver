@@ -22,6 +22,19 @@ CLeaf::CLeaf(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_ObjTag = L"Leaf";
 }
 
+CLeaf::CLeaf(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+	:CMonster(pGraphicDev)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_OriginalPos(0.f, 0.f, 0.f)
+	, m_fTimeAcc(0.f)
+	, m_fTeleportingTimeAcc(0.f)
+	, m_fBulletTimeAcc(0.f)
+{
+	m_vPos = vPos;
+	m_ObjTag = L"Leaf";
+}
+
 CLeaf::~CLeaf()
 {
 }
@@ -33,7 +46,7 @@ HRESULT CLeaf::Ready_Object(void)
 	m_tInfo.iHp = 5;
 	m_tInfo.iAttack = 1;
 
-	m_OriginalPos = { 10.f, 1.f, 10.f };
+	m_OriginalPos = { m_vPos.x, m_vPos.y, m_vPos.z };
 	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
 
 	m_eCurState = IDLE;
@@ -145,7 +158,7 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 		if (fDist < 10.f) // 10.f Bullet
 		{
 			m_fBulletTimeAcc += fTimeDelta;
-			if (0.5f < m_fBulletTimeAcc)
+			if (0.2f < m_fBulletTimeAcc)
 			{
 				CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
 				m_fBulletTimeAcc = 0.f;
@@ -258,9 +271,9 @@ void CLeaf::Motion_Change()
 	}
 }
 
-CLeaf * CLeaf::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CLeaf * CLeaf::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CLeaf *	pInstance = new CLeaf(pGraphicDev);
+	CLeaf *	pInstance = new CLeaf(pGraphicDev, vPos);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

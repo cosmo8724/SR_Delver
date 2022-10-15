@@ -226,7 +226,7 @@ void CArrowBullet::Reset()
 	m_bReady = false;
 	m_fSpeed = m_fMinSpeed;
 	m_fSpeedY = m_fMinSpeed;
-	m_pColliderCom->Set_Free(false);
+	m_pColliderCom->Set_Free(true);
 
 	CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT, CAM_STATIC);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_ARROW);

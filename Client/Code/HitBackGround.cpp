@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "..\Header\HitBackGround.h"
+#include "..\Header\SpiderBackGroud.h"
 #include "Export_Function.h"
 
-CHitBackGround::CHitBackGround(LPDIRECT3DDEVICE9 pGraphicDev)
+CSpiderBackGround::CSpiderBackGround(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
 {
 }
 
 
-CHitBackGround::~CHitBackGround()
+CSpiderBackGround::~CSpiderBackGround()
 {
 }
 
-HRESULT CHitBackGround::Ready_Object(void)
+HRESULT CSpiderBackGround::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -33,7 +33,7 @@ HRESULT CHitBackGround::Ready_Object(void)
 	return S_OK;
 }
 
-_int CHitBackGround::Update_Object(const _float & fTimeDelta)
+_int CSpiderBackGround::Update_Object(const _float & fTimeDelta)
 {
 	if (!m_bHit)
 		return 0;
@@ -45,7 +45,7 @@ _int CHitBackGround::Update_Object(const _float & fTimeDelta)
 	return 0;
 }
 
-void CHitBackGround::LateUpdate_Object(void)
+void CSpiderBackGround::LateUpdate_Object(void)
 {
 	if (!m_bHit)
 		return;
@@ -53,7 +53,7 @@ void CHitBackGround::LateUpdate_Object(void)
 	Engine::CGameObject::LateUpdate_Object();
 }
 
-void CHitBackGround::Render_Obejct(void)
+void CSpiderBackGround::Render_Obejct(void)
 {
 	if (!m_bHit)
 		return;
@@ -76,7 +76,7 @@ void CHitBackGround::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
-HRESULT CHitBackGround::Add_Component(void)
+HRESULT CSpiderBackGround::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 
@@ -89,16 +89,16 @@ HRESULT CHitBackGround::Add_Component(void)
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
 	// m_pTextureCom	
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UI_HitBackGround_Texture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UI_SpiderBackground_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_UI_HitBackGround_Texture", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Proto_UI_SpiderBackground_Texture", pComponent });
 
 	return S_OK;
 }
 
-CHitBackGround * CHitBackGround::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CSpiderBackGround * CSpiderBackGround::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CHitBackGround*	pInstance = new CHitBackGround(pGraphicDev);
+	CSpiderBackGround*	pInstance = new CSpiderBackGround(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{
@@ -108,7 +108,7 @@ CHitBackGround * CHitBackGround::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CHitBackGround::Free(void)
+void CSpiderBackGround::Free(void)
 {
 	CUI::Free();
 }

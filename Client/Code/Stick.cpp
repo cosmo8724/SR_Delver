@@ -20,6 +20,18 @@ CStick::CStick(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_ObjTag = L"Stick";
 }
 
+CStick::CStick(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+	: CMonster(pGraphicDev)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_bParticle(false)
+	, m_fMoveTimeAcc(0.f)
+
+{
+	m_vPos = vPos;
+	m_ObjTag = L"Stick";
+}
+
 CStick::~CStick()
 {
 }
@@ -31,8 +43,7 @@ HRESULT CStick::Ready_Object()
 	m_tInfo.iHp = 5;
 	m_tInfo.iAttack = 2;
 
-	m_OriginalPos = { 10.f, 1.f, 10.f };
-	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 	//m_pTransCom->Set_Scale(0.7f, 0.7f, 0.7f);
 
 	m_eCurState = IDLE;
@@ -250,9 +261,9 @@ void CStick::Motion_Change()
 	}
 }
 
-CStick * CStick::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CStick * CStick::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CStick *	pInstance = new CStick(pGraphicDev);
+	CStick *	pInstance = new CStick(pGraphicDev, vPos);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

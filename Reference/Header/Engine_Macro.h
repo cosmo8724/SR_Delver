@@ -33,6 +33,7 @@ namespace Engine
 
 #define			OBJ_NOEVENT			0
 #define			OBJ_DEAD			0
+#define			OBJ_TEST			1
 
 
 #ifdef	ENGINE_EXPORTS

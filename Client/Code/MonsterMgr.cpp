@@ -11,6 +11,7 @@
 #include "Stick.h"
 #include "Leaf.h"
 #include "SkeletonGhost.h"
+#include "GreenSpider.h"
 // Boss
 #include "SongBoss.h"
 
@@ -84,12 +85,18 @@ HRESULT CMonsterMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonGhostHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SkeletonGhost/Hit/SkeletonGhost%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonGhostDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SkeletonGhost/Die/SkeletonGhost%d.png", TEX_NORMAL, 3)), E_FAIL);
 
+	// GreenSpider_Texture 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenSpiderIDLE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/GreenSpider/Idle/GreenSpider%d.png", TEX_NORMAL, 7)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenSpiderATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/GreenSpider/Attack/GreenSpider%d.png", TEX_NORMAL, 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenSpiderHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/GreenSpider/Hit/GreenSpider%d.png", TEX_NORMAL, 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenSpiderDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/GreenSpider/Die/GreenSpider%d.png", TEX_NORMAL, 3)), E_FAIL);
+
 	////////////// Boss
 	// SongBoss_Texture 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossMOVE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Move/SongBoss%d.png", TEX_NORMAL, 16)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossIDLE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Idle/SongBoss%d.png", TEX_NORMAL, 7)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Attack/SongBoss%d.png", TEX_NORMAL, 12)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Hit/SongBoss%d.png", TEX_NORMAL, 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Hit/SongBoss%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Die/SongBoss%d.png", TEX_NORMAL, 10)), E_FAIL);
 
 	return S_OK;
@@ -101,56 +108,62 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 
 	//////////// Monster
 	//// GreenSlime
-	//pGameObject = CGreenSlime::Create(m_pGraphicDev);
+	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3( 15.f, 1.f, 15.f ));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
 	//// PinkSlime
-	//pGameObject = CPinkSlime::Create(m_pGraphicDev);
+	//pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(7.f, 2.f, 10.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
-	//// Fist
-	//pGameObject = CFist::Create(m_pGraphicDev);
+	// Fist
+	//pGameObject = CFist::Create(m_pGraphicDev, _vec3(3.f, 1.f, 15.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Fist", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
 	//// BlueBat
-	//pGameObject = CBlueBat::Create(m_pGraphicDev);
+	//pGameObject = CBlueBat::Create(m_pGraphicDev, _vec3(15.f, 1.f, 5.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BlueBat", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
 	//// BrownBat
-	//pGameObject = CBrownBat::Create(m_pGraphicDev);
+	//pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3(15.f, 3.f, 15.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
 	//// Stick
-	//pGameObject = CStick::Create(m_pGraphicDev);
+	//pGameObject = CStick::Create(m_pGraphicDev, _vec3(15.f, 1.f, 10.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Stick", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
 	//// Leaf
-	//pGameObject = CLeaf::Create(m_pGraphicDev);
+	//pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(5.f, 1.f, 10.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
 	//// SkeletonGhost
-	//pGameObject = CSkeletonGhost::Create(m_pGraphicDev);
+	//pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(20.f, 3.f, 20.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
-	//////////////Boss
+	// GreenSpider
+	pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(5.f, 1.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSpider", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
+
+	////////////Boss
 	// SongBoss
-	pGameObject = CSongBoss::Create(m_pGraphicDev);
+	pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(10.f, 1.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);

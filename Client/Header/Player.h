@@ -27,7 +27,8 @@ public:
 
 public:
 	void				Set_HpPlus() { m_tInfo.iHp += 1; }
-	void				Set_Stun() { m_bStun = true; }
+	void				Set_Stun() { m_tInfo.bStun = true; }
+	void				Set_Slow() { m_tInfo.bSlow = true; }
 
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
@@ -44,6 +45,7 @@ private:
 	void				CollisionEvent(CGameObject * pOtherObj);
 	void				KnockBack(const _float& fTimeDelta); // sh
 	void				Stun(const _float& fTimeDelta); // sh
+	void				Slow(const _float& fTimeDelta); // sh
 
 public:
 	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
@@ -66,7 +68,7 @@ private:
 	PLAYER_STATE		m_eState = PLAYER_GROUND;
 
 	_vec3				m_vDirection;
-	_float				m_fSpeed = 5.f;
+	//_float			m_fSpeed = 5.f;
 	_float				m_fScale = 1.f;
 
 	// Related to Jump
@@ -76,13 +78,18 @@ private:
 	_float				m_fAccel;		
 	_float				m_fJTimeDelta = 0.f;
 
+	// Hit
+	_float				InvincibilityTimeAcc = 0.f;
+
 	// KnockBack
 	_bool				m_bKnockBack = false;
 
 	// Stun
-	_bool				m_bStun = false;
 	_bool				m_bStunParticle = false;
 	_float				m_fStunTimeAcc = 0.f;
+
+	// Slow
+	_float				SlowTimeAcc = 0.f;
 
 	// click Test?
 	_float				m_fLBClick = 0.f;
@@ -96,7 +103,6 @@ private:
 
 	PLAYERINFO			m_tInfo;
 
-	_float				InvincibilityTimeAcc = 0.1f;
 
 	// Related to Death & Respawn
 	_float				m_fDeathTime = 0.f;

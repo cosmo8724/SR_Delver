@@ -143,6 +143,10 @@ void CStage::LateUpdate_Scene(void)
 	for (auto& bullet : *pMonsterBullet)
 		Engine::CollisionAABB(pPlayer, bullet);
 
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_SPIDER);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
+
 	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
 	for (auto& bullet : *pMonsterBullet)
  		Engine::CollisionAABB(pPlayer, bullet);
@@ -325,7 +329,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	//CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);

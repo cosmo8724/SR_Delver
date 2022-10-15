@@ -79,6 +79,7 @@ _int CSongBossBullet::Update_Object(const _float & fTimeDelta)
 			_vec3({ 1.f, 1.f, 1.f }), 3.f, D3DXCOLOR{ 0.1f, 0.1f, 0.1f, 1.f },
 			1.f, false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_8);
+
 		m_bOneCheck = true;
 	}
 

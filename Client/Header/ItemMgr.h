@@ -27,10 +27,10 @@ public:
 	HRESULT			Add_GameObject(CLayer* pLayer, const _tchar* objTag, ITEMTYPE eType, _vec3 vPos);
 	HRESULT			Add_GameObject(CLayer* pLayer);
 
-	// 아이템 동적 할당용
+	// 아이템 동적 할당용 dynamic
 	HRESULT			Add_GameObject(const _tchar* pLayerTag, const _tchar* objTag, ITEMTYPE eType, _vec3 vPos);
 
-	// 아이템 동적 할당용 (인벤토리 이미지아이템 용)
+	// 아이템 동적 할당용 (인벤토리 이미지아이템 용) for invImg
 	CGameObject*	Add_GameObject(const _tchar* pLayerTag, wstring texTag, CItem* pObj);
 
 	// 아이템 랜덤 생성용

@@ -23,7 +23,7 @@ HRESULT CSongBossFloorLightning::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Scale(3.f, 10.f, 10.f);
+	m_pTransCom->Set_Scale(2.f, 10.f, 10.f);
 
 	m_iBulletCount = iBulletCount;
 	return S_OK;
@@ -92,13 +92,14 @@ _int CSongBossFloorLightning::Update_Object(const _float & fTimeDelta)
 
 void CSongBossFloorLightning::LateUpdate_Object(void)
 {
+	Billboard();
+
 	if (!m_bFire)
 		return;
 
-	if (6.f < m_fLifeTime)
+	if (0.3f < m_fLifeTime)
 		Reset();
 
-	Billboard();
 	CGameObject::LateUpdate_Object();
 }
 

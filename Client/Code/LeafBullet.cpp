@@ -24,7 +24,7 @@ HRESULT CLeafBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iAttack = 1.f;
+	m_tInfo.iAttack = 1;
 	m_fSpeed = 20.f;
 	//m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 
@@ -266,6 +266,6 @@ void CLeafBullet::Reset()
 	m_bDead = false;
 	m_fLifeTime = 0.f;
 	m_bReady = false;
-	m_pColliderCom->Set_Free(false);
+	m_pColliderCom->Set_Free(true);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_LEAF);
 }

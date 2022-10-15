@@ -10,7 +10,6 @@
 #include "MapUI.h"
 #include "MiniMap.h"
 #include "ParticleMgr.h"
-#include "HitBackGround.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
 #include "BonFire.h"
@@ -56,9 +55,10 @@ HRESULT CPlayer::Ready_Object(void)
 	m_tInfo.iExp = 0;
 	m_tInfo.iExpMax = 10;
 	m_tInfo.iHunger = 30;
-	m_tInfo.fSpeed = 1;
+	m_tInfo.fSpeed = 5.f;
 	m_tInfo.iLevel = 1;
 
+	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
 	return S_OK;
 }
 
@@ -100,12 +100,33 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 		Mouse_Move();
 	}
 
+	// test area //////////////////
+
+	if (Key_Down(DIK_P))
+	{
+		//PTYPE_SPOT
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 0.f, 0.0f, 1.0f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
+
+		//PTYPE_CIRCLING
+	/*	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 1.0f }, 10.f);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_5);*/
+
+	}
+
+
+
+
+
+	///////////////////////////
+
+
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
 	
-
 	KnockBack(fTimeDelta);
 	Stun(fTimeDelta);
+	Slow(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
@@ -244,7 +265,7 @@ HRESULT CPlayer::Add_Component(void)
 
 void CPlayer::Key_Input(const _float & fTimeDelta)
 {
-	if (m_bStun) // sh
+	if (m_tInfo.bStun) // sh
 		return;
 
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
@@ -253,7 +274,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	{
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
-		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
+		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 	}
 
 	if (Engine::Get_DIKeyState(DIK_S) & 0x80)
@@ -261,7 +282,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_vDirection *= -1.f;
-		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
+		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 	}
 
 	if (Engine::Get_DIKeyState(DIK_A) & 0x80)
@@ -270,7 +291,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_vDirection *= -1.f;
-		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
+		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 	}
 
 	if (Engine::Get_DIKeyState(DIK_D) & 0x80)
@@ -278,7 +299,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_pTransCom->Get_Info(INFO_RIGHT, &m_vDirection);
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
-		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
+		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 	}
 
 
@@ -410,13 +431,13 @@ _float CPlayer::Get_Height()
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	if (pMonster == pOtherObj)
-		OnHit(pMonster->Get_MonsterAttack());
+	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	//if (pMonster == pOtherObj)
+	//	OnHit(pMonster->Get_MonsterAttack());
 
-	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	if (pBullet == pOtherObj)
-		OnHit(pBullet->Get_BulletAttack());
+	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	//if (pBullet == pOtherObj)
+	//	OnHit(pBullet->Get_BulletAttack());
 
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
@@ -553,18 +574,10 @@ void CPlayer::OnHit(_int _HpMinus)
 {
 	if (0 >= m_tInfo.iHp)
 	{
-		m_bKnockBack = true;
+		//m_bKnockBack = true;
 		m_tInfo.iHp = 0;
 		return;
 	}
-
-	//// HitBackGround
-	//CHitBackGround* pHitBackGround = dynamic_cast<CHitBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
-
-	//if (0.3f < InvincibilityTimeAcc)
-	//	pHitBackGround->Set_HitBackGround(false);
-	//else
-	//	pHitBackGround->Set_HitBackGround(true);
 
 	// 플레이어는 2초간 무적
 	if (2.f < InvincibilityTimeAcc)
@@ -616,21 +629,34 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 
 void CPlayer::Stun(const _float & fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_0))
-		m_bStun = true;
-
-	if (!m_bStun)
+	if (!m_tInfo.bStun)
 		return;
 
-	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f,
-		_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
+	CParticleMgr::GetInstance()->Set_Info(this, 10, 1.f,
+		_vec3({ 1.f, 1.f, 1.f }), 0.7f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_3);
 
 	m_fStunTimeAcc += fTimeDelta;
 	if (3.f < m_fStunTimeAcc) // 3.f -> StunTime
 	{
-		m_bStun = false;
+		m_tInfo.bStun = false;
 		m_fStunTimeAcc = 0.f;
+	}
+}
+
+void CPlayer::Slow(const _float & fTimeDelta)
+{
+	if (!m_tInfo.bSlow)
+		return;
+
+	m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
+
+	SlowTimeAcc += fTimeDelta;
+	if (3.f < SlowTimeAcc)
+	{
+		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
+		SlowTimeAcc = 0.f;
+		m_tInfo.bSlow = false;
 	}
 }
 

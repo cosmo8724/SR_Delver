@@ -1,4 +1,5 @@
 #include "..\..\Header\Bullet.h"
+#include "Export_Function.h"
 
 USING(Engine)
 CBullet::CBullet(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -22,3 +23,4 @@ void CBullet::Free(void)
 	CGameObject::Free();
 	//Safe_Release(m_pGraphicDev);
 }
+
