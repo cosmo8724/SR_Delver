@@ -37,7 +37,6 @@ CSongBoss::CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"SongBoss";
 }
 
-
 CSongBoss::~CSongBoss()
 {
 }
@@ -49,9 +48,8 @@ HRESULT CSongBoss::Ready_Object(void)
 	m_tInfo.iHp = 30;
 	m_tInfo.iAttack = 5;
 
+	m_fHeight = m_vPos.y;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	//m_pTransCom->Set_Pos(10.f, 1.f, 10.f);
-	m_pTransCom->Set_Scale(1.5f, 1.5f, 1.5f);
 
 	m_eCurState = IDLE;
 	m_eSkill = SKILL_BULLET;
@@ -73,8 +71,8 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	//m_pTransCom->Set_Y(1.5f);
-	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7f); // TODO 보스의 HIT, DIE의 속도 조절해야함
+	//m_pTransCom->Set_Y(m_fHeight);
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7f); // TODO 보스의 HIT, DIE의 속도 조절 해야 할 수도
 	Motion_Change(fTimeDelta);
 
 	if (0 >= m_tInfo.iHp)
@@ -142,19 +140,19 @@ HRESULT CSongBoss::Add_Component(void)
 
 void CSongBoss::SKill_Update(const _float & fTimeDelta)
 {
-	if (Engine::Get_DIKeyState(DIK_1) && 0x08)
+	if (Engine::Get_DIKeyState(DIK_7) && 0x08)
 	{
 		m_bBullet = true;
 		m_eSkill = SKILL_BULLET;
 	}
-	if (Engine::Get_DIKeyState(DIK_2) && 0x08)
+	if (Engine::Get_DIKeyState(DIK_8) && 0x08)
 	{
 		m_bStun = true;
 		m_iStunCount = 0;
 		m_iStunCreate = 0;
 		m_eSkill = SKILL_STUN;
 	}
-	if (Engine::Get_DIKeyState(DIK_3) && 0x08)
+	if (Engine::Get_DIKeyState(DIK_9) && 0x08)
 	{
 		m_bFloor = true;
 		m_iFloorCreate = 0;

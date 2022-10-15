@@ -296,7 +296,10 @@ void CBulletMgr::Fire(BULLETID _eID)
 		iIdx = m_IdxQue[_eID].front();
 		
 		CCollider* pColliderCom =	static_cast<CCollider*>((m_vecObjPool[_eID][iIdx])->Get_Component(L"Proto_ColliderCom", ID_STATIC));
-		pColliderCom->Set_Free(false);
+		{
+			if(!m_vecObjPool[LIGHTNING_SONGBOSS][iIdx])
+				pColliderCom->Set_Free(false);
+		}
 
 		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Fire(true);
 		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Index(iIdx);

@@ -101,7 +101,6 @@ void CEcoObject::Billboard()
 		m_matOldBill = matBill;
 	}
 
-
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 	_vec3 vScale = m_pTransCom->Get_Scale();
@@ -110,10 +109,7 @@ void CEcoObject::Billboard()
 	D3DXMatrixInverse(&matScaleInv, 0, &matScale);
 
 	m_matWorld = matBill *matWorld;
-
 	m_pTransCom->Set_WorldMatrix(&m_matWorld);
-
-
 }
 
 HRESULT CEcoObject::Add_Component(void)

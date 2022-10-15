@@ -16,6 +16,7 @@ private:
 
 public:
 	const _float&		Get_Currentframe() { return m_fFrame; }
+	void				Set_Frame() { m_fFrame = 0.f; }
 
 	// 애니메이션 만들기, 실행 시키기, 바꾸기
 

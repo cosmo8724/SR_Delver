@@ -348,6 +348,9 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 void CPlayer::Mouse_Move(void)
 {
+	if (m_tInfo.bStun) // sh
+		return;
+
 	_long	dwMouseMove = 0;
 
 	if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
@@ -431,13 +434,13 @@ _float CPlayer::Get_Height()
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	//if (pMonster == pOtherObj)
-	//	OnHit(pMonster->Get_MonsterAttack());
+	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	if (pMonster == pOtherObj)
+		OnHit(pMonster->Get_MonsterAttack());
 
-	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	//if (pBullet == pOtherObj)
-	//	OnHit(pBullet->Get_BulletAttack());
+	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	if (pBullet == pOtherObj)
+		OnHit(pBullet->Get_BulletAttack());
 
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
