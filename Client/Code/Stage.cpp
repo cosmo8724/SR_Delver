@@ -325,7 +325,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	//CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);

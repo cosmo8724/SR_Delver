@@ -100,6 +100,27 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 		Mouse_Move();
 	}
 
+	// test area //////////////////
+
+	if (Key_Down(DIK_P))
+	{
+		//PTYPE_SPOT
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 0.f, 0.0f, 1.0f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
+
+		//PTYPE_CIRCLING
+	/*	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 1.0f }, 10.f);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_5);*/
+
+	}
+
+
+
+
+
+	///////////////////////////
+
+
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
 	
@@ -410,13 +431,13 @@ _float CPlayer::Get_Height()
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	if (pMonster == pOtherObj)
-		OnHit(pMonster->Get_MonsterAttack());
+	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	//if (pMonster == pOtherObj)
+	//	OnHit(pMonster->Get_MonsterAttack());
 
-	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	if (pBullet == pOtherObj)
-		OnHit(pBullet->Get_BulletAttack());
+	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	//if (pBullet == pOtherObj)
+	//	OnHit(pBullet->Get_BulletAttack());
 
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
