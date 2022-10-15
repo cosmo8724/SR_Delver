@@ -21,15 +21,15 @@ public:
 	static CCollider*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 public:
-	void		Calculate_WorldMatrix(_matrix matWorld);
-	_bool		CollideAABB(CCollider* _collider);
-	_bool		CollideSphere(CCollider* _collier);
+	void			Calculate_WorldMatrix(_matrix matWorld);
+	_bool			CollideAABB(CCollider* _collider);
+	_bool			CollideSphere(CCollider* _collier);
 	const _vec3&		Get_MinPoint() { return m_vMin; }
 	const _vec3&		Get_MaxPoint() { return m_vMax; }
-	_matrix		Get_WorldMatrix() { return m_matWorld; }
-	void		Set_Free(_bool bFree) { m_bFree = bFree; }
-	_bool		Is_Free() { return m_bFree; }
-	_float		Get_Radius() { return m_fRadius; }
+	_matrix			Get_WorldMatrix() { return m_matWorld; }
+	void			Set_Free(_bool bFree) { m_bFree = bFree; }
+	_bool			Is_Free() { return m_bFree; }
+	_float			Get_Radius() { return m_fRadius; }
 
 private:
 	CSphereTex*		m_pSphereBuffer = nullptr;
