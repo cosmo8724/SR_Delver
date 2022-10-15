@@ -14,7 +14,7 @@ public:
 	virtual void			Render_Obejct(void)						override;
 
 public:
-	void					Set_HitBackGround(_bool bHit) { m_bHit = bHit; }
+	void					Set_SpiderRender() { m_bSpider = true; }
 
 private:
 	virtual HRESULT			Add_Component(void);
@@ -26,5 +26,15 @@ public:
 private:
 	_matrix					m_matWorld, m_matView;
 
-	_bool					m_bHit = false;
+	// 화면에 그려지는
+	_bool					m_bSpider = false;
+	_float					m_bSpiderTimeAcc;
+
+	// 흘러내림
+	_float					m_fFlowdownSpeed = 0.f;
+	_float					m_fFlowdownTimeAcc = 0.f;
+
+	// 투명도
+	_int					m_iTransparency = 0;
+	_float					m_fTransparencyTimeAcc = 0.f;
 };

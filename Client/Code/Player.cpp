@@ -10,7 +10,6 @@
 #include "MapUI.h"
 #include "MiniMap.h"
 #include "ParticleMgr.h"
-#include "SpiderBackGround.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
 #include "BonFire.h"
@@ -56,9 +55,10 @@ HRESULT CPlayer::Ready_Object(void)
 	m_tInfo.iExp = 0;
 	m_tInfo.iExpMax = 10;
 	m_tInfo.iHunger = 30;
-	m_tInfo.fSpeed = 1;
+	m_tInfo.fSpeed = 5.f;
 	m_tInfo.iLevel = 1;
 
+	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
 	return S_OK;
 }
 
@@ -103,9 +103,9 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
 	
-
 	KnockBack(fTimeDelta);
 	Stun(fTimeDelta);
+	Slow(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
@@ -253,7 +253,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	{
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
-		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
+		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 	}
 
 	if (Engine::Get_DIKeyState(DIK_S) & 0x80)
@@ -261,7 +261,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_vDirection *= -1.f;
-		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
+		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 	}
 
 	if (Engine::Get_DIKeyState(DIK_A) & 0x80)
@@ -270,7 +270,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_vDirection *= -1.f;
-		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
+		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 	}
 
 	if (Engine::Get_DIKeyState(DIK_D) & 0x80)
@@ -278,7 +278,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_pTransCom->Get_Info(INFO_RIGHT, &m_vDirection);
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
-		m_pTransCom->Move_Pos(&(m_vDirection * m_fSpeed * fTimeDelta));
+		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 	}
 
 
@@ -577,7 +577,7 @@ void CPlayer::OnHit(_int _HpMinus)
 {
 	if (0 >= m_tInfo.iHp)
 	{
-		m_bKnockBack = true;
+		//m_bKnockBack = true;
 		m_tInfo.iHp = 0;
 		return;
 	}
@@ -618,19 +618,18 @@ void CPlayer::Stun(const _float & fTimeDelta)
 
 void CPlayer::Slow(const _float & fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_0))
-		m_tInfo.bSlow = true;
-
 	if (!m_tInfo.bSlow)
 		return;
 
-	// SpiderBackGround
-	CSpiderBackGround* pSpiderBackGround = dynamic_cast<CSpiderBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_HitBackGround"));
+	m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
 
-	if (0.3f < InvincibilityTimeAcc)
-		pSpiderBackGround->Set_HitBackGround(false);
-	else
-		pSpiderBackGround->Set_HitBackGround(true);
+	SlowTimeAcc += fTimeDelta;
+	if (3.f < SlowTimeAcc)
+	{
+		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
+		SlowTimeAcc = 0.f;
+		m_tInfo.bSlow = false;
+	}
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

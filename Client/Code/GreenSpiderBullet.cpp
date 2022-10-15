@@ -4,6 +4,9 @@
 #include "Export_Function.h"	
 #include "BulletMgr.h"
 #include "ParticleMgr.h"
+#include "Player.h"
+#include "SpiderBackGround.h"
+
 
 CGreenSpiderBullet::CGreenSpiderBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -90,7 +93,9 @@ void CGreenSpiderBullet::LateUpdate_Object(void)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.05f,
 			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5); Reset();
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5); 
+		
+		Reset();
 	}
 
 	CGameObject::LateUpdate_Object();
@@ -178,6 +183,17 @@ _int CGreenSpiderBullet::Target(const _float & fTimeDelta)
 	return 0;
 }
 
+void CGreenSpiderBullet::CollisionEvent(CGameObject* pObj)
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	CSpiderBackGround* pSpiderBackGround = dynamic_cast<CSpiderBackGround*>(Engine::Get_GameObject(L"Layer_UI", L"UI_SpiderBackGround"));
+	if (pPlayer == pObj)
+	{
+		pPlayer->Set_Slow();
+		pSpiderBackGround->Set_SpiderRender();
+	}
+}
+
 CGreenSpiderBullet * CGreenSpiderBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CGreenSpiderBullet*		pInstance = new CGreenSpiderBullet(pGraphicDev);
@@ -201,5 +217,6 @@ void CGreenSpiderBullet::Reset()
 	m_bDead = false;
 	m_fLifeTime = 0.f;
 	m_bReady = false;
+	m_pColliderCom->Set_Free(true);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_SPIDER);
 }

@@ -166,6 +166,7 @@ namespace Engine
 		// ป๓ลย
 		_bool		bStun;
 		_bool		bSlow;
+		_float		fSlowSpeed;
 	}PLAYERINFO;
 
 	typedef struct tItemInfo

@@ -268,7 +268,7 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 	{
 		m_eCurState = IDLE;
 
-		wstring* objTags = new wstring[5];
+		wstring objTags[5];
 		for (_int i = 0; i < 5; i++)
 		{
 			objTags[i] = L"SongBoss_Floor";
@@ -276,60 +276,38 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 			_itow_s(i, index, 10);
 			objTags[i] += index;
 
-
 			CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", objTags[i].c_str()));
-			NULL_CHECK(pSongBossFloor);																											
+			NULL_CHECK(pSongBossFloor);
 			if (pSongBossFloor->Get_StartLightning())
 				CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 		}
 
+		//// for문으로 수정하기
+		//CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor0"));
+		//NULL_CHECK(pSongBossFloor);
+		//if (pSongBossFloor->Get_StartLightning())
+		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 
-/*		m_fFloorTimeAcc += fTimeDelta;
-		if (1.f < m_fFloorTimeAcc)
-		{
-			wstring* objTags = new wstring[5];
-			for (_int i = 0; i < 5; i++)
-			{
-				objTags[i] = L"SongBoss_Floor";
-				wchar_t index[10];
-				_itow_s(i, index, 10);
-				objTags[i] += index;
+		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor1"));
+		//NULL_CHECK(pSongBossFloor);
+		//if (pSongBossFloor->Get_StartLightning())
+		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 
+		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor2"));
+		//NULL_CHECK(pSongBossFloor);
+		//if (pSongBossFloor->Get_StartLightning())
+		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 
-				CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", objTags[i].c_str()));
-				NULL_CHECK(pSongBossFloor);
-				CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-			}
-			m_fFloorTimeAcc = 0.f;
-		}	*/	
+		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor3"));
+		//NULL_CHECK(pSongBossFloor);
+		//if (pSongBossFloor->Get_StartLightning())
+		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
+
+		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor4"));
+		//NULL_CHECK(pSongBossFloor);
+		//if (pSongBossFloor->Get_StartLightning())
+		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 	}
-
-
-	//// for문으로 수정하기
-	//CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor0"));
-	//NULL_CHECK(pSongBossFloor);
-	//if (pSongBossFloor->Get_StartLightning())
-	//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-	//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor1"));
-	//NULL_CHECK(pSongBossFloor);
-	//if (pSongBossFloor->Get_StartLightning())
-	//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-	//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor2"));
-	//NULL_CHECK(pSongBossFloor);
-	//if (pSongBossFloor->Get_StartLightning())
-	//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-	//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor3"));
-	//NULL_CHECK(pSongBossFloor);
-	//if (pSongBossFloor->Get_StartLightning())
-	//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-	//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor4"));
-	//NULL_CHECK(pSongBossFloor);
-	//if (pSongBossFloor->Get_StartLightning())
-	//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 }
 
 void CSongBoss::OnHit(const _float & fTimeDelta)

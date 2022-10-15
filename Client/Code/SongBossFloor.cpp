@@ -132,7 +132,7 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 		m_fAttackTimeAcc += fTimeDelta;
 		if (0.3f < m_fAttackTimeAcc)
 		{
-			m_pColliderCom->Set_Free(true); // TODO 재사용 불가능 상태
+			m_pColliderCom->Set_Free(false); // TODO 재사용 불가능 상태
 			m_fAttackTimeAcc = 0.f;
 		}
 	}
@@ -211,6 +211,6 @@ void CSongBossFloor::Reset()
 	m_fTransparencyTimeAcc = 0.f;
 	m_fAttackTimeAcc = 0.f;
 
-	//m_pColliderCom->Set_Free(false);
+	m_pColliderCom->Set_Free(true);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, FLOOR_SONGBOSS);
 }

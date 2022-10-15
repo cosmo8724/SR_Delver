@@ -14,10 +14,11 @@ private:
 	virtual ~CGreenSpiderBullet();
 
 public:
-	virtual HRESULT			Ready_Object(void) override;
+	virtual HRESULT			Ready_Object(void)						override;
 	virtual _int			Update_Object(const _float& fTimeDelta) override;
-	virtual void			LateUpdate_Object(void) override;
-	virtual	void			Render_Obejct(void) override;
+	virtual void			LateUpdate_Object(void)					override;
+	virtual	void			Render_Obejct(void)						override;
+	void					CollisionEvent(CGameObject* pObj)		override;
 
 public:
 	static CGreenSpiderBullet*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -25,11 +26,11 @@ public:
 	virtual void			Reset() override;
 
 private:
-	void					Billboard();
-	_int					Target(const _float& fTimeDelta);
+	HRESULT					Add_Component(void);
 
 private:
-	HRESULT					Add_Component(void);
+	void					Billboard();
+	_int					Target(const _float& fTimeDelta);
 
 private:
 	CRcTex*					m_pBufferCom = nullptr;

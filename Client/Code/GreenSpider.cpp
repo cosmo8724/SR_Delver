@@ -160,13 +160,13 @@ void CGreenSpider::Target_Follow(const _float & fTimeDelta)
 		m_fAttackTimeAcc += fTimeDelta;
 		m_fIdleTimeAcc += m_fAttackTimeAcc;
 
-		if (3.f < m_fAttackTimeAcc)
+		if (5.f < m_fAttackTimeAcc)
 		{
 			m_eCurState = ATTACK;
 			CBulletMgr::GetInstance()->Fire(BULLET_M_SPIDER);
 			m_fAttackTimeAcc = 0;
 		}
-		else if (5.5f < m_fIdleTimeAcc)
+		else if (7.5f < m_fIdleTimeAcc)
 		{
 			m_eCurState = IDLE;
 			m_fIdleTimeAcc = 0.f;
@@ -174,7 +174,6 @@ void CGreenSpider::Target_Follow(const _float & fTimeDelta)
 	}
 	else
 		m_eCurState = IDLE;
-
 }
 
 void CGreenSpider::OnHit(const _float & fTimeDelta)

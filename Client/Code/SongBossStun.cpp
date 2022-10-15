@@ -252,6 +252,6 @@ void CSongBossStun::Reset()
 	m_fShakeSpeed = 1.5f;
 	m_fShakeTimeAcc = 0.f;
 
-	m_pColliderCom->Set_Free(false);
+	m_pColliderCom->Set_Free(true);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, STUN_SONGBOSS);
 }

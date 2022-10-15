@@ -4,6 +4,7 @@
 
 CSpiderBackGround::CSpiderBackGround(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
+	, m_bSpiderTimeAcc(0.f)
 {
 }
 
@@ -29,24 +30,55 @@ HRESULT CSpiderBackGround::Ready_Object(void)
 	m_matView._41 = m_fPosX;
 	m_matView._42 = m_fPosY;
 
+	m_fFlowdownSpeed = 0.7f;
+	m_iTransparency = 255;
+
 	return S_OK;
 }
 
 _int CSpiderBackGround::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bHit)
+	if (!m_bSpider)
 		return 0;
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
-
 	Engine::Add_RenderGroup(RENDER_UI, this);
+
+	// 거미줄 흘러내리는
+	m_fFlowdownTimeAcc += fTimeDelta;
+	if (0.1f < m_fFlowdownTimeAcc)
+	{
+		m_fPosY -= m_fFlowdownSpeed;
+		m_matView._41 = m_fPosX;
+		m_matView._42 = m_fPosY;
+		m_fFlowdownTimeAcc = 0.f;
+	}
+	
+	m_bSpiderTimeAcc += fTimeDelta;
+	if (2.f < m_bSpiderTimeAcc) // 거미줄 지워주기
+	{
+		m_fTransparencyTimeAcc += fTimeDelta;
+		if (0.05f < m_fTransparencyTimeAcc)
+		{
+			m_iTransparency -= 10; // 투명도가 연해지는 숫자 > 10
+			m_fTransparencyTimeAcc = 0.f;
+
+			if (0 >= m_iTransparency)
+			{
+				m_fPosY = 0.f;
+				m_bSpiderTimeAcc = 0.f;
+				m_iTransparency = 255;
+				m_bSpider = false;
+			}
+		}
+	}
 
 	return 0;
 }
 
 void CSpiderBackGround::LateUpdate_Object(void)
 {
-	if (!m_bHit)
+	if (!m_bSpider)
 		return;
 
 	Engine::CGameObject::LateUpdate_Object();
@@ -54,13 +86,17 @@ void CSpiderBackGround::LateUpdate_Object(void)
 
 void CSpiderBackGround::Render_Obejct(void)
 {
-	if (!m_bHit)
+	if (!m_bSpider)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(m_iTransparency, 0, 0, 0));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
@@ -71,6 +107,7 @@ void CSpiderBackGround::Render_Obejct(void)
 	m_pTextureCom->Set_Texture(0);	// 텍스처 정보 세팅을 우선적으로 한다.
 	m_pBufferCom->Render_Buffer();
 
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
