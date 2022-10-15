@@ -155,11 +155,11 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
-	//// GreenSpider
-	//pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(5.f, 1.f, 10.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSpider", pGameObject), E_FAIL);
-	//m_vecMonster.push_back(pGameObject);
+	// GreenSpider
+	pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(5.f, 1.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSpider", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
 	////////////Boss
 	// SongBoss
