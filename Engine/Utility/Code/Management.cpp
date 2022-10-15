@@ -70,7 +70,6 @@ void CManagement::Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	Engine::Render_GameObject(pGraphicDev);
 
-
 	if (nullptr == m_pScene)
 		return;
 

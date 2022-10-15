@@ -28,6 +28,7 @@ public:
 	virtual void LateUpdate_Object(void) override;
 	virtual	void Reset() {
 		CCamera::Reset();
+		m_vUp = { 0.f, 1.f, 0.f };
 	}
 
 private:
@@ -61,7 +62,7 @@ public:
 										const _vec3* pEye, 
 										const _vec3* pAt, 
 										const _vec3* pUp,
-										const _float& fFov = D3DXToRadian(60.f),
+										const _float& fFov = D3DXToRadian(75.f),
 										const _float& fAspect = (float)WINCX / WINCY,
 										const _float& fNear = 0.1f,
 										const _float& fFar = 1000.f);

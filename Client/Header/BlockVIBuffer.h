@@ -14,7 +14,7 @@ class CBlockVIBuffer
 		_ulong				m_dwVtxCnt;
 		_ulong				m_dwTriCnt;
 		_ulong				m_dwBlockCnt;
-		vector<_matrix>	m_vecMatWorld;
+		vector<CTransform*>	m_vecMatWorld;
 		IDirect3DBaseTexture9*	m_pTexture;
 
 		BufferPerTexture()
@@ -42,7 +42,7 @@ private:
 	~CBlockVIBuffer();
 
 public:
-	HRESULT		Add_Instancing(BLOCKTYPE eType, CTexture* pTextureCom, _int iTexture, _matrix matWorld);
+	HRESULT		Add_Instancing(BLOCKTYPE eType, CTexture* pTextureCom, _int iTexture, CTransform* pTransformCom);
 	HRESULT		Ready_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eType, _int iTexture);
 	void			Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eType, _int iTexture);
 

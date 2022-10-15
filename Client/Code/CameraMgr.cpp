@@ -34,13 +34,13 @@ HRESULT CCameraMgr::Add_GameObject(CLayer * pLayer)
 	m_vecCamera.push_back(static_cast<CCamera*>(pGameObject));
 
 	// StaticCamera
-	pGameObject = CStaticCamera::Create(m_pGraphicDev, &_vec3(0.f, 20.f, -10.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
+	pGameObject = CStaticCamera::Create(m_pGraphicDev, &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StaticCamera", pGameObject), E_FAIL);
 	m_vecCamera.push_back(static_cast<CCamera*>(pGameObject));
 
 	// ObjectCamera
-	pGameObject = CObjectCamera::Create(m_pGraphicDev, &_vec3(0.f, 20.f, -10.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
+	pGameObject = CObjectCamera::Create(m_pGraphicDev, &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ObjectCamera", pGameObject), E_FAIL);
 	m_vecCamera.push_back(static_cast<CCamera*>(pGameObject));

@@ -25,6 +25,7 @@
 #include "Tree.h"
 #include "Jar.h"
 #include "BonFire.h"
+#include "ObjectCamera.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -87,7 +88,6 @@ HRESULT CStage::Ready_Scene(void)
 
 _int CStage::Update_Scene(const _float & fTimeDelta)
 {
-
 	return Engine::CScene::Update_Scene(fTimeDelta);
 }
 
