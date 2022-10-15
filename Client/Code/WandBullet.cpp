@@ -79,7 +79,7 @@ void CWandBullet::CollisionEvent(CGameObject * pObj)
 	CParticleMgr::GetInstance()->Set_Info(this, 20, 0.3f, { 1.f, 1.f, 1.f },
 		1.f, { 1.f,0.f,0.f,1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_5);
-	
+
 	Reset();
 }
 
@@ -113,14 +113,14 @@ _int CWandBullet::Update_Object(const _float & fTimeDelta)
 	}
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-	
+
 	m_fLifeTime += fTimeDelta;
 	m_fParticleTime += fTimeDelta;
 
 	m_pTransCom->Move_Pos(&(m_fSpeed * fTimeDelta * m_vDirection));
 	if (0.1f < m_fParticleTime)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f, 
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
 			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 0.f, 0.f, 1.f },
 			1.f, false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_5);
@@ -149,10 +149,10 @@ void CWandBullet::LateUpdate_Object(void)
 	// 아무데도 충돌안해도 일정 시간 후 리셋
 	if (1.f < m_fLifeTime)
 	{
-		Reset();
 		CParticleMgr::GetInstance()->Set_Info(this, 20, 0.3f, { 1.f, 1.f, 1.f },
 			1.f, { 1.f,0.f,0.f,1.f });
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_5);
+		Reset();
 	}
 
 
@@ -233,5 +233,6 @@ void CWandBullet::Reset()
 	m_bReady = false;
 	m_pColliderCom->Set_Free(false);
 	m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
-	CBulletMgr::GetInstance()-> Collect_Obj(m_iIndex, BULLET_WAND);
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_WAND);
 }
+

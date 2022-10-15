@@ -1,5 +1,9 @@
 #pragma once
 #include "PSystem.h"
+
+BEGIN(Engine)
+class CTransform;
+END
 class CUserParticle : public CPSystem
 {
 private:
@@ -17,7 +21,7 @@ public:
 			addParticle();
 	}
 	inline  void	Set_PointSize(_float _fSize) { m_fSize = _fSize; }
-	inline	void	Set_bdBox(_vec3 vMin, _vec3 vMax)	{ m_bdBox.vMin = vMin; m_bdBox.vMax = vMax; }
+	inline	void	Set_bdBox(_vec3 vMin, _vec3 vMax) { m_bdBox.vMin = vMin; m_bdBox.vMax = vMax; }
 	inline	void	Set_bdBoxMin(_vec3 vMin) { m_bdBox.vMin = vMin; }
 	inline	void	Set_bdBoxMax(_vec3 vMax) { m_bdBox.vMax = vMax; }
 	inline	void	Set_Play(_bool bPlay) { m_bPlay = bPlay;   if (m_eType == PTYPE_SNOW) removeAllParticles(); }
@@ -29,7 +33,7 @@ public:
 	inline  void	Set_Type(PTYPE eType) { m_eType = eType; }
 	inline  void	Is_ColorRand(_bool bRand) { m_bRand = bRand; }
 	inline	void	Is_FrameRepeat(_bool bRepeat) { m_bFrameRepeat = bRepeat; }
-	
+
 	void			Set_Particle_Texture(_int iSelected);
 	void			Play_Particle();
 
@@ -40,7 +44,7 @@ public:
 	void			Set_Texture(PTEXTUREID eTex);
 	void			Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
 	void			Set_Information(_bool _bUse, _int _iIdx, CGameObject* _pObj, ATTRIBUTE _att, PINFO _pInfo
-									, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand); 
+		, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand);
 	void			ReUse();	// 파티클이 끝나고 풀로 돌아가면 리셋시켜줌.
 
 public:
@@ -78,7 +82,13 @@ private:
 	// 추가된 변수
 	CGameObject*	m_pTarget = nullptr;
 
+	_int			m_iReturn;
+
+	_float			m_fAngle = 0.f;
 
 
+
+	PTEXTUREID		m_eTex = TEXTURE_0;
+	CTransform*		m_pTransCom = nullptr; // for target
 };
 

@@ -86,9 +86,9 @@ void CFistBullet::LateUpdate_Object(void)
 
 	if (1.f < m_fLifeTime)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
-			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5); Reset();
+		//CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
+		//	_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5); Reset();
 	}
 
 	Billboard();
@@ -169,9 +169,9 @@ _int CFistBullet::Target(const _float & fTimeDelta)
 
 	if (0.1f < m_fParticleTime)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
-			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+		//CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
+		//	_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 		m_fParticleTime = 0.f;
 	}
 

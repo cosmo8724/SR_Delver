@@ -9,18 +9,27 @@ CPtBuffer::CPtBuffer(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_vbOffset(0)
 	, m_vbBatchSize(512)
 	, m_pParticles(nullptr)
+
 {
 }
 
 CPtBuffer::CPtBuffer(const CPtBuffer & rhs)
 	: CComponent(rhs)
-	, m_pVB(rhs.m_pVB)
 	, m_vbSize(rhs.m_vbSize)
 	, m_vbOffset(rhs.m_vbOffset)
 	, m_vbBatchSize(rhs.m_vbBatchSize)
-	, m_pParticles(rhs.m_pParticles)
+	, m_pParticles(nullptr)
 {
-	m_pVB->AddRef();
+	// D3D장치 의존적 초기화 작업을 처리
+	m_pGraphicDev->CreateVertexBuffer(
+		m_vbSize * sizeof(PARTICLE),	// 버텍스 버퍼 크기
+		D3DUSAGE_DYNAMIC | D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY,
+		// _DYNAMIC : 동적 버텍스버퍼를 사용한다.
+		// _POINTS	: 버텍스 버퍼가 포인트 스프라이트를 보관할 것임을 지정
+		FVF_PARTICLE,
+		D3DPOOL_DEFAULT,
+		&m_pVB,
+		0);
 }
 
 CPtBuffer::~CPtBuffer()
@@ -45,8 +54,9 @@ HRESULT CPtBuffer::Ready_Buffer()
 
 void CPtBuffer::Render_Buffer()
 {
-	m_pGraphicDev->SetFVF(FVF_PARTICLE);
 	m_pGraphicDev->SetStreamSource(0, m_pVB, 0, sizeof(Particle));
+	m_pGraphicDev->SetFVF(FVF_PARTICLE);
+
 
 	// 버텍스 버퍼를 벗어날 경우 처음부터 시작한다.
 	if (m_vbOffset >= m_vbSize)
