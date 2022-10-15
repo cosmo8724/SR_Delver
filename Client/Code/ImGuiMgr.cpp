@@ -596,7 +596,8 @@ HRESULT CImGuiMgr::ImGui_Map_Tool(LPDIRECT3DDEVICE9 pGraphicDev, const _float & 
 
 void CImGuiMgr::MapTool()
 {
-	m_pMapTool->MapTool_Window(m_fTimeDelta);
+	//m_pMapTool->MapTool_Window(m_fTimeDelta);
+	m_pMapTool->BlockMapTool_Window(m_fTimeDelta);
 }
 
 void CImGuiMgr::ObjectTool()

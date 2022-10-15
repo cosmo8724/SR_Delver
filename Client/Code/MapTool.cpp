@@ -535,3 +535,30 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 
 	return S_OK;
 }
+
+HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
+{
+	ImGui::Begin("Terrain Setting");
+
+	if (ImGui::CollapsingHeader("Block Count", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::SliderInt("Width", &m_iWidth, 0, 200);
+		ImGui::SliderInt("Depth", &m_iDepth, 0, 200);
+		ImGui::SliderInt("Interval", &m_iInterval, 0, 10);
+		ImGui::NewLine();
+		if (ImGui::Button("Create"))
+		{
+			for (_int z = 0; z < m_iDepth; ++z)
+			{
+				for (_int x = 0; x < m_iWidth; ++x)
+				{
+
+				}
+			}
+		}
+	}
+
+	ImGui::End();
+
+	return S_OK;
+}

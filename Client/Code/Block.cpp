@@ -28,7 +28,7 @@ CBlock::CBlock(const CBlock& rhs)
 	m_mapComponent[ID_STATIC].insert({ L"Proto_BlockTexCom", m_pBufferCom });
 
 	switch (m_eCurrentType)
-																																						{
+	{
 	case BLOCK_CAVE:
 		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cave_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Cave_BlockTexture", m_pTextureCom });
@@ -200,9 +200,9 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 		if (!m_bCreateIcon)
 		{
 			// Only For Stage
-			CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+			/*CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 			pMiniMap->Add_Icon(m_pGraphicDev, this);
-			m_bCreateIcon = true;
+			m_bCreateIcon = true;*/
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 		Add_RenderGroup(RENDER_NONALPHA, this);
@@ -227,7 +227,7 @@ void CBlock::Render_Obejct(void)
 	if (m_bSet && !m_bChanging)
 	{
 		m_pTextureCom->Set_Texture(m_iTexture);
-		//m_pBufferCom->Render_Buffer();
+		m_pBufferCom->Render_Buffer();
 	}
 	else
 	{
