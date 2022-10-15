@@ -322,9 +322,6 @@
     <Filter Include="02. GameObject\01. For_Stage\06. Item\03. Equipment\LeftHand">
       <UniqueIdentifier>{55b30218-dbb7-400b-9dc0-1b9215d49199}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Strun">
-      <UniqueIdentifier>{3add4dec-7927-4f11-95c8-cfaa6dfd1461}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Floor">
       <UniqueIdentifier>{52579f46-3a14-4f77-a0e3-7aae88fcc4f4}</UniqueIdentifier>
     </Filter>
@@ -339,6 +336,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\99. UI\09. SpiderBackGround">
       <UniqueIdentifier>{cc1ac141-c8c0-41e4-a35c-d1f2c8c469e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Stun">
+      <UniqueIdentifier>{3add4dec-7927-4f11-95c8-cfaa6dfd1461}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -562,7 +562,7 @@
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SongBossStun.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Strun</Filter>
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Stun</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SongBossFloor.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Floor</Filter>
@@ -861,7 +861,7 @@
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SongBossStun.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Strun</Filter>
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Stun</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SongBossFloor.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Floor</Filter>
