@@ -105,12 +105,13 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	if (Key_Down(DIK_P))
 	{
 		//PTYPE_SPOT
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 0.f, 0.0f, 1.0f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
+		//CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 0.f, 0.0f, 1.0f });
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
 
 		//PTYPE_CIRCLING
-	/*	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 1.0f }, 10.f);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_5);*/
+		//CParticleMgr::GetInstance()->Set_Info(this, 5, 0.2f, { 0.f, 0.f, 1.0f }, 10.f);
+		//CParticleMgr::GetInstance()->Add_Info(false, 0.f);
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
 
 	}
 

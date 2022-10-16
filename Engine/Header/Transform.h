@@ -42,6 +42,10 @@ public:
 	void				KnockBack_Target(_vec3* pTargetLook, const _float& fSpeed, const _float& fTimeDelta); // ³Ë¹é
 	void				Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
 	_bool				Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
+	void				Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
+	_bool				Item_Defense(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
+
+
 
 
 public:
@@ -49,7 +53,7 @@ public:
 	virtual _int		Update_Component(const _float& fTimeDelta);
 
 public:
-	void			Prepare_Attack() { m_bFinished = false;  m_fAttackAngle = 0.f; }
+	void			Prepare_Attack() { m_bFinished = false;  m_fAttackAngle = 0.f; m_fDefenseAngle = -80.f; }
 	_bool			Is_Finished() { return m_bFinished; }
 public:
 	_vec3			m_vInfo[INFO_END];
@@ -63,6 +67,8 @@ public:
 	_bool			m_bFinished = false;
 	_float			m_fAttackAngle = 0.f;
 	_float			m_fAttackSpeed;
+	_float			m_fDefenseAngle;// = 90.f;
+
 
 	_matrix			m_matOldBill;
 

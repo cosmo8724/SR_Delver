@@ -40,22 +40,19 @@ public:
 		, _bool		_bRand = false						// 색 랜덤 여부
 		);
 
-	// Set Info for Spot Type ( test )
-	//void			Set_Info_Spot(
-	//								CGameObject*	pObj			= nullptr
-	//								, _vec3			vDist			= { 1.f, 1.f, 1.f }	// distance from the object from (vRight, vUp, vLook)
-	//								, _int			iParticleCnt	= 1.f
-	//								, _float		fSize			= 1.f
-	//								, _float		fLifeTime		= 1.f
-	//								, D3DXCOLOR		tColor			= { 1.f, 1.f, 1.f, 1.f }
-	//								, _float		fFrameSpeed		= 1.f
-	//								, _bool			bFrameRepeat	= false
-	//								, _bool			bRandColor		= false
-	//);
 
-
-
-
+	void			Add_Info_Circling(
+		_bool		_bFrameMove = true
+		, _float		_fFrame = 0
+		, _float		_fDist = 1.f
+		, _float		_fAngleSpeed= 1.f
+		)
+	{
+		m_bFrameMove = _bFrameMove;
+		m_fFrame = _fFrame;
+		m_fDist = _fDist;
+		m_fAngleSpeed = _fAngleSpeed;
+	}
 
 
 	// 바운딩 박스 세팅 ( 필요한 경우 )
@@ -82,6 +79,9 @@ private:
 	_float			m_fFrameSpeed = 1.f;
 	_bool			m_bFrameRepeat = false;
 	_bool			m_bRand = false;
-
+	_bool			m_bFrameMove = true;
+	_float			m_fFrame = 0.f;
+	_float			m_fDist = 1.f;
+	_float			m_fAngleSpeed = 1.f;
 };
 

@@ -7,6 +7,7 @@
 #include "MiniMap.h"
 #include "Player.h"
 #include "SongBossFloor.h"
+#include "ParticleMgr.h"
 
 CSongBoss::CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CMonster(pGraphicDev)
@@ -175,6 +176,10 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 		if (3.f < m_fAttackTimeAcc)
 		{
+			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.0f }, 3.f);
+			CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
+
 			m_eCurState = ATTACK;
 			CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);
 			m_fAttackTimeAcc = 0;

@@ -46,6 +46,13 @@ public:
 	void			Set_Information(_bool _bUse, _int _iIdx, CGameObject* _pObj, ATTRIBUTE _att, PINFO _pInfo
 		, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand);
 	void			ReUse();	// 파티클이 끝나고 풀로 돌아가면 리셋시켜줌.
+	void			Add_Info(_bool _bFrameMove, _float _fFrame, _float _fDist, _float _fAngleSpeed)
+	{
+		m_bFrameMove = _bFrameMove;
+		m_fFixFrame = _fFrame;
+		m_fDist = _fDist;
+		m_fAngleSpeed = _fAngleSpeed;
+	}
 
 public:
 	virtual HRESULT			Ready_Object(void);
@@ -85,10 +92,14 @@ private:
 	_int			m_iReturn;
 
 	_float			m_fAngle = 0.f;
-
-
+	_bool			m_bFrameMove = true;
+	_float			m_fAngleSpeed;
+	_float			m_fStartAngles[50];
+	_float			m_fDist = 0.f;
+	_float			m_fFixFrame;
 
 	PTEXTUREID		m_eTex = TEXTURE_0;
 	CTransform*		m_pTransCom = nullptr; // for target
+
 };
 

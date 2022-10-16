@@ -9,6 +9,7 @@ CTransform::CTransform()
 	, m_vAngle(0.f, 0.f, 0.f)
 	,m_fAngleSpeed(1.f)
 	,m_fAttackSpeed(3.f)
+	,m_fDefenseAngle(-80.f)
 {
 	ZeroMemory(m_vInfo, sizeof(m_vInfo));
 	D3DXMatrixIdentity(&m_matWorld);
@@ -21,6 +22,7 @@ Engine::CTransform::CTransform(const CTransform& rhs)
 	: CComponent(rhs),m_vScale(rhs.m_vScale), m_vAngle(rhs.m_vAngle)
 		, m_fAngleSpeed(rhs.m_fAngleSpeed)
 		, m_fAttackSpeed(rhs.m_fAttackSpeed)
+		, m_fDefenseAngle(rhs.m_fDefenseAngle)
 
 {
 	for (_uint i = 0; i < INFO_END; ++i)
@@ -29,7 +31,6 @@ Engine::CTransform::CTransform(const CTransform& rhs)
 	memcpy(m_matWorld, rhs.m_matWorld, sizeof(_matrix));
 	
 	memcpy(m_matOldBill, rhs.m_matOldBill, sizeof(_matrix));
-
 
 }
 
@@ -211,33 +212,6 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 	m_matWorld = matScale * matRot * matBill * matTrans * matRev * matPos;
-
-
-
-
-
-	//_matrix matRot;
-	//D3DXMatrixRotationY(&matRot, 45.f);
-
-	//_matrix matPos;
-	//D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
-
-	//_matrix matHand;
-	//D3DXMatrixTranslation(&matHand, 2* vRight.x, 2* vRight.y, 2* vRight.z);
-
-	////matParent = matHand * matParent;
-
-	//_matrix matRadius;
-	//D3DXMatrixTranslation(&matRadius, vLook.x, vLook.y, vLook.z);
-
-	//_matrix matRev;
-	//m_fAngle += 0.05f;
-	//D3DXMatrixRotationAxis(&matRev, &vRight, m_fAngle);
-
-	//// 플레이어의 중심에서 오른쪽을 기준으로 공전할 것임.
-	//m_matWorld = matRadius * matRev * matParent;
-	//matWorld = matRadius * matRev * matRot * matHand * matPos;
-
 }
 
 _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
@@ -291,6 +265,112 @@ _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	m_matWorld = matScale * matRot * matBill * matTrans * matRev * matPos;
 
 	return m_bFinished;
+}
+
+void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
+{
+	_matrix matParent = _matWorld; // 부모행렬은 플레이어의 월드행렬
+
+	_vec3 vRight, vUp, vLook, vPos;
+
+	vRight = { matParent._11, matParent._12, matParent._13 };
+	vUp = { matParent._21, matParent._22, matParent._23 };
+	vLook = { matParent._31, matParent._32, matParent._33 };
+	vPos = { matParent._41, matParent._42, matParent._43 };
+	D3DXVec3Normalize(&vRight, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	_matrix matScale;
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+
+	_matrix matRot;
+	D3DXMatrixRotationY(&matRot, D3DXToRadian(130.f));
+
+	_matrix matTrans;
+	_vec3 vTrans = -0.5f * vRight + 0.8f * vLook - 0.2f * vUp;
+	D3DXMatrixTranslation(&matTrans, vTrans.x, vTrans.y, vTrans.z);
+
+	_matrix matRev;
+	_float fRad = 0.f;
+	if (m_vOldPos.y == vPos.y && m_vOldPos != vPos)
+	{
+		m_fAngle += m_fAngleSpeed;
+		if (m_fAngle > 5.f || m_fAngle < -5.f)
+			m_fAngleSpeed *= -1;
+		fRad = D3DXToRadian(m_fAngle);
+	}
+	m_vOldPos = vPos;
+	D3DXMatrixRotationAxis(&matRev, &vRight, fRad);
+
+	_matrix matPos; // parent
+	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
+
+
+	// 빌보드
+	_matrix matBill, matView;
+	D3DXMatrixIdentity(&matBill);
+	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	memcpy(&matBill, &matView, sizeof(_matrix));
+	memset(&matBill._41, 0, sizeof(_vec3));
+	D3DXMatrixInverse(&matBill, 0, &matBill);
+
+	m_matWorld = matScale * matRot * matBill * matTrans * matRev * matPos;
+}
+
+_bool CTransform::Item_Defense(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
+{
+	_matrix matParent = _matWorld; // 부모행렬은 플레이어의 월드행렬
+
+	_vec3 vRight, vUp, vLook, vPos;
+
+	vRight = { matParent._11, matParent._12, matParent._13 };
+	vUp = { matParent._21, matParent._22, matParent._23 };
+	vLook = { matParent._31, matParent._32, matParent._33 };
+	vPos = { matParent._41, matParent._42, matParent._43 };
+	D3DXVec3Normalize(&vRight, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	_matrix matScale;
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+
+	_matrix matRot, matRotY, matRotX;
+	D3DXMatrixRotationY(&matRotY, D3DXToRadian(60.f));
+	D3DXMatrixRotationX(&matRotX, D3DXToRadian(30.f));
+	matRot = matRotY * matRotX;
+
+	_matrix matTrans;
+	_vec3 vTrans = 0.5f * vRight + 0.9f * vLook - 0.2f * vUp;
+	D3DXMatrixTranslation(&matTrans, vTrans.x, vTrans.y, vTrans.z);
+
+	_matrix matRev;
+	_float fRad = 0.f;
+
+	m_fDefenseAngle += m_fAttackSpeed;
+	if (m_fDefenseAngle > -45.f)
+		m_fAttackSpeed *= -1;
+	if (m_fDefenseAngle < -80.f)
+		m_bFinished = true;
+
+	fRad = D3DXToRadian(m_fDefenseAngle);
+	D3DXMatrixRotationAxis(&matRev, &_vec3{ 0.f, 1.f, 0.f }, fRad);
+
+	_matrix matPos; // parent
+	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
+
+	// 빌보드
+	_matrix matBill, matView;
+	D3DXMatrixIdentity(&matBill);
+	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	memcpy(&matBill, &matView, sizeof(_matrix));
+	memset(&matBill._41, 0, sizeof(_vec3));
+	D3DXMatrixInverse(&matBill, 0, &matBill);
+
+	m_matWorld = matScale * matRot * matBill * matTrans * matRev * matPos;
+
+	return m_bFinished;
+
 }
 
 HRESULT CTransform::Ready_Transform(void)

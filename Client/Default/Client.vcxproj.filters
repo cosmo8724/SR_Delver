@@ -199,15 +199,6 @@
     <Filter Include="02. GameObject\02. For_Public\02. ObjectCamera">
       <UniqueIdentifier>{3c5febbc-f7d4-4572-9420-091ba4473abb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\06. Item\06. Key">
-      <UniqueIdentifier>{1c70b412-950f-44b2-9f5e-411121e8263a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\06. Item\07. Lantern">
-      <UniqueIdentifier>{5cc18c69-bf15-4311-a29c-79692f26c707}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\06. Item\08. Shield">
-      <UniqueIdentifier>{417ab719-2141-4004-9e9e-3ada34cd58bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\02. For_Public\04. BlockBuffer">
       <UniqueIdentifier>{581df993-7ceb-485d-a437-67400f10e345}</UniqueIdentifier>
     </Filter>
@@ -333,6 +324,18 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. FloorLightning">
       <UniqueIdentifier>{3eda695c-0b16-4c7b-897b-0ed950fb8209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\04. LeftHand">
+      <UniqueIdentifier>{e2f53283-eb85-46d4-9ff6-31eea0fd5b16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\06. Key">
+      <UniqueIdentifier>{1c70b412-950f-44b2-9f5e-411121e8263a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\Lantern">
+      <UniqueIdentifier>{5cc18c69-bf15-4311-a29c-79692f26c707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\03. Equipment\Shield">
+      <UniqueIdentifier>{417ab719-2141-4004-9e9e-3ada34cd58bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -607,10 +610,10 @@
       <Filter>02. GameObject\01. For_Stage\06. Item\06. Key</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Lantern.h">
-      <Filter>02. GameObject\01. For_Stage\06. Item\07. Lantern</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\Lantern</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Shield.h">
-      <Filter>02. GameObject\01. For_Stage\06. Item\08. Shield</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Shield</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CameraMgr.h">
       <Filter>02. GameObject\02. For_Public</Filter>
@@ -641,7 +644,7 @@
     </ClInclude>
     <ClInclude Include="..\Header\Equipment.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment</Filter>
-    </ClInclude>   
+    </ClInclude>
     <ClInclude Include="..\Header\SongBossFloorLightning.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. FloorLightning</Filter>
     </ClInclude>
@@ -900,10 +903,10 @@
       <Filter>02. GameObject\01. For_Stage\06. Item\06. Key</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Lantern.cpp">
-      <Filter>02. GameObject\01. For_Stage\06. Item\07. Lantern</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\Lantern</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Shield.cpp">
-      <Filter>02. GameObject\01. For_Stage\06. Item\08. Shield</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Shield</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CameraMgr.cpp">
       <Filter>02. GameObject\02. For_Public</Filter>
@@ -934,7 +937,7 @@
     </ClCompile>
     <ClCompile Include="..\Code\Equipment.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment</Filter>
-    </ClCompile>      
+    </ClCompile>
     <ClCompile Include="..\Code\SongBossFloorLightning.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. FloorLightning</Filter>
     </ClCompile>
