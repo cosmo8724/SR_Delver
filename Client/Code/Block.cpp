@@ -8,6 +8,8 @@
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
+	, m_bSet(true)
+	, m_bClone(false)
 {
 }
 
@@ -72,19 +74,19 @@ CBlock::~CBlock()
 {
 }
 
-HRESULT CBlock::Ready_Object(void)
+HRESULT CBlock::Ready_Object(_vec3* vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	_vec3 vPos, vScale;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	if (vPos)
+		m_pTransCom->Set_Pos(vPos->x, vPos->y, vPos->z);
 
 	return S_OK;
 }
 
 _int CBlock::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bClone)
+	/*if (!m_bClone)
 	{
 		CTerrainTex*	pTerrainTex = dynamic_cast<CTerrainTex*>(Engine::Get_Component(L"Layer_Tool_Environment", L"Terrain", L"Proto_TerrainTexCom", ID_STATIC));
 
@@ -94,7 +96,7 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 
 		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 	}
-	m_fScale = 0.5f;
+	m_fScale = 0.5f;*/
 	_vec3 vPos, vScale;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	vScale = m_pTransCom->Get_Scale();
@@ -215,7 +217,49 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 
 void CBlock::LateUpdate_Object(void)
 {
-	
+	if (m_pParentBlock)
+	{
+		_matrix matWorld = *m_pTransCom->Get_WorldMatrixPointer();
+		_matrix matParentWorld = *m_pParentBlock->m_pTransCom->Get_WorldMatrixPointer();
+		_vec3		vPos = m_pTransCom->Get_Pos();
+		_vec3		vParentPos = m_pParentBlock->m_pTransCom->Get_Pos();
+
+		// 스 자 이 공 부
+		_float fScaleX = (m_pColliderCom->Get_MaxPoint().x - m_pColliderCom->Get_MinPoint().x) * 0.5f;
+		_float fScaleY = (m_pColliderCom->Get_MaxPoint().y - m_pColliderCom->Get_MinPoint().y) * 0.5f;
+		_float fScaleZ = (m_pColliderCom->Get_MaxPoint().z - m_pColliderCom->Get_MinPoint().z) * 0.5f;
+		//_float fDistX = (vPos.x - vParentPos.x);
+		//_float fDistY = (vPos.y - vParentPos.y);
+		//_float fDistZ = (vPos.z - vParentPos.z);
+		_float fDistX = vPos.x - vParentPos.x;
+		_float fDistY = vPos.y - vParentPos.y;
+		_float fDistZ = vPos.z - vParentPos.z;
+
+		
+		//_float fDistX = (matWorld._41 - matParentWorld._41) * fScaleX;
+		//_float fDistY = (matWorld._42 - matParentWorld._42) * fScaleY;
+		//_float fDistZ = (matWorld._43 - matParentWorld._43) * fScaleZ;
+
+
+		//matParentWorld._41 = fDistX;
+		//matParentWorld._42 = fDistY;
+		//matParentWorld._43 = fDistZ;
+		
+		_vec3 vParentRight;
+		memcpy(&vParentRight, &matParentWorld, sizeof(_vec3));
+		_vec3 vParentUp;
+		memcpy(&vParentUp, &matParentWorld._21, sizeof(_vec3));
+		_vec3 vParentLook;
+		memcpy(&vParentLook, &matParentWorld._31, sizeof(_vec3));
+
+		_matrix	matScale, matTrans;
+		D3DXMatrixIdentity(&matWorld);
+		D3DXMatrixScaling(&matScale, fScaleX, fScaleY, fScaleZ);
+		D3DXMatrixTranslation(&matTrans, fDistX, fDistY, fDistZ);
+		//D3DXMatrixInverse(&matTrans, nullptr, &matTrans);
+		matWorld *= matTrans * matParentWorld;
+		m_pTransCom->Set_WorldMatrix(&matWorld);
+	}
 
 	//Engine::CGameObject::LateUpdate_Object();
 }
@@ -226,7 +270,10 @@ void CBlock::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	if (m_bSet && !m_bChanging)
 	{
-		m_pTextureCom->Set_Texture(m_iTexture);
+		if (m_pParentBlock)
+			m_pTextureCom->Set_Texture(m_pParentBlock->GetTextureIndex());
+		else
+			m_pTextureCom->Set_Texture(m_iTexture);
 		m_pBufferCom->Render_Buffer();
 	}
 	else
@@ -397,11 +444,11 @@ HRESULT CBlock::Change_BlockType()
 	return S_OK;
 }
 
-CBlock * CBlock::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CBlock * CBlock::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3* vPos)
 {
 	CBlock *	pInstance = new CBlock(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Object()))
+	if (FAILED(pInstance->Ready_Object(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

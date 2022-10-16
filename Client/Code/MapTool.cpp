@@ -1,9 +1,11 @@
 #include "stdafx.h"
+#include "../Default/ImGui/ImGuizmo.h"
 #include "../Default/ImGui/ImGuiFileDialog.h"
 #include "Export_Function.h"
 #include "MapTool.h"
 #include "Terrain.h"
 #include "Block.h"
+#include "DynamicCamera.h"
 
 
 CMapTool::CMapTool(LPDIRECT3DDEVICE9 gGarphicDev)
@@ -17,6 +19,14 @@ CMapTool::~CMapTool()
 	for (size_t i = 0; i < m_vecObjTags.size(); i++)
 		Safe_Delete_Array(m_vecObjTags[i]);
 	m_vecObjTags.clear();
+
+	for (size_t i = 0; i < m_vecBlockTags.size(); i++)
+		Safe_Delete_Array(m_vecBlockTags[i]);
+	m_vecBlockTags.clear();
+
+	for (size_t i = 0; i < m_vecTerrainTags.size(); i++)
+		Safe_Delete_Array(m_vecTerrainTags[i]);
+	m_vecTerrainTags.clear();
 
 	Safe_Release(m_pGraphicDev);
 }
@@ -538,9 +548,15 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 
 HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 {
-	ImGui::Begin("Terrain Setting");
+	CLayer*		pLayer = Engine::Get_Layer(L"Layer_Tool_GameLogic");
+	CBlock*		pBlock = nullptr;
+	static _int	iSelectObject = -1;
+	_int			iObjectCnt = 0;
+	char**			szObjects = nullptr;
 
-	if (ImGui::CollapsingHeader("Block Count", ImGuiTreeNodeFlags_DefaultOpen))
+	ImGui::Begin("Terrain Setting2");
+
+	if (ImGui::CollapsingHeader("Terrain Size", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::SliderInt("Width", &m_iWidth, 0, 200);
 		ImGui::SliderInt("Depth", &m_iDepth, 0, 200);
@@ -548,15 +564,129 @@ HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 		ImGui::NewLine();
 		if (ImGui::Button("Create"))
 		{
+			m_iTerrainBlockCnt = 0;
+			CBlock*	pParentBlock = nullptr;
+			_int iParentIndexX = m_iWidth / 2;
+			_int iParentIndexZ = m_iDepth / 2;
+
+			_vec3	vPos = { float(m_iWidth / 2 * m_iInterval * 2), 0.f, float(m_iDepth / 2 * m_iInterval * 2) };
+			pParentBlock = CBlock::Create(m_pGraphicDev, &vPos);
+			TCHAR	*	szTerrainTag = new TCHAR[MAX_PATH];
+			wsprintf(szTerrainTag, L"Terrain_%d", m_iTerrainCnt);
+			m_vecTerrainTags.push_back(szTerrainTag);
+			pLayer->Add_GameObject(m_vecTerrainTags.back(), pParentBlock);
+			m_iTerrainCnt++;
+
 			for (_int z = 0; z < m_iDepth; ++z)
 			{
 				for (_int x = 0; x < m_iWidth; ++x)
 				{
+					if (x == iParentIndexX && z == iParentIndexZ)
+						continue;
 
+					_vec3	vPos = { float(x * m_iInterval * 2), 0.f, float(z * m_iInterval * 2) };
+					pBlock = CBlock::Create(m_pGraphicDev, &vPos);
+					pBlock->SetParentBlock(pParentBlock);
+
+					TCHAR	*	szObjTag = new TCHAR[MAX_PATH];
+					wsprintf(szObjTag, L"Terrain_%d_Block_%d", m_iTerrainCnt - 1, m_iTerrainBlockCnt);
+					m_vecBlockTags.push_back(szObjTag);
+					pLayer->Add_GameObject(m_vecBlockTags.back(), pBlock);
+					m_iBlockCnt++;
+					m_iTerrainBlockCnt++;
 				}
 			}
 		}
 	}
+
+	// Terrain Select Box
+	if (ImGui::CollapsingHeader("Setting", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGuizmo::BeginFrame();
+
+		static ImGuizmo::OPERATION CurGuizmoType(ImGuizmo::TRANSLATE);
+		static CBlock*	pCurBlock = nullptr;
+		iObjectCnt = m_vecTerrainTags.size();
+		szObjects = new char*[iObjectCnt];
+		for (_int i = 0; i < iObjectCnt; ++i)
+		{
+			const TCHAR*	wszTerrainTag = m_vecTerrainTags[i];
+			size_t	iLength = lstrlen(wszTerrainTag) + 1;
+			szObjects[i] = new char[iLength];
+			size_t Temp;
+			wcstombs_s(&Temp, szObjects[i], iLength, wszTerrainTag, iLength);
+		}
+		ImGui::ListBox("Terrain List", &iSelectObject, szObjects, iObjectCnt);
+
+		if (iSelectObject != -1)
+		{
+			pCurBlock = dynamic_cast<CBlock*>(pLayer->Get_GameObject(m_vecTerrainTags[iSelectObject]));
+		}
+
+		if (pCurBlock)
+		{
+			CTransform*	pTransCom = dynamic_cast<CTransform*>(pCurBlock->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+			_matrix	matWorld;
+			pTransCom->Get_WorldMatrix(&matWorld);
+			_vec3		vPos, vScale, vAngle;
+			ImGuizmo::DecomposeMatrixToComponents(matWorld, vPos, vAngle, vScale);
+			vAngle = { D3DXToDegree(vAngle.x), D3DXToDegree(vAngle.y) , D3DXToDegree(vAngle.z) };
+			vAngle /= 60.000f;
+
+			ImGui::Text("ImGuizmo Type");
+			if (ImGui::RadioButton("Translate", CurGuizmoType == ImGuizmo::TRANSLATE))
+				CurGuizmoType = ImGuizmo::TRANSLATE;
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Scale", CurGuizmoType == ImGuizmo::SCALE))
+				CurGuizmoType = ImGuizmo::SCALE;
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Rotate", CurGuizmoType == ImGuizmo::ROTATE))
+				CurGuizmoType = ImGuizmo::ROTATE;
+
+			CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Tool_Environment", L"DynamicCamera"));
+			_matrix	matView, matProj;
+			pCamera->Get_ViewMatrix(matView);
+			pCamera->Get_ProjectMatrix(matProj);
+
+			ImGui::InputFloat3("Position", &vPos.x);
+			ImGui::InputFloat3("Scale", &vScale.x);
+			ImGui::InputFloat3("Angle", &vAngle.x);
+
+			vAngle *= 60.000f;
+			vAngle = { D3DXToRadian(vAngle.x), D3DXToRadian(vAngle.y), D3DXToRadian(vAngle.z) };
+			ImGuizmo::RecomposeMatrixFromComponents(vPos, vAngle, vScale, matWorld);
+
+			ImGuiIO& io = ImGui::GetIO();
+			RECT rt;
+			GetClientRect(g_hWnd, &rt);
+			POINT lt{ rt.left, rt.top };
+			ClientToScreen(g_hWnd, &lt);
+			ImGuizmo::SetRect(float(lt.x), float(lt.y), io.DisplaySize.x, io.DisplaySize.y);
+
+			ImGuizmo::Manipulate(matView, matProj, CurGuizmoType, ImGuizmo::WORLD, matWorld);
+			ImGuizmo::DecomposeMatrixToComponents(matWorld, vPos, vAngle, vScale);
+			memcpy(&pTransCom->m_vInfo[INFO_POS], vPos, sizeof(vPos));
+			memcpy(&pTransCom->m_vAngle, vAngle * D3DX_PI / 180.f, sizeof(vAngle));
+			memcpy(&pTransCom->m_vScale, vScale, sizeof(vScale));
+
+			ImGui::BulletText("Current Texture : %d (0 ~ %d)", pCurBlock->GetTextureIndex(), pCurBlock->m_pTextureCom->Get_FrameEnd());
+			ImGui::SameLine();
+			if (ImGui::Button("<"))
+				pCurBlock->MinusTexture();
+			ImGui::SameLine();
+			if (ImGui::Button(">"))
+				pCurBlock->PlusTexture();
+
+			if (ImGui::Button("Apply") || Mouse_Down(DIM_RB))
+			{
+				iSelectObject = -1;
+			}
+		}
+	}
+
+	for (_int i = 0; i < iObjectCnt; ++i)
+		Safe_Delete_Array(szObjects[i]);
+	Safe_Delete_Array(szObjects);
 
 	ImGui::End();
 

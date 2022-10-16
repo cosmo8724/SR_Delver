@@ -19,7 +19,11 @@ private:
 	_int	m_iDepth = 50;
 	_int	m_iInterval = 1;
 	_int	m_iBlockCnt = 0;
+	_int	m_iTerrainCnt = 0;
+	_int	m_iTerrainBlockCnt = 0;
 
 	vector<TCHAR*>	m_vecObjTags;
+	vector<TCHAR*>	m_vecBlockTags;
+	vector<TCHAR*>	m_vecTerrainTags;
 };
 
