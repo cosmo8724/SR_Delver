@@ -4,6 +4,10 @@
 #include "Export_Function.h"
 #include "MiniMap.h"
 
+#include "Player.h"
+#include "ParticleMgr.h"
+#include "ItemMgr.h"
+
 CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
 	, m_ePreState(MOTION_END)
@@ -11,6 +15,7 @@ CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fHeight(0.f)
 	, m_fTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
+	, m_fHpMinusTimeAcc(0.f)
 {
 	m_ObjTag = L"SkeletonGhost";
 }
@@ -22,6 +27,7 @@ CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fHeight(0.f)
 	, m_fTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
+	, m_fHpMinusTimeAcc(0.f)
 {
 	m_vPos = vPos;
 	m_ObjTag = L"SkeletonGhost";
@@ -35,12 +41,11 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iHp = 2;
+	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
 
 	m_fHeight = m_vPos.y; // 3.f;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	//m_pTransCom->Set_Pos(20.f, m_fHeight, 20.f);
 
 	m_eCurState = IDLE;
 
@@ -60,50 +65,63 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-
-	m_pTransCom->Set_Y(m_fHeight);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
-
-	Target_Follow(fTimeDelta);
 	Motion_Change();
-	Circle();
 
+	if (0 >= m_tInfo.iHp)
+	{
+		Dead();
+		m_fRenderOFFTimeAcc += fTimeDelta;
+		if (1.5f < m_fRenderOFFTimeAcc)
+		{
+			m_bRenderOFF = true;
+			m_fRenderOFFTimeAcc = 0.f;
+		}
+		return OBJ_DEAD;
+	}
+
+	OnHit(fTimeDelta);
+
+	if (!m_bHit)
+		Target_Follow(fTimeDelta);
 	return 0;
 }
 
 void CSkeletonGhost::LateUpdate_Object(void)
 {
-	Billboard();
-	//CMonster::Billboard();
+	//Billboard();
+	CMonster::Billboard();
 	Engine::CGameObject::LateUpdate_Object();
 }
 
 void CSkeletonGhost::Render_Obejct(void)
 {
-	if(m_bCircle)
-		m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
-	else
-		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+	if (!m_bRender)
+		return;
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	if (!m_bRenderOFF)
+		CMonster::Render_Obejct();
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	//if(m_bCircle)
+	//	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+	//else
+	//	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
-	m_pAnimtorCom->Set_Texture();
-	m_pBufferCom->Render_Buffer();
+	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	//m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	//m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
+	//m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	CMonster::Render_Obejct();
-}
+	//m_pAnimtorCom->Set_Texture();
+	//m_pBufferCom->Render_Buffer();
 
-void CSkeletonGhost::CollisionEvent(CGameObject * pObj)
-{
+	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	//CMonster::Render_Obejct();
 }
 
 HRESULT CSkeletonGhost::Add_Component(void)
@@ -138,7 +156,6 @@ HRESULT CSkeletonGhost::Add_Component(void)
 
 void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 {
-	// �÷��̾� ���󰡱�
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
 
@@ -146,12 +163,31 @@ void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
+	// MonsterLook -> Player
+	_vec3 vRight, vUp, vLook;
+	vLook = vPlayerPos - vPos;
+	m_pTransCom->Set_Look(&vLook);
+
+	// Distance Attack
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
-	if (fDist < 7.f)
+	if (fDist < 5.f)
+	{
+		m_fHpMinusTimeAcc += fTimeDelta;
+		if (2.f < m_fHpMinusTimeAcc) // 2초마다 플레이어 체력 감소
+		{
+			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+			pPlayer->Set_HpMinus();
+
+			m_fHpMinusTimeAcc = 0.f;
+		}
+
 		m_bCircle = true;
+		Circle();
+	}
 	else
 		m_bCircle = false;
+
 
 	if (!m_bCircle && fDist < 15.f)
 	{
@@ -173,18 +209,18 @@ void CSkeletonGhost::Circle()
 
 	_vec3 vDir, vDistance;
 	vDir = { 0.f, 1.f, 0.f };
-	//D3DXVec3Normalize(&vDir, &vDir); // ���� ���ͷ� ����
+	//D3DXVec3Normalize(&vDir, &vDir);
 	D3DXVec3Normalize(&vDistance, &vDistance);
 
 	_matrix matTrans, matRev;
 
 	// ��
-	D3DXMatrixTranslation(&matTrans, vDistance.x * 7.f, vDistance.y * -2.f, vDistance.z * 2.f);
+	D3DXMatrixTranslation(&matTrans, vDistance.x * 5.f, vDistance.y * -2.5f, vDistance.z * 2.f);
 
 	// ��
-	m_fAngle += 0.01f;
+	m_fAngle += 0.03f;
 	if (m_fAngle > 360.f)
-		m_fAngle = 0.01f;
+		m_fAngle = 0.03f;
 	D3DXMatrixRotationAxis(&matRev, &vDir, m_fAngle);
 
 	_matrix matParent;
@@ -196,7 +232,7 @@ void CSkeletonGhost::Circle()
 	matParent = matRev * mat;
 
 	_matrix mat1;
-	mat1 = matTrans * matParent; // �����ϴ� ���
+	mat1 = matTrans * matParent;
 
 	m_matWorld = mat1;
 	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
@@ -204,7 +240,6 @@ void CSkeletonGhost::Circle()
 
 void CSkeletonGhost::Billboard()
 {
-	// ������
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
@@ -219,6 +254,65 @@ void CSkeletonGhost::Billboard()
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 	m_matWorld = matBill * m_matWorld;
+}
+
+void CSkeletonGhost::OnHit(const _float & fTimeDelta)
+{
+	if (!m_bHit)
+		return;
+
+	if (!m_bOneCheck)
+	{
+		m_eCurState = HIT;
+		CMonster::KnockBack(fTimeDelta, m_fHeight, 20.f);
+		m_bOneCheck = true;
+	}
+
+	m_fHitTimeAcc += fTimeDelta;
+	if (0.7f < m_fHitTimeAcc) // 0.7 > Monster Hit Time
+	{
+		// MinusHp
+		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		m_tInfo.iHp -= pPlayer->Get_PlayerAttack();
+
+		// Initialization
+		m_eCurState = IDLE;
+		m_bHit = false;
+		m_bOneCheck = false;
+		m_fHitTimeAcc = 0.f;
+	}
+}
+
+void CSkeletonGhost::Dead()
+{
+	if (m_bDead) // �� ���� �����
+		return;
+
+	m_eCurState = DIE;
+	m_pTransCom->Set_Y(1.f);
+
+	CParticleMgr::GetInstance()->Set_Info(this,
+		50,
+		0.1f,
+		{ 0.5f, 0.5f, 0.5f },
+		1.f,
+		{ 0.f, 0.3f, 1.f, 1.f });
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+
+	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+
+	m_pColliderCom->Set_Free(true);
+	m_bDead = true;
+}
+
+void CSkeletonGhost::CollisionEvent(CGameObject * pObj)
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+	if (pPlayer != pObj)
+	{
+		m_bHit = true;
+		m_bRender = true;
+	}
 }
 
 void CSkeletonGhost::Motion_Change()

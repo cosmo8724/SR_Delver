@@ -127,7 +127,7 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 	// 처음에는 충돌처리를 하지 않았다가, 번개가 내리치는 순간 충돌처리
 	if (m_bStartLightning)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.3f,
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.2f,
 			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 0.f, 1.f });
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_9);
 
