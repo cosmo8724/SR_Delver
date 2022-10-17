@@ -92,6 +92,7 @@ void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 		pParticle->Set_Texture(eTex);
 		pParticle->Set_Information(
 			true, 0, m_pTarget, m_tAttribute, m_tPInfo, m_fFrameSpeed, m_bFrameRepeat, m_bRand);
+		pParticle->Add_Info(m_bFrameMove, m_fFrame, m_fDist, m_fAngleSpeed);
 		pParticle->Set_Particle(eType);
 
 	}
