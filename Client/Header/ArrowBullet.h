@@ -2,7 +2,6 @@
 #include "Bullet.h"
 
 BEGIN(Engine)
-class CCubeTex;
 class CRcTex;
 END
 
@@ -47,9 +46,6 @@ private:
 	_matrix		m_matWorld;
 	_float		m_fParticleTime = 0.f;
 
-	// 충돌처리용
-private:
-	CCubeTex*	m_pBDBuffer = nullptr;
 public:
 	virtual void	CollisionEvent(CGameObject* pObj) override;
 };

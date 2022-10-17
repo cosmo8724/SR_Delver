@@ -25,12 +25,14 @@ public:
 
 public:
 	_int		Get_TexturId() { return m_iTextureIdx; }
-
+	void		Cal_Cnt(_int iCnt) { m_iCnt += iCnt; }
+	_int		Get_Cnt() { return m_iCnt; }
 
 private:
 	_vec3				m_vPos;
 	_int				m_iTextureIdx = 0;
 	_float				m_fDotTime = 0.f;
 	_int				m_iDot = 0;
+	_int				m_iCnt = 1;
 };
 

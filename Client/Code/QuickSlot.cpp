@@ -132,8 +132,7 @@ void CQuickSlot::Key_Input(const _float & fTimeDelta)
 	{
 		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		CItem*		pItem = pPlayer->Get_Right();
-		if (nullptr != pItem)
-			pItem->Set_State(STATE_INV);
+
 
 		if (nullptr != m_Slot[0][iKey -2])
 		{
@@ -141,6 +140,9 @@ void CQuickSlot::Key_Input(const _float & fTimeDelta)
 			pRight->Set_Equipped();
 			if (ITEM_WEAPON == pRight->Get_ItemType())
 			{
+				if (nullptr != pItem && ITEM_WEAPON == pItem->Get_ItemType())
+					pItem->Set_State(STATE_INV);
+
 				pPlayer->Set_Right(pRight);
 				if (WT_AD == static_cast<CWeapon*>(pRight)->Get_WeaponType())
 				{

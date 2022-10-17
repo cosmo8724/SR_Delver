@@ -27,9 +27,9 @@ CBulletMgr::CBulletMgr()
 	m_MaxIdx[BULLET_WAND] = 20;
 	m_MaxIdx[BULLET_M_FIST] = 5;
 	m_MaxIdx[BULLET_SONGBOSS] = 5;
-	m_MaxIdx[STUN_SONGBOSS] = 4; // ENUM ¼±¾ðÀ§Ä¡ º¯°æ X
-	m_MaxIdx[FLOOR_SONGBOSS] = 5; // ENUM ¼±¾ðÀ§Ä¡ º¯°æ X
-	m_MaxIdx[LIGHTNING_SONGBOSS] = 5; // ENUM ¼±¾ðÀ§Ä¡ º¯°æ X
+	m_MaxIdx[STUN_SONGBOSS] = 4; // ENUM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ X
+	m_MaxIdx[FLOOR_SONGBOSS] = 5; // ENUM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ X
+	m_MaxIdx[LIGHTNING_SONGBOSS] = 5; // ENUM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ X
 	m_MaxIdx[BULLET_ARROW] = 10;
 	m_MaxIdx[BULLET_M_LEAF] = 5;
 	m_MaxIdx[BULLET_M_SPIDER] = 5;
@@ -53,7 +53,7 @@ CBulletMgr::~CBulletMgr()
 
 HRESULT CBulletMgr::Ready_Proto(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	// Loading ¾À¿¡ ³ÖÀ» bullet ¿øº» ÄÄÆ÷³ÍÆ®
+	// Loading ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ bullet ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	// Fist
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FistGreenEffect_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/Fist_GreenEffect/GreenEffect%d.png", TEX_NORMAL, 15)), E_FAIL);
 	// SongBoss
@@ -270,7 +270,7 @@ CGameObject * CBulletMgr::Reuse_Obj(const D3DXVECTOR3 & vPos, const D3DXVECTOR3 
 	//		++m_iCount;
 	//
 	//#ifdef _DEBUG
-	//		cout << "ÃÑ¾Ë °³¼ö : " << m_iCount << endl;
+	//		cout << "ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ : " << m_iCount << endl;
 	//#endif // _DEBUG
 	//
 	//	}
@@ -297,7 +297,7 @@ void CBulletMgr::Fire(BULLETID _eID)
 		
 		CCollider* pColliderCom =	static_cast<CCollider*>((m_vecObjPool[_eID][iIdx])->Get_Component(L"Proto_ColliderCom", ID_STATIC));
 		{
-			if(!m_vecObjPool[LIGHTNING_SONGBOSS][iIdx]) // ¹ø°³´Â ¿¹¿ÜÃ³¸® X
+			if(_eID != LIGHTNING_SONGBOSS)
 				pColliderCom->Set_Free(false);
 		}
 
@@ -321,7 +321,7 @@ void CBulletMgr::Pre_Setting(BULLETID eID, _float fSet)
 
 	switch (eID)
 	{
-	case BULLET_ARROW:	// È­»ìÀÇ °æ¿ì Â÷Â¡¿¡ µû¶ó ³¯¾Æ°¡´Â ½ºÇÇµå°¡ ´Þ¶óÁø´Ù..
+	case BULLET_ARROW:	// È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Â¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Çµå°¡ ï¿½Þ¶ï¿½ï¿½ï¿½ï¿½ï¿½..
 		if (!m_IdxQue[eID].empty())
 		{
 			iIdx = m_IdxQue[eID].front();

@@ -12,16 +12,16 @@ public:
 	virtual ~CTransform();
 
 public:
-	const _matrix*		Get_WorldMatrixPointer()					 {	return &m_matWorld; }
-	void				Move_Pos(const _vec3* const pDir)			 {	m_vInfo[INFO_POS] += *pDir; }
-	void				Rotation(ROTATIONID eID, const _float& fAngle){	*(((_float*)&m_vAngle) + eID) += fAngle;	}
-	void				Get_Info(INFOID eID, _vec3* pInfo) {	memcpy(pInfo, &m_matWorld.m[eID][0], sizeof(_vec3));}
+	const _matrix*		Get_WorldMatrixPointer() { return &m_matWorld; }
+	void				Move_Pos(const _vec3* const pDir) { m_vInfo[INFO_POS] += *pDir; }
+	void				Rotation(ROTATIONID eID, const _float& fAngle) { *(((_float*)&m_vAngle) + eID) += fAngle; }
+	void				Get_Info(INFOID eID, _vec3* pInfo) { memcpy(pInfo, &m_matWorld.m[eID][0], sizeof(_vec3)); }
 	const _vec3&		Get_Pos() { return m_vInfo[INFO_POS]; }
 	void				Set_Angle(_float fX, _float fY, _float fZ) { m_vAngle = { fX, fY, fZ }; }
 	const _vec3&		Get_Angle() { return m_vAngle; }
-	void				Set_Scale(_float fX, _float fY, _float fZ){ 	m_vScale = { fX, fY, fZ };	}
+	void				Set_Scale(_float fX, _float fY, _float fZ) { m_vScale = { fX, fY, fZ }; }
 	const _vec3&		Get_Scale() { return m_vScale; }
-	void				Set_Pos(const _float& fX, const _float& fY, const _float& fZ) 
+	void				Set_Pos(const _float& fX, const _float& fY, const _float& fZ)
 	{
 		m_vInfo[INFO_POS].x = fX;
 		m_vInfo[INFO_POS].y = fY;
@@ -30,7 +30,7 @@ public:
 	void				Set_Y(const _float& fY) { m_vInfo[INFO_POS].y = fY; }
 	void				Plus_PosY(_float _fY) { m_vInfo[INFO_POS].y += _fY; }
 	void				Get_WorldMatrix(_matrix* pWorld) const { *pWorld = m_matWorld; }
-	void				Set_WorldMatrix(_matrix* pWorld) {  m_matWorld = *pWorld; }
+	void				Set_WorldMatrix(_matrix* pWorld) { m_matWorld = *pWorld; }
 	_vec3*				Get_InfoAll() { return m_vInfo; }
 	void				Set_Info(_vec3 vRight, _vec3 vUp, _vec3 vLook);
 	void				Set_Look(const _vec3* vLook) { m_vInfo[INFO_LOOK] = *vLook; }
@@ -44,6 +44,10 @@ public:
 	void				KnockBack_Target(_vec3* pTargetLook, const _float& fSpeed, const _float& fTimeDelta); // ³Ë¹é
 	void				Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
 	_bool				Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
+	void				Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
+	_bool				Item_Defense(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
+
+
 
 
 public:
@@ -65,8 +69,11 @@ public:
 	_bool			m_bFinished = false;
 	_float			m_fAttackAngle = 0.f;
 	_float			m_fAttackSpeed;
+	_float			m_fDefenseAngle;// = 90.f;
+
 
 	_matrix			m_matOldBill;
+	_float			m_fShieldvLook;
 
 public:
 	static CTransform*		Create(void);

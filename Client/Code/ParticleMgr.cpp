@@ -26,11 +26,11 @@ void CParticleMgr::Ready_ParticleMgr(LPDIRECT3DDEVICE9 pGraphicDev)
 
 HRESULT CParticleMgr::Ready_Proto()
 {
-	// Particle ¹öÆÛÄÄÆ÷³ÍÆ®
+	// Particle ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PtBufferCom", CPtBuffer::Create(m_pGraphicDev)), E_FAIL);
 
 
-	// Particle ¿øº» ÅØ½ºÃÄ
+	// Particle ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½ï¿½ï¿½
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle0_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle0/particle0_%d.png", TEX_NORMAL, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle1_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle1/particle1_%d.png", TEX_NORMAL, 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle2_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle2/particle2_%d.png", TEX_NORMAL, 8)), E_FAIL);
@@ -94,6 +94,7 @@ void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 		pParticle->Set_Information(
 			true, 0, m_pTarget, m_tAttribute, m_tPInfo, m_fFrameSpeed, m_bFrameRepeat, m_bRand);
 		pParticle->Add_Info_Spot(m_bFrameRand);
+		pParticle->Add_Info(m_bFrameMove, m_fFrame, m_fDist, m_fAngleSpeed);
 		pParticle->Set_Particle(eType);
 
 	}
@@ -123,14 +124,14 @@ void CParticleMgr::Collect_Particle(_int iIdx)
 }
 
 void CParticleMgr::Set_Info(CGameObject* pObj
-	, _int		_maxParticles				// ÃÖ´ë ÆÄÆ¼Å¬ ¼ö
-	, _float	_fSize						// ¸ðµç ÆÄÆ¼Å¬ÀÇ Å©±â
-	, _vec3		_vVelocity					// ¼Óµµ
-	, _float	_fLifeTime					// ÆÄÆ¼Å¬ ¼Ò¸ê±îÁö À¯ÁöµÇ´Â ½Ã°£
-	, D3DXCOLOR _tColor						// »ö±ò
-	, _float	_fFrameSpeed 				// ÇÁ·¹ÀÓ ¼Óµµ
-	, _bool		_bFrameRepeat				// ÇÁ·¹ÀÓ ¹Ýº¹Àç»ý ¿©ºÎ
-	, _bool		_bRand)						// »ö ·£´ý ¿©ºÎ
+	, _int		_maxParticles				// ï¿½Ö´ï¿½ ï¿½ï¿½Æ¼Å¬ ï¿½ï¿½
+	, _float	_fSize						// ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ Å©ï¿½ï¿½
+	, _vec3		_vVelocity					// ï¿½Óµï¿½
+	, _float	_fLifeTime					// ï¿½ï¿½Æ¼Å¬ ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½Ã°ï¿½
+	, D3DXCOLOR _tColor						// ï¿½ï¿½ï¿½ï¿½
+	, _float	_fFrameSpeed 				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+	, _bool		_bFrameRepeat				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ýºï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	, _bool		_bRand)						// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 {
 	m_pTarget = pObj;
 

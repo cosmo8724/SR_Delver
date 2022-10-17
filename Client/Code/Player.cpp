@@ -443,11 +443,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
 	{
 		CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
-
-		CItem* pImg = nullptr;
-		pImg = static_cast<CItem*>(CItemMgr::GetInstance()->Add_GameObject(L"Layer_UI", pItem->Get_TextureTag(), pItem));
-
-		pInv->Set_Inventory(pImg);
+		pInv->Set_Inventory(pItem);
 	}
 
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
