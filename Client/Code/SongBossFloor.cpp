@@ -3,13 +3,13 @@
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CSongBossFloor::CSongBossFloor(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
 	, m_iBulletCount(0)
 	, m_iTransparency(0)
 	, m_fTransparencyTimeAcc(0.f)
-	, m_fAttackTimeAcc(0.f)
 {
 }
 
@@ -26,12 +26,12 @@ HRESULT CSongBossFloor::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iAttack = 3;
+	m_tInfo.iAttack = 5;
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pTransCom->Rotation(ROT_X, 45.555f);
 
 	m_iBulletCount = iBulletCount;
-	m_iTransparency = 90;
+	m_iTransparency = 40;
 
 	return S_OK;
 }
@@ -74,22 +74,18 @@ _int CSongBossFloor::Update_Object(const _float & fTimeDelta)
 	Add_RenderGroup(RENDER_ALPHA, this);
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.5f);
 
-	// 처음에는 충돌처리를 하지 않았다가, 번개가 내리치는 순간 충돌처리
-	if (m_bAttack)
-	{
-		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+	MusicNoteCreatePos();
 
-		m_fAttackTimeAcc += fTimeDelta;
-		if (0.5f < m_fAttackTimeAcc)
-		{
-			m_bAttack = false;
-			m_fAttackTimeAcc = 0.f;
-		}
-	}
+	m_fLifeTime += fTimeDelta;
+	StartLightning(fTimeDelta);
+	return iResult;
+}
 
+void CSongBossFloor::MusicNoteCreatePos()
+{
 	// 플레이어 주변으로 생기는 음표
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK_RETURN(pPlayer, -1);
+	NULL_CHECK(pPlayer);
 	pPlayer->Get_Info(INFO_POS, &m_vPlayerPos); // 플레이어의 좌표를 받아와서
 
 	if (!m_bReady)
@@ -110,10 +106,34 @@ _int CSongBossFloor::Update_Object(const _float & fTimeDelta)
 
 		m_bReady = true;
 	}
+}
 
-	m_fLifeTime += fTimeDelta;
+void CSongBossFloor::StartLightning(const _float& fTimeDelta)
+{
 	m_fTransparencyTimeAcc += fTimeDelta;
-	return iResult;
+	// 투명도 조절
+	if (0.1f < m_fTransparencyTimeAcc)
+	{
+		m_iTransparency += 10; // 투명도가 진해지는 숫자 > 10
+		m_fTransparencyTimeAcc = 0.f;
+		
+		if (m_iTransparency >= 250)
+		{
+			m_bStartLightning = true;
+			m_iTransparency = 40;
+		}
+	}
+
+	// 처음에는 충돌처리를 하지 않았다가, 번개가 내리치는 순간 충돌처리
+	if (m_bStartLightning)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.3f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_9);
+
+		m_pColliderCom->Set_Free(false);
+		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+	}
 }
 
 void CSongBossFloor::LateUpdate_Object(void)
@@ -121,21 +141,8 @@ void CSongBossFloor::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	if (6.f < m_fLifeTime)
+	if (2.5f < m_fLifeTime)
 		Reset();
-
-	//if (m_iTransparency > 255)
-	//{
-	//	m_iTransparency = 255;
-	//	return;
-	//}
-
-	// 투명도 조절
-	if (0.1f < m_fTransparencyTimeAcc)
-	{
-		m_iTransparency += 10;
-		m_fTransparencyTimeAcc = 0.f;
-	}
 
 	CGameObject::LateUpdate_Object();
 }
@@ -196,7 +203,11 @@ void CSongBossFloor::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
-	m_bAttack = false;
-	m_pColliderCom->Set_Free(false);
+
+	m_iTransparency = 40;
+	m_bStartLightning = false;
+	m_fTransparencyTimeAcc = 0.f;
+
+	m_pColliderCom->Set_Free(true);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, FLOOR_SONGBOSS);
 }

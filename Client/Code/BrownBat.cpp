@@ -18,7 +18,18 @@ CBrownBat::CBrownBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fAttackTimeAcc(0.f)
 {
 	m_ObjTag = L"BrownBat";
+}
 
+CBrownBat::CBrownBat(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+	: CMonster(pGraphicDev)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_fHeight(0.f)
+	, m_fTimeAcc(0.f)
+	, m_fAttackTimeAcc(0.f)
+{
+	m_vPos = vPos;
+	m_ObjTag = L"BrownBat";
 }
 
 CBrownBat::~CBrownBat()
@@ -32,8 +43,9 @@ HRESULT CBrownBat::Ready_Object(void)
 	m_tInfo.iHp = 2;
 	m_tInfo.iAttack = 1;
 
-	m_fHeight = 3.f;
-	m_pTransCom->Set_Pos(15.f, m_fHeight, 15.f);
+	m_fHeight = m_vPos.y; // 3.f
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(15.f, m_fHeight, 15.f);
 
 	m_eCurState = IDLE;
 
@@ -254,9 +266,9 @@ void CBrownBat::Motion_Change()
 	}
 }
 
-CBrownBat * CBrownBat::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CBrownBat * CBrownBat::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CBrownBat *	pInstance = new CBrownBat(pGraphicDev);
+	CBrownBat *	pInstance = new CBrownBat(pGraphicDev, vPos);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

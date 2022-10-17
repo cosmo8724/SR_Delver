@@ -27,9 +27,10 @@ public:
 
 private:
 	HRESULT					Add_Component(void);
-
-private:
 	void					Billboard();
+
+	void					MusicNoteCreatePos();
+	void					MusicNoteShake(const _float& fTimeDelta);
 
 private:
 	CRcTex*					m_pBufferCom = nullptr;
@@ -44,6 +45,9 @@ private:
 	_uint					m_iBulletCount = 0;
 	_bool					m_bOneCheck = false;
 	_bool					m_bRenderOFF = false;
+
+	_float					m_fShakeSpeed;
+	_float					m_fShakeTimeAcc = 0.f;
 };
 
 END

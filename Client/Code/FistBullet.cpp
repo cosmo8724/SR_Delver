@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CFistBullet::CFistBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -24,9 +25,10 @@ HRESULT CFistBullet::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
-
+	m_tInfo.iAttack = 1;
 	m_fSpeed = 10.f;
+
+	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 
 	return S_OK;
 }
@@ -50,7 +52,12 @@ HRESULT CFistBullet::Add_Component(void)
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
-	m_pAnimtorCom->Add_Component(L"Proto_Leaf_Bullet_Texture");
+	m_pAnimtorCom->Add_Component(L"Proto_FistGreenEffect_Texture");
+
+	// Collider Component
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	return S_OK;
 }
@@ -61,13 +68,13 @@ _int CFistBullet::Update_Object(const _float & fTimeDelta)
 		return 0;
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-
+	Add_RenderGroup(RENDER_ALPHA, this);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	Target(fTimeDelta);
-
-	Add_RenderGroup(RENDER_ALPHA, this);
 	
+	m_fParticleTime += fTimeDelta;
 	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
@@ -79,8 +86,12 @@ void CFistBullet::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	if (2.f < m_fLifeTime)
-		Reset();
+	if (1.f < m_fLifeTime)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5); Reset();
+	}
 
 	CGameObject::LateUpdate_Object();
 }
@@ -96,11 +107,19 @@ void CFistBullet::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	m_pAnimtorCom->Set_Texture();
-
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+#ifdef _DEBUG
+	// Collider
+	m_pGraphicDev->SetTransform(D3DTS_WORLD,
+		&(m_pColliderCom->Get_WorldMatrix()));
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pColliderCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
 }
 
 void CFistBullet::Billboard()
@@ -112,23 +131,38 @@ void CFistBullet::Billboard()
 	m_pTransCom->Get_WorldMatrix(&matWorld);
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
+
+	if (matView._21 > 0.f)
+	{
+		matBill = m_matOldBill;
+	}
+	else
+	{
+		D3DXMatrixIdentity(&matBill);
+		matBill._11 = matView._11;
+		matBill._13 = matView._13;
+		matBill._31 = matView._31;
+		matBill._33 = matView._33;
+
+		m_matOldBill = matBill;
+	}
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	// 현재 지금 이 코드는 문제가 없지만 나중에 문제가 될 수 있음
-	//m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
-	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
+	_vec3 vScale = m_pTransCom->Get_Scale();
+	_matrix matScale, matScaleInv;
+	D3DXMatrixScaling(&matScale, vScale.x, vScale.y, vScale.z);
+	D3DXMatrixInverse(&matScaleInv, 0, &matScale);
+
+	m_matWorld = matBill *matWorld;
+	m_pTransCom->Set_WorldMatrix(&m_matWorld);
 }
 
 _int CFistBullet::Target(const _float & fTimeDelta)
 {
 	if (!m_bReady)
 	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf", L"Proto_TransformCom", ID_DYNAMIC));
+		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Fist", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pFist, -1);
 
 		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -149,18 +183,15 @@ _int CFistBullet::Target(const _float & fTimeDelta)
 	vDir *= m_fSpeed * fTimeDelta;
 	m_pTransCom->Move_Pos(&vDir);
 
+	if (0.1f < m_fParticleTime)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 0.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+		m_fParticleTime = 0.f;
+	}
+
 	return 0;
-}
-
-void CFistBullet::Rotation(const _float & fTimeDelta)
-{
-	_float fRotationValue = 0.f;
-	fRotationValue += 45.f * fTimeDelta;
-	if (fRotationValue >= 360.f)
-		fRotationValue = 0.f;
-
-	m_pTransCom->Rotation(ROT_X, fRotationValue);
-
 }
 
 CFistBullet * CFistBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -186,5 +217,6 @@ void CFistBullet::Reset()
 	m_bDead = false;
 	m_fLifeTime = 0.f;
 	m_bReady = false;
-	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_LEAF);
+	m_pColliderCom->Set_Free(true);
+	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_M_FIST);
 }

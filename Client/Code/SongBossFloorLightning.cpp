@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
+#include "SongBossFloor.h"
 
 CSongBossFloorLightning::CSongBossFloorLightning(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
@@ -23,7 +24,7 @@ HRESULT CSongBossFloorLightning::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Scale(3.f, 10.f, 10.f);
+	m_pTransCom->Set_Scale(2.f, 10.f, 10.f);
 
 	m_iBulletCount = iBulletCount;
 	return S_OK;
@@ -59,29 +60,38 @@ _int CSongBossFloorLightning::Update_Object(const _float & fTimeDelta)
 		return 0;
 
 	int iResult = CGameObject::Update_Object(fTimeDelta);
-	m_pAnimtorCom->Play_Animation(fTimeDelta * 1.7f);
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 2.2f);
 	Add_RenderGroup(RENDER_ALPHA, this);
 
-	// 플레이어 중심을 기준으로 생긴 음표위로 떨어지는 번개
-	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	NULL_CHECK_RETURN(pPlayer, -1);
-	pPlayer->Get_Info(INFO_POS, &m_vPlayerPos);
-
+	// 이전 음표가 생겼던 자리에 번개가 치도록
 	if (!m_bReady)
 	{
+		wstring objTags[5];
+		for (_int i = 0; i < 5; i++)
+		{
+			objTags[i] = L"SongBoss_Floor";
+			wchar_t index[10];
+			_itow_s(i, index, 10);
+			objTags[i] += index;
+
+			CTransform* pFloor = static_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", objTags[i].c_str(), L"Proto_TransformCom", ID_DYNAMIC));
+			NULL_CHECK(pFloor);
+			pFloor->Get_Info(INFO_POS, &vFloorPos);
+		}
+
 		_float fNotePos = 2.f;
 		_float fNotePosY = 0.01f;
 
 		if (m_iBulletCount == 0)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z + fNotePos);
+			m_pTransCom->Set_Pos(vFloorPos.x, fNotePosY, vFloorPos.z + fNotePos);
 		else if (m_iBulletCount == 1)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x + fNotePos, fNotePosY, m_vPlayerPos.z);
+			m_pTransCom->Set_Pos(vFloorPos.x + fNotePos, fNotePosY, vFloorPos.z);
 		else if (m_iBulletCount == 2)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x - fNotePos, fNotePosY, m_vPlayerPos.z);
+			m_pTransCom->Set_Pos(vFloorPos.x - fNotePos, fNotePosY, vFloorPos.z);
 		else if (m_iBulletCount == 3)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z - fNotePos);
+			m_pTransCom->Set_Pos(vFloorPos.x, fNotePosY, vFloorPos.z - fNotePos);
 		else if (m_iBulletCount == 4)
-			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z);
+			m_pTransCom->Set_Pos(vFloorPos.x, fNotePosY, vFloorPos.z);
 
 		m_bReady = true;
 	}
@@ -92,13 +102,14 @@ _int CSongBossFloorLightning::Update_Object(const _float & fTimeDelta)
 
 void CSongBossFloorLightning::LateUpdate_Object(void)
 {
+	Billboard();
+
 	if (!m_bFire)
 		return;
 
-	if (6.f < m_fLifeTime)
+	if (0.3f < m_fLifeTime)
 		Reset();
 
-	Billboard();
 	CGameObject::LateUpdate_Object();
 }
 
@@ -131,15 +142,31 @@ void CSongBossFloorLightning::Billboard()
 	m_pTransCom->Get_WorldMatrix(&matWorld);
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
+
+	if (matView._21 > 0.f)
+	{
+		matBill = m_matOldBill;
+	}
+	else
+	{
+		D3DXMatrixIdentity(&matBill);
+		matBill._11 = matView._11;
+		matBill._13 = matView._13;
+		matBill._31 = matView._31;
+		matBill._33 = matView._33;
+
+		m_matOldBill = matBill;
+	}
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	// 현재 지금 이 코드는 문제가 없지만 나중에 문제가 될 수 있음
-	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
+	_vec3 vScale = m_pTransCom->Get_Scale();
+	_matrix matScale, matScaleInv;
+	D3DXMatrixScaling(&matScale, vScale.x, vScale.y, vScale.z);
+	D3DXMatrixInverse(&matScaleInv, 0, &matScale);
+
+	m_matWorld = matBill *matWorld;
+	m_pTransCom->Set_WorldMatrix(&m_matWorld);
 }
 
 CSongBossFloorLightning * CSongBossFloorLightning::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iBulletCount)
@@ -164,7 +191,7 @@ void CSongBossFloorLightning::Reset()
 	m_bFire = false;
 	m_bDead = false;
 	m_fLifeTime = 0.f;
-	m_fFrame = 0.f;
 	m_bReady = false;
+	m_pAnimtorCom->Set_Frame();
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, LIGHTNING_SONGBOSS);
 }

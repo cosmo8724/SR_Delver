@@ -231,7 +231,7 @@ void CWandBullet::Reset()
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;
-	m_pColliderCom->Set_Free(false);
+	m_pColliderCom->Set_Free(true);
 	m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_WAND);
 }

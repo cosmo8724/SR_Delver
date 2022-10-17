@@ -144,6 +144,10 @@ void CStage::LateUpdate_Scene(void)
 	for (auto& bullet : *pMonsterBullet)
 		Engine::CollisionAABB(pPlayer, bullet);
 
+	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_SPIDER);
+	for (auto& bullet : *pMonsterBullet)
+		Engine::CollisionAABB(pPlayer, bullet);
+
 	pMonsterBullet = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
 	for (auto& bullet : *pMonsterBullet)
  		Engine::CollisionAABB(pPlayer, bullet);

@@ -27,6 +27,23 @@ CBlueBat::CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_ObjTag = L"BlueBat";
 }
 
+CBlueBat::CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+	: CMonster(pGraphicDev)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_bIdle(false)
+	, m_fJSpeed(0.2f)
+	, m_fJSpeed0(0.2f)
+	, m_fAccel(0.015f)
+	, m_fTimeAcc(0.f)
+	, m_fJumpTimeAcc(0.f)
+	, m_fIdleTimeAcc(0.f)
+	, m_fSkillTimeAcc(0.f)
+{
+	m_vPos = vPos;
+	m_ObjTag = L"BlueBat";
+}
+
 CBlueBat::~CBlueBat()
 {
 }
@@ -38,7 +55,8 @@ HRESULT CBlueBat::Ready_Object(void)
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 2;
 
-	m_pTransCom->Set_Pos(15.f, 1.f, 5.f);
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(15.f, 1.f, 5.f);
 
 	m_eCurState = IDLE;
 
@@ -286,9 +304,9 @@ void CBlueBat::Motion_Change(const _float& fTimeDelta)
 	}
 }
 
-CBlueBat * CBlueBat::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CBlueBat * CBlueBat::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CBlueBat *	pInstance = new CBlueBat(pGraphicDev);
+	CBlueBat *	pInstance = new CBlueBat(pGraphicDev, vPos);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

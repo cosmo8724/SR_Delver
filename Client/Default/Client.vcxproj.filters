@@ -283,9 +283,6 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\08. MiniMap\Icon">
       <UniqueIdentifier>{424aea31-d71b-43a1-b988-ff83081e05cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\99. UI\09. HitBackGround">
-      <UniqueIdentifier>{cc1ac141-c8c0-41e4-a35c-d1f2c8c469e3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\99. UI\00. Manager">
       <UniqueIdentifier>{d0b8c2b9-44d3-421d-9a96-5ed255dc04df}</UniqueIdentifier>
     </Filter>
@@ -315,9 +312,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\03. Equipment\LeftHand">
       <UniqueIdentifier>{55b30218-dbb7-400b-9dc0-1b9215d49199}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Strun">
-      <UniqueIdentifier>{3add4dec-7927-4f11-95c8-cfaa6dfd1461}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Floor">
       <UniqueIdentifier>{52579f46-3a14-4f77-a0e3-7aae88fcc4f4}</UniqueIdentifier>
@@ -351,6 +345,18 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\ShortTorch">
       <UniqueIdentifier>{f29b58bb-b862-4cc0-9e30-eabe9bc5f223}</UniqueIdentifier>
+    </Filter>      
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\09. GreenSpider">
+      <UniqueIdentifier>{b5f55daf-f09b-4484-a8e9-8d7558638748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\03. GreenSpider">
+      <UniqueIdentifier>{266d7c27-f214-4fe2-b459-cb2129fae616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\09. SpiderBackGround">
+      <UniqueIdentifier>{cc1ac141-c8c0-41e4-a35c-d1f2c8c469e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Stun">
+      <UniqueIdentifier>{3add4dec-7927-4f11-95c8-cfaa6dfd1461}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -574,7 +580,7 @@
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SongBossStun.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Strun</Filter>
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Stun</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SongBossFloor.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Floor</Filter>
@@ -617,9 +623,6 @@
     </ClInclude>
     <ClInclude Include="..\Header\ObjectCamera.h">
       <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\HitBackGround.h">
-      <Filter>02. GameObject\01. For_Stage\99. UI\09. HitBackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Key.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\06. Key</Filter>
@@ -683,6 +686,18 @@
     </ClInclude>
     <ClInclude Include="..\Header\Statue.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\Statue</Filter>
+    </ClInclude>      
+    <ClInclude Include="..\Header\GreenSpider.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\09. GreenSpider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\GreenSpiderBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\03. GreenSpider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SpiderBackGround.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\09. SpiderBackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Armor.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Armor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -884,11 +899,8 @@
     <ClCompile Include="..\Code\LeafBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\FistBulle.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\SongBossStun.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Strun</Filter>
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Stun</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SongBossFloor.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\02. Floor</Filter>
@@ -931,9 +943,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\ObjectCamera.cpp">
       <Filter>02. GameObject\02. For_Public\02. ObjectCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\HitBackGround.cpp">
-      <Filter>02. GameObject\01. For_Stage\99. UI\09. HitBackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Key.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\06. Key</Filter>
@@ -997,6 +1006,21 @@
     </ClCompile>
     <ClCompile Include="..\Code\Statue.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\Statue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\FistBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\00. Fist</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GreenSpider.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\09. GreenSpider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GreenSpiderBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\03. GreenSpider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SpiderBackGround.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\09. SpiderBackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Armor.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Armor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

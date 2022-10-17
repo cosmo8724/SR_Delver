@@ -40,6 +40,7 @@ public:
 	virtual void		Free(void);
 
 protected:
+	_vec3				m_vPos;
 	_float				m_fIdle_Speed;
 	_float				m_fAttack_Speed;
 

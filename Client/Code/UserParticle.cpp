@@ -299,7 +299,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	}
 	else
 	{
-		attribute->tColor = { 1.0f,1.0f,1.0f,1.0f };
+		attribute->tColor = m_Attribute.tColor;
 	}
 	attribute->fAge = 0.f;
 	attribute->fLifeTime = m_Attribute.fLifeTime; // 2초 동안의 수명을 가진다.

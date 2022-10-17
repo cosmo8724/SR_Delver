@@ -25,7 +25,25 @@ CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fAccel(0.f)
 {
 	m_ObjTag = L"PinkSlime";
+}
 
+CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+	: CMonster(pGraphicDev)
+	, m_ePreState(MOTION_END)
+	, m_eCurState(MOTION_END)
+	, m_eSkill(SKILL_END)
+	, m_eSkill_Scale(SKILLSCALE_END)
+	, m_fTimeAcc(0.f)
+	, m_fJumpTimeAcc(0.f)
+	, m_fScale(0.f)
+	, m_fHeight(0.f)
+	, m_bJump(false)
+	, m_fJSpeed(0.f)
+	, m_fJSpeed0(0.f)
+	, m_fAccel(0.f)
+{
+	m_vPos = vPos;
+	m_ObjTag = L"PinkSlime";
 }
 
 CPinkSlime::CPinkSlime(const CPinkSlime& rhs)
@@ -56,7 +74,7 @@ HRESULT CPinkSlime::Ready_Object(void)
 	m_eCurState = IDLE;
 
 	m_fIdle_Speed = 1.f;
-	m_fAttack_Speed = 2.f;
+	m_fAttack_Speed = m_vPos.y;
 
 	m_fScale = 2.f; // TODO 2·Î ÁáÀ» ‹š State°¡ DIE
 	m_fHeight = 2.f;
@@ -66,7 +84,8 @@ HRESULT CPinkSlime::Ready_Object(void)
 	m_fJSpeed0 = 5.f;
 	m_fAccel = 0.1f;
 
-	m_pTransCom->Set_Pos(7.f, m_fHeight, 10.f);
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(7.f, m_fHeight, 10.f);
 	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	return S_OK;
@@ -272,7 +291,7 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 	{
 	case CPinkSlime::SKILLSCALE_BIG:
 
-		pGameObject = CPinkSlime::Create(m_pGraphicDev);
+		pGameObject = CPinkSlime::Create(m_pGraphicDev, m_vPos);
 		if (pGameObject == nullptr)
 		{
 			MSG_BOX("PinkSlime Create Failure");
@@ -289,7 +308,7 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 
 	case CPinkSlime::SKILLSCALE_MEDIUM:
 
-		pGameObject = CPinkSlime::Create(m_pGraphicDev);
+		pGameObject = CPinkSlime::Create(m_pGraphicDev, m_vPos);
 		if (pGameObject == nullptr)
 		{
 			MSG_BOX("PinkSlime Create Failure");
@@ -306,7 +325,7 @@ void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
 
 	case CPinkSlime::SKILLSCALE_SMALL:
 
-		pGameObject = CPinkSlime::Create(m_pGraphicDev);
+		pGameObject = CPinkSlime::Create(m_pGraphicDev, m_vPos);
 		if (pGameObject == nullptr)
 		{
 			MSG_BOX("PinkSlime Create Failure");
@@ -403,9 +422,9 @@ void CPinkSlime::Motion_Change()
 	}
 }
 
-CPinkSlime * CPinkSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPinkSlime * CPinkSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CPinkSlime *	pInstance = new CPinkSlime(pGraphicDev);
+	CPinkSlime *	pInstance = new CPinkSlime(pGraphicDev, vPos);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

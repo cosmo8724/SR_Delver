@@ -25,10 +25,14 @@ public:
 	virtual void			Reset() override;
 
 public:
-	void					Set_Attack() { m_bAttack = true; }
+	_bool					Get_StartLightning() { return m_bStartLightning; }
+	_int					Get_Transparency() { return m_iTransparency; }
 
 private:
 	HRESULT					Add_Component(void);
+
+	void					MusicNoteCreatePos();
+	void					StartLightning(const _float& fTimeDelta);
 
 private:
 	CRcTex*					m_pBufferCom = nullptr;
@@ -41,14 +45,12 @@ private:
 	_vec3					m_vPlayerPos = { 0.f,0.f,0.f };
 
 	_uint					m_iBulletCount;
-	_uint					m_iTransparency;
 
-	_bool					m_bAttack = false;
+	_uint					m_iTransparency;
+	_bool					m_bStartLightning = false;
 
 	// Timer			
 	_float					m_fTransparencyTimeAcc;
-	_float					m_fAttackTimeAcc;
-
 };
 
 END

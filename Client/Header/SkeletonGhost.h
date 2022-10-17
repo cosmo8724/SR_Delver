@@ -8,6 +8,7 @@ class CSkeletonGhost : public CMonster
 
 private:
 	explicit CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual ~CSkeletonGhost();
 
 public:
@@ -27,7 +28,7 @@ private:
 	void				Billboard()								override;
 	void				Circle();
 	
-	void				Motion_Change(const _float& fTimeDelta);
+	void				Motion_Change();
 
 private:
 	STATE				m_ePreState;
@@ -46,7 +47,7 @@ private:
 	_float				m_fAttackTimeAcc;
 
 public:
-	static CSkeletonGhost*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CSkeletonGhost*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void			Free(void);
 };
 

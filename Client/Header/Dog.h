@@ -29,7 +29,7 @@ private:
 private:
 	// Timer
 	_float				m_fTimeAcc;
-	_float				m_fLBClick = 0.f; // TODO 키 입력 한 번 받을 수 있게 되면 삭제
+	_float				m_fLBClick = 0.f;
 };
 
 

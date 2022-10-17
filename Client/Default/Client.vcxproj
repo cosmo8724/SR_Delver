@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -192,9 +192,10 @@
     <ClInclude Include="..\Header\GrandFather.h" />
     <ClInclude Include="..\Header\Grass.h" />
     <ClInclude Include="..\Header\GreenSlime.h" />
+    <ClInclude Include="..\Header\GreenSpider.h" />
+    <ClInclude Include="..\Header\GreenSpiderBullet.h" />
     <ClInclude Include="..\Header\GuitarMan.h" />
     <ClInclude Include="..\Header\HealthBar.h" />
-    <ClInclude Include="..\Header\HitBackGround.h" />
     <ClInclude Include="..\Header\HoodMan.h" />
     <ClInclude Include="..\Header\HPGauge.h" />
     <ClInclude Include="..\Header\Icon.h" />
@@ -240,6 +241,7 @@
     <ClInclude Include="..\Header\SongBossFloor.h" />
     <ClInclude Include="..\Header\SongBossFloorLightning.h" />
     <ClInclude Include="..\Header\SongBossStun.h" />
+    <ClInclude Include="..\Header\SpiderBackGround.h" />
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\StaticCamera.h" />
     <ClInclude Include="..\Header\Statue.h" />
@@ -308,14 +310,16 @@
     <ClCompile Include="..\Code\ExplodeBullet.cpp" />
     <ClCompile Include="..\Code\FistBulle.cpp" />
     <ClCompile Include="..\Code\Fist.cpp" />
+    <ClCompile Include="..\Code\FistBullet.cpp" />
     <ClCompile Include="..\Code\FontLogo.cpp" />
     <ClCompile Include="..\Code\FontStart.cpp" />
     <ClCompile Include="..\Code\GrandFather.cpp" />
     <ClCompile Include="..\Code\Grass.cpp" />
     <ClCompile Include="..\Code\GreenSlime.cpp" />
+    <ClCompile Include="..\Code\GreenSpider.cpp" />
+    <ClCompile Include="..\Code\GreenSpiderBullet.cpp" />
     <ClCompile Include="..\Code\GuitarMan.cpp" />
     <ClCompile Include="..\Code\HealthBar.cpp" />
-    <ClCompile Include="..\Code\HitBackGround.cpp" />
     <ClCompile Include="..\Code\HoodMan.cpp" />
     <ClCompile Include="..\Code\HPGauge.cpp" />
     <ClCompile Include="..\Code\Icon.cpp" />
@@ -364,6 +368,7 @@
     <ClCompile Include="..\Code\SongBossFloor.cpp" />
     <ClCompile Include="..\Code\SongBossFloorLightning.cpp" />
     <ClCompile Include="..\Code\SongBossStun.cpp" />
+    <ClCompile Include="..\Code\SpiderBackGround.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\StaticCamera.cpp" />
     <ClCompile Include="..\Code\Statue.cpp" />
