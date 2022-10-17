@@ -23,8 +23,8 @@ public:
 
 private:
 	vector<wstring>		m_vecDialogue;
-	_int iCount = 0;
-	_bool		m_bTalk = false;
+	_int				iCount = 0;
+	_bool				m_bTalk = false;
 
 private:
 	// Timer

@@ -60,14 +60,10 @@ _int CInventory::Update_Object(const _float & fTimeDelta)
 
 	m_pTransCom->Set_Scale(m_fScaleX, m_fScaleY, 1.f);
 	m_pTransCom->Set_Pos(m_fPosX - WINCX * 0.5f, -m_fPosY + WINCY * 0.5f, 0.f);
-
-
+	
 	Mouse_Input(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
-
-
-
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
 	return 0;
@@ -131,7 +127,6 @@ HRESULT CInventory::Add_Component(void)
 	pComponent = m_pCalCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_CalculatorCom"));
 	NULL_CHECK_RETURN(m_pCalCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_CalculatorCom", pComponent });
-
 
 	return S_OK;
 }
@@ -449,7 +444,35 @@ void CInventory::Set_ItemEquip()
 						pWindow->Set_Item(m_Inventory[i][j], ITEM_SHIELD);
 					}
 					break;
+					case ITEM_HELMAT:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_HELMAT);
+						m_Inventory[i][j] = nullptr;
 					}
+					break;
+					case ITEM_NECKLACE:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_NECKLACE);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					case ITEM_PANTS:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_PANTS);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					case ITEM_RING:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_RING);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					
 				}
 			}
 		}

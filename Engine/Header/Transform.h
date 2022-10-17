@@ -33,6 +33,7 @@ public:
 	void				Set_WorldMatrix(_matrix* pWorld) { m_matWorld = *pWorld; }
 	_vec3*				Get_InfoAll() { return m_vInfo; }
 	void				Set_Info(_vec3 vRight, _vec3 vUp, _vec3 vLook);
+	void				Set_Look(const _vec3* vLook) { m_vInfo[INFO_LOOK] = *vLook; }
 
 public:
 	void				Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);

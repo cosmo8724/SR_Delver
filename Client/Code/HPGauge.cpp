@@ -94,7 +94,7 @@ void CHPGauge::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-	Render_Font(L"Font_Jinji", m_szHpNumber, &_vec2(145, 802), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Hp", m_szHpNumber, &_vec2(135, 798), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
 
 HRESULT CHPGauge::Add_Component(void)

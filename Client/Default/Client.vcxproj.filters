@@ -358,6 +358,12 @@
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\01. Stun">
       <UniqueIdentifier>{3add4dec-7927-4f11-95c8-cfaa6dfd1461}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\10. PlayerInfo">
+      <UniqueIdentifier>{16cda3fb-6d69-4440-a7fb-44bd6b888503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\11. HungerUI">
+      <UniqueIdentifier>{c431b304-53e0-42d8-be5e-44c4caac5898}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -699,6 +705,27 @@
     <ClInclude Include="..\Header\Armor.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Armor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Helmat.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Helmet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Ring.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Ring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Pants.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Pants</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Necklace.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Necklace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\LeftHand.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\LeftHand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\PlayerInfo.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\10. PlayerInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\HungerUI.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\11. HungerUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1021,6 +1048,27 @@
     </ClCompile>
     <ClCompile Include="..\Code\Armor.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Helmat.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Helmet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Ring.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Ring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Pants.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Pants</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Necklace.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Necklace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\LeftHand.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\LeftHand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PlayerInfo.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\10. PlayerInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\HungerUI.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\11. HungerUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

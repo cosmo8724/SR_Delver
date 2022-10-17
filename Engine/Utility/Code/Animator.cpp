@@ -52,6 +52,12 @@ void CAnimator::Set_Texture()
 	m_pCurAnim->Set_Texture((_ulong)m_fFrame);
 }
 
+void CAnimator::Set_UITexture(const _float & fTextEnd)
+{
+	m_fFrame = fTextEnd;
+	m_pCurAnim->Set_Texture((_ulong)m_fFrame);
+}
+
 HRESULT CAnimator::Add_Component(const _tchar * pTectureTag)
 {
 	m_pCurAnim = dynamic_cast<CTexture*>(Engine::Clone_Proto(pTectureTag));

@@ -12,6 +12,9 @@ private:
 	virtual ~CSkeletonGhost();
 
 public:
+	void				Set_Render() { m_bRender = true; }; // TODO : If the player is holding the light, true
+
+public:
 	virtual HRESULT		Ready_Object(void)						override;
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void)					override;
@@ -21,9 +24,8 @@ public:
 private:
 	virtual HRESULT		Add_Component(void)						override;
 	virtual void		Target_Follow(const _float& fTimeDelta)	override;
-	//virtual void		OnHit(const _float& fTimeDelta)			override;
-	//virtual void		Dead()									override;
-
+	virtual void		OnHit(const _float& fTimeDelta)			override;
+	virtual void		Dead()									override;
 
 	void				Billboard()								override;
 	void				Circle();
@@ -36,6 +38,7 @@ private:
 
 	_float				m_fHeight;
 
+	_bool				m_bRender = false;		
 	_bool				m_bCircle = false;
 
 	_matrix				m_matWorld;
@@ -45,6 +48,7 @@ private:
 	// Timer
 	_float				m_fTimeAcc;
 	_float				m_fAttackTimeAcc;
+	_float				m_fHpMinusTimeAcc;
 
 public:
 	static CSkeletonGhost*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
