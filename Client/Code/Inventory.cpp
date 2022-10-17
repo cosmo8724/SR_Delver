@@ -455,6 +455,41 @@ void CInventory::Set_ItemEquip()
 						pWindow->Set_Item(m_Inventory[i][j], ITEM_SHIELD);
 					}
 					break;
+					case ITEM_HELMAT:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_HELMAT);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					//case ITEM_LEFTHAND:
+					//{
+					//	CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+					//	pWindow->Set_Item(m_Inventory[i][j], ITEM_LEFTHAND);
+					//	m_Inventory[i][j] = nullptr;
+					//}
+					//break;
+					case ITEM_NECKLACE:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_NECKLACE);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					case ITEM_PANTS:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_PANTS);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					case ITEM_RING:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_RING);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
 					}
 				}
 			}
