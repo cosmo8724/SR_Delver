@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -178,14 +178,18 @@
     <ClInclude Include="..\Header\Dagger.h" />
     <ClInclude Include="..\Header\Dog.h" />
     <ClInclude Include="..\Header\DynamicCamera.h" />
+    <ClInclude Include="..\Header\EcoMush.h" />
     <ClInclude Include="..\Header\EcoObject.h" />
+    <ClInclude Include="..\Header\EcoWeb.h" />
     <ClInclude Include="..\Header\Effect.h" />
     <ClInclude Include="..\Header\Equipment.h" />
     <ClInclude Include="..\Header\EquipWindow.h" />
+    <ClInclude Include="..\Header\ExplodeBullet.h" />
     <ClInclude Include="..\Header\FistBullet.h" />
     <ClInclude Include="..\Header\Fist.h" />
     <ClInclude Include="..\Header\FontLogo.h" />
     <ClInclude Include="..\Header\FontStart.h" />
+    <ClInclude Include="..\Header\Food.h" />
     <ClInclude Include="..\Header\GrandFather.h" />
     <ClInclude Include="..\Header\Grass.h" />
     <ClInclude Include="..\Header\GreenSlime.h" />
@@ -193,21 +197,26 @@
     <ClInclude Include="..\Header\GreenSpiderBullet.h" />
     <ClInclude Include="..\Header\GuitarMan.h" />
     <ClInclude Include="..\Header\HealthBar.h" />
+    <ClInclude Include="..\Header\Helmat.h" />
     <ClInclude Include="..\Header\HoodMan.h" />
     <ClInclude Include="..\Header\HPGauge.h" />
+    <ClInclude Include="..\Header\HungerUI.h" />
     <ClInclude Include="..\Header\Icon.h" />
     <ClInclude Include="..\Header\ImGuiMgr.h" />
     <ClInclude Include="..\Header\InfoTool.h" />
     <ClInclude Include="..\Header\Inventory.h" />
     <ClInclude Include="..\Header\InvImg.h" />
     <ClInclude Include="..\Header\ItemMgr.h" />
+    <ClInclude Include="..\Header\Jam.h" />
     <ClInclude Include="..\Header\Jar.h" />
     <ClInclude Include="..\Header\Key.h" />
     <ClInclude Include="..\Header\Lantern.h" />
     <ClInclude Include="..\Header\Leaf.h" />
     <ClInclude Include="..\Header\LeafBullet.h" />
+    <ClInclude Include="..\Header\LeftHand.h" />
     <ClInclude Include="..\Header\Loading.h" />
     <ClInclude Include="..\Header\Logo.h" />
+    <ClInclude Include="..\Header\LongTorch.h" />
     <ClInclude Include="..\Header\MainApp.h" />
     <ClInclude Include="..\Header\MapTool.h" />
     <ClInclude Include="..\Header\MapUI.h" />
@@ -216,17 +225,22 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h" />
+    <ClInclude Include="..\Header\Necklace.h" />
     <ClInclude Include="..\Header\NPCMgr.h" />
     <ClInclude Include="..\Header\ObjectTool.h" />
     <ClInclude Include="..\Header\ObjectCamera.h" />
+    <ClInclude Include="..\Header\Pants.h" />
     <ClInclude Include="..\Header\ParticleMgr.h" />
     <ClInclude Include="..\Header\ParticleTool.h" />
     <ClInclude Include="..\Header\PinkSlime.h" />
     <ClInclude Include="..\Header\Player.h" />
+    <ClInclude Include="..\Header\PlayerInfo.h" />
     <ClInclude Include="..\Header\Potion.h" />
     <ClInclude Include="..\Header\PSystem.h" />
     <ClInclude Include="..\Header\QuickSlot.h" />
+    <ClInclude Include="..\Header\Ring.h" />
     <ClInclude Include="..\Header\Shield.h" />
+    <ClInclude Include="..\Header\ShortTorch.h" />
     <ClInclude Include="..\Header\SkeletonGhost.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
     <ClInclude Include="..\Header\SmileMan.h" />
@@ -238,6 +252,7 @@
     <ClInclude Include="..\Header\SpiderBackGround.h" />
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\StaticCamera.h" />
+    <ClInclude Include="..\Header\Statue.h" />
     <ClInclude Include="..\Header\Stick.h" />
     <ClInclude Include="..\Header\Stone.h" />
     <ClInclude Include="..\Header\TalkWindow.h" />
@@ -294,14 +309,18 @@
     <ClCompile Include="..\Code\Dagger.cpp" />
     <ClCompile Include="..\Code\Dog.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
+    <ClCompile Include="..\Code\EcoMush.cpp" />
     <ClCompile Include="..\Code\EcoObject.cpp" />
+    <ClCompile Include="..\Code\EcoWeb.cpp" />
     <ClCompile Include="..\Code\Effect.cpp" />
     <ClCompile Include="..\Code\Equipment.cpp" />
     <ClCompile Include="..\Code\EquipWindow.cpp" />
+    <ClCompile Include="..\Code\ExplodeBullet.cpp" />
     <ClCompile Include="..\Code\Fist.cpp" />
     <ClCompile Include="..\Code\FistBullet.cpp" />
     <ClCompile Include="..\Code\FontLogo.cpp" />
     <ClCompile Include="..\Code\FontStart.cpp" />
+    <ClCompile Include="..\Code\Food.cpp" />
     <ClCompile Include="..\Code\GrandFather.cpp" />
     <ClCompile Include="..\Code\Grass.cpp" />
     <ClCompile Include="..\Code\GreenSlime.cpp" />
@@ -309,21 +328,26 @@
     <ClCompile Include="..\Code\GreenSpiderBullet.cpp" />
     <ClCompile Include="..\Code\GuitarMan.cpp" />
     <ClCompile Include="..\Code\HealthBar.cpp" />
+    <ClCompile Include="..\Code\Helmat.cpp" />
     <ClCompile Include="..\Code\HoodMan.cpp" />
     <ClCompile Include="..\Code\HPGauge.cpp" />
+    <ClCompile Include="..\Code\HungerUI.cpp" />
     <ClCompile Include="..\Code\Icon.cpp" />
     <ClCompile Include="..\Code\ImGuiMgr.cpp" />
     <ClCompile Include="..\Code\InfoTool.cpp" />
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\InvImg.cpp" />
     <ClCompile Include="..\Code\ItemMgr.cpp" />
+    <ClCompile Include="..\Code\Jam.cpp" />
     <ClCompile Include="..\Code\Jar.cpp" />
     <ClCompile Include="..\Code\Key.cpp" />
     <ClCompile Include="..\Code\Lantern.cpp" />
     <ClCompile Include="..\Code\Leaf.cpp" />
     <ClCompile Include="..\Code\LeafBullet.cpp" />
+    <ClCompile Include="..\Code\LeftHand.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />
     <ClCompile Include="..\Code\Logo.cpp" />
+    <ClCompile Include="..\Code\LongTorch.cpp" />
     <ClCompile Include="..\Code\MainApp.cpp" />
     <ClCompile Include="..\Code\MapTool.cpp" />
     <ClCompile Include="..\Code\MapUI.cpp" />
@@ -332,20 +356,25 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Code\MiniMap.cpp" />
+    <ClCompile Include="..\Code\Necklace.cpp" />
     <ClCompile Include="..\Code\NPCMgr.cpp" />
     <ClCompile Include="..\Code\ObjectTool.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Default/stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Default/stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="..\Code\ObjectCamera.cpp" />
+    <ClCompile Include="..\Code\Pants.cpp" />
     <ClCompile Include="..\Code\ParticleMgr.cpp" />
     <ClCompile Include="..\Code\ParticleTool.cpp" />
     <ClCompile Include="..\Code\PinkSlime.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
+    <ClCompile Include="..\Code\PlayerInfo.cpp" />
     <ClCompile Include="..\Code\Potion.cpp" />
     <ClCompile Include="..\Code\PSystem.cpp" />
     <ClCompile Include="..\Code\QuickSlot.cpp" />
+    <ClCompile Include="..\Code\Ring.cpp" />
     <ClCompile Include="..\Code\Shield.cpp" />
+    <ClCompile Include="..\Code\ShortTorch.cpp" />
     <ClCompile Include="..\Code\SkeletonGhost.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />
     <ClCompile Include="..\Code\SmileMan.cpp" />
@@ -357,6 +386,7 @@
     <ClCompile Include="..\Code\SpiderBackGround.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\StaticCamera.cpp" />
+    <ClCompile Include="..\Code\Statue.cpp" />
     <ClCompile Include="..\Code\Stick.cpp" />
     <ClCompile Include="..\Code\Stone.cpp" />
     <ClCompile Include="..\Code\TalkWindow.cpp" />

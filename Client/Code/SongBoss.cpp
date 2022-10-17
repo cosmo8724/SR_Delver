@@ -6,6 +6,7 @@
 #include "BulletMgr.h"
 #include "MiniMap.h"
 #include "SongBossFloor.h"
+#include "ParticleMgr.h"
 
 // 충돌
 #include "Player.h"
@@ -37,7 +38,6 @@ CSongBoss::CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"SongBoss";
 }
 
-
 CSongBoss::~CSongBoss()
 {
 }
@@ -49,9 +49,8 @@ HRESULT CSongBoss::Ready_Object(void)
 	m_tInfo.iHp = 30;
 	m_tInfo.iAttack = 5;
 
+	m_fHeight = m_vPos.y;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	//m_pTransCom->Set_Pos(10.f, 1.f, 10.f);
-	m_pTransCom->Set_Scale(1.5f, 1.5f, 1.5f);
 
 	m_eCurState = IDLE;
 	m_eSkill = SKILL_BULLET;
@@ -73,8 +72,8 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	//m_pTransCom->Set_Y(1.5f);
-	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7f); // TODO 보스의 HIT, DIE의 속도 조절해야함
+	//m_pTransCom->Set_Y(m_fHeight);
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7f); // TODO 보스의 HIT, DIE의 속도 조절 해야 할 수도
 	Motion_Change(fTimeDelta);
 
 	if (0 >= m_tInfo.iHp)
@@ -142,19 +141,41 @@ HRESULT CSongBoss::Add_Component(void)
 
 void CSongBoss::SKill_Update(const _float & fTimeDelta)
 {
-	if (Engine::Get_DIKeyState(DIK_1) && 0x08)
+	//int iRrandomNum = rand() % 3;
+
+	//if (iRrandomNum == 0)
+	//{
+	//	m_bBullet = true;
+	//	m_eSkill = SKILL_BULLET;
+	//}
+	//if (iRrandomNum == 1)
+	//{
+	//	m_bStun = true;
+	//	m_iStunCount = 0;
+	//	m_iStunCreate = 0;
+	//	m_eSkill = SKILL_STUN;
+	//}
+	//if (iRrandomNum == 2)
+	//{
+	//	m_bFloor = true;
+	//	m_iFloorCreate = 0;
+	//	m_bFloorOneCheck = true;
+	//	m_eSkill = SKILL_FLOOR;
+	//}
+
+	if (Key_Down(DIK_7))
 	{
 		m_bBullet = true;
 		m_eSkill = SKILL_BULLET;
 	}
-	if (Engine::Get_DIKeyState(DIK_2) && 0x08)
+	if (Key_Down(DIK_8))
 	{
 		m_bStun = true;
 		m_iStunCount = 0;
 		m_iStunCreate = 0;
 		m_eSkill = SKILL_STUN;
 	}
-	if (Engine::Get_DIKeyState(DIK_3) && 0x08)
+	if (Key_Down(DIK_9))
 	{
 		m_bFloor = true;
 		m_iFloorCreate = 0;
@@ -200,6 +221,10 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 		if (3.f < m_fAttackTimeAcc)
 		{
+			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.0f }, 3.f);
+			CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
+
 			m_eCurState = ATTACK;
 			CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);
 			m_fAttackTimeAcc = 0;

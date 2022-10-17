@@ -123,18 +123,24 @@ _int CUserParticle::Update_Object(const _float & fTimeDelta)
 
 	}
 
-
-
-	_float frameEnd = (_float)m_pTextureCom->Get_FrameEnd();
-	m_fFrame += frameEnd * fTimeDelta * m_fFrameSpeed;
-
-	if (m_fFrame >= frameEnd)
+	if (m_bFrameMove)
 	{
-		if (m_bFrameRepeat)
-			m_fFrame = 0.f;
-		else
-			m_fFrame = frameEnd;
+		_float frameEnd = (_float)m_pTextureCom->Get_FrameEnd();
+		m_fFrame += frameEnd * fTimeDelta * m_fFrameSpeed;
+
+		if (m_fFrame >= frameEnd)
+		{
+			if (m_bFrameRepeat)
+				m_fFrame = 0.f;
+			else
+				m_fFrame = frameEnd;
+		}
 	}
+	else
+	{
+		m_fFrame = m_fFixFrame;
+	}
+
 
 	int iResult = CPSystem::Update_Object(fTimeDelta);
 	update(fTimeDelta);
@@ -267,6 +273,16 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	case PTYPE_CIRCLING:
 	{
 		attribute->bIsAlive = true;
+
+		for (int i = 0; i < m_maxParticles; ++i)
+		{
+			m_fStartAngles[i] = 360.f / (m_maxParticles-1)*i;
+		}
+	}
+	break;
+	case PTYPE_MOOD:
+	{
+		attribute->bIsAlive = true;
 	}
 	break;
 
@@ -283,7 +299,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	}
 	else
 	{
-		attribute->tColor = { 1.0f,1.0f,1.0f,1.0f };
+		attribute->tColor = m_Attribute.tColor;
 	}
 	attribute->fAge = 0.f;
 	attribute->fLifeTime = m_Attribute.fLifeTime; // 2초 동안의 수명을 가진다.
@@ -295,6 +311,7 @@ void CUserParticle::update(_float fTimeDelta)
 	{
 	case PTYPE_FIREWORK:
 	{
+		m_fSize -= 0.005f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
@@ -344,11 +361,13 @@ void CUserParticle::update(_float fTimeDelta)
 
 	case PTYPE_FOUNTAIN:
 	{
+		m_fSize -= 0.05f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
 			if (iter->bIsAlive)
 			{
+				
 				iter->vVelocity.y -= GetRandomFloat(0.f, 1.f);
 				iter->vPosition += (0.3f * iter->vVelocity * fTimeDelta);
 				iter->fAge += fTimeDelta;
@@ -451,27 +470,38 @@ void CUserParticle::update(_float fTimeDelta)
 		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
 		m_pTransCom->Get_Info(INFO_UP, &vUp);
 		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
-		m_pTransCom->Get_Info(INFO_POS, &vPos);
-
 		D3DXVec3Normalize(&vRight, &vRight);
 		D3DXVec3Normalize(&vUp, &vUp);
 		D3DXVec3Normalize(&vLook, &vLook);
 
 		_matrix matRot, matTrans, matPos, matWorld;
-		m_fAngle += 0.5f;
-		D3DXMatrixRotationAxis(&matRot, &vLook, D3DXToRadian(45.f));
-		D3DXMatrixTranslation(&matTrans, 0.3f * vRight.x, 0.3f * vRight.y, 0.3f * vRight.z);
-		D3DXMatrixTranslation(&matPos, vPos.x + vLook.x, vPos.y + vLook.y, vPos.z + vLook.z);
-		matWorld = matRot * matPos;
 
-		_vec3 vTemp = { 0.f, 0.f,0.f };
-		D3DXVec3TransformCoord(&vTemp, &vTemp, &matWorld);
-
+		int i = 0;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			if (iter->bIsAlive)
 			{
-				iter->vPosition = vTemp;
+
+				m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+				m_fStartAngles[i] = _float((_int)(m_fStartAngles[i] + m_fAngleSpeed) % 360);
+				D3DXMatrixRotationAxis(&matRot, &vLook, D3DXToRadian(m_fStartAngles[i]));
+				i++;
+				m_fDist -= 0.005f;
+				if (m_fDist <= 0)
+					m_fDist = 0;
+
+				m_fSize -= 0.0005f;
+				D3DXMatrixTranslation(&matTrans, m_fDist * vUp.x, m_fDist * vUp.y, m_fDist * vUp.z);
+				matWorld = matTrans * matRot;
+				_vec3 vTemp = { 0.f, 0.f,0.f };
+				D3DXVec3TransformCoord(&vTemp, &vTemp, &matWorld);
+
+				vPos = vPos + m_Attribute.vVelocity.x * vRight
+							+ m_Attribute.vVelocity.y * vUp
+							+ m_Attribute.vVelocity.z * vLook;
+
+				iter->vPosition = vPos + vTemp;
 
 				iter->fAge += fTimeDelta;
 				if (iter->fAge > iter->fLifeTime) // 죽인다.
@@ -481,6 +511,12 @@ void CUserParticle::update(_float fTimeDelta)
 		}
 	}
 	break;
+	case PTYPE_MOOD:
+	{
+		
+	}
+	break;
+
 
 	}
 }

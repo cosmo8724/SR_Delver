@@ -16,6 +16,7 @@ private:
 
 public:
 	const _float&		Get_Currentframe() { return m_fFrame; }
+	void				Set_Frame() { m_fFrame = 0.f; }
 
 	// 애니메이션 만들기, 실행 시키기, 바꾸기
 
@@ -27,6 +28,7 @@ public:
 	void		Play_Animation(const _float& fTimeDelta, const _float & fTimeSpeed = 1.f);
 	void		Change_Animation(const _tchar * pTectureTag);
 	void		Set_Texture();
+	void		Set_UITexture(const _float& fTextEnd);
 
 private: // Key : Tag, Velaue : TextComponent
 	map<const _tchar*, CTexture*>		m_mapAnimation;

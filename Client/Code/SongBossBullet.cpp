@@ -36,12 +36,12 @@ HRESULT CSongBossBullet::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -154,29 +154,44 @@ void CSongBossBullet::Render_Obejct(void)
 
 void CSongBossBullet::Billboard()
 {
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
 	m_pTransCom->Get_WorldMatrix(&matWorld);
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
+
+	if (matView._21 > 0.f)
+	{
+		matBill = m_matOldBill;
+	}
+	else
+	{
+		D3DXMatrixIdentity(&matBill);
+		matBill._11 = matView._11;
+		matBill._13 = matView._13;
+		matBill._31 = matView._31;
+		matBill._33 = matView._33;
+
+		m_matOldBill = matBill;
+	}
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	// ÇöÀç Áö±Ý ÀÌ ÄÚµå´Â ¹®Á¦°¡ ¾øÁö¸¸ ³ªÁß¿¡ ¹®Á¦°¡ µÉ ¼ö ÀÖÀ½
-	m_matWorld = matBill * m_matWorld;
-	//m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
+	_vec3 vScale = m_pTransCom->Get_Scale();
+	_matrix matScale, matScaleInv;
+	D3DXMatrixScaling(&matScale, vScale.x, vScale.y, vScale.z);
+	D3DXMatrixInverse(&matScaleInv, 0, &matScale);
+
+	m_matWorld = matBill *matWorld;
+	m_pTransCom->Set_WorldMatrix(&m_matWorld);
 }
 
 _int CSongBossBullet::Target(const _float & fTimeDelta)
 {
-	// BulletÀÇ ºÎ¸ð°¡ µÉ LeafÀÇ Transform
-	// Leaf°¡ Player¸¦ ¹Ù¶óº¸´Â ¹æÇâÀ» À§ÇØ Leaf, Player
+	// Bulletï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½ Leafï¿½ï¿½ Transform
+	// Leafï¿½ï¿½ Playerï¿½ï¿½ ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Leaf, Player
 	_vec3	vParentPos, vPlayerPos;
 	CTransform*		pParent = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"SongBoss", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pParent, -1);
@@ -186,27 +201,27 @@ _int CSongBossBullet::Target(const _float & fTimeDelta)
 
 	pPlayer->Get_Info(INFO_POS, &vPlayerPos);
 	pParent->Get_Info(INFO_POS, &vParentPos);
-	m_pTransCom->Set_Pos(vParentPos.x, vParentPos.y + 2.f, vParentPos.z); // BulletÀÇ ½ÃÀÛÀ§Ä¡
+	m_pTransCom->Set_Pos(vParentPos.x, vParentPos.y + 2.f, vParentPos.z); // Bulletï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡
 
 	_vec3 vDir, vDistance;
-	vDir = vPlayerPos - vParentPos; // ¸ó½ºÅÍ°¡ ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸´Â ¹æÇâ º¤ÅÍ
-	D3DXVec3Normalize(&vDir, &vDir); // ´ÜÀ§ º¤ÅÍ·Î º¯°æ
+	vDir = vPlayerPos - vParentPos; // ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	D3DXVec3Normalize(&vDir, &vDir); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½ï¿½ï¿½
 	D3DXVec3Normalize(&vDistance, &vDistance);
 
-	if (!m_bReady) // Ã³À½ µé¾î ¿ÔÀ» ¶§ ÇÑ ¹ø¸¸ ¹Þ´Â´Ù
+	if (!m_bReady) // Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´Â´ï¿½
 	{
 		m_vTrans = vParentPos;
 		m_bReady = true;
 	}
 
 	_matrix matScale, matRot, matTrans, matRev, matWorld;
-	// ½º
+	// ï¿½ï¿½
 	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
 
-	// ÀÌ
+	// ï¿½ï¿½
 	D3DXMatrixTranslation(&matTrans, vDistance.x * 0.7f, vDistance.y * 0.7f, vDistance.z * 0.7f);
 
-	// °ø
+	// ï¿½ï¿½
 	m_fAngle += 0.1f;
 	if (m_fAngle > 360.f)
 		m_fAngle -= 360.f;
@@ -224,7 +239,7 @@ _int CSongBossBullet::Target(const _float & fTimeDelta)
 	matParent = matScale * matRev;// *mat;
 
 	_matrix mat1;
-	mat1 = matTrans * matParent; // °øÀüÇÏ´Â Çà·Ä
+	mat1 = matTrans * matParent; // ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
 
 	//m_pTransCom->Set_WorldMatrix(&matWorld);
 	

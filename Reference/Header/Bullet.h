@@ -41,6 +41,9 @@ protected:
 	_float			m_fLifeTime = 0.f;
 
 	_int			m_iIndex = -1;// 매니저 인덱스 회수용
+
+	_matrix			m_matOldBill;
+	_matrix			m_matWorld;
 };
 END
 

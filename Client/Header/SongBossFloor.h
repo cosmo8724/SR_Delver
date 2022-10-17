@@ -51,7 +51,6 @@ private:
 
 	// Timer			
 	_float					m_fTransparencyTimeAcc;
-	_float					m_fAttackTimeAcc;
 };
 
 END

@@ -9,6 +9,7 @@
 #include "Block.h"
 #include "MapUI.h"
 #include "MiniMap.h"
+#include "PlayerInfo.h"
 #include "ParticleMgr.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
@@ -53,8 +54,8 @@ HRESULT CPlayer::Ready_Object(void)
 	//m_tInfo.iAtk = 10; // sh
 	m_tInfo.iDef = 10;
 	m_tInfo.iExp = 0;
-	m_tInfo.iExpMax = 10;
-	m_tInfo.iHunger = 30;
+	m_tInfo.iExpMax = 7;
+	m_tInfo.iHunger = 5;
 	m_tInfo.fSpeed = 5.f;
 	m_tInfo.iLevel = 1;
 
@@ -102,24 +103,9 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	// test area //////////////////
 
-	if (Key_Down(DIK_P))
-	{
-		//PTYPE_SPOT
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 0.f, 0.0f, 1.0f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
-
-		//PTYPE_CIRCLING
-	/*	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 1.0f }, 10.f);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_5);*/
-
-	}
-
-
-
 
 
 	///////////////////////////
-
 
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
@@ -127,6 +113,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	KnockBack(fTimeDelta);
 	Stun(fTimeDelta);
 	Slow(fTimeDelta);
+	Hunger(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
@@ -136,7 +123,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
-	InvincibilityTimeAcc += fTimeDelta; // sh
+	m_InvincibilityTimeAcc += fTimeDelta; // sh
 	return 0;
 }
 
@@ -324,6 +311,16 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 			pMap->Set_OpenMap();
 	}
 
+	if (Engine::Key_Down(DIK_X))
+	{
+		CPlayerInfo* pPlayerInfo = dynamic_cast<CPlayerInfo*>(Engine::Get_GameObject(L"Layer_UI", L"UI_PlayerInfo"));
+		
+		if (pPlayerInfo->Get_InfoState())
+			pPlayerInfo->Set_CloseInfo();
+		else
+			pPlayerInfo->Set_OpenInfo();
+	}
+
 	// camera test
 	if (Key_Down(DIK_C))
 	{
@@ -348,6 +345,9 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 void CPlayer::Mouse_Move(void)
 {
+	if (m_tInfo.bStun) // sh
+		return;
+
 	_long	dwMouseMove = 0;
 
 	if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
@@ -431,23 +431,19 @@ _float CPlayer::Get_Height()
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	//if (pMonster == pOtherObj)
-	//	OnHit(pMonster->Get_MonsterAttack());
+	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	if (pMonster == pOtherObj)
+		OnHit(pMonster->Get_MonsterAttack());
 
-	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	//if (pBullet == pOtherObj)
-	//	OnHit(pBullet->Get_BulletAttack());
+	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	if (pBullet == pOtherObj)
+		OnHit(pBullet->Get_BulletAttack());
 
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
 	{
 		CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
-
-		CItem* pImg = nullptr;
-		pImg = static_cast<CItem*>(CItemMgr::GetInstance()->Add_GameObject(L"Layer_UI", pItem->Get_TextureTag(), pItem));
-
-		pInv->Set_Inventory(pImg);
+		pInv->Set_Inventory(pItem);
 	}
 
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
@@ -567,7 +563,7 @@ void CPlayer::Set_Info(ITEMINFO tInfo, _int iSign)
 	m_tInfo.iAtk	+= iSign * tInfo.iAtk;
 	m_tInfo.iDef	+= iSign * tInfo.iDef;
 	m_tInfo.iHunger += iSign * tInfo.iHunger;
-	m_tInfo.fSpeed += iSign * tInfo.fSpeed;
+	m_tInfo.fSpeed	+= iSign * tInfo.fSpeed;
 }
 
 void CPlayer::OnHit(_int _HpMinus)
@@ -580,7 +576,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	}
 
 	// 플레이어는 2초간 무적
-	if (2.f < InvincibilityTimeAcc)
+	if (2.f < m_InvincibilityTimeAcc)
 	{
 		//CParticleMgr::GetInstance()->Set_Info(this,
 		//	1,
@@ -592,7 +588,7 @@ void CPlayer::OnHit(_int _HpMinus)
 
 		m_bKnockBack = true;
 		m_tInfo.iHp -= _HpMinus;
-		InvincibilityTimeAcc = 0.f;
+		m_InvincibilityTimeAcc = 0.f;
 	}
 }
 
@@ -632,13 +628,18 @@ void CPlayer::Stun(const _float & fTimeDelta)
 	if (!m_tInfo.bStun)
 		return;
 
-	CParticleMgr::GetInstance()->Set_Info(this, 10, 1.f,
-		_vec3({ 1.f, 1.f, 1.f }), 0.7f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
-	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_3);
+	if (!m_bStunParticle)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.3f, 1.0f }, 
+												2.f, {1.f, 1.f, 1.f, 1.f}, 5.f, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
+		m_bStunParticle = true;
+	}
 
 	m_fStunTimeAcc += fTimeDelta;
-	if (3.f < m_fStunTimeAcc) // 3.f -> StunTime
+	if (2.f < m_fStunTimeAcc) // 2.f -> StunTime
 	{
+		m_bStunParticle = false;
 		m_tInfo.bStun = false;
 		m_fStunTimeAcc = 0.f;
 	}
@@ -651,12 +652,40 @@ void CPlayer::Slow(const _float & fTimeDelta)
 
 	m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
 
-	SlowTimeAcc += fTimeDelta;
-	if (3.f < SlowTimeAcc)
+	m_fSlowTimeAcc += fTimeDelta;
+	if (3.f < m_fSlowTimeAcc)
 	{
-		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
-		SlowTimeAcc = 0.f;
 		m_tInfo.bSlow = false;
+		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
+		m_fSlowTimeAcc = 0.f;
+	}
+}
+
+void CPlayer::Hunger(const _float & fTimeDelta)
+{
+	// test
+	if (Key_Down(DIK_K))
+		if(0 < m_tInfo.iHunger)
+			m_tInfo.iHunger--;
+
+	if (Key_Down(DIK_L))
+		Set_HungerPlus();
+	// test
+
+	if (0 >= m_tInfo.iHunger)
+	{
+		m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
+		if (1 < m_tInfo.iHunger)
+			m_tInfo.fSpeed = m_tInfo.fSpeed;
+	}
+
+
+	m_fHungerTimeAcc += fTimeDelta;
+	if (30.f < m_fHungerTimeAcc)
+	{
+		if(0 < m_tInfo.iHunger)
+			m_tInfo.iHunger--;
+		m_fHungerTimeAcc = 0.f;
 	}
 }
 

@@ -12,6 +12,8 @@
 #include "MiniMap.h"
 #include "CrossHair.h"
 #include "SpiderBackGround.h"
+#include "PlayerInfo.h"
+#include "HungerUI.h"
 
 // Font
 #include "HPGauge.h"
@@ -35,6 +37,12 @@ void CUIMgr::Ready_UI(LPDIRECT3DDEVICE9 pGraphicDev)
 }
 HRESULT CUIMgr::Ready_Proto()
 {
+	// Player_HitBackGround
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_SpiderBackground_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SpiderBackground/SpiderBackground.png", TEX_NORMAL, 1)), E_FAIL);
+	
+	// PlayerInfo
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerInfo_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/PlayerInfo/PlayerInfo.png", TEX_NORMAL, 1)), E_FAIL);
+
 	// NPC_TalkWindow
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TalkWindow_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/TalkWindow/TalkWindow.png", TEX_NORMAL, 1)), E_FAIL);
 
@@ -45,6 +53,9 @@ HRESULT CUIMgr::Ready_Proto()
 	// UI_HPGauge
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_HPGauge_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/HealthBar/HealthBar1.png", TEX_NORMAL, 1)), E_FAIL);
 
+	// HungerUI
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_Hunger_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Hunger/Hunger_%d.png", TEX_NORMAL, 6)), E_FAIL);
+
 	// UI_QuickSlot
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_QuickSlot_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/QuickSlot/QuickSlot.png", TEX_NORMAL, 1)), E_FAIL);
 
@@ -53,7 +64,7 @@ HRESULT CUIMgr::Ready_Proto()
 
 	// UI_EquipWindow
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_EquipWindow_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/EquipWindow/EquipWindow.png", TEX_NORMAL, 1)), E_FAIL);
-
+	
 	// UI_Map
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_Map_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Map/Map_BG.png", TEX_NORMAL, 1)), E_FAIL);
 
@@ -68,10 +79,6 @@ HRESULT CUIMgr::Ready_Proto()
 
 	// UI_CrossHair
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_CrossHair_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/CrossHair/CrossHair.png", TEX_NORMAL, 1)), E_FAIL);
-
-	// UI_HitBackGround
-	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_HitBackGround_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/HitBackGround/HitBackGround.png", TEX_NORMAL, 1)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_SpiderBackground_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SpiderBackground/SpiderBackground.png", TEX_NORMAL, 1)), E_FAIL);
 
 	
 	return S_OK;
@@ -91,6 +98,12 @@ HRESULT CUIMgr::Add_GameObject(CLayer * pLayer)
 	pGameObject = CHealthBar::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_HealthBar", pGameObject), E_FAIL);
+	m_vecUI.push_back(pGameObject);
+
+	// HungerUI
+	pGameObject = CHungerUI::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Hunger", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);
 
 	// UI_QuickSlot
@@ -135,10 +148,16 @@ HRESULT CUIMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);
 
-	// UI_SpiderBackGround
+	// Player_SpiderBackGround
 	pGameObject = CSpiderBackGround::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_SpiderBackGround", pGameObject), E_FAIL);
+	m_vecUI.push_back(pGameObject);
+
+	// Player_PlayerInfo
+	pGameObject = CPlayerInfo::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_PlayerInfo", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);
 
 	return E_NOTIMPL;

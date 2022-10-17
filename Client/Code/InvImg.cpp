@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "InvImg.h"
 #include "Export_Function.h"
+#include "Potion.h"
 
 CInvImg::CInvImg(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
@@ -211,6 +212,15 @@ void CInvImg::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
+	if (ITEM_POTION == m_pObj->Get_ItemType())
+	{
+		_int iCnt = static_cast<CPotion*>(m_pObj)->Get_Cnt();
+		wchar_t index[10];
+		_itow_s(iCnt, index, 10);
+
+		Render_Font(L"Font_Jinji", index, &_vec2(m_fPosX, m_fPosY), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+
+	}
 }
 
 HRESULT CInvImg::Add_Component(void)

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "EquipWindow.h"
 #include "QuickSlot.h"
+#include "ItemMgr.h"
 
 CInventory::CInventory(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
@@ -175,18 +176,87 @@ void CInventory::Get_Index(int & iRow, int & iCol)
 
 void CInventory::Set_Inventory(CItem * pItem)
 {
+	CItem* pImg = nullptr;
+
+	_int iRow, iCol;
+	_bool	bOut = false;
+
+	if (nullptr == pItem)
+		return;
+
+	// it is for original logic
+	if (nullptr != dynamic_cast<CInvImg*>(pItem))
+	{
+		for (int i = 0; i < m_iMaxRow; ++i)
+		{
+			for (int j = 0; j < m_iMaxCol; ++j)
+			{
+				if (nullptr == m_Inventory[i][j])
+				{
+					m_Inventory[i][j] = pItem;
+					static_cast<CInvImg*>(m_Inventory[i][j])->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y);
+					CTransform* pTransCom = static_cast<CTransform*>(pItem->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+					pTransCom->Set_Pos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y, 0.f);
+					return;
+				}
+			}
+		}
+		return;
+	}
+
+
+
+	// if the item is potion -> Counting
+	if (ITEM_POTION == pItem->Get_ItemType())
+	{
+		for (int i = 0; i < m_iMaxRow; ++i)
+		{
+			for (int j = 0; j < m_iMaxCol; ++j)
+			{
+				if (nullptr != m_Inventory[i][j])
+				{
+					CInvImg* pInvImg = static_cast<CInvImg*>(m_Inventory[i][j]);
+					if (ITEM_POTION == pInvImg->Get_TargetObj()->Get_ItemType())
+					{
+						if (static_cast<CPotion*>(pItem)->Get_TexturId() == static_cast<CPotion*>(pInvImg->Get_TargetObj())->Get_TexturId())
+						{
+							static_cast<CPotion*>(static_cast<CInvImg*>(m_Inventory[i][j])->Get_TargetObj())->Cal_Cnt(+1);
+							return;
+						}
+
+					}
+				}
+				else
+				{
+					if (!bOut)
+					{
+						iRow = i; iCol = j;
+						bOut = true;
+					}
+				}
+			}
+		}
+
+		pImg = static_cast<CItem*>(CItemMgr::GetInstance()->Add_GameObject(L"Layer_UI", pItem->Get_TextureTag(), pItem));
+		m_Inventory[iRow][iCol] = pImg;
+		static_cast<CInvImg*>(m_Inventory[iRow][iCol])->Set_InvPos(m_InvPosArr[iRow][iCol].x, m_InvPosArr[iRow][iCol].y);
+		CTransform* pTransCom = static_cast<CTransform*>(pImg->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+		pTransCom->Set_Pos(m_InvPosArr[iRow][iCol].x, m_InvPosArr[iRow][iCol].y, 0.f);
+		return;
+	}
+
+	// normal item
+	pImg = static_cast<CItem*>(CItemMgr::GetInstance()->Add_GameObject(L"Layer_UI", pItem->Get_TextureTag(), pItem));
 	for (int i = 0; i < m_iMaxRow; ++i)
 	{
 		for (int j = 0; j < m_iMaxCol; ++j)
 		{
-			//if (pItem == m_Inventory[i][j])
-			//	return;
 			if (nullptr == m_Inventory[i][j])
 			{
-				m_Inventory[i][j] = pItem;
+				m_Inventory[i][j] = pImg;
 				static_cast<CInvImg*>(m_Inventory[i][j])->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y);
-				CTransform* pTransCom = static_cast<CTransform*>(pItem->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
-				pTransCom->Set_Pos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y, 0.f);		
+				CTransform* pTransCom = static_cast<CTransform*>(pImg->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+				pTransCom->Set_Pos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y, 0.f);
 				return;
 			}
 		}
@@ -199,91 +269,91 @@ void  CInventory::Pick()
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
-		RECT rc = { _long(m_InvPosArr[0][0].x - 32), _long(m_InvPosArr[0][0].y - 32)
-		,_long(m_InvPosArr[m_iMaxRow-1][m_iMaxCol-1].x + 32), _long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].y + 32) };
+	RECT rc = { _long(m_InvPosArr[0][0].x - 32), _long(m_InvPosArr[0][0].y - 32)
+		,_long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].x + 32), _long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].y + 32) };
 
-		if (PtInRect(&rc, ptMouse))
+	if (PtInRect(&rc, ptMouse))
+	{
+
+		for (int i = 0; i < m_iMaxRow; ++i)
 		{
-
-			for (int i = 0; i < m_iMaxRow; ++i)
+			for (int j = 0; j < m_iMaxCol; ++j)
 			{
-				for (int j = 0; j < m_iMaxCol; ++j)
-				{
-					_float fSize = m_fTileSize * 0.5f;
-					RECT rcUI = { _long(m_InvPosArr[i][j].x - fSize), _long(m_InvPosArr[i][j].y - fSize)
-						, _long(m_InvPosArr[i][j].x + fSize), _long(m_InvPosArr[i][j].y + fSize) };
+				_float fSize = m_fTileSize * 0.5f;
+				RECT rcUI = { _long(m_InvPosArr[i][j].x - fSize), _long(m_InvPosArr[i][j].y - fSize)
+					, _long(m_InvPosArr[i][j].x + fSize), _long(m_InvPosArr[i][j].y + fSize) };
 
-					if (PtInRect(&rcUI, ptMouse))
+				if (PtInRect(&rcUI, ptMouse))
+				{
+					if (nullptr == m_ppPickedItem && nullptr != m_Inventory[i][j])
 					{
-						if (nullptr == m_ppPickedItem && nullptr != m_Inventory[i][j])
-						{
-							m_ppPickedItem = &m_Inventory[i][j];
-							static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(true);
-						}
-						else if (nullptr != m_ppPickedItem && nullptr == m_Inventory[i][j])
-						{
-							m_Inventory[i][j] = *m_ppPickedItem;
-							static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y);
-							static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);
-
-
-							(*m_ppPickedItem) = nullptr;
-							m_ppPickedItem = nullptr;
-						}
-						else if (nullptr != m_ppPickedItem&& nullptr != m_Inventory[i][j])
-						{
-							_vec2 vOrigin = static_cast<CInvImg*>(*m_ppPickedItem)->Get_InvPos();
-
-							CItem* pTemp = m_Inventory[i][j];
-
-							m_Inventory[i][j] = *m_ppPickedItem;
-							static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y);
-							static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);
-
-							(*m_ppPickedItem) = pTemp;
-							static_cast<CInvImg*>(pTemp)->Set_InvPos(vOrigin.x, vOrigin.y);
-
-							m_ppPickedItem = nullptr;
-						}
-
-
-						break;
+						m_ppPickedItem = &m_Inventory[i][j];
+						static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(true);
 					}
+					else if (nullptr != m_ppPickedItem && nullptr == m_Inventory[i][j])
+					{
+						m_Inventory[i][j] = *m_ppPickedItem;
+						static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y);
+						static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);
+
+
+						(*m_ppPickedItem) = nullptr;
+						m_ppPickedItem = nullptr;
+					}
+					else if (nullptr != m_ppPickedItem&& nullptr != m_Inventory[i][j])
+					{
+						_vec2 vOrigin = static_cast<CInvImg*>(*m_ppPickedItem)->Get_InvPos();
+
+						CItem* pTemp = m_Inventory[i][j];
+
+						m_Inventory[i][j] = *m_ppPickedItem;
+						static_cast<CInvImg*>(*m_ppPickedItem)->Set_InvPos(m_InvPosArr[i][j].x, m_InvPosArr[i][j].y);
+						static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);
+
+						(*m_ppPickedItem) = pTemp;
+						static_cast<CInvImg*>(pTemp)->Set_InvPos(vOrigin.x, vOrigin.y);
+
+						m_ppPickedItem = nullptr;
+					}
+
+
+					break;
 				}
 			}
 		}
-		else // if it didn't in the inventory box
+	}
+	else // if it didn't in the inventory box
+	{
+		CQuickSlot* pSlot = static_cast<CQuickSlot*>(Get_GameObject(L"Layer_UI", L"UI_QuickSlot"));
+		if (pSlot->Is_Clicked(ptMouse))
 		{
-			CQuickSlot* pSlot = static_cast<CQuickSlot*>(Get_GameObject(L"Layer_UI", L"UI_QuickSlot"));
-			if(pSlot->Is_Clicked(ptMouse))
+			CItem* pItem = pSlot->Get_Item();
+			if (nullptr != m_ppPickedItem && nullptr == pItem)
 			{
-				CItem* pItem = pSlot->Get_Item();
-				if (nullptr != m_ppPickedItem && nullptr == pItem)
-				{
-					pSlot->Set_Item(*m_ppPickedItem);
-					(*m_ppPickedItem) = nullptr;
-					m_ppPickedItem = nullptr;
-				}
-				else if (nullptr != m_ppPickedItem && nullptr != pItem)
-				{
-					_vec2 vOrigin = static_cast<CInvImg*>(*m_ppPickedItem)->Get_InvPos();
+				pSlot->Set_Item(*m_ppPickedItem);
+				(*m_ppPickedItem) = nullptr;
+				m_ppPickedItem = nullptr;
+			}
+			else if (nullptr != m_ppPickedItem && nullptr != pItem)
+			{
+				_vec2 vOrigin = static_cast<CInvImg*>(*m_ppPickedItem)->Get_InvPos();
 
-					pSlot->Set_Item(*m_ppPickedItem);
+				pSlot->Set_Item(*m_ppPickedItem);
 
-					static_cast<CInvImg*>(pItem)->Set_InvPos(vOrigin.x, vOrigin.y);
-					static_cast<CInvImg*>(pItem)->Set_State(STATE_QUICK);
-					static_cast<CInvImg*>(pItem)->Set_Picked(false);
+				static_cast<CInvImg*>(pItem)->Set_InvPos(vOrigin.x, vOrigin.y);
+				static_cast<CInvImg*>(pItem)->Set_State(STATE_QUICK);
+				static_cast<CInvImg*>(pItem)->Set_Picked(false);
 
-					(*m_ppPickedItem) = pItem;
-					m_ppPickedItem = nullptr;
-				}
-				else if (nullptr == m_ppPickedItem && nullptr != pItem)
-				{
-					Set_Inventory(pItem);
-					pSlot->Set_Item(nullptr);
-				}
+				(*m_ppPickedItem) = pItem;
+				m_ppPickedItem = nullptr;
+			}
+			else if (nullptr == m_ppPickedItem && nullptr != pItem)
+			{
+				Set_Inventory(pItem);
+				pSlot->Set_Item(nullptr);
 			}
 		}
+	}
 }
 
 void CInventory::Set_ItemEquip()
@@ -297,7 +367,7 @@ void CInventory::Set_ItemEquip()
 	ScreenToClient(g_hWnd, &ptMouse);
 
 	RECT rc = { _long(m_InvPosArr[0][0].x - 32), _long(m_InvPosArr[0][0].y - 32)
-		,_long(m_InvPosArr[m_iMaxRow-1][m_iMaxCol-1].x + 32), _long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].y + 32) };
+		,_long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].x + 32), _long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].y + 32) };
 
 	if (!PtInRect(&rc, ptMouse))
 		return;
@@ -314,11 +384,7 @@ void CInventory::Set_ItemEquip()
 			{
 				if (nullptr != m_Inventory[i][j])
 				{
-				
 					CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-					CItem*		pRight = pPlayer->Get_Right(); 
-					if (nullptr != pRight)
-						pRight->Set_State(STATE_INV);
 
 					CItem*	pItem = static_cast<CInvImg*>(m_Inventory[i][j])->Get_TargetObj();
 					pItem->Set_Equipped();
@@ -326,8 +392,13 @@ void CInventory::Set_ItemEquip()
 					switch (pItem->Get_ItemType())
 					{
 					case ITEM_WEAPON:
-						pPlayer->Set_Right(pItem);						
-		
+					{
+						CItem*		pRight = pPlayer->Get_Right();
+						if (nullptr != pRight)
+							pRight->Set_State(STATE_INV);
+
+						pPlayer->Set_Right(pItem);
+
 						if (WT_AD == static_cast<CWeapon*>(pItem)->Get_WeaponType())
 						{
 							CCrossHair* pCrossHair = dynamic_cast<CCrossHair*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CrossHair"));
@@ -338,16 +409,27 @@ void CInventory::Set_ItemEquip()
 							CCrossHair* pCrossHair = dynamic_cast<CCrossHair*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CrossHair"));
 							pCrossHair->Set_CrossHair(false);
 						}
-
-
-						break;
+					}
+					break;
 					case ITEM_POTION:
+					{
+						CPotion* pPotion = static_cast<CPotion*>(pItem);
+						pPotion->Cal_Cnt(-1);
+
+						if (0 >= pPotion->Get_Cnt())
+						{
+							m_Inventory[i][j]->Set_Dead(true);
+							m_Inventory[i][j] = nullptr;
+						}
+					}
+					break;
+					case ITEM_KEY:
 					{
 						m_Inventory[i][j]->Set_Dead(true);
 						m_Inventory[i][j] = nullptr;
 					}
 					break;
-					case ITEM_KEY:
+					case ITEM_FOOD:
 					{
 						m_Inventory[i][j]->Set_Dead(true);
 						m_Inventory[i][j] = nullptr;
@@ -361,7 +443,53 @@ void CInventory::Set_ItemEquip()
 						m_Inventory[i][j] = nullptr;
 					}
 					break;
+					case ITEM_SHIELD:
+					{
+						CItem*		pLeft = pPlayer->Get_Left();
+						if (nullptr != pLeft)
+							pLeft->Set_State(STATE_INV);
 
+						pPlayer->Set_Left(pItem);
+
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_SHIELD);
+					}
+					break;
+					case ITEM_HELMAT:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_HELMAT);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					//case ITEM_LEFTHAND:
+					//{
+					//	CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+					//	pWindow->Set_Item(m_Inventory[i][j], ITEM_LEFTHAND);
+					//	m_Inventory[i][j] = nullptr;
+					//}
+					//break;
+					case ITEM_NECKLACE:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_NECKLACE);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					case ITEM_PANTS:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_PANTS);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					case ITEM_RING:
+					{
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_RING);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
 					}
 				}
 			}
@@ -396,13 +524,13 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 			}
 			if (1 == m_iClickedCnt)	// one click
 			{
-				Pick();	 
+				Pick();
 			}
 			m_fClickTime = 0.f;
 			m_iClickedCnt = 0;
 		}
 	}
-	else	
+	else
 	{
 		if (m_ppPickedItem != nullptr)
 		{

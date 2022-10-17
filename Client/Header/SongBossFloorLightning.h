@@ -35,10 +35,9 @@ private:
 	CAnimator*				m_pAnimtorCom = nullptr;
 
 private:
-	_float					m_fFrame = 0.f;
 
 	_bool					m_bReady = false;
-	_vec3					m_vPlayerPos = { 0.f,0.f,0.f };
+	_vec3					vFloorPos = { 0.f,0.f,0.f };
 
 	_uint					m_iBulletCount;
 

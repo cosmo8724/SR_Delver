@@ -3,13 +3,13 @@
 
 #include "Export_Function.h"	
 #include "BulletMgr.h"
+#include "ParticleMgr.h"
 
 CSongBossFloor::CSongBossFloor(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
 	, m_iBulletCount(0)
 	, m_iTransparency(0)
 	, m_fTransparencyTimeAcc(0.f)
-	, m_fAttackTimeAcc(0.f)
 {
 }
 
@@ -26,12 +26,12 @@ HRESULT CSongBossFloor::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iAttack = 3;
+	m_tInfo.iAttack = 5;
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pTransCom->Rotation(ROT_X, 45.555f);
 
 	m_iBulletCount = iBulletCount;
-	m_iTransparency = 90;
+	m_iTransparency = 40;
 
 	return S_OK;
 }
@@ -116,25 +116,23 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 	{
 		m_iTransparency += 10; // 투명도가 진해지는 숫자 > 10
 		m_fTransparencyTimeAcc = 0.f;
-		//m_bStartLightning = true;
+		
 		if (m_iTransparency >= 250)
 		{
 			m_bStartLightning = true;
-			m_iTransparency = 0;
+			m_iTransparency = 40;
 		}
 	}
 
 	// 처음에는 충돌처리를 하지 않았다가, 번개가 내리치는 순간 충돌처리
 	if (m_bStartLightning)
 	{
-		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.2f,
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 0.f, 1.f });
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_9);
 
-		m_fAttackTimeAcc += fTimeDelta;
-		if (0.3f < m_fAttackTimeAcc)
-		{
-			m_pColliderCom->Set_Free(false); // TODO 재사용 불가능 상태
-			m_fAttackTimeAcc = 0.f;
-		}
+		m_pColliderCom->Set_Free(false);
+		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 	}
 }
 
@@ -206,10 +204,9 @@ void CSongBossFloor::Reset()
 	m_fFrame = 0.f;
 	m_bReady = false;
 
-	m_iTransparency = 0;
+	m_iTransparency = 40;
 	m_bStartLightning = false;
 	m_fTransparencyTimeAcc = 0.f;
-	m_fAttackTimeAcc = 0.f;
 
 	m_pColliderCom->Set_Free(true);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, FLOOR_SONGBOSS);

@@ -63,12 +63,12 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 		if (1.f < m_fDotTime)
 		{
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-			
+
 			// sh_Test
 			PLAYERINFO tPlayerInfo = pPlayer->Get_PlayerInfo();
 			if (tPlayerInfo.iHp >= tPlayerInfo.iHpMax)
 				return iResult;
-			
+
 			pPlayer->Set_HpPlus();
 			m_iDot++;
 			m_fDotTime = 0.f;
@@ -134,18 +134,18 @@ HRESULT CPotion::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ÅØ½ºÃÄ ÄÄ°´Ã¼ ÄÄÆ÷³ÍÆ®
+	// ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½Ä°ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Potion_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_Potion_Texture", pComponent });
 	m_textureTag = L"Proto_Potion_Texture";
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });

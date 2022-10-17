@@ -2,9 +2,7 @@
 #include "..\Header\GreenSlime.h"
 
 #include "Export_Function.h"
-#include "WandBullet.h"
 #include "MiniMap.h"
-
 
 #include "Player.h"
 #include "ParticleMgr.h"
@@ -253,7 +251,6 @@ void CGreenSlime::Dead()
 
 void CGreenSlime::CollisionEvent(CGameObject* pObj)
 {
-
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 	if(pPlayer != pObj)
 		m_bHit = true;		
