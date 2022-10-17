@@ -85,7 +85,7 @@ void CEquipWindow::LateUpdate_Object(void)
 	//{
 	//	MSG_BOX("È­±ä");
 	//}
-	
+
 	Engine::CGameObject::LateUpdate_Object();
 
 
@@ -165,7 +165,7 @@ void CEquipWindow::Set_Item(CItem * pItem, ITEMTYPE eType)
 	{
 	case ITEM_ARMOR:
 	{
-		if (m_Window[1][0] != nullptr) 
+		if (m_Window[1][0] != nullptr)
 		{
 			CInventory* pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
 			pInv->Set_Inventory(m_Window[1][0]);
@@ -182,7 +182,25 @@ void CEquipWindow::Set_Item(CItem * pItem, ITEMTYPE eType)
 		pPlayer->Set_Info(pItem->Get_ItemInfo(), 1);
 	}
 	break;
+	case ITEM_SHIELD:
+	{
+		if (m_Window[0][1] != nullptr)
+		{
+			CInventory* pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+			pInv->Set_Inventory(m_Window[0][1]);
 
+			CItem* pItem = static_cast<CInvImg*>(m_Window[0][1])->Get_TargetObj();
+			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+			pPlayer->Set_Info(pItem->Get_ItemInfo(), -1);
+		}
+
+		m_Window[0][1] = pItem; // InvImg
+		static_cast<CInvImg*>(pItem)->Set_InvPos(m_PosArr[0][1].x, m_PosArr[0][1].y);
+		CItem* pItem = static_cast<CInvImg*>(m_Window[0][1])->Get_TargetObj();
+		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		pPlayer->Set_Info(pItem->Get_ItemInfo(), 1);
+	}
+	break;
 	}
 }
 

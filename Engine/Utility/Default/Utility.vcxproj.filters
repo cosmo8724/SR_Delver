@@ -106,6 +106,9 @@
     <Filter Include="01. GameObject\Item\Weapon">
       <UniqueIdentifier>{13d47400-4dae-4c7f-9842-40f74e1e471e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Component\00. VIBuffer\07. Shader">
+      <UniqueIdentifier>{ad2381e1-4d34-419b-bfe3-25a63ecc77cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Header\TriCol.h">
@@ -204,6 +207,9 @@
     <ClInclude Include="..\..\Header\SphereTex.h">
       <Filter>00. Component\00. VIBuffer\05. SphereTex</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Header\Shader.h">
+      <Filter>00. Component\00. VIBuffer\07. Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\TriCol.cpp">
@@ -298,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\SphereTex.cpp">
       <Filter>00. Component\00. VIBuffer\05. SphereTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Shader.cpp">
+      <Filter>00. Component\00. VIBuffer\07. Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

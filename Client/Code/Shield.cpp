@@ -18,7 +18,7 @@ HRESULT CShield::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-										  
+
 	m_eState = STATE_GROUND;
 	m_tInfo.iDef = 5;
 	m_eItemType = ITEM_SHIELD;
@@ -196,6 +196,6 @@ void CShield::Attack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_pColliderCom->Set_Free(true);
 	}
-	else
-		Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);
+	/*else
+	Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);*/
 }
