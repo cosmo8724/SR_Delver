@@ -58,7 +58,7 @@ public:
 	_vec3			m_vScale;
 	_vec3			m_vAngle;
 	_matrix			m_matWorld;
-	_float			m_fAngle = 0.f;
+	_float			m_fAngle;
 	_float			m_fAngleSpeed;
 
 	_vec3			m_vOldPos;

@@ -124,17 +124,30 @@ _int CUserParticle::Update_Object(const _float & fTimeDelta)
 	}
 
 
-
-	_float frameEnd = (_float)m_pTextureCom->Get_FrameEnd();
-	m_fFrame += frameEnd * fTimeDelta * m_fFrameSpeed;
-
-	if (m_fFrame >= frameEnd)
+	if (!m_bFrameRand)
 	{
-		if (m_bFrameRepeat)
-			m_fFrame = 0.f;
-		else
-			m_fFrame = frameEnd;
+		_float frameEnd = (_float)m_pTextureCom->Get_FrameEnd();
+		m_fFrame += frameEnd * fTimeDelta * m_fFrameSpeed;
+
+		if (m_fFrame >= frameEnd)
+		{
+			if (m_bFrameRepeat)
+				m_fFrame = 0.f;
+			else
+				m_fFrame = frameEnd;
+		}
 	}
+	else
+	{
+		if (!m_bFrameSet)
+		{
+			_float frameEnd = (_float)m_pTextureCom->Get_FrameEnd();
+			m_fFrame = rand() % (_int)(frameEnd + 1);
+			m_bFrameSet = true;
+		}
+
+	}
+	
 
 	int iResult = CPSystem::Update_Object(fTimeDelta);
 	update(fTimeDelta);

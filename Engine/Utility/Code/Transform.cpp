@@ -9,6 +9,7 @@ CTransform::CTransform()
 	, m_vAngle(0.f, 0.f, 0.f)
 	,m_fAngleSpeed(1.f)
 	,m_fAttackSpeed(3.f)
+	, m_fAngle(0.f)
 {
 	ZeroMemory(m_vInfo, sizeof(m_vInfo));
 	D3DXMatrixIdentity(&m_matWorld);
@@ -244,6 +245,7 @@ void	CTransform::Prepare_Attack()
 {
 	m_bFinished = false; 
 	m_fAttackAngle = 0.f;
+	m_fAttackSpeed = 3.f;
 }
 _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {

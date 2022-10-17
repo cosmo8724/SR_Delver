@@ -40,6 +40,11 @@ public:
 		, _bool		_bRand = false						// »ö ·£´ý ¿©ºÎ
 		);
 
+
+	void		Add_Info_Spot(_bool bRandFrame=false)
+	{
+		m_bFrameRand = bRandFrame;
+	}
 	// Set Info for Spot Type ( test )
 	//void			Set_Info_Spot(
 	//								CGameObject*	pObj			= nullptr
@@ -83,5 +88,6 @@ private:
 	_bool			m_bFrameRepeat = false;
 	_bool			m_bRand = false;
 
+	_bool			m_bFrameRand = false;
 };
 

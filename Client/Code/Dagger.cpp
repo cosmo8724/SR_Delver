@@ -225,15 +225,16 @@ void CDagger::Attack(const _float & fTimeDelta)
 		return;
 
 	cout << m_pTransCom->Get_AttackAngle() << endl;
-	//if (9.f <= m_pTransCom->Get_AttackAngle() && !m_bParticle)
-	//{
-	//	
-	//	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { -1.f, 1.f, 0.f },
-	//		0.5f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
-	//	CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_10);
+	if (-10.f > m_pTransCom->Get_AttackAngle() && !m_bParticle)
+	{
+		
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { -1.f, 1.f, 0.f },
+			0.1f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_10);
 
-	//	m_bParticle = true;
-	//}
+		m_bParticle = true;
+	}
 
 
 	if (m_pTransCom->Item_Attack(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer()))
