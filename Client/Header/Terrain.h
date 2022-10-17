@@ -35,7 +35,7 @@ private:
 	CTerrainTex*		m_pBufferCom = nullptr;
 	CTransform*		m_pTransCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
-
+	
 	_vec3				m_vDirection;
 	_bool				m_bWireFrame = false;
 	_int				m_iTextureIndex = 0;

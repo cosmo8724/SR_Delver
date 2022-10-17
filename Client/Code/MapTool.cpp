@@ -1,9 +1,11 @@
 #include "stdafx.h"
+#include "../Default/ImGui/ImGuizmo.h"
 #include "../Default/ImGui/ImGuiFileDialog.h"
 #include "Export_Function.h"
 #include "MapTool.h"
 #include "Terrain.h"
 #include "Block.h"
+#include "DynamicCamera.h"
 
 
 CMapTool::CMapTool(LPDIRECT3DDEVICE9 gGarphicDev)
@@ -18,12 +20,21 @@ CMapTool::~CMapTool()
 		Safe_Delete_Array(m_vecObjTags[i]);
 	m_vecObjTags.clear();
 
+	for (size_t i = 0; i < m_vecBlockTags.size(); i++)
+		Safe_Delete_Array(m_vecBlockTags[i]);
+	m_vecBlockTags.clear();
+
+	for (size_t i = 0; i < m_vecTerrainTags.size(); i++)
+		Safe_Delete_Array(m_vecTerrainTags[i]);
+	m_vecTerrainTags.clear();
+
 	Safe_Release(m_pGraphicDev);
 }
 
 HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 {
 #pragma region Terrain Tool
+	/*
 	ImGui::Begin("Terrain Settings");
 	static _bool	bWireFrame = false;
 
@@ -94,15 +105,16 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 	}
 
 	ImGui::End();
+	*/
 #pragma endregion Terrain Tool
 
 #pragma region Map Tool
 	ImGui::Begin("Map Tool");
 
-	if (!pGameObject)
-		ImGui::Text("Create Terrain First.");
-	else
-	{
+	//if (!pGameObject)
+	//	ImGui::Text("Create Terrain First.");
+	//else
+	//{
 		static _int	iSelect = 0;
 		static BLOCKTYPE	eType = BLOCKTYPE_END;
 
@@ -205,6 +217,7 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 		}
 
 		ImGui::NewLine();
+
 		if (ImGui::CollapsingHeader("Place Blocks", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			static wstring wstrObjName = L"";
@@ -241,7 +254,7 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 					m_vecObjTags.push_back(szObjTag);
 
 					//	CGameObject
-					CGameObject* pCloneBlock = (CBlock::Create(*dynamic_cast<CBlock*>(pTempBlock)));//new CBlock(*dynamic_cast<CBlock*>(pTempBlock));
+					CGameObject* pCloneBlock = (CBlock::Create(*dynamic_cast<CBlock*>(pTempBlock)));
 					dynamic_cast<CBlock*>(pCloneBlock)->SetBlock();
 					FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pCloneBlock), E_FAIL);
 					++m_iBlockCnt;
@@ -528,10 +541,320 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 				m_iBlockCnt--;
 			}
 		}
-	}
-
+	//}
 	ImGui::End();
 #pragma endregion Map Tool
+
+	return S_OK;
+}
+
+HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
+{
+	CLayer*		pLayer = Engine::Get_Layer(L"Layer_Tool_GameLogic");
+	CBlock*		pBlock = nullptr;
+	static _int	iSelectObject = -1;
+	static _int	iSelectTexture = 0;
+	static BLOCKTYPE	eType = BLOCKTYPE_END;
+	_int			iObjectCnt = 0;
+	char**			szObjects = nullptr;
+
+	ImGui::Begin("Terrain Setting2");
+
+	// Create Block
+	if (ImGui::CollapsingHeader("Terrain Size", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::SliderInt("Width", &m_iWidth, 0, 200);
+		ImGui::SliderInt("Depth", &m_iDepth, 0, 200);
+		ImGui::SliderInt("Interval", &m_iInterval, 0, 10);
+		ImGui::NewLine();
+		if (ImGui::Button("Create"))
+		{
+			m_iTerrainBlockCnt = 0;
+			CBlock*	pParentBlock = nullptr;
+			_int iParentIndexX = 0;
+			_int iParentIndexZ = 0;
+
+			//_vec3	vPos = { float(m_iWidth / 2 * m_iInterval * 2), 0.f, float(m_iDepth / 2 * m_iInterval * 2) };
+			_vec3	vPos = { 0.f, 0.f, 0.f };
+			pParentBlock = CBlock::Create(m_pGraphicDev, &vPos);
+			pParentBlock->m_pTransCom->Set_Scale((float)m_iInterval, (float)m_iInterval, (float)m_iInterval);
+			pParentBlock->SetBlockType(eType);
+			pParentBlock->SetClone(true);
+			pParentBlock->SetBlock();
+			TCHAR	*	szTerrainTag = new TCHAR[MAX_PATH];
+			wsprintf(szTerrainTag, L"Terrain_%d", m_iTerrainCnt);
+			m_vecTerrainTags.push_back(szTerrainTag);
+			pLayer->Add_GameObject(m_vecTerrainTags.back(), pParentBlock);
+			m_iTerrainCnt++;
+
+			for (_int z = 0; z < m_iDepth; ++z)
+			{
+				for (_int x = 0; x < m_iWidth; ++x)
+				{
+					if (x == iParentIndexX && z == iParentIndexZ)
+						continue;
+
+					_vec3	vPos = { float(x * 2), 0.f, float(z * 2) };
+					pBlock = CBlock::Create(m_pGraphicDev, &vPos);
+					pBlock->SetParentBlock(pParentBlock);
+					pBlock->SetBlockType(eType);
+					pBlock->SetTextureIndex(iSelectTexture);
+					pBlock->SetClone(true);
+					pBlock->SetBlock();
+
+					TCHAR	*	szObjTag = new TCHAR[MAX_PATH];
+					wsprintf(szObjTag, L"Terrain_%d_Block_%d", m_iTerrainCnt - 1, m_iTerrainBlockCnt);
+					m_vecBlockTags.push_back(szObjTag);
+					pLayer->Add_GameObject(m_vecBlockTags.back(), pBlock);
+					m_iBlockCnt++;
+					m_iTerrainBlockCnt++;
+				}
+			}
+		}
+	}
+	// *Create Block
+
+	// Terrain Select Box
+	if (ImGui::CollapsingHeader("Setting", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGuizmo::BeginFrame();
+
+		static ImGuizmo::OPERATION CurGuizmoType(ImGuizmo::TRANSLATE);
+		static CBlock*	pCurBlock = nullptr;
+		iObjectCnt = m_vecTerrainTags.size();
+		szObjects = new char*[iObjectCnt];
+		for (_int i = 0; i < iObjectCnt; ++i)
+		{
+			const TCHAR*	wszTerrainTag = m_vecTerrainTags[i];
+			size_t	iLength = lstrlen(wszTerrainTag) + 1;
+			szObjects[i] = new char[iLength];
+			size_t Temp;
+			wcstombs_s(&Temp, szObjects[i], iLength, wszTerrainTag, iLength);
+		}
+		ImGui::ListBox("Terrain List", &iSelectObject, szObjects, iObjectCnt);
+
+		if (iSelectObject != -1)
+		{
+			pCurBlock = dynamic_cast<CBlock*>(pLayer->Get_GameObject(m_vecTerrainTags[iSelectObject]));
+		}
+
+		if (pCurBlock)
+		{
+			CTransform*	pTransCom = dynamic_cast<CTransform*>(pCurBlock->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+			_matrix	matWorld;
+			pTransCom->Get_WorldMatrix(&matWorld);
+			_vec3		vPos, vScale, vAngle;
+			ImGuizmo::DecomposeMatrixToComponents(matWorld, vPos, vAngle, vScale);
+			vAngle = { D3DXToDegree(vAngle.x), D3DXToDegree(vAngle.y) , D3DXToDegree(vAngle.z) };
+			vAngle /= 60.000f;
+
+			ImGui::Text("ImGuizmo Type");
+			if (ImGui::RadioButton("Translate", CurGuizmoType == ImGuizmo::TRANSLATE))
+				CurGuizmoType = ImGuizmo::TRANSLATE;
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Scale", CurGuizmoType == ImGuizmo::SCALE))
+				CurGuizmoType = ImGuizmo::SCALE;
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Rotate", CurGuizmoType == ImGuizmo::ROTATE))
+				CurGuizmoType = ImGuizmo::ROTATE;
+
+			CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Tool_Environment", L"DynamicCamera"));
+			_matrix	matView, matProj;
+			pCamera->Get_ViewMatrix(matView);
+			pCamera->Get_ProjectMatrix(matProj);
+
+			ImGui::InputFloat3("Position", &vPos.x);
+			ImGui::InputFloat3("Scale", &vScale.x);
+			ImGui::InputFloat3("Angle", &vAngle.x);
+
+			vAngle *= 60.000f;
+			vAngle = { D3DXToRadian(vAngle.x), D3DXToRadian(vAngle.y), D3DXToRadian(vAngle.z) };
+			ImGuizmo::RecomposeMatrixFromComponents(vPos, vAngle, vScale, matWorld);
+
+			ImGuiIO& io = ImGui::GetIO();
+			RECT rt;
+			GetClientRect(g_hWnd, &rt);
+			POINT lt{ rt.left, rt.top };
+			ClientToScreen(g_hWnd, &lt);
+			ImGuizmo::SetRect(float(lt.x), float(lt.y), io.DisplaySize.x, io.DisplaySize.y);
+
+			ImGuizmo::Manipulate(matView, matProj, CurGuizmoType, ImGuizmo::WORLD, matWorld);
+			ImGuizmo::DecomposeMatrixToComponents(matWorld, vPos, vAngle, vScale);
+			memcpy(&pTransCom->m_vInfo[INFO_POS], vPos, sizeof(vPos));
+			memcpy(&pTransCom->m_vAngle, vAngle * D3DX_PI / 180.f, sizeof(vAngle));
+			memcpy(&pTransCom->m_vScale, vScale, sizeof(vScale));
+
+			ImGui::BulletText("Current Texture : %d (0 ~ %d)", pCurBlock->GetTextureIndex(), pCurBlock->m_pTextureCom->Get_FrameEnd());
+			ImGui::SameLine();
+			if (ImGui::Button("<"))
+				pCurBlock->MinusTexture();
+			ImGui::SameLine();
+			if (ImGui::Button(">"))
+				pCurBlock->PlusTexture();
+
+			if (ImGui::Button("Apply") || Mouse_Down(DIM_RB))
+			{
+				iSelectObject = -1;
+				pCurBlock = nullptr;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Delete") && pCurBlock)
+			{
+				pLayer->Delete_GameObject(m_vecTerrainTags[iSelectObject]);
+				Safe_Delete_Array(m_vecTerrainTags[iSelectObject]);
+				vector<TCHAR*>::iterator iter = m_vecTerrainTags.begin();
+				iter += iSelectObject;
+				iter = m_vecTerrainTags.erase(iter);
+
+				iSelectObject = -1;
+				pCurBlock = nullptr;
+			}
+		}
+	}
+	// *Terrain Select Box
+
+	// Choose Texture
+	if (ImGui::CollapsingHeader("Set Block Texture", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		static CBlock* pCurBlock = nullptr;
+
+		if (iSelectObject != -1)
+		{
+			pCurBlock = dynamic_cast<CBlock*>(pLayer->Get_GameObject(m_vecTerrainTags[iSelectObject]));
+		}
+
+		ImGui::BulletText("Cave");
+		CTexture*	pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cave_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_CAVE;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Cold");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cold_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_COLD;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Dungeon");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Dungeon_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_DUNGEON;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Room");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Room_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_ROOM;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Sewer");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Sewer_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_SEWER;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Temple");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Temple_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_TEMPLE;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+	}
+	// *Choose Texture
+
+	for (_int i = 0; i < iObjectCnt; ++i)
+		Safe_Delete_Array(szObjects[i]);
+	Safe_Delete_Array(szObjects);
+
+	ImGui::End();
 
 	return S_OK;
 }

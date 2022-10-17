@@ -236,7 +236,7 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
-	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	/*for (_int i = 0; i < BLOCKTYPE_END; ++i)
 	{
 		if (i == BLOCK_CAVE)
 		{
@@ -268,7 +268,7 @@ void CStage::Render_Scene(void)
 			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
 				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
 		}
-	}
+	}*/
 }
 
 HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
@@ -345,7 +345,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks
 	{
-		string	strPath = "..\\..\\Data\\Map.dat";
+		string	strPath = "..\\..\\Data\\Map_Test.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -402,7 +402,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		string	strPath = "..\\..\\Data\\EcoObject.dat";
+		string	strPath = "..\\..\\Data\\EcoObject_Test.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
