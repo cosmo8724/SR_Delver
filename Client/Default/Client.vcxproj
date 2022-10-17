@@ -308,7 +308,6 @@
     <ClCompile Include="..\Code\Equipment.cpp" />
     <ClCompile Include="..\Code\EquipWindow.cpp" />
     <ClCompile Include="..\Code\ExplodeBullet.cpp" />
-    <ClCompile Include="..\Code\FistBulle.cpp" />
     <ClCompile Include="..\Code\Fist.cpp" />
     <ClCompile Include="..\Code\FistBullet.cpp" />
     <ClCompile Include="..\Code\FontLogo.cpp" />
