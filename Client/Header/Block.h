@@ -31,6 +31,8 @@ public:
 	void				MinusTexture() { if (m_iTexture > 0) m_iTexture--; }
 	_int				GetTextureIndex() { return m_iTexture; }
 	void				SetBlockType(BLOCKTYPE eType) { m_eCurrentType = eType; }
+	const BLOCKTYPE&	GetBlockType() { return m_eCurrentType; }
+	void				SetClone(_bool bIsClone) { m_bClone = bIsClone; }
 
 public:
 	virtual HRESULT Ready_Object(_vec3* vPos = nullptr);
@@ -41,7 +43,22 @@ public:
 private:
 	HRESULT			Add_Component(void);
 	void				Chase_MousePT();
+	void				Chase_Block();
+	void				MultiParentWorld();
 	HRESULT			Change_BlockType();
+	_bool				Check_ParentDead() {
+		if (m_pParentBlock)
+		{
+			if (m_pParentBlock->m_bDeleted)
+			{
+				m_bDeleted = true;
+				return true;
+			}
+			return false;
+		}
+		else
+			return false;
+	}
 
 public:
 	CBlock*			m_pParentBlock = nullptr;
@@ -58,9 +75,12 @@ public:
 	_bool				m_bClone = false;
 	_bool				m_bChanging = false;
 	_bool				m_bCreateIcon = false;
+	_bool				m_bDeleted = false;
 
 	_int				m_iTexture = 0;
 	_float				m_fScale = 1.f;
+
+	_matrix			m_matOriginWorld;
 
 public:
 	static CBlock*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3* vPos = nullptr);

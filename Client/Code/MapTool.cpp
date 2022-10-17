@@ -34,6 +34,7 @@ CMapTool::~CMapTool()
 HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 {
 #pragma region Terrain Tool
+	/*
 	ImGui::Begin("Terrain Settings");
 	static _bool	bWireFrame = false;
 
@@ -104,15 +105,16 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 	}
 
 	ImGui::End();
+	*/
 #pragma endregion Terrain Tool
 
 #pragma region Map Tool
 	ImGui::Begin("Map Tool");
 
-	if (!pGameObject)
-		ImGui::Text("Create Terrain First.");
-	else
-	{
+	//if (!pGameObject)
+	//	ImGui::Text("Create Terrain First.");
+	//else
+	//{
 		static _int	iSelect = 0;
 		static BLOCKTYPE	eType = BLOCKTYPE_END;
 
@@ -215,6 +217,7 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 		}
 
 		ImGui::NewLine();
+
 		if (ImGui::CollapsingHeader("Place Blocks", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			static wstring wstrObjName = L"";
@@ -251,7 +254,7 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 					m_vecObjTags.push_back(szObjTag);
 
 					//	CGameObject
-					CGameObject* pCloneBlock = (CBlock::Create(*dynamic_cast<CBlock*>(pTempBlock)));//new CBlock(*dynamic_cast<CBlock*>(pTempBlock));
+					CGameObject* pCloneBlock = (CBlock::Create(*dynamic_cast<CBlock*>(pTempBlock)));
 					dynamic_cast<CBlock*>(pCloneBlock)->SetBlock();
 					FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pCloneBlock), E_FAIL);
 					++m_iBlockCnt;
@@ -538,8 +541,7 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 				m_iBlockCnt--;
 			}
 		}
-	}
-
+	//}
 	ImGui::End();
 #pragma endregion Map Tool
 
@@ -551,11 +553,14 @@ HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 	CLayer*		pLayer = Engine::Get_Layer(L"Layer_Tool_GameLogic");
 	CBlock*		pBlock = nullptr;
 	static _int	iSelectObject = -1;
+	static _int	iSelectTexture = 0;
+	static BLOCKTYPE	eType = BLOCKTYPE_END;
 	_int			iObjectCnt = 0;
 	char**			szObjects = nullptr;
 
 	ImGui::Begin("Terrain Setting2");
 
+	// Create Block
 	if (ImGui::CollapsingHeader("Terrain Size", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::SliderInt("Width", &m_iWidth, 0, 200);
@@ -566,11 +571,16 @@ HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 		{
 			m_iTerrainBlockCnt = 0;
 			CBlock*	pParentBlock = nullptr;
-			_int iParentIndexX = m_iWidth / 2;
-			_int iParentIndexZ = m_iDepth / 2;
+			_int iParentIndexX = 0;
+			_int iParentIndexZ = 0;
 
-			_vec3	vPos = { float(m_iWidth / 2 * m_iInterval * 2), 0.f, float(m_iDepth / 2 * m_iInterval * 2) };
+			//_vec3	vPos = { float(m_iWidth / 2 * m_iInterval * 2), 0.f, float(m_iDepth / 2 * m_iInterval * 2) };
+			_vec3	vPos = { 0.f, 0.f, 0.f };
 			pParentBlock = CBlock::Create(m_pGraphicDev, &vPos);
+			pParentBlock->m_pTransCom->Set_Scale((float)m_iInterval, (float)m_iInterval, (float)m_iInterval);
+			pParentBlock->SetBlockType(eType);
+			pParentBlock->SetClone(true);
+			pParentBlock->SetBlock();
 			TCHAR	*	szTerrainTag = new TCHAR[MAX_PATH];
 			wsprintf(szTerrainTag, L"Terrain_%d", m_iTerrainCnt);
 			m_vecTerrainTags.push_back(szTerrainTag);
@@ -584,9 +594,13 @@ HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 					if (x == iParentIndexX && z == iParentIndexZ)
 						continue;
 
-					_vec3	vPos = { float(x * m_iInterval * 2), 0.f, float(z * m_iInterval * 2) };
+					_vec3	vPos = { float(x * 2), 0.f, float(z * 2) };
 					pBlock = CBlock::Create(m_pGraphicDev, &vPos);
 					pBlock->SetParentBlock(pParentBlock);
+					pBlock->SetBlockType(eType);
+					pBlock->SetTextureIndex(iSelectTexture);
+					pBlock->SetClone(true);
+					pBlock->SetBlock();
 
 					TCHAR	*	szObjTag = new TCHAR[MAX_PATH];
 					wsprintf(szObjTag, L"Terrain_%d_Block_%d", m_iTerrainCnt - 1, m_iTerrainBlockCnt);
@@ -598,6 +612,7 @@ HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 			}
 		}
 	}
+	// *Create Block
 
 	// Terrain Select Box
 	if (ImGui::CollapsingHeader("Setting", ImGuiTreeNodeFlags_DefaultOpen))
@@ -680,9 +695,160 @@ HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 			if (ImGui::Button("Apply") || Mouse_Down(DIM_RB))
 			{
 				iSelectObject = -1;
+				pCurBlock = nullptr;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Delete") && pCurBlock)
+			{
+				pLayer->Delete_GameObject(m_vecTerrainTags[iSelectObject]);
+				Safe_Delete_Array(m_vecTerrainTags[iSelectObject]);
+				vector<TCHAR*>::iterator iter = m_vecTerrainTags.begin();
+				iter += iSelectObject;
+				iter = m_vecTerrainTags.erase(iter);
+
+				iSelectObject = -1;
+				pCurBlock = nullptr;
 			}
 		}
 	}
+	// *Terrain Select Box
+
+	// Choose Texture
+	if (ImGui::CollapsingHeader("Set Block Texture", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		static CBlock* pCurBlock = nullptr;
+
+		if (iSelectObject != -1)
+		{
+			pCurBlock = dynamic_cast<CBlock*>(pLayer->Get_GameObject(m_vecTerrainTags[iSelectObject]));
+		}
+
+		ImGui::BulletText("Cave");
+		CTexture*	pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cave_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_CAVE;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Cold");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cold_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_COLD;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Dungeon");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Dungeon_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_DUNGEON;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Room");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Room_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_ROOM;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Sewer");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Sewer_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_SEWER;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+
+		ImGui::NewLine();
+		ImGui::BulletText("Temple");
+		pTexture = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Temple_CubeExampleImage"));
+
+		for (size_t i = 0; i < pTexture->Get_Texture().size(); ++i)
+		{
+			if (ImGui::ImageButton((void*)pTexture->Get_Texture()[i], ImVec2(50.f, 50.f)))
+			{
+				iSelectTexture = i;
+				eType = BLOCK_TEMPLE;
+				if (pCurBlock)
+				{
+					pCurBlock->SetBlockType(eType);
+					pCurBlock->SetTextureIndex(iSelectTexture);
+				}
+			}
+			if (i == 0 || (i + 1) % 6)
+				ImGui::SameLine();
+		}
+		Safe_Release(pTexture);
+	}
+	// *Choose Texture
 
 	for (_int i = 0; i < iObjectCnt; ++i)
 		Safe_Delete_Array(szObjects[i]);
