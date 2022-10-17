@@ -224,12 +224,6 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	m_matWorld = matScale * matRot * matBill * matTrans * matRev * matPos;
 }
 
-void	CTransform::Prepare_Attack()
-{
-	m_bFinished = false; 
-	m_fAttackAngle = 0.f;
-	m_fAttackSpeed = 3.f;
-}
 _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {
 	_matrix matParent = _matWorld; // �θ������ �÷��̾��� �������

@@ -41,8 +41,9 @@ public:
 		);
 
 
-	void		Add_Info_Spot(_bool bRandFrame=false)
+	void		Add_Info_Spot(_bool bFrameMove=false, _bool bRandFrame=false)
 	{
+		m_bFrameMove = bFrameMove;
 		m_bFrameRand = bRandFrame;
 	}
 

@@ -46,8 +46,9 @@ public:
 	void			Set_Information(_bool _bUse, _int _iIdx, CGameObject* _pObj, ATTRIBUTE _att, PINFO _pInfo
 		, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand);
 	void			ReUse();	// ��ƼŬ�� ������ Ǯ�� ���ư��� ���½�����.
-	void			Add_Info_Spot(_bool bRand)
+	void			Add_Info_Spot(_bool bMove, _bool bRand)
 	{
+		m_bFrameMove = bMove;
 		m_bFrameRand = bRand;
 	}
 
