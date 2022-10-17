@@ -41,6 +41,8 @@ HRESULT CParticleMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle7_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle7/particle7_%d.png", TEX_NORMAL, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle8_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle8/particle8_%d.png", TEX_NORMAL, 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle9_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle9/particle9.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle10_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle10/particle10.png", TEX_NORMAL, 1)), E_FAIL);
+
 
 	return S_OK;
 }
@@ -65,7 +67,6 @@ HRESULT CParticleMgr::Add_GameObject(CLayer * pLayer)
 
 	return S_OK;
 }
-
 
 
 void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)

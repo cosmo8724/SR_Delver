@@ -118,7 +118,7 @@ void CSongBossBullet::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	if (3.f < m_fLifeTime)
+	if (1.f < m_fLifeTime)
 		Reset();
 
 	CGameObject::LateUpdate_Object();
@@ -281,6 +281,6 @@ void CSongBossBullet::Reset()
 	m_fFrame = 0.f;
 	m_bReady = false;
 	m_bOneCheck = false;
-	m_pColliderCom->Set_Free(false);
+	m_pColliderCom->Set_Free(true);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_SONGBOSS);
 }

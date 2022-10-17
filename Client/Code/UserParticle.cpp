@@ -446,9 +446,11 @@ void CUserParticle::update(_float fTimeDelta)
 
 	case PTYPE_TRACER:
 	{
+		m_fSize -= 0.0005f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			// 생존한 파티클만 갱신
+
 			if (iter->bIsAlive)
 			{
 				//iter->vPosition = pCom->Get_Pos();

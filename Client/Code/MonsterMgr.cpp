@@ -150,23 +150,23 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	//m_vecMonster.push_back(pGameObject);
 
 	// SkeletonGhost
-	pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(20.f, 3.f, 20.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(20.f, 3.f, 20.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
 	// GreenSpider
-	pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(5.f, 1.f, 10.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSpider", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
+	//pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(5.f, 1.f, 10.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSpider", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
 
 	//////////////Boss
 	//// SongBoss
-	//pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(10.f, 1.f, 10.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
-	//m_vecMonster.push_back(pGameObject);
+	pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(10.f, 1.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
 	return E_NOTIMPL;
 }

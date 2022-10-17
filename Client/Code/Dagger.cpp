@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Dagger.h"
 #include "Export_Function.h"
+#include "ParticleMgr.h"
 
 CDagger::CDagger(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CWeapon(pGraphicDev)
@@ -221,10 +222,19 @@ void CDagger::Attack(const _float & fTimeDelta)
 	if (!m_bAttack)
 		return;
 
+	if (!m_bAttackPt)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 0.f },
+			0.2f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_10);
+		m_bAttackPt = true;
+	}
+
 	if (m_pTransCom->Item_Attack(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer()))
 	{
 		m_bAttack = false;
 		m_pColliderCom->Set_Free(true);
+		m_bAttackPt = false;
 	}
 	else
 		Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);
