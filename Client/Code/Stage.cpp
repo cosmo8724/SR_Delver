@@ -229,13 +229,6 @@ void CStage::LateUpdate_Scene(void)
 
 		Engine::CollisionTest(pSour5, bullet);
 	}
-
-
-
-
-
-
-
 	
 	Engine::CScene::LateUpdate_Scene();
 }

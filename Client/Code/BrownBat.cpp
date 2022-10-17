@@ -194,7 +194,7 @@ void CBrownBat::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		CMonster::KnockBack(fTimeDelta, m_fHeight, 20.f);
 		m_bOneCheck = true;
 	}
 
@@ -218,6 +218,7 @@ void CBrownBat::Dead()
 		return;
 
 	m_eCurState = DIE;
+	m_pTransCom->Set_Y(1.f);
 
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,

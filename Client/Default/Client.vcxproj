@@ -193,8 +193,10 @@
     <ClInclude Include="..\Header\GreenSpiderBullet.h" />
     <ClInclude Include="..\Header\GuitarMan.h" />
     <ClInclude Include="..\Header\HealthBar.h" />
+    <ClInclude Include="..\Header\Helmat.h" />
     <ClInclude Include="..\Header\HoodMan.h" />
     <ClInclude Include="..\Header\HPGauge.h" />
+    <ClInclude Include="..\Header\HungerUI.h" />
     <ClInclude Include="..\Header\Icon.h" />
     <ClInclude Include="..\Header\ImGuiMgr.h" />
     <ClInclude Include="..\Header\InfoTool.h" />
@@ -206,6 +208,7 @@
     <ClInclude Include="..\Header\Lantern.h" />
     <ClInclude Include="..\Header\Leaf.h" />
     <ClInclude Include="..\Header\LeafBullet.h" />
+    <ClInclude Include="..\Header\LeftHand.h" />
     <ClInclude Include="..\Header\Loading.h" />
     <ClInclude Include="..\Header\Logo.h" />
     <ClInclude Include="..\Header\MainApp.h" />
@@ -216,16 +219,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h" />
+    <ClInclude Include="..\Header\Necklace.h" />
     <ClInclude Include="..\Header\NPCMgr.h" />
     <ClInclude Include="..\Header\ObjectTool.h" />
     <ClInclude Include="..\Header\ObjectCamera.h" />
+    <ClInclude Include="..\Header\Pants.h" />
     <ClInclude Include="..\Header\ParticleMgr.h" />
     <ClInclude Include="..\Header\ParticleTool.h" />
     <ClInclude Include="..\Header\PinkSlime.h" />
     <ClInclude Include="..\Header\Player.h" />
+    <ClInclude Include="..\Header\PlayerInfo.h" />
     <ClInclude Include="..\Header\Potion.h" />
     <ClInclude Include="..\Header\PSystem.h" />
     <ClInclude Include="..\Header\QuickSlot.h" />
+    <ClInclude Include="..\Header\Ring.h" />
     <ClInclude Include="..\Header\Shield.h" />
     <ClInclude Include="..\Header\SkeletonGhost.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
@@ -309,8 +316,10 @@
     <ClCompile Include="..\Code\GreenSpiderBullet.cpp" />
     <ClCompile Include="..\Code\GuitarMan.cpp" />
     <ClCompile Include="..\Code\HealthBar.cpp" />
+    <ClCompile Include="..\Code\Helmat.cpp" />
     <ClCompile Include="..\Code\HoodMan.cpp" />
     <ClCompile Include="..\Code\HPGauge.cpp" />
+    <ClCompile Include="..\Code\HungerUI.cpp" />
     <ClCompile Include="..\Code\Icon.cpp" />
     <ClCompile Include="..\Code\ImGuiMgr.cpp" />
     <ClCompile Include="..\Code\InfoTool.cpp" />
@@ -322,6 +331,7 @@
     <ClCompile Include="..\Code\Lantern.cpp" />
     <ClCompile Include="..\Code\Leaf.cpp" />
     <ClCompile Include="..\Code\LeafBullet.cpp" />
+    <ClCompile Include="..\Code\LeftHand.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />
     <ClCompile Include="..\Code\Logo.cpp" />
     <ClCompile Include="..\Code\MainApp.cpp" />
@@ -332,19 +342,23 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Code\MiniMap.cpp" />
+    <ClCompile Include="..\Code\Necklace.cpp" />
     <ClCompile Include="..\Code\NPCMgr.cpp" />
     <ClCompile Include="..\Code\ObjectTool.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Default/stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Default/stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="..\Code\ObjectCamera.cpp" />
+    <ClCompile Include="..\Code\Pants.cpp" />
     <ClCompile Include="..\Code\ParticleMgr.cpp" />
     <ClCompile Include="..\Code\ParticleTool.cpp" />
     <ClCompile Include="..\Code\PinkSlime.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
+    <ClCompile Include="..\Code\PlayerInfo.cpp" />
     <ClCompile Include="..\Code\Potion.cpp" />
     <ClCompile Include="..\Code\PSystem.cpp" />
     <ClCompile Include="..\Code\QuickSlot.cpp" />
+    <ClCompile Include="..\Code\Ring.cpp" />
     <ClCompile Include="..\Code\Shield.cpp" />
     <ClCompile Include="..\Code\SkeletonGhost.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />

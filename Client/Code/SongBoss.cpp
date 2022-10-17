@@ -140,19 +140,41 @@ HRESULT CSongBoss::Add_Component(void)
 
 void CSongBoss::SKill_Update(const _float & fTimeDelta)
 {
-	if (Engine::Get_DIKeyState(DIK_7) && 0x08)
+	//int iRrandomNum = rand() % 3;
+
+	//if (iRrandomNum == 0)
+	//{
+	//	m_bBullet = true;
+	//	m_eSkill = SKILL_BULLET;
+	//}
+	//if (iRrandomNum == 1)
+	//{
+	//	m_bStun = true;
+	//	m_iStunCount = 0;
+	//	m_iStunCreate = 0;
+	//	m_eSkill = SKILL_STUN;
+	//}
+	//if (iRrandomNum == 2)
+	//{
+	//	m_bFloor = true;
+	//	m_iFloorCreate = 0;
+	//	m_bFloorOneCheck = true;
+	//	m_eSkill = SKILL_FLOOR;
+	//}
+
+	if (Key_Down(DIK_7))
 	{
 		m_bBullet = true;
 		m_eSkill = SKILL_BULLET;
 	}
-	if (Engine::Get_DIKeyState(DIK_8) && 0x08)
+	if (Key_Down(DIK_8))
 	{
 		m_bStun = true;
 		m_iStunCount = 0;
 		m_iStunCreate = 0;
 		m_eSkill = SKILL_STUN;
 	}
-	if (Engine::Get_DIKeyState(DIK_9) && 0x08)
+	if (Key_Down(DIK_9))
 	{
 		m_bFloor = true;
 		m_iFloorCreate = 0;

@@ -27,12 +27,16 @@ public:
 
 public:
 	void				Set_HpPlus() { m_tInfo.iHp += 1; }
+	void				Set_HpMinus() { m_tInfo.iHp -= 1; }
+
 	void				Set_Stun() { m_tInfo.bStun = true; }
 	void				Set_Slow() { m_tInfo.bSlow = true; }
 
+	void				Set_HungerPlus()  { if (5 > m_tInfo.iHunger) m_tInfo.iHunger++; }
+
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
-	PLAYERINFO			Get_PlayerInfo() { return m_tInfo; } // sh
+ 	PLAYERINFO			Get_PlayerInfo() { return m_tInfo; } // sh
 
 private:
 	HRESULT				Add_Component(void);
@@ -46,6 +50,7 @@ private:
 	void				KnockBack(const _float& fTimeDelta); // sh
 	void				Stun(const _float& fTimeDelta); // sh
 	void				Slow(const _float& fTimeDelta); // sh
+	void				Hunger(const _float& fTimeDelta); // sh
 
 public:
 	void				Set_Right(CItem* pRight) { m_pRight = pRight; }
@@ -79,7 +84,7 @@ private:
 	_float				m_fJTimeDelta = 0.f;
 
 	// Hit
-	_float				InvincibilityTimeAcc = 0.f;
+	_float				m_InvincibilityTimeAcc = 0.f;
 
 	// KnockBack
 	_bool				m_bKnockBack = false;
@@ -89,7 +94,11 @@ private:
 	_float				m_fStunTimeAcc = 0.f;
 
 	// Slow
-	_float				SlowTimeAcc = 0.f;
+	_float				m_fSlowTimeAcc = 0.f;
+
+	// Hunger
+	_float				m_fHungerTimeAcc = 0.f;
+	_bool				m_bHungerOneCheck = false;
 
 	// click Test?
 	_float				m_fLBClick = 0.f;

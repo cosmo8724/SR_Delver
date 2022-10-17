@@ -9,6 +9,7 @@
 #include "Block.h"
 #include "MapUI.h"
 #include "MiniMap.h"
+#include "PlayerInfo.h"
 #include "ParticleMgr.h"
 #include "CrossHair.h"
 #include "CameraMgr.h"
@@ -54,7 +55,7 @@ HRESULT CPlayer::Ready_Object(void)
 	m_tInfo.iDef = 10;
 	m_tInfo.iExp = 0;
 	m_tInfo.iExpMax = 10;
-	m_tInfo.iHunger = 30;
+	m_tInfo.iHunger = 5;
 	m_tInfo.fSpeed = 5.f;
 	m_tInfo.iLevel = 1;
 
@@ -102,20 +103,6 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	// test area //////////////////
 
-	if (Key_Down(DIK_P))
-	{
-		//PTYPE_SPOT
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 0.f, 0.0f, 1.0f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
-
-		//PTYPE_CIRCLING
-	/*	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 1.0f }, 10.f);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_5);*/
-
-	}
-
-
-
 
 
 	///////////////////////////
@@ -127,6 +114,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	KnockBack(fTimeDelta);
 	Stun(fTimeDelta);
 	Slow(fTimeDelta);
+	Hunger(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
@@ -136,7 +124,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
-	InvincibilityTimeAcc += fTimeDelta; // sh
+	m_InvincibilityTimeAcc += fTimeDelta; // sh
 	return 0;
 }
 
@@ -322,6 +310,16 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 			pMap->Set_CloseMap();
 		else
 			pMap->Set_OpenMap();
+	}
+
+	if (Engine::Key_Down(DIK_X))
+	{
+		CPlayerInfo* pPlayerInfo = dynamic_cast<CPlayerInfo*>(Engine::Get_GameObject(L"Layer_UI", L"UI_PlayerInfo"));
+		
+		if (pPlayerInfo->Get_InfoState())
+			pPlayerInfo->Set_CloseInfo();
+		else
+			pPlayerInfo->Set_OpenInfo();
 	}
 
 	// camera test
@@ -570,7 +568,7 @@ void CPlayer::Set_Info(ITEMINFO tInfo, _int iSign)
 	m_tInfo.iAtk	+= iSign * tInfo.iAtk;
 	m_tInfo.iDef	+= iSign * tInfo.iDef;
 	m_tInfo.iHunger += iSign * tInfo.iHunger;
-	m_tInfo.fSpeed += iSign * tInfo.fSpeed;
+	m_tInfo.fSpeed	+= iSign * tInfo.fSpeed;
 }
 
 void CPlayer::OnHit(_int _HpMinus)
@@ -583,7 +581,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	}
 
 	// 플레이어는 2초간 무적
-	if (2.f < InvincibilityTimeAcc)
+	if (2.f < m_InvincibilityTimeAcc)
 	{
 		//CParticleMgr::GetInstance()->Set_Info(this,
 		//	1,
@@ -595,7 +593,7 @@ void CPlayer::OnHit(_int _HpMinus)
 
 		m_bKnockBack = true;
 		m_tInfo.iHp -= _HpMinus;
-		InvincibilityTimeAcc = 0.f;
+		m_InvincibilityTimeAcc = 0.f;
 	}
 }
 
@@ -635,13 +633,18 @@ void CPlayer::Stun(const _float & fTimeDelta)
 	if (!m_tInfo.bStun)
 		return;
 
-	CParticleMgr::GetInstance()->Set_Info(this, 10, 1.f,
-		_vec3({ 1.f, 1.f, 1.f }), 0.7f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f });
-	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_3);
+	if (!m_bStunParticle)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.3f, 1.0f }, 
+												2.f, {1.f, 1.f, 1.f, 1.f}, 5.f, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
+		m_bStunParticle = true;
+	}
 
 	m_fStunTimeAcc += fTimeDelta;
-	if (3.f < m_fStunTimeAcc) // 3.f -> StunTime
+	if (2.f < m_fStunTimeAcc) // 2.f -> StunTime
 	{
+		m_bStunParticle = false;
 		m_tInfo.bStun = false;
 		m_fStunTimeAcc = 0.f;
 	}
@@ -654,12 +657,37 @@ void CPlayer::Slow(const _float & fTimeDelta)
 
 	m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
 
-	SlowTimeAcc += fTimeDelta;
-	if (3.f < SlowTimeAcc)
+	m_fSlowTimeAcc += fTimeDelta;
+	if (3.f < m_fSlowTimeAcc)
 	{
 		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
-		SlowTimeAcc = 0.f;
+		m_fSlowTimeAcc = 0.f;
 		m_tInfo.bSlow = false;
+	}
+}
+
+void CPlayer::Hunger(const _float & fTimeDelta)
+{
+	// test
+	if (Key_Down(DIK_K))
+		if(0 < m_tInfo.iHunger)
+			m_tInfo.iHunger--;
+
+	if (Key_Down(DIK_L))
+		Set_HungerPlus();
+	// test
+
+	if (0 >= m_tInfo.iHunger)
+		m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
+	else
+		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
+
+	m_fHungerTimeAcc += fTimeDelta;
+	if (30.f < m_fHungerTimeAcc)
+	{
+		if(0 < m_tInfo.iHunger)
+			m_tInfo.iHunger--;
+		m_fHungerTimeAcc = 0.f;
 	}
 }
 
