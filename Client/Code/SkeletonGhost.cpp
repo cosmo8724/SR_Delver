@@ -309,10 +309,7 @@ void CSkeletonGhost::CollisionEvent(CGameObject * pObj)
 {
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 	if (pPlayer != pObj)
-	{
 		m_bHit = true;
-		m_bRender = true;
-	}
 }
 
 void CSkeletonGhost::Motion_Change()

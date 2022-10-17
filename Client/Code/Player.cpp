@@ -54,7 +54,7 @@ HRESULT CPlayer::Ready_Object(void)
 	//m_tInfo.iAtk = 10; // sh
 	m_tInfo.iDef = 10;
 	m_tInfo.iExp = 0;
-	m_tInfo.iExpMax = 10;
+	m_tInfo.iExpMax = 7;
 	m_tInfo.iHunger = 5;
 	m_tInfo.fSpeed = 5.f;
 	m_tInfo.iLevel = 1;
@@ -106,7 +106,6 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 
 	///////////////////////////
-
 
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
@@ -660,9 +659,9 @@ void CPlayer::Slow(const _float & fTimeDelta)
 	m_fSlowTimeAcc += fTimeDelta;
 	if (3.f < m_fSlowTimeAcc)
 	{
+		m_tInfo.bSlow = false;
 		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
 		m_fSlowTimeAcc = 0.f;
-		m_tInfo.bSlow = false;
 	}
 }
 
@@ -678,9 +677,12 @@ void CPlayer::Hunger(const _float & fTimeDelta)
 	// test
 
 	if (0 >= m_tInfo.iHunger)
+	{
 		m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
-	else
-		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
+		if (1 < m_tInfo.iHunger)
+			m_tInfo.fSpeed = m_tInfo.fSpeed;
+	}
+
 
 	m_fHungerTimeAcc += fTimeDelta;
 	if (30.f < m_fHungerTimeAcc)
