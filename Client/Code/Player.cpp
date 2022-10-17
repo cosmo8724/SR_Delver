@@ -42,8 +42,8 @@ HRESULT CPlayer::Ready_Object(void)
 	_vec3 vPos, vScale;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	m_fScale = 0.6f;
-	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+	//m_fScale = 0.6f;
+	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	// 플레이어 스탯정보
 	//m_tInfo.iHp = 20;

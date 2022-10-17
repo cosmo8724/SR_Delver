@@ -3,6 +3,7 @@
 #include "ImGuiMgr.h"
 #include "DynamicCamera.h"
 #include "CameraMgr.h"
+#include "BlockVIBuffer.h"
 
 
 CTool_Scene::CTool_Scene(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -43,10 +44,77 @@ _int CTool_Scene::Update_Scene(const _float & fTimeDelta)
 void CTool_Scene::LateUpdate_Scene()
 {
 	Engine::CScene::LateUpdate_Scene();
+
+	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	{
+		if (i == BLOCK_CAVE)
+		{
+			for (_int j = 0; j < CAVETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_COLD)
+		{
+			for (_int j = 0; j < COLDTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_DUNGEON)
+		{
+			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_ROOM)
+		{
+			for (_int j = 0; j < ROOMTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_SEWER)
+		{
+			for (_int j = 0; j < SEWERTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_TEMPLE)
+		{
+			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+	}
 }
 
 void CTool_Scene::Render_Scene()
 {
+	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	{
+		if (i == BLOCK_CAVE)
+		{
+			for (_int j = 0; j < CAVETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_COLD)
+		{
+			for (_int j = 0; j < COLDTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_DUNGEON)
+		{
+			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_ROOM)
+		{
+			for (_int j = 0; j < ROOMTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_SEWER)
+		{
+			for (_int j = 0; j < SEWERTEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+		else if (i == BLOCK_TEMPLE)
+		{
+			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+		}
+	}
 }
 
 HRESULT CTool_Scene::Ready_Layer_Environment(const _tchar * pLayerTag)

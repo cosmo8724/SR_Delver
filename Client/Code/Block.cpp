@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Header\Block.h"
+#include "../Default/ImGui/ImGuizmo.h"
 #include "Export_Function.h"
 #include "DynamicCamera.h"
 #include "MiniMap.h"
@@ -8,6 +9,8 @@
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
+	, m_bSet(false)
+	, m_bClone(false)
 {
 }
 
@@ -28,7 +31,7 @@ CBlock::CBlock(const CBlock& rhs)
 	m_mapComponent[ID_STATIC].insert({ L"Proto_BlockTexCom", m_pBufferCom });
 
 	switch (m_eCurrentType)
-																																						{
+	{
 	case BLOCK_CAVE:
 		m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Cave_BlockTexture"));
 		m_mapComponent[ID_STATIC].insert({ L"Proto_Cave_BlockTexture", m_pTextureCom });
@@ -72,19 +75,26 @@ CBlock::~CBlock()
 {
 }
 
-HRESULT CBlock::Ready_Object(void)
+HRESULT CBlock::Ready_Object(_vec3* vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	_vec3 vPos, vScale;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	if (vPos)
+		m_pTransCom->Set_Pos(vPos->x, vPos->y, vPos->z);
+
+	m_pTransCom->Update_Component(10.f);
+
+	m_matOriginWorld = *m_pTransCom->Get_WorldMatrixPointer();
 
 	return S_OK;
 }
 
 _int CBlock::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bClone)
+	if (Check_ParentDead())
+		return 1;
+
+	/*if (!m_bClone)
 	{
 		CTerrainTex*	pTerrainTex = dynamic_cast<CTerrainTex*>(Engine::Get_Component(L"Layer_Tool_Environment", L"Terrain", L"Proto_TerrainTexCom", ID_STATIC));
 
@@ -94,7 +104,13 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 
 		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 	}
-	m_fScale = 0.5f;
+	m_fScale = 0.5f;*/
+	if (m_pParentBlock)
+	{
+		m_pTransCom->Set_WorldMatrix(&m_matOriginWorld);
+		MultiParentWorld();
+	}
+
 	_vec3 vPos, vScale;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	vScale = m_pTransCom->Get_Scale();
@@ -104,92 +120,11 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 	m_bdSphere.vCenter = vPos;
 	m_bdSphere.fRadius = vScale.x;
 
-	if (!m_bSet)
-		Chase_MousePT();
+	//if (!m_bSet)
+	//	Chase_MousePT();
 
 	if (!m_bClone)
-	{
-		_bool	bCheck = false;
-		static _bool	bFirst = true;
-		_vec3 vDistance, vCloseCubePos;
-		static _float fDist = 0.f;
-		CubePlane		CheckPlane = CUBEPLANE_END;
-		CubePlane		LastPlane = CUBEPLANE_END;
-
-		CLayer*		pLayer = Engine::Get_Layer(L"Layer_Tool_GameLogic");
-		for (auto iter = pLayer->Get_mapGameObject()->begin(); iter != pLayer->Get_mapGameObject()->end(); ++iter)
-		{
-			CBlock* pGameObject = dynamic_cast<CBlock*>(iter->second);
-
-			if (pGameObject)
-			{
-				if (!pGameObject->IsClone())
-					continue;
-
-				CheckPlane = m_pCalculatorCom->PickingOnCube(g_hWnd, pGameObject->m_pBufferCom, pGameObject->m_pTransCom, &bCheck, &vDistance);
-
-				if (bCheck)
-				{
-					CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Tool_Environment", L"DynamicCamera"));
-					_vec3			vCameraPos = pCamera->Get_Eye();
-
-					_vec3 ParentCubePos = pGameObject->m_pTransCom->Get_Pos();
-					_float fDistance = D3DXVec3Length(&(ParentCubePos - vCameraPos));
-
-					if (bFirst)
-					{
-						fDist = fDistance;
-						vCloseCubePos = ParentCubePos;
-						LastPlane = CheckPlane;
-						bFirst = false;
-						bCheck = false;
-					}
-					else
-					{
-						if (fDist < fDistance)
-							continue;
-						else
-						{
-							fDist = fDistance;
-							vCloseCubePos = ParentCubePos;
-							LastPlane = CheckPlane;
-							bCheck = false;
-						}
-					}
-				}
-			}
-		}
-
-		_float	CubeSize = fabs(m_pBufferCom->Get_VtxPos()[0].x - m_pBufferCom->Get_VtxPos()[1].x);
-
-		switch (LastPlane)
-		{
-		case FRONT_X:
-			m_pTransCom->Set_Pos(vCloseCubePos.x + (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
-			break;
-
-		case BACK_X:
-			m_pTransCom->Set_Pos(vCloseCubePos.x - (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
-			break;
-
-		case FRONT_Y:
-			m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (CubeSize * m_fScale), vCloseCubePos.z);
-			break;
-
-		case BACK_Y:
-			m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (CubeSize * m_fScale), vCloseCubePos.z);
-			break;
-
-		case FRONT_Z:
-			m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (CubeSize * m_fScale));
-			break;
-
-		case BACK_Z:
-			m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (CubeSize * m_fScale));
-			break;
-		}
-		bFirst = true;
-	}
+		Chase_Block();
 
 	Change_BlockType();
 
@@ -200,9 +135,9 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 		if (!m_bCreateIcon)
 		{
 			// Only For Stage
-			CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+			/*CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 			pMiniMap->Add_Icon(m_pGraphicDev, this);
-			m_bCreateIcon = true;
+			m_bCreateIcon = true;*/
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 		Add_RenderGroup(RENDER_NONALPHA, this);
@@ -215,6 +150,9 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 
 void CBlock::LateUpdate_Object(void)
 {
+	if (Check_ParentDead())
+		return;
+
 	
 
 	//Engine::CGameObject::LateUpdate_Object();
@@ -226,8 +164,11 @@ void CBlock::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	if (m_bSet && !m_bChanging)
 	{
-		m_pTextureCom->Set_Texture(m_iTexture);
-		//m_pBufferCom->Render_Buffer();
+		if (m_pParentBlock)
+			m_pTextureCom->Set_Texture(m_pParentBlock->GetTextureIndex());
+		else
+			m_pTextureCom->Set_Texture(m_iTexture);
+		m_pBufferCom->Render_Buffer();
 	}
 	else
 	{
@@ -302,11 +243,129 @@ void CBlock::Chase_MousePT()
 	m_pTransCom->Set_Pos(vPickPos.x, vPickPos.y + m_fScale, vPickPos.z);
 }
 
+void CBlock::Chase_Block()
+{
+	_bool	bCheck = false;
+	static _bool	bFirst = true;
+	_vec3 vDistance, vCloseCubePos;
+	static _float fDist = 0.f;
+	CubePlane		CheckPlane = CUBEPLANE_END;
+	CubePlane		LastPlane = CUBEPLANE_END;
+
+	CLayer*		pLayer = Engine::Get_Layer(L"Layer_Tool_GameLogic");
+	CBlock*		pClosestBlock = nullptr;
+	for (auto iter = pLayer->Get_mapGameObject()->begin(); iter != pLayer->Get_mapGameObject()->end(); ++iter)
+	{
+		CBlock* pGameObject = dynamic_cast<CBlock*>(iter->second);
+
+		if (pGameObject)
+		{
+			if (!pGameObject->IsClone())
+				continue;
+
+			CheckPlane = m_pCalculatorCom->PickingOnCube(g_hWnd, pGameObject->m_pBufferCom, pGameObject->m_pTransCom, &bCheck, &vDistance);
+
+			if (bCheck)
+			{
+				CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Tool_Environment", L"DynamicCamera"));
+				_vec3			vCameraPos = pCamera->Get_Eye();
+
+				_vec3 ParentCubePos = pGameObject->m_pTransCom->Get_Pos();
+				_float fDistance = D3DXVec3Length(&(ParentCubePos - vCameraPos));
+
+				if (bFirst)
+				{
+					fDist = fDistance;
+					pClosestBlock = pGameObject;
+					vCloseCubePos = ParentCubePos;
+					LastPlane = CheckPlane;
+					bFirst = false;
+					bCheck = false;
+				}
+				else
+				{
+					if (fDist < fDistance)
+						continue;
+					else
+					{
+						fDist = fDistance;
+						pClosestBlock = pGameObject;
+						vCloseCubePos = ParentCubePos;
+						LastPlane = CheckPlane;
+						bCheck = false;
+					}
+				}
+			}
+		}
+	}
+
+	_float	CubeSize = fabs(m_pBufferCom->Get_VtxPos()[0].x - m_pBufferCom->Get_VtxPos()[1].x);
+
+	if (pClosestBlock && pClosestBlock->m_pParentBlock != nullptr)
+	{
+		_vec3	vGrandParentPos = pClosestBlock->m_pParentBlock->m_pTransCom->Get_Pos();
+		vCloseCubePos.x += vGrandParentPos.x;
+		vCloseCubePos.y += vGrandParentPos.y;
+		vCloseCubePos.z += vGrandParentPos.z;
+	}
+
+	switch (LastPlane)
+	{
+	case FRONT_X:
+		m_pTransCom->Set_Pos(vCloseCubePos.x + (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
+		break;
+
+	case BACK_X:
+		m_pTransCom->Set_Pos(vCloseCubePos.x - (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
+		break;
+
+	case FRONT_Y:
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (CubeSize * m_fScale), vCloseCubePos.z);
+		break;
+
+	case BACK_Y:
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (CubeSize * m_fScale), vCloseCubePos.z);
+		break;
+
+	case FRONT_Z:
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (CubeSize * m_fScale));
+		break;
+
+	case BACK_Z:
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (CubeSize * m_fScale));
+		break;
+	}
+	bFirst = true;
+}
+
+void CBlock::MultiParentWorld()
+{
+	_matrix	matWorld = *m_pTransCom->Get_WorldMatrixPointer();
+	_matrix	matParentWorld = *m_pParentBlock->m_pTransCom->Get_WorldMatrixPointer();
+
+	//D3DXMatrixIdentity(&matWorld);
+	matWorld *= matParentWorld;
+
+	//m_pTransCom->Set_WorldMatrix(&matWorld);
+	_vec3	vScale, vAngle, vPos;
+	D3DXQUATERNION qRot;
+
+	//D3DXMatrixDecompose(&vScale, &qRot, &vPos, &matWorld);
+
+	ImGuizmo::DecomposeMatrixToComponents(matWorld, vPos, vAngle, vScale);
+	//memcpy(&m_pTransCom->m_vInfo[INFO_POS], vPos, sizeof(vPos));
+	//memcpy(&m_pTransCom->m_vAngle, vAngle * D3DX_PI / 180.f, sizeof(vAngle));
+	//memcpy(&m_pTransCom->m_vScale, vScale, sizeof(vScale));
+	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+	m_pTransCom->Set_Scale(vScale.x, vScale.y, vScale.z);
+	m_pTransCom->Set_Angle(vAngle.x * D3DX_PI / 180.f, vAngle.y * D3DX_PI / 180.f, vAngle.z * D3DX_PI / 180.f);
+}
+
 HRESULT CBlock::Change_BlockType()
 {
 	CComponent* pComponent = nullptr;
 
-	if (m_eLastType != m_eCurrentType)
+	if (m_eLastType != m_eCurrentType || (m_pParentBlock && m_eCurrentType != m_pParentBlock->GetBlockType()))
 	{
 		auto iter = find_if(m_mapComponent[ID_STATIC].begin(), m_mapComponent[ID_STATIC].end(), CTag_Finder(L"Proto_Cave_BlockTexture"));
 		if (iter != m_mapComponent[ID_STATIC].end())
@@ -349,6 +408,9 @@ HRESULT CBlock::Change_BlockType()
 			Safe_Release(iter->second);
 			iter = m_mapComponent[ID_STATIC].erase(iter);
 		}
+
+		if (m_pParentBlock)
+			m_eCurrentType = m_pParentBlock->GetBlockType();
 
 		switch (m_eCurrentType)
 		{
@@ -397,11 +459,11 @@ HRESULT CBlock::Change_BlockType()
 	return S_OK;
 }
 
-CBlock * CBlock::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CBlock * CBlock::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3* vPos)
 {
 	CBlock *	pInstance = new CBlock(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Object()))
+	if (FAILED(pInstance->Ready_Object(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
