@@ -429,6 +429,12 @@ void CInventory::Set_ItemEquip()
 						m_Inventory[i][j] = nullptr;
 					}
 					break;
+					case ITEM_FOOD:
+					{
+						m_Inventory[i][j]->Set_Dead(true);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
 					case ITEM_ARMOR:
 					{
 						//m_Inventory[i][j]->Set_Dead(true);

@@ -1,53 +1,53 @@
 #include "stdafx.h"
-#include "Potion.h"
+#include "Food.h"
+
 #include "Export_Function.h"
 #include "Player.h"
 #include "CullingMgr.h"
 
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev)
+CFood::CFood(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CItem(pGraphicDev)
 {
 	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
+	m_ObjTag = L"Food";
 }
 
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CFood::CFood(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	:CItem(pGraphicDev)
 {
 	m_vPos = vPos;
 	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
-	m_eItemType = ITEM_POTION;
+	m_ObjTag = L"Food";
+	m_eItemType = ITEM_FOOD;
 
 }
 
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
+CFood::CFood(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
 	:CItem(pGraphicDev)
 {
 	m_vPos = vPos;
 	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
+	m_ObjTag = L"Food";
 	m_iTextureIdx = _eType;
-
 }
 
-CPotion::~CPotion()
+CFood::~CFood()
 {
 }
 
-HRESULT CPotion::Ready_Object(void)
+HRESULT CFood::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eState = STATE_GROUND;
-	m_tInfo.iHpHeal = 10;
-	m_eItemType = ITEM_POTION;
+	m_tInfo.iHunger = 10;
+	m_eItemType = ITEM_FOOD;
 	return S_OK;
 }
 
-_int CPotion::Update_Object(const _float & fTimeDelta)
+_int CFood::Update_Object(const _float & fTimeDelta)
 {
 	if (m_eState == STATE_INV)
 		return 0;
@@ -59,19 +59,11 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 
 	if (STATE_EQUIP == m_eState)
 	{
-		m_fDotTime += fTimeDelta;
-		if (1.f < m_fDotTime)
+		if (m_bEat)
 		{
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-
-			// sh_Test
-			PLAYERINFO tPlayerInfo = pPlayer->Get_PlayerInfo();
-			if (tPlayerInfo.iHp >= tPlayerInfo.iHpMax)
-				return iResult;
-
-			pPlayer->Set_HpPlus();
-			m_iDot++;
-			m_fDotTime = 0.f;
+			pPlayer->Set_HungerPlus();
+			m_bEat = false;
 		}
 	}
 	else if (STATE_GROUND == m_eState)
@@ -86,7 +78,7 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 	return iResult;
 }
 
-void CPotion::LateUpdate_Object(void)
+void CFood::LateUpdate_Object(void)
 {
 	if (m_eState != STATE_GROUND)
 		return;
@@ -94,16 +86,12 @@ void CPotion::LateUpdate_Object(void)
 	if (CCullingMgr::GetInstance()->Is_Inside(this))
 		Add_RenderGroup(RENDER_ALPHA, this);
 
-	if (m_iDot > m_tInfo.iHpHeal)
-		m_bDead = true;
-
 	Billboard();
 	CGameObject::LateUpdate_Object();
 }
 
-void CPotion::Render_Obejct(void)
+void CFood::Render_Obejct(void)
 {
-
 	if (m_eState != STATE_GROUND)
 		return;
 
@@ -130,22 +118,22 @@ void CPotion::Render_Obejct(void)
 #endif
 }
 
-HRESULT CPotion::Add_Component(void)
+HRESULT CFood::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½Ä°ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Potion_Texture"));
+	// ÅØ½ºÃÄ ÄÄ°´Ã¼ ÄÄÆ÷³ÍÆ®
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Food_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Potion_Texture", pComponent });
-	m_textureTag = L"Proto_Potion_Texture";
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Food_Texture", pComponent });
+	m_textureTag = L"Proto_Food_Texture";
 
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -159,9 +147,9 @@ HRESULT CPotion::Add_Component(void)
 }
 
 
-CPotion * CPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
+CFood * CFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
 {
-	CPotion*	pInstance = new CPotion(pGraphicDev, vPos, _eType);
+	CFood*	pInstance = new CFood(pGraphicDev, vPos, _eType);
 	if (FAILED(pInstance->Ready_Object()))
 	{
 		Safe_Release(pInstance);
@@ -170,17 +158,17 @@ CPotion * CPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType
 	return pInstance;
 }
 
-void CPotion::Free(void)
+void CFood::Free(void)
 {
 	CGameObject::Free();
 }
 
-void CPotion::CollisionEvent(CGameObject * pObj)
+void CFood::CollisionEvent(CGameObject * pObj)
 {
 	if (STATE_GROUND == m_eState)
 	{
+		m_bEat = true;
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
 	}
-
 }

@@ -364,6 +364,9 @@
     <Filter Include="02. GameObject\01. For_Stage\99. UI\11. HungerUI">
       <UniqueIdentifier>{c431b304-53e0-42d8-be5e-44c4caac5898}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\09. Food">
+      <UniqueIdentifier>{3855446b-b5da-4a2f-bcfd-d6dbd4ab14d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -726,6 +729,9 @@
     <ClInclude Include="..\Header\HungerUI.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\11. HungerUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Food.h">
+      <Filter>02. GameObject\01. For_Stage\06. Item\09. Food</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1069,6 +1075,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\HungerUI.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\11. HungerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Food.cpp">
+      <Filter>02. GameObject\01. For_Stage\06. Item\09. Food</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

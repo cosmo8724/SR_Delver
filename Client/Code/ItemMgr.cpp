@@ -14,6 +14,7 @@
 #include "Necklace.h"
 #include "Pants.h"
 #include "Ring.h"
+#include "Food.h"
 
 IMPLEMENT_SINGLETON(CItemMgr)
 
@@ -42,7 +43,9 @@ HRESULT CItemMgr::Ready_Proto()
 
 	// Potion
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Potion_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Potion/Potion%d.png", TEX_NORMAL, 5)), E_FAIL);
-	
+	// Food
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Food_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Food/Food%d.png", TEX_NORMAL, 5)), E_FAIL);
+
 	// Key
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Key_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/key.png", TEX_NORMAL)), E_FAIL);
 	
@@ -253,6 +256,32 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Ring2", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_RING].push_back(pGameObject);
 
+	// Food
+	pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 1.f, 5.f }), 0);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+
+	pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 1.f, 6.f }), 1);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food2", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+
+	pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 1.f, 7.f }), 2);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food3", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+
+	pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 1.f, 8.f }), 3);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food4", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+
+	pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 1.f, 9.f }), 4);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food5", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+
 	return S_OK;
 }
 
@@ -274,6 +303,11 @@ CGameObject* CItemMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, 
 	if (ITEM_POTION == pObj->Get_ItemType())
 	{
 		iTex = static_cast<CPotion*>(pObj)->Get_TexturId();
+		static_cast<CInvImg*>(pGameObject)->Set_Frame(iTex);
+	}
+	else if (ITEM_FOOD == pObj->Get_ItemType())
+	{
+		iTex = static_cast<CFood*>(pObj)->Get_TexturId();
 		static_cast<CInvImg*>(pGameObject)->Set_Frame(iTex);
 	}
 	else if (ITEM_ARMOR == pObj->Get_ItemType())
