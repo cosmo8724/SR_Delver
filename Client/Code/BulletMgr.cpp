@@ -297,7 +297,7 @@ void CBulletMgr::Fire(BULLETID _eID)
 		
 		CCollider* pColliderCom =	static_cast<CCollider*>((m_vecObjPool[_eID][iIdx])->Get_Component(L"Proto_ColliderCom", ID_STATIC));
 		{
-			if(!m_vecObjPool[LIGHTNING_SONGBOSS][iIdx])
+			if(!m_vecObjPool[LIGHTNING_SONGBOSS][iIdx]) // 번개는 예외처리 X
 				pColliderCom->Set_Free(false);
 		}
 

@@ -240,6 +240,11 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 }
 
+void	CTransform::Prepare_Attack()
+{
+	m_bFinished = false; 
+	m_fAttackAngle = 0.f;
+}
 _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {
 	_matrix matParent = _matWorld; // 부모행렬은 플레이어의 월드행렬
@@ -268,10 +273,10 @@ _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 	_matrix matRev;
 	_float fRad = 0.f;
-	m_fAttackAngle += m_fAttackSpeed;
-	if (m_fAttackAngle > 10.f)
-		m_fAttackSpeed *= -1;
+	m_fAttackAngle -= m_fAttackSpeed;
 	if (m_fAttackAngle < -25.f)
+		m_fAttackSpeed *= -1;
+	if (m_fAttackAngle > 0.f)
 		m_bFinished = true;
 
 	fRad = D3DXToRadian(m_fAttackAngle);

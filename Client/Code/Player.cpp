@@ -669,26 +669,21 @@ void CPlayer::Hunger(const _float & fTimeDelta)
 {
 	// test
 	if (Key_Down(DIK_K))
-		if(0 < m_tInfo.iHunger)
-			m_tInfo.iHunger--;
+		Set_HungerMinus();
 
 	if (Key_Down(DIK_L))
 		Set_HungerPlus();
 	// test
 
-	if (0 >= m_tInfo.iHunger)
-	{
+	if (0 >= m_tInfo.iHunger && !m_tInfo.bSlow)
 		m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
-		if (1 < m_tInfo.iHunger)
-			m_tInfo.fSpeed = m_tInfo.fSpeed;
-	}
-
+	else if (0 < m_tInfo.iHunger && !m_tInfo.bSlow)
+		m_tInfo.fSpeed = m_tInfo.fSlowSpeed * 2;
 
 	m_fHungerTimeAcc += fTimeDelta;
 	if (30.f < m_fHungerTimeAcc)
 	{
-		if(0 < m_tInfo.iHunger)
-			m_tInfo.iHunger--;
+		Set_HungerMinus();
 		m_fHungerTimeAcc = 0.f;
 	}
 }

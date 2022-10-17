@@ -34,6 +34,7 @@ public:
 	_vec3*				Get_InfoAll() { return m_vInfo; }
 	void				Set_Info(_vec3 vRight, _vec3 vUp, _vec3 vLook);
 	void				Set_Look(const _vec3* vLook) { m_vInfo[INFO_LOOK] = *vLook; }
+	_float				Get_AttackAngle() { return m_fAttackAngle; }
 
 public:
 	void				Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
@@ -50,7 +51,7 @@ public:
 	virtual _int		Update_Component(const _float& fTimeDelta);
 
 public:
-	void			Prepare_Attack() { m_bFinished = false;  m_fAttackAngle = 0.f; }
+	void			Prepare_Attack();
 	_bool			Is_Finished() { return m_bFinished; }
 public:
 	_vec3			m_vInfo[INFO_END];
