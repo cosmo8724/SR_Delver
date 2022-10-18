@@ -51,7 +51,7 @@ void CUserParticle::Set_Texture(PTEXTUREID eTex)
 
 	auto iter = find_if(m_mapComponent[ID_STATIC].begin(), m_mapComponent[ID_STATIC].end(), CTag_Finder(str.c_str()));
 
-	if (iter != m_mapComponent[ID_STATIC].end())	// ÀÌ¹Ì Á¸ÀçÇÏ´Â ÅØ½ºÃÄ¸íÀÌ¶ó¸é ¸Ê¿¡ ³ÖÁö ¾Ê°í ¾´´Ù.
+	if (iter != m_mapComponent[ID_STATIC].end())	// ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ø½ï¿½ï¿½Ä¸ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		m_pTextureCom = static_cast<CTexture*>(iter->second);
 	else
 	{
@@ -66,7 +66,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 	removeAllParticles();
 
 	if (nullptr == m_pTarget)
-		MSG_BOX("ÆÄÆ¼Å¬ Å¸°Ù ¾øÀ½ ¤Ð¤Ð");
+		MSG_BOX("ï¿½ï¿½Æ¼Å¬ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¤ï¿½");
 	CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 
 	m_eType = _eType;
@@ -113,7 +113,7 @@ _int CUserParticle::Update_Object(const _float & fTimeDelta)
 	if (!m_bUse)
 		return 0;
 	else
-		m_bReady = true;// componentº¯°æÀÌ ready¿¡¼­ ÀÌ·ïÁöÁö ¾ÊÀ¸¹Ç·Î ½ÃÁ¡À» ÄÁÆ®·Ñ ÇÏ±â À§ÇÔ
+		m_bReady = true;// componentï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ readyï¿½ï¿½ï¿½ï¿½ ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	if (isDead())
 	{
@@ -122,6 +122,7 @@ _int CUserParticle::Update_Object(const _float & fTimeDelta)
 		return OBJ_TEST;
 
 	}
+
 
 	if (m_bFrameMove)
 	{
@@ -138,9 +139,19 @@ _int CUserParticle::Update_Object(const _float & fTimeDelta)
 	}
 	else
 	{
-		m_fFrame = m_fFixFrame;
+		if (m_bFrameRand)
+		{
+			if (!m_bFrameSet)
+			{
+				_float frameEnd = (_float)m_pTextureCom->Get_FrameEnd();
+				m_fFrame = rand() % (_int)(frameEnd + 1);
+				m_bFrameSet = true;
+			}
+		}
+		else
+			m_fFrame = m_fFixFrame;
 	}
-
+	
 
 	int iResult = CPSystem::Update_Object(fTimeDelta);
 	update(fTimeDelta);
@@ -190,7 +201,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 
 		GetRandomVector(&attribute->vVelocity, &min, &max);
 
-		//±¸Ã¼¸¦ ¸¸µé±â À§ÇÑ Á¤±ÔÈ­
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
 		D3DXVec3Normalize(&attribute->vVelocity, &attribute->vVelocity);
 
 		attribute->vVelocity *= m_fVelocityMulti;
@@ -201,15 +212,15 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	{
 		attribute->bIsAlive = true;
 
-		// ´«¼ÛÀÌÀÇ À§Ä¡ÁöÁ¤À» À§ÇØ ÀÓÀÇÀÇ x, zÁÂÇ¥¸¦ ¾ò´Â´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ x, zï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½Â´ï¿½.
 		GetRandomVector(&attribute->vPosition,
 			&m_bdBox.vMin,
 			&m_bdBox.vMax);
 
-		// ³ôÀÌ (y-ÁÂÇ¥)´Â Ç×»ó °æ°è»óÀÚÀÇ ÃÖ»ó´ÜÀÌ µÈ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ (y-ï¿½ï¿½Ç¥)ï¿½ï¿½ ï¿½×»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ ï¿½È´ï¿½.
 		attribute->vPosition.y = m_bdBox.vMax.y;
 
-		// ´«¼ÛÀÌ´Â ¾Æ·¡ÂÊÀ¸·Î ¶³¾îÁö¸ç ¾à°£ µÚÂÊÀ» ÇâÇÑ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½à°£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
 		attribute->vVelocity.x = GetRandomFloat(0.0f, m_Attribute.vVelocity.x) * (-3.0f);
 		attribute->vVelocity.y = GetRandomFloat(0.0f, m_Attribute.vVelocity.y) * (-10.0f);
 		attribute->vVelocity.z = m_Attribute.vVelocity.z;
@@ -238,7 +249,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 
 		GetRandomVector(&attribute->vVelocity, &min, &max);
 
-		//±¸Ã¼¸¦ ¸¸µé±â À§ÇÑ Á¤±ÔÈ­
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
 		D3DXVec3Normalize(&attribute->vVelocity, &attribute->vVelocity);
 
 		attribute->vVelocity *= 10.f;
@@ -288,7 +299,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 
 	}
 
-	//°øÅë
+	//ï¿½ï¿½ï¿½ï¿½
 	if (m_bRand)
 	{
 		attribute->tColor = D3DXCOLOR(
@@ -302,7 +313,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->tColor = m_Attribute.tColor;
 	}
 	attribute->fAge = 0.f;
-	attribute->fLifeTime = m_Attribute.fLifeTime; // 2ÃÊ µ¿¾ÈÀÇ ¼ö¸íÀ» °¡Áø´Ù.
+	attribute->fLifeTime = m_Attribute.fLifeTime; // 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 }
 
 void CUserParticle::update(_float fTimeDelta)
@@ -314,12 +325,12 @@ void CUserParticle::update(_float fTimeDelta)
 		m_fSize -= 0.005f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// »ýÁ¸ÇÑ ÆÄÆ¼Å¬¸¸ °»½Å
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			if (iter->bIsAlive)
 			{
 				iter->vPosition += iter->vVelocity * fTimeDelta;
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // Á×ÀÎ´Ù.
+				if (iter->fAge > iter->fLifeTime) // ï¿½ï¿½ï¿½Î´ï¿½.
 					iter->bIsAlive = false;
 			}
 		}
@@ -332,10 +343,10 @@ void CUserParticle::update(_float fTimeDelta)
 		{
 			iter->vPosition += iter->vVelocity * fTimeDelta;
 
-			// Æ÷ÀÎÆ®°¡ °æ°è¸¦ ¹þ¾î³µ´Â°¡?
+			// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½è¸¦ ï¿½ï¿½ï¿½î³µï¿½Â°ï¿½?
 			if (m_bdBox.isPointInside(iter->vPosition) == false)
 			{
-				// °æ°è¸¦ ¹þ¾î³­ ÆÄÆ¼Å¬Àº ÀçÈ°¿ëÇÑ´Ù.
+				// ï¿½ï¿½è¸¦ ï¿½ï¿½ï¿½î³­ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½ï¿½Ñ´ï¿½.
 				resetParticle(&(*iter));
 			}
 		}
@@ -364,26 +375,26 @@ void CUserParticle::update(_float fTimeDelta)
 		m_fSize -= 0.05f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// »ýÁ¸ÇÑ ÆÄÆ¼Å¬¸¸ °»½Å
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			if (iter->bIsAlive)
 			{
 				
 				iter->vVelocity.y -= GetRandomFloat(0.f, 1.f);
 				iter->vPosition += (0.3f * iter->vVelocity * fTimeDelta);
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // Á×ÀÎ´Ù.
+				if (iter->fAge > iter->fLifeTime) // ï¿½ï¿½ï¿½Î´ï¿½.
 					iter->bIsAlive = false;
 			}
 		}
 		//for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		//{
-		//	// »ýÁ¸ÇÑ ÆÄÆ¼Å¬¸¸ °»½Å
+		//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		//	if (iter->bIsAlive)
 		//	{
 		//		iter->vVelocity.y -= GetRandomFloat(0.f, 1.4f);
 		//		iter->vPosition += (iter->vVelocity * fTimeDelta);
 		//		iter->fAge += fTimeDelta;
-		//		if (iter->fAge > iter->fLifeTime) // Á×ÀÎ´Ù.
+		//		if (iter->fAge > iter->fLifeTime) // ï¿½ï¿½ï¿½Î´ï¿½.
 		//			iter->bIsAlive = false;
 		//	}
 		//}
@@ -407,7 +418,7 @@ void CUserParticle::update(_float fTimeDelta)
 					+ m_Attribute.vVelocity.z * vLook;
 
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // Á×ÀÎ´Ù.
+				if (iter->fAge > iter->fLifeTime) // ï¿½ï¿½ï¿½Î´ï¿½.
 					iter->bIsAlive = false;
 			}
 
@@ -415,7 +426,7 @@ void CUserParticle::update(_float fTimeDelta)
 
 	}
 	break;
-	case PTYPE_REMAIN: // ÀÜ»ó ÆÄÆ¼Å¬
+	case PTYPE_REMAIN: // ï¿½Ü»ï¿½ ï¿½ï¿½Æ¼Å¬
 
 	{
 		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
@@ -423,7 +434,7 @@ void CUserParticle::update(_float fTimeDelta)
 		_float index = 1.f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// »ýÁ¸ÇÑ ÆÄÆ¼Å¬¸¸ °»½Å
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			if (iter->bIsAlive)
 			{
 				_vec3 vDir = pCom->Get_Pos() - iter->vPosition;
@@ -434,7 +445,7 @@ void CUserParticle::update(_float fTimeDelta)
 
 				iter->vPosition += (fSpeed* fTimeDelta* vDir);
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // Á×ÀÎ´Ù.
+				if (iter->fAge > iter->fLifeTime) // ï¿½ï¿½ï¿½Î´ï¿½.
 				{
 					iter->bIsAlive = false;
 				}
@@ -448,13 +459,13 @@ void CUserParticle::update(_float fTimeDelta)
 	{
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// »ýÁ¸ÇÑ ÆÄÆ¼Å¬¸¸ °»½Å
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			if (iter->bIsAlive)
 			{
 				//iter->vPosition = pCom->Get_Pos();
 				iter->fAge += fTimeDelta;
 
-				if (iter->fAge > iter->fLifeTime) // Á×ÀÎ´Ù.
+				if (iter->fAge > iter->fLifeTime) // ï¿½ï¿½ï¿½Î´ï¿½.
 				{
 					iter->bIsAlive = false;
 				}
@@ -504,7 +515,7 @@ void CUserParticle::update(_float fTimeDelta)
 				iter->vPosition = vPos + vTemp;
 
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // Á×ÀÎ´Ù.
+				if (iter->fAge > iter->fLifeTime) // ï¿½ï¿½ï¿½Î´ï¿½.
 					iter->bIsAlive = false;
 			}
 
@@ -551,12 +562,12 @@ HRESULT CUserParticle::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	//// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	//// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CPtBuffer*>(Engine::Clone_Proto(L"Proto_PtBufferCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_PtBufferCom", pComponent });
 
-	// ÅØ½ºÃÄ ÄÄ°´Ã¼ ÄÄÆ÷³ÍÆ®
+	// ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½Ä°ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle5_Texture"));
 	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle5_Texture", pComponent });

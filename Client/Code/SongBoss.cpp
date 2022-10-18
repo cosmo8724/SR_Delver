@@ -141,35 +141,64 @@ HRESULT CSongBoss::Add_Component(void)
 
 void CSongBoss::SKill_Update(const _float & fTimeDelta)
 {
-	//int iRrandomNum = rand() % 3;
+	if (m_bSKill)
+		return;
 
-	//if (iRrandomNum == 0)
+	//// 자동 - 미완성
+	//if (2 < m_bSkillBullet && !m_bSkillStun && !m_bSkillFloor)
 	//{
-	//	m_bBullet = true;
-	//	m_eSkill = SKILL_BULLET;
-	//}
-	//if (iRrandomNum == 1)
-	//{
-	//	m_bStun = true;
-	//	m_iStunCount = 0;
-	//	m_iStunCreate = 0;
-	//	m_eSkill = SKILL_STUN;
-	//}
-	//if (iRrandomNum == 2)
-	//{
-	//	m_bFloor = true;
-	//	m_iFloorCreate = 0;
-	//	m_bFloorOneCheck = true;
-	//	m_eSkill = SKILL_FLOOR;
+	//	m_fSkillTimeAcc += fTimeDelta;
+	//	if (2.f < m_fSkillTimeAcc)
+	//	{
+	//		int m_eSkill = rand() % 3;
+	//		m_fSkillTimeAcc = 0.f;
+
+	//		cout << m_eSkill << endl;
+
+	//		switch (m_eSkill)
+	//		{
+	//		case CSongBoss::SKILL_BULLET:
+	//		{
+	//			m_bSkillBullet = 0;
+	//			m_bBullet = true;
+	//			SKillBullet_Update(fTimeDelta);
+	//		}
+	//		break;
+	//		case CSongBoss::SKILL_STUN:
+	//		{
+	//			m_bSkillStun = true;
+	//			m_bStun = true;
+	//			m_iStunCount = 0;
+	//			m_iStunCreate = 0;
+	//			SKillStun_Update(fTimeDelta);
+	//		}
+	//		break;
+	//		case CSongBoss::SKILL_FLOOR:
+	//		{
+	//			m_bSkillFloor = true;
+	//			m_bFloor = true;
+	//			m_iFloorCreate = 0;
+	//			m_iLightningCreate = 0;
+	//			m_bFloorOneCheck = true;
+	//			SKillFloor_Update(fTimeDelta);
+	//		}
+	//		break;
+	//		}
+
+	//		m_bSKill = true;
+	//	}
 	//}
 
+	// 수동
 	if (Key_Down(DIK_7))
 	{
+		m_bSkillBullet = 0;
 		m_bBullet = true;
 		m_eSkill = SKILL_BULLET;
 	}
 	if (Key_Down(DIK_8))
 	{
+		m_bSkillStun = true;
 		m_bStun = true;
 		m_iStunCount = 0;
 		m_iStunCreate = 0;
@@ -177,8 +206,10 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 	}
 	if (Key_Down(DIK_9))
 	{
+		m_bSkillFloor = true;
 		m_bFloor = true;
 		m_iFloorCreate = 0;
+		m_iLightningCreate = 0;
 		m_bFloorOneCheck = true;
 		m_eSkill = SKILL_FLOOR;
 	}
@@ -201,6 +232,13 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 
 void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 {
+	if (2 < m_bSkillBullet)
+	{
+		m_eCurState = IDLE;
+		m_bSKill = false;
+		return;
+	}
+
 	if (!m_bBullet)
 		return;
 
@@ -210,6 +248,11 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	_vec3		vPlayerPos, vPos;
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+	// MonsterLook -> Player
+	_vec3 vRight, vUp, vLook;
+	vLook = vPlayerPos - vPos;
+	m_pTransCom->Set_Look(&vLook);
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
@@ -227,6 +270,7 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 			m_eCurState = ATTACK;
 			CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);
+			m_bSkillBullet++;
 			m_fAttackTimeAcc = 0;
 		}
 		else if (5.5f < m_fIdleTimeAcc)
@@ -235,12 +279,13 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 			m_fIdleTimeAcc = 0.f;
 		}
 	}
-	else
-		m_eCurState = IDLE;
 }
 
 void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 {
+	if (!m_bSkillStun)
+		return;
+
 	if (!m_bStun)
 		return;
 
@@ -260,8 +305,8 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 		m_eCurState = IDLE;
 
 		m_fStunTimeAcc += fTimeDelta;
-		if (4.f < m_fStunTimeAcc) // 5.f >> 이내 음표를 못 부시면 스턴 (값 수정시 SongBossStun.cpp > LateUpdate도 수정해야함)
-		{						  // 플레이어의 스턴시간을 계산하면서 값을 변경해야 한다
+		if (4.f < m_fStunTimeAcc)  // 5.f >> 이내 음표를 못 부시면 스턴 (값 수정시 SongBossStun.cpp > LateUpdate도 수정해야함)
+		{						   // 플레이어의 스턴시간을 계산하면서 값을 변경해야 한다
 			if (m_iStunCount != 4) // Player Stun
 			{
 				CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
@@ -269,12 +314,17 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 			}
 			m_fStunTimeAcc = 0.f;
 			m_bStun = false;
+			m_bSkillStun = false;
+			m_bSKill = false;
 		}
 	}
 }
 
 void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 {
+	if (!m_bSkillFloor)
+		return;
+
 	if (!m_bFloor)
 		return;
 
@@ -304,39 +354,25 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 			CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", objTags[i].c_str()));
 			NULL_CHECK(pSongBossFloor);
 			if (pSongBossFloor->Get_StartLightning())
+			{
 				CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
+				++m_iLightningCreate;
+			}
 		}
 
-		//// for문으로 수정하기
-		//CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor0"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor1"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor2"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor3"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor4"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
+		if (m_iLightningCreate >= 5)
+		{
+			m_bFloor = false;
+			m_bSkillFloor = false;
+		}
 	}
 }
 
 void CSongBoss::OnHit(const _float & fTimeDelta)
 {
+	if (!m_bSkillFloor)
+		return;
+
 	if (!m_bHit)
 		return;
 

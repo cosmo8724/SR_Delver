@@ -5,7 +5,7 @@ BEGIN(Engine)
 class CLayer;
 END
 
-// ÆÄÆ¼Å¬À» ¿ÀºêÁ§Æ®Ç®Ã³·³ ¹Ì¸® »ý¼ºÇÏ¿© °ü¸®
+// ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®Ç®Ã³ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 class CParticleMgr : public CBase
 {
 	DECLARE_SINGLETON(CParticleMgr)
@@ -16,29 +16,36 @@ private:
 public:
 	void			Ready_ParticleMgr(LPDIRECT3DDEVICE9 pGraphicDev);
 
-	// ÆÄÆ¼Å¬ Proto ÄÄÆ÷³ÍÆ® »ý¼º(ÁÖ·Î ÅØ½ºÃ³)
+	// ï¿½ï¿½Æ¼Å¬ Proto ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(ï¿½Ö·ï¿½ ï¿½Ø½ï¿½Ã³)
 	HRESULT			Ready_Proto();
 
-	// ¹Ì¸® ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇØµÒ.
+	// ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½.
 	HRESULT			Add_GameObject(CLayer* pLayer);
 
-	// ÆÄÆ¼Å¬ È£Ãâ (changed)
+	// ï¿½ï¿½Æ¼Å¬ È£ï¿½ï¿½ (changed)
 	void			Call_Particle(PTYPE eType, PTEXTUREID eTex);
 
-	// »ç¿ëÀÌ ³¡³­ ÆÄÆ¼Å¬ È¸¼ö (dispose)
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ È¸ï¿½ï¿½ (dispose)
 	void			Collect_Particle(_int iIdx);
 
-	// È£Ãâ Àü ÆÄÆ¼Å¬ Á¤º¸ ¼³Á¤
+	// È£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	void			Set_Info(CGameObject* pObj
-		, _int		_maxParticles						// ÃÖ´ë ÆÄÆ¼Å¬ ¼ö
-		, _float	_fSize								// ¸ðµç ÆÄÆ¼Å¬ÀÇ Å©±â
-		, _vec3		_vVelocity = { 1.f,1.f,1.f }		// ¼Óµµ(Spot TypeÀÇ °æ¿ì vRight, vUp, vLook À¸·ÎºÎÅÍÀÇ °Å¸®)
-		, _float	_fLifeTime = 1.f					// ÆÄÆ¼Å¬ ¼Ò¸ê±îÁö À¯ÁöµÇ´Â ½Ã°£
-		, D3DXCOLOR _tColor = { 1.f, 1.f, 1.f, 1.f }		// »ö±ò
-		, _float	_fFrameSpeed = 1.f					// ÇÁ·¹ÀÓ ¼Óµµ
-		, _bool		_bFrameRepeat = false				// ÇÁ·¹ÀÓ ¹Ýº¹Àç»ý ¿©ºÎ
-		, _bool		_bRand = false						// »ö ·£´ý ¿©ºÎ
+		, _int		_maxParticles						// ï¿½Ö´ï¿½ ï¿½ï¿½Æ¼Å¬ ï¿½ï¿½
+		, _float	_fSize								// ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ Å©ï¿½ï¿½
+		, _vec3		_vVelocity = { 1.f,1.f,1.f }		// ï¿½Óµï¿½(Spot Typeï¿½ï¿½ ï¿½ï¿½ï¿½ vRight, vUp, vLook ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½)
+		, _float	_fLifeTime = 1.f					// ï¿½ï¿½Æ¼Å¬ ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½Ã°ï¿½
+		, D3DXCOLOR _tColor = { 1.f, 1.f, 1.f, 1.f }		// ï¿½ï¿½ï¿½ï¿½
+		, _float	_fFrameSpeed = 1.f					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+		, _bool		_bFrameRepeat = false				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ýºï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		, _bool		_bRand = false						// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		);
+
+
+	void		Add_Info_Spot(_bool bFrameMove=false, _bool bRandFrame=false)
+	{
+		m_bFrameMove = bFrameMove;
+		m_bFrameRand = bRandFrame;
+	}
 
 
 	void			Add_Info_Circling(
@@ -55,7 +62,7 @@ public:
 	}
 
 
-	// ¹Ù¿îµù ¹Ú½º ¼¼ÆÃ ( ÇÊ¿äÇÑ °æ¿ì )
+	// ï¿½Ù¿ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ ( ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ )
 	//void			Set_BoundingBox(BDBOX _bdBox);
 
 
@@ -79,6 +86,8 @@ private:
 	_float			m_fFrameSpeed = 1.f;
 	_bool			m_bFrameRepeat = false;
 	_bool			m_bRand = false;
+
+	_bool			m_bFrameRand = false;
 	_bool			m_bFrameMove = true;
 	_float			m_fFrame = 0.f;
 	_float			m_fDist = 1.f;

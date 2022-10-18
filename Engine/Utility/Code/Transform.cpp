@@ -92,7 +92,7 @@ const _matrix* Engine::CTransform::Compute_LookAtTarget(const _vec3* pTargetPos)
 	_vec3		vAxis, vUp;
 	_matrix		matRot;
 
-	// D3DXMatrixRotationAxis : ÀÓÀÇÀÇ ÃàÈ¸Àü Çà·ÄÀ» ¸¸µé¾îÁÖ´Â ÇÔ¼ö
+	// D3DXMatrixRotationAxis : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½
 	return D3DXMatrixRotationAxis(&matRot,
 		D3DXVec3Cross(&vAxis, &m_vInfo[INFO_UP], &vLook),
 		acosf(D3DXVec3Dot(D3DXVec3Normalize(&vLook, &vLook),
@@ -103,7 +103,7 @@ const _matrix* Engine::CTransform::Compute_LookAtTarget(const _vec3* pTargetPos)
 void CTransform::Revolution(const _vec3* pCenter, _matrix _matView, _float fAngle, const _float& fTimeDelta, ITEMSTATE eState)
 {
 
-	// Áß½ÉÁÂÇ¥
+	// ï¿½ß½ï¿½ï¿½ï¿½Ç¥
 	_vec3	vPos, vRight, vLook;
 
 	vPos = pCenter[INFO_POS];
@@ -123,7 +123,7 @@ void CTransform::Revolution(const _vec3* pCenter, _matrix _matView, _float fAngl
 
 	//m_vInfo[INFO_POS] = { 50.f, 5.f ,  50.f };
 
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix matBill;
 	if (_matView._21 > 0.f)
 	{
@@ -144,16 +144,16 @@ void CTransform::Revolution(const _vec3* pCenter, _matrix _matView, _float fAngl
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 
-	// ½º ÀÚ ÀÌ °ø ºÎ
-	// ÀÚ-1 ½º ÀÚ ÀÌ
-	// ½º * ÀÚ-1 * ½º-1 * ½º * ÀÚ * ÀÌ
+	// ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
+	// ï¿½ï¿½-1 ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
+	// ï¿½ï¿½ * ï¿½ï¿½-1 * ï¿½ï¿½-1 * ï¿½ï¿½ * ï¿½ï¿½ * ï¿½ï¿½
 
 	_matrix		matScale, matTrans;
 
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
 
 
-	// È¸Àü
+	// È¸ï¿½ï¿½
 	_matrix		matRot;
 	D3DXMatrixIdentity(&matRot);
 	D3DXMatrixRotationY(&matRot, fAngle);
@@ -175,7 +175,7 @@ void CTransform::KnockBack_Target(_vec3 * pTargetLook, const _float & fSpeed, co
 
 void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {
-	_matrix matParent = _matWorld; // ºÎ¸ðÇà·ÄÀº ÇÃ·¹ÀÌ¾îÀÇ ¿ùµåÇà·Ä
+	_matrix matParent = _matWorld; // ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	_vec3 vRight, vUp, vLook, vPos;
 
@@ -213,7 +213,7 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
 
 
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix matBill, matView;
 	D3DXMatrixIdentity(&matBill);
 	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
@@ -226,7 +226,7 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {
-	_matrix matParent = _matWorld; // ºÎ¸ðÇà·ÄÀº ÇÃ·¹ÀÌ¾îÀÇ ¿ùµåÇà·Ä
+	_matrix matParent = _matWorld; // ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	_vec3 vRight, vUp, vLook, vPos;
 
@@ -252,10 +252,10 @@ _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 	_matrix matRev;
 	_float fRad = 0.f;
-	m_fAttackAngle += m_fAttackSpeed;
-	if (m_fAttackAngle > 10.f)
-		m_fAttackSpeed *= -1;
+	m_fAttackAngle -= m_fAttackSpeed;
 	if (m_fAttackAngle < -25.f)
+		m_fAttackSpeed *= -1;
+	if (m_fAttackAngle > 0.f)
 		m_bFinished = true;
 
 	fRad = D3DXToRadian(m_fAttackAngle);
@@ -264,7 +264,7 @@ _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	_matrix matPos; // parent
 	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
 
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix matBill, matView;
 	D3DXMatrixIdentity(&matBill);
 	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
@@ -279,7 +279,7 @@ _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {
-	_matrix matParent = _matWorld; // ºÎ¸ðÇà·ÄÀº ÇÃ·¹ÀÌ¾îÀÇ ¿ùµåÇà·Ä
+	_matrix matParent = _matWorld; // ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	_vec3 vRight, vUp, vLook, vPos;
 
@@ -317,7 +317,7 @@ void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorl
 	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
 
 
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix matBill, matView;
 	D3DXMatrixIdentity(&matBill);
 	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
@@ -330,7 +330,7 @@ void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorl
 
 _bool CTransform::Item_Defense(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {
-	_matrix matParent = _matWorld; // ºÎ¸ðÇà·ÄÀº ÇÃ·¹ÀÌ¾îÀÇ ¿ùµåÇà·Ä
+	_matrix matParent = _matWorld; // ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	_vec3 vRight, vUp, vLook, vPos;
 
@@ -375,7 +375,7 @@ _bool CTransform::Item_Defense(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	_matrix matPos; // parent
 	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
 
-	// ºôº¸µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_matrix matBill, matView;
 	D3DXMatrixIdentity(&matBill);
 	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
@@ -403,7 +403,7 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 
-	// Å©±â
+	// Å©ï¿½ï¿½
 
 	for (_uint i = 0; i < INFO_POS; ++i)
 	{
@@ -416,7 +416,7 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 		m_vInfo[i] *= *(((_float*)&m_vScale) + i);
 	}
 
-	// È¸Àü
+	// È¸ï¿½ï¿½
 	_matrix		matRot[ROT_END];
 	D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
 	D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);

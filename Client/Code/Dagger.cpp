@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Dagger.h"
 #include "Export_Function.h"
+#include "ParticleMgr.h"
 
 CDagger::CDagger(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CWeapon(pGraphicDev)
@@ -50,7 +51,6 @@ _int CDagger::Update_Object(const _float & fTimeDelta)
 			else m_bReady = true;
 		}
 	}
-
 
 	_vec3* pPlayerInfo = m_pCenter->Get_InfoAll();
 
@@ -166,6 +166,8 @@ void CDagger::CollisionEvent(CGameObject * pObj)
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
 	}
+
+
 }
 
 HRESULT CDagger::Add_Component(void)
@@ -221,10 +223,25 @@ void CDagger::Attack(const _float & fTimeDelta)
 	if (!m_bAttack)
 		return;
 
+	cout << m_pTransCom->Get_AttackAngle() << endl;
+	if (-10.f > m_pTransCom->Get_AttackAngle() && !m_bParticle)
+	{
+		
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { -1.f, 1.f, 0.f },
+			0.1f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_10);
+
+		m_bParticle = true;
+	}
+
+
 	if (m_pTransCom->Item_Attack(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer()))
 	{
 		m_bAttack = false;
 		m_pColliderCom->Set_Free(true);
+		m_pTransCom->Prepare_Attack();
+		m_bParticle = false;
 	}
 	else
 		Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);

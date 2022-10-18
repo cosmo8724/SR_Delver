@@ -29,5 +29,7 @@ private:
 private:
 	_matrix				m_matProj, m_matView, m_matOrtho, m_matWorld;
 	_float				m_fFrame = 0.f;
+
+	wstring			m_textureTag;
 };
 

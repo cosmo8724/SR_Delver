@@ -117,6 +117,10 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 		m_iTransparency += 10; // 투명도가 진해지는 숫자 > 10
 		m_fTransparencyTimeAcc = 0.f;
 		
+#ifdef SH_Debug
+		cout << m_iTransparency << endl;
+#endif
+		
 		if (m_iTransparency >= 250)
 		{
 			m_bStartLightning = true;
