@@ -637,6 +637,7 @@ void CPlayer::Stun(const _float & fTimeDelta)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.3f, 1.0f }, 
 												2.f, {1.f, 1.f, 1.f, 1.f}, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
 		m_bStunParticle = true;
 	}
