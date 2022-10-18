@@ -108,10 +108,10 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 
 	//////////// Monster
 	//// GreenSlime
-	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3( 15.f, 1.f, 15.f ));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
-	//m_vecMonster.push_back(pGameObject);
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3( 15.f, 1.f, 15.f ));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
 	//// PinkSlime
 	//pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(7.f, 2.f, 10.f));
@@ -163,7 +163,7 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 
 	////////////Boss
 	// SongBoss
-	pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(10.f, 1.f, 10.f));
+	pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(10.f, 3.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
