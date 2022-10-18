@@ -345,7 +345,7 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\ShortTorch">
       <UniqueIdentifier>{f29b58bb-b862-4cc0-9e30-eabe9bc5f223}</UniqueIdentifier>
-    </Filter>      
+    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\02. Monster\09. GreenSpider">
       <UniqueIdentifier>{b5f55daf-f09b-4484-a8e9-8d7558638748}</UniqueIdentifier>
     </Filter>
@@ -366,6 +366,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\09. Food">
       <UniqueIdentifier>{3855446b-b5da-4a2f-bcfd-d6dbd4ab14d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\10. Mimic">
+      <UniqueIdentifier>{1e21f335-49a3-4997-90ef-ea9ab086d90c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -695,7 +698,7 @@
     </ClInclude>
     <ClInclude Include="..\Header\Statue.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\Statue</Filter>
-    </ClInclude>      
+    </ClInclude>
     <ClInclude Include="..\Header\GreenSpider.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\09. GreenSpider</Filter>
     </ClInclude>
@@ -731,6 +734,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\Food.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\09. Food</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Mimic.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\10. Mimic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1078,6 +1084,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Food.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\09. Food</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Mimic.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\10. Mimic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

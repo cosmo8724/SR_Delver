@@ -77,7 +77,6 @@ HRESULT CItemMgr::Add_GameObject(const _tchar* pLayerTag, const _tchar* objTag, 
 	_tcscat_s(szObjTag, MAX_PATH, L"%d");
 	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
 
-
 	wstring objName = objTag;
 	if (objName == L"Arrow")
 	{

@@ -26,6 +26,7 @@ public:
 public:
 	vector<CGameObject*>*	Get_Monster() { return &m_vecMonster; }
 
+
 private:
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
 	vector<CGameObject*>	m_vecMonster;

@@ -370,16 +370,13 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 
 void CSongBoss::OnHit(const _float & fTimeDelta)
 {
-	if (!m_bSkillFloor)
-		return;
-
 	if (!m_bHit)
 		return;
 
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		//CMonster::Set_KnockBack();
+		CMonster::Set_KnockBack();
 		m_bOneCheck = true;
 	}
 
