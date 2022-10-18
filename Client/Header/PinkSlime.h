@@ -46,9 +46,9 @@ private:
 	_float				m_fHeight;
 
 	// 스킬 순서
-	_float				m_bSkillJumpStart = false;
-	_float				m_bSkillFollowStart = false;
-	_float				m_SkillJumpTimeAcc = 0.f;
+	_bool				m_bSkillJumpStart = false;
+	_bool				m_bSkillFollowStart = false;
+	_float				m_fSkillJumpTimeAcc = 0.f;
 
 	// jump
 	_bool				m_bJump;
