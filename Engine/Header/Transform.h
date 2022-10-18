@@ -33,8 +33,8 @@ public:
 	void				Set_WorldMatrix(_matrix* pWorld) { m_matWorld = *pWorld; }
 	_vec3*				Get_InfoAll() { return m_vInfo; }
 	void				Set_Info(_vec3 vRight, _vec3 vUp, _vec3 vLook);
-	void				Set_Look(_vec3 vLook) { m_vInfo[INFO_LOOK] = vLook; }
-	_vec3				Get_Look() { return _vec3(m_matWorld._31, m_matWorld._32, m_matWorld._33); }
+	void				Set_Look(_vec3 vLook) { m_vLook = vLook; }
+	_vec3				Get_Look() { return m_vLook; }
 
 public:
 	void				Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
@@ -74,6 +74,7 @@ public:
 
 	_matrix			m_matOldBill;
 	_float			m_fShieldvLook;
+	_vec3			m_vLook;
 
 public:
 	static CTransform*		Create(void);

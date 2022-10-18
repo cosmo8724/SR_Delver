@@ -82,7 +82,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 
 
 
-	m_bUse = true;
+	//m_bUse = true;
 
 }
 
@@ -108,17 +108,8 @@ HRESULT CUserParticle::Ready_Object(void)
 
 _int CUserParticle::Update_Object(const _float & fTimeDelta)
 {
-	//if (!m_bUse || !m_bReady)
-	//	return 0;
-	if (!m_bUse)
-		return 0;
-	else
-		m_bReady = true;// component변경이 ready에서 이뤄지지 않으므로 시점을 컨트롤 하기 위함
-
 	if (isDead())
 	{
-		//CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
-		//ReUse();
 		return OBJ_TEST;
 
 	}
@@ -151,17 +142,11 @@ _int CUserParticle::Update_Object(const _float & fTimeDelta)
 
 void CUserParticle::LateUpdate_Object(void)
 {
-	if (!m_bUse || !m_bReady)
-		return;
-
-
 	CGameObject::LateUpdate_Object();
 }
 
 void CUserParticle::Render_Obejct(void)
 {
-	if (!m_bUse || !m_bReady)
-		return;
 
 	_matrix matWorld;
 	D3DXMatrixIdentity(&matWorld);
@@ -467,21 +452,23 @@ void CUserParticle::update(_float fTimeDelta)
 	break;
 
 	case PTYPE_CIRCLING:
-	{
+	{		
 		_vec3 vRight, vUp, vLook, vPos;
-		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
-		m_pTransCom->Get_Info(INFO_UP, &vUp);
-		//m_pTransCom->Get_Info(INFO_LOOK, &vLook);
-		vLook = m_pTransCom->Get_Look();
+		_matrix matRot, matTrans, matPos, matWorld;
 
-		
-		D3DXVec3Normalize(&vRight, &vRight);
-		D3DXVec3Normalize(&vUp, &vUp);
-		D3DXVec3Normalize(&vLook, &vLook);
+	/*	if (!m_bReady)
+		{*/
+			vUp = { 0.f, 1.f, 0.f };
+			vLook = m_pTransCom->Get_Look();
+			D3DXVec3Cross(&vRight, &vUp, &vLook);
 
+			D3DXVec3Normalize(&vRight, &vRight);
+			D3DXVec3Normalize(&vUp, &vUp);
+			D3DXVec3Normalize(&vLook, &vLook);
+			m_bReady = true;
+		//}
 		_vec3 vTargetPos = m_pTransCom->Get_Pos();
 
-		_matrix matRot, matTrans, matPos, matWorld;
 
 		int i = 0;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
