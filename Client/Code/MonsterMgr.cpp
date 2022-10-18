@@ -12,6 +12,7 @@
 #include "Leaf.h"
 #include "SkeletonGhost.h"
 #include "GreenSpider.h"
+#include "Mimic.h"
 // Boss
 #include "SongBoss.h"
 
@@ -91,6 +92,12 @@ HRESULT CMonsterMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenSpiderHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/GreenSpider/Hit/GreenSpider%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenSpiderDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/GreenSpider/Die/GreenSpider%d.png", TEX_NORMAL, 3)), E_FAIL);
 
+	// Mimic_Texture 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MimicIDLE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Mimic/Idle/Mimic%d.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MimicATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Mimic/Attack/Mimic%d.png", TEX_NORMAL, 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MimicHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Mimic/Hit/Mimic%d.png", TEX_NORMAL, 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MimicDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Mimic/Die/Mimic%d.png", TEX_NORMAL, 3)), E_FAIL);
+
 	////////////// Boss
 	// SongBoss_Texture 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossMOVE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Move/SongBoss%d.png", TEX_NORMAL, 16)), E_FAIL);
@@ -113,8 +120,8 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
-	//// PinkSlime
-	//pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(7.f, 2.f, 10.f));
+	//// PinkSlime0
+	//pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(15.f, 2.f, 15.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
@@ -160,6 +167,12 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSpider", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
+
+	// Mimic
+	pGameObject = CMimic::Create(m_pGraphicDev, _vec3(5.f, 1.f, 15.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Mimic", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
 	////////////Boss
 	// SongBoss

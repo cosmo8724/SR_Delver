@@ -77,7 +77,6 @@ HRESULT CItemMgr::Add_GameObject(const _tchar* pLayerTag, const _tchar* objTag, 
 	_tcscat_s(szObjTag, MAX_PATH, L"%d");
 	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
 
-
 	wstring objName = objTag;
 	if (objName == L"Arrow")
 	{
@@ -184,16 +183,16 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Wand
-	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 6.f, 0.5f, 15.f }));
+	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 5.f, 1.f, 10.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wand", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Key
-	pGameObject = CKey::Create(m_pGraphicDev, _vec3({ 5.f, 1.f, 10.f }));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Key", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_KEY].push_back(pGameObject);
+	//pGameObject = CKey::Create(m_pGraphicDev, _vec3({ 5.f, 1.f, 10.f }));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Key", pGameObject), E_FAIL);
+	//m_vecItemPool[ITEM_KEY].push_back(pGameObject);
 
 	// Armor
 	pGameObject = CArmor::Create(m_pGraphicDev, _vec3({ 7.f, 1.f, 3.f }), 0);

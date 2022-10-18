@@ -412,6 +412,9 @@ void CPlayer::Jump(const _float & fTimeDelta)
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
+	if (Engine::Key_Down(DIK_E))
+		pOtherObj->InteractEvent();
+
 	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
 	if (pMonster == pOtherObj)
 		OnHit(pMonster->Get_MonsterAttack());
@@ -523,7 +526,9 @@ void CPlayer::OnHit(_int _HpMinus)
 		//	{ 1.f, 0.f, 0.f, 0.01f });
 		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_7);
 
-		m_bKnockBack = true;
+		if(0 < _HpMinus)
+			m_bKnockBack = true;
+		
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
 	}
@@ -579,6 +584,7 @@ void CPlayer::Stun(const _float & fTimeDelta)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.3f, 1.0f }, 
 												2.f, {1.f, 1.f, 1.f, 1.f}, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
 		m_bStunParticle = true;
 	}

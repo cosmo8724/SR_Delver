@@ -250,8 +250,9 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// MonsterLook -> Player
-	_vec3 vRight, vUp, vLook;
+	_vec3 vLook;
 	vLook = vPlayerPos - vPos;
+	D3DXVec3Normalize(&vLook, &vLook);
 	m_pTransCom->Set_Look(&vLook);
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
@@ -264,7 +265,7 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 		if (3.f < m_fAttackTimeAcc)
 		{
-			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.0f }, 3.f);
+			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.f }, 3.f);
 			CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
 			CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
 
@@ -370,16 +371,13 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 
 void CSongBoss::OnHit(const _float & fTimeDelta)
 {
-	if (!m_bSkillFloor)
-		return;
-
 	if (!m_bHit)
 		return;
 
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		//CMonster::Set_KnockBack();
+		CMonster::Set_KnockBack();
 		m_bOneCheck = true;
 	}
 

@@ -33,6 +33,7 @@ public:
 
 	void				Set_Stun() { m_tInfo.bStun = true; }
 	void				Set_Slow() { m_tInfo.bSlow = true; }
+	void				Set_KnockBack() { m_bKnockBack = true; }
 
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh

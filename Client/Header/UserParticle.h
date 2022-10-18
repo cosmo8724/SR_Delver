@@ -102,7 +102,7 @@ private:
 	_float			m_fAngleSpeed;
 	_float			m_fStartAngles[50];
 	_float			m_fDist = 0.f;
-	_float			m_fFixFrame;
+	_float			m_fFixFrame = 0.f;
 
 	PTEXTUREID		m_eTex = TEXTURE_0;
 	CTransform*		m_pTransCom = nullptr; // for target

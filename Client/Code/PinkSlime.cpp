@@ -57,7 +57,6 @@ CPinkSlime::CPinkSlime(const CPinkSlime& rhs)
 	, m_bClone(true)
 {
 	m_ObjTag = L"PinkSlime";
-
 }
 
 CPinkSlime::~CPinkSlime()
@@ -80,12 +79,11 @@ HRESULT CPinkSlime::Ready_Object(void)
 	m_fHeight = 2.f;
 
 	// jump variable
-	m_fJSpeed = 5.f;
-	m_fJSpeed0 = 5.f;
+	m_fJSpeed = 3.f;
+	m_fJSpeed0 = 3.f;
 	m_fAccel = 0.1f;
 
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	//m_pTransCom->Set_Pos(7.f, m_fHeight, 10.f);
 	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	return S_OK;
@@ -101,9 +99,7 @@ _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-
-	m_pTransCom->Set_Y(m_fHeight);
-	m_pAnimtorCom->Play_Animation(fTimeDelta);
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 1.5f);
 	Motion_Change();
 
 	if (0 >= m_tInfo.iHp)
@@ -119,6 +115,7 @@ _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 	}
 
 	OnHit(fTimeDelta);
+	m_pTransCom->Set_Y(m_fHeight);
 
 	if (!m_bHit)
 		SKill_Update(fTimeDelta);
@@ -170,11 +167,12 @@ HRESULT CPinkSlime::Add_Component(void)
 
 void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_U))
-	{
-		m_eCurState = HIT;
-		return;
-	}
+
+	//if (Engine::Key_Down(DIK_U))
+	//{
+	//	m_eCurState = HIT;
+	//	return;
+	//}
 
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
@@ -187,18 +185,16 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 
 	if (!m_bSkillJumpStart && fDist < 5.f)
 	{
-		m_SkillJumpTimeAcc += fTimeDelta;
-		if (1.5f < m_SkillJumpTimeAcc)
+		m_fSkillJumpTimeAcc += fTimeDelta;
+		if (1.5f < m_fSkillJumpTimeAcc)
 		{
 			m_bJump = true;
 			m_eSkill = SKILL_JUMP;
-
-		// TODO : Player KnockBack
 		}
-		if (2.f < m_SkillJumpTimeAcc)
+		if (2.f < m_fSkillJumpTimeAcc)
 		{
 			m_bSkillJumpStart = true;
-			m_SkillJumpTimeAcc = 0.f;
+			m_fSkillJumpTimeAcc = 0.f;
 		}
 	}
 
@@ -209,23 +205,25 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 			m_eSkill = SKILL_FOLLOW;
 		}
 
-		//if (18 >= m_tInfo.iHp)
-		//{
-		//	m_eSkill = SKILL_SCALE;
-		//	m_eSkill_Scale = SKILLSCALE_BIG;
-		//}
-		//else if (14 >= m_tInfo.iHp)
-		//{
-		//	m_eSkill = SKILL_SCALE;
-		//	m_eSkill_Scale = SKILLSCALE_MEDIUM;
-		//}
-		//else if (8 >= m_tInfo.iHp)
-		//{
-		//	m_eSkill = SKILL_SCALE;
-		//	m_eSkill_Scale = SKILLSCALE_SMALL;
-		//}
+		if (18 == m_tInfo.iHp)
+		{
+			m_bSkillJumpStart = false;
+			m_eSkill = SKILL_SCALE;
+			m_eSkill_Scale = SKILLSCALE_BIG;
+		}
+		else if (14 == m_tInfo.iHp)
+		{
+			m_bSkillJumpStart = false;
+			m_eSkill = SKILL_SCALE;
+			m_eSkill_Scale = SKILLSCALE_MEDIUM;
+		}
+		else if (8 == m_tInfo.iHp)
+		{
+			m_bSkillJumpStart = false;
+			m_eSkill = SKILL_SCALE;
+			m_eSkill_Scale = SKILLSCALE_SMALL;
+		}
 	}
-
 
 	switch (m_eSkill)
 	{
@@ -243,8 +241,10 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 
 void CPinkSlime::SKillJump_Update(const _float & fTimeDelta)
 {
-	//if (Key_Down(DIK_0))
-	//	m_bJump = true;
+	if (Key_Down(DIK_0))
+	{
+		m_bJump = true;
+	}
 
 	if (m_bJump)
 	{
@@ -253,6 +253,13 @@ void CPinkSlime::SKillJump_Update(const _float & fTimeDelta)
 
 		if (m_fJumpTimeAcc > 0.3f && m_fHeight >= vPos.y)
 		{
+			CParticleMgr::GetInstance()->Set_Info(this, 50, 1.f, { 0.f, m_fHeight - 3.f, 0.f },
+				1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_10); // TODO : TEXTURE_11
+
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+			pPlayer->Set_KnockBack();
+
 			m_bJump = false;
 			m_fJumpTimeAcc = 0.f;
 
@@ -271,7 +278,9 @@ void CPinkSlime::SKillJump_Update(const _float & fTimeDelta)
 void CPinkSlime::SKillFollow_Update(const _float & fTimeDelta, _float fDist, _vec3* vPlayerPos)
 {
 	m_eCurState = ATTACK;
-	m_pTransCom->ChangeHeight_Target(vPlayerPos, m_fHeight, m_fAttack_Speed, fTimeDelta);
+
+	if(5.f > fDist)
+		m_pTransCom->ChangeHeight_Target(vPlayerPos, m_fHeight, m_fAttack_Speed, fTimeDelta);
 }
 
 void CPinkSlime::SKillScale_Update(const _float & fTimeDelta)
