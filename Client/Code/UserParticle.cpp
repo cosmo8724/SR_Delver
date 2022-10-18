@@ -66,7 +66,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 	removeAllParticles();
 
 	if (nullptr == m_pTarget)
-		MSG_BOX("��ƼŬ Ÿ�� ���� �Ф�");
+		MSG_BOX("ttttt");
 	CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 
 	m_eType = _eType;
@@ -249,7 +249,6 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 
 		GetRandomVector(&attribute->vVelocity, &min, &max);
 
-		//��ü�� ����� ���� ����ȭ
 		D3DXVec3Normalize(&attribute->vVelocity, &attribute->vVelocity);
 
 		attribute->vVelocity *= 10.f;
@@ -375,29 +374,17 @@ void CUserParticle::update(_float fTimeDelta)
 		m_fSize -= 0.05f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// ������ ��ƼŬ�� ����
 			if (iter->bIsAlive)
 			{
 				
 				iter->vVelocity.y -= GetRandomFloat(0.f, 1.f);
 				iter->vPosition += (0.3f * iter->vVelocity * fTimeDelta);
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // ���δ�.
+				if (iter->fAge > iter->fLifeTime) 
 					iter->bIsAlive = false;
 			}
 		}
-		//for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
-		//{
-		//	// ������ ��ƼŬ�� ����
-		//	if (iter->bIsAlive)
-		//	{
-		//		iter->vVelocity.y -= GetRandomFloat(0.f, 1.4f);
-		//		iter->vPosition += (iter->vVelocity * fTimeDelta);
-		//		iter->fAge += fTimeDelta;
-		//		if (iter->fAge > iter->fLifeTime) // ���δ�.
-		//			iter->bIsAlive = false;
-		//	}
-		//}
+
 	}
 	break;
 

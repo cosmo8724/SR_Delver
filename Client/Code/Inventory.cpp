@@ -504,24 +504,23 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 		m_bShow = true;
 		m_fClickTime += fTimeDelta;
 
-		if (m_fClickTime < 0.5f)
+		if (m_fClickTime < 0.6f)
 		{
 			if (Engine::Mouse_Down(DIM_LB))
 				++m_iClickedCnt;
-			//if (2 == m_iClickedCnt)
-			//{
-			//	//MSG_BOX("double");
-			//	//Set_ItemEquip();
-			//	m_fClickTime = 0.f;
-			//	m_iClickedCnt = 0;
-			//}
-		}
-		else if (m_fClickTime > 0.5f)
-		{
-			if (2 == m_iClickedCnt)		// double click
+			if (2 == m_iClickedCnt)
 			{
 				Set_ItemEquip();
+				m_fClickTime = 0.f;
+				m_iClickedCnt = 0;
 			}
+		}
+		else if (m_fClickTime > 0.6f)
+		{
+			//if (2 == m_iClickedCnt)		// double click
+			//{
+			//	Set_ItemEquip();
+			//}
 			if (1 == m_iClickedCnt)	// one click
 			{
 				Pick();

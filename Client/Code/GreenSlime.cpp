@@ -239,7 +239,7 @@ void CGreenSlime::Dead()
 		50,
 		0.1f,
 		{ 0.5f, 0.5f, 0.5f },
-		1.f,
+		10.f,
 		{ 0.f, 1.f, 0.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
