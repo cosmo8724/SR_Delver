@@ -213,6 +213,16 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
+	// MonsterLook -> Player
+	_vec3 vLook;
+	vLook = vPlayerPos - vPos;
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	_vec3 vLookOld;
+	m_pTransCom->Get_Info(INFO_LOOK, &vLookOld);
+
+	//_float	fDot = 
+
 	// 일정 거리 안 으로 들어 왔을 때 공격 시작
 	if (fDist < 10.f)
 	{
@@ -224,6 +234,7 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.0f }, 3.f);
 			CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
 			CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
+
 
 			m_eCurState = ATTACK;
 			CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);

@@ -403,13 +403,12 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 
-	// 크기
-
 	for (_uint i = 0; i < INFO_POS; ++i)
 	{
 		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));
 	}
 
+	// 크기
 	for (_uint i = 0; i < INFO_POS; ++i)
 	{
 		D3DXVec3Normalize(&m_vInfo[i], &m_vInfo[i]);

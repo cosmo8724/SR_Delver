@@ -471,10 +471,15 @@ void CUserParticle::update(_float fTimeDelta)
 		_vec3 vRight, vUp, vLook, vPos;
 		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
 		m_pTransCom->Get_Info(INFO_UP, &vUp);
-		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+		//m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+		vLook = m_pTransCom->Get_Look();
+
+		
 		D3DXVec3Normalize(&vRight, &vRight);
 		D3DXVec3Normalize(&vUp, &vUp);
 		D3DXVec3Normalize(&vLook, &vLook);
+
+		_vec3 vTargetPos = m_pTransCom->Get_Pos();
 
 		_matrix matRot, matTrans, matPos, matWorld;
 
@@ -484,7 +489,7 @@ void CUserParticle::update(_float fTimeDelta)
 			if (iter->bIsAlive)
 			{
 
-				m_pTransCom->Get_Info(INFO_POS, &vPos);
+				vPos = vTargetPos;
 
 				m_fStartAngles[i] = _float((_int)(m_fStartAngles[i] + m_fAngleSpeed) % 360);
 				D3DXMatrixRotationAxis(&matRot, &vLook, D3DXToRadian(m_fStartAngles[i]));

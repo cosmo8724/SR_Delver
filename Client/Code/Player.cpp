@@ -585,7 +585,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{
 		//m_bKnockBack = true;
 		m_tInfo.iHp = 0;
-		m_bDead = true;
+		// m_bDead = true;
 		return;
 	}
 
