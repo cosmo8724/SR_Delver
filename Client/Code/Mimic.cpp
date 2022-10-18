@@ -13,6 +13,7 @@ CMimic::CMimic(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_ePreState(MOTION_END)
 	, m_eCurState(MOTION_END)
 	, m_fTimeAcc(0.f)
+	, m_bInteract(0.f)
 {
 	m_ObjTag = L"Mimic";
 }
@@ -22,6 +23,7 @@ CMimic::CMimic(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_ePreState(MOTION_END)
 	, m_eCurState(MOTION_END)
 	, m_fTimeAcc(0.f)
+	, m_bInteract(0.f)
 {
 	m_vPos = vPos;
 	m_ObjTag = L"Mimic";
@@ -43,7 +45,6 @@ HRESULT CMimic::Ready_Object(void)
 	m_eCurState = IDLE;
 
 	m_fAttack_Speed = 2.f;
-	m_pColliderCom->Set_Free(true);
 
 	return S_OK;
 }
@@ -76,22 +77,7 @@ _int CMimic::Update_Object(const _float & fTimeDelta)
 	OnHit(fTimeDelta);
 
 	if (!m_bHit)
-	{
-		CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK(pPlayerTransformCom);
-
-		_vec3		vPlayerPos, vPos;
-		pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-		m_pTransCom->Get_Info(INFO_POS, &vPos);
-
-		_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
-
-		if (fDist < 1.f)
-			m_pColliderCom->Set_Free(false);
-
-		Target_Follow(fTimeDelta, &vPlayerPos);
-	}
-
+		Target_Follow(fTimeDelta);
 	return 0;
 }
 
@@ -137,24 +123,27 @@ HRESULT CMimic::Add_Component(void)
 	return S_OK;
 }
 
-void CMimic::Target_Follow(const _float & fTimeDelta, _vec3* vPlayerPos)
+void CMimic::Target_Follow(const _float & fTimeDelta)
 {
-	if (!m_bPlayerAttack)
+	if (!m_bInteract)
 		return;
-	else
-		m_eCurState = IDLE;
-	
+
+	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pPlayerTransformCom);
+
+	_vec3		vPlayerPos, vPos;
+	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
+
 	m_eCurState = ATTACK;
 	m_pTransCom->Set_Y(m_fHeight);
-	m_pTransCom->Chase_Target(vPlayerPos, m_fAttack_Speed, fTimeDelta);	
+	m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
 }
 
 void CMimic::OnHit(const _float & fTimeDelta)
 {
 	if (!m_bHit)
 		return;
-
-	m_bPlayerAttack = true;
 
 	if (!m_bOneCheck)
 	{
@@ -200,9 +189,17 @@ void CMimic::Dead()
 
 void CMimic::CollisionEvent(CGameObject* pObj)
 {
+	if (m_eCurState == IDLE)
+		return;
+
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 	if(pPlayer != pObj)
 		m_bHit = true;		
+}
+
+void CMimic::InteractEvent()
+{
+	m_bInteract = true;
 }
 
 void CMimic::Motion_Change()
@@ -212,10 +209,12 @@ void CMimic::Motion_Change()
 		switch (m_eCurState)
 		{
 		case IDLE:
+			m_tInfo.iAttack = 0;
 			m_pAnimtorCom->Change_Animation(L"Proto_MimicIDLE_Texture");
 			break;
 
 		case ATTACK:
+			m_tInfo.iAttack = 2;
 			m_pAnimtorCom->Change_Animation(L"Proto_MimicATTACK_Texture");
 			break;
 
