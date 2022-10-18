@@ -167,8 +167,8 @@ void CStage::LateUpdate_Scene(void)
 	pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
 	pSour2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_0");
 	pSour3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_1");
-	pSour4 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_2");
-	pSour5 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_3");
+	//pSour4 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_2");
+	//pSour5 = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar_3");
 
 	for (auto& weapon : *pItems)
 	{
@@ -187,9 +187,9 @@ void CStage::LateUpdate_Scene(void)
 
 		Engine::CollisionAABB(pSour3, weapon);
 
-		Engine::CollisionAABB(pSour4, weapon);
+		//Engine::CollisionAABB(pSour4, weapon);
 
-		Engine::CollisionAABB(pSour5, weapon);
+		//Engine::CollisionAABB(pSour5, weapon);
 	}
 
 	// Bullet 테스트
@@ -207,9 +207,9 @@ void CStage::LateUpdate_Scene(void)
 
 		Engine::CollisionTest(pSour3, bullet);
 
-		Engine::CollisionTest(pSour4, bullet);
+		//Engine::CollisionTest(pSour4, bullet);
 
-		Engine::CollisionTest(pSour5, bullet);
+		//Engine::CollisionTest(pSour5, bullet);
 	}
 
 	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW);
@@ -226,9 +226,9 @@ void CStage::LateUpdate_Scene(void)
 
 		Engine::CollisionTest(pSour3, bullet);
 
-		Engine::CollisionTest(pSour4, bullet);
+		//Engine::CollisionTest(pSour4, bullet);
 
-		Engine::CollisionTest(pSour5, bullet);
+		//Engine::CollisionTest(pSour5, bullet);
 	}
 	
 	Engine::CScene::LateUpdate_Scene();
@@ -345,7 +345,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks
 	{
-		string	strPath = "..\\..\\Data\\Map_Test.dat";
+		string	strPath = "..\\..\\Data\\Map_Test2.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -402,7 +402,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		string	strPath = "..\\..\\Data\\EcoObject_Test.dat";
+		string	strPath = "..\\..\\Data\\EcoObject_Test2.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
