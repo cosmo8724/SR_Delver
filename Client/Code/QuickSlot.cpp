@@ -140,6 +140,8 @@ void CQuickSlot::Key_Input(const _float & fTimeDelta)
 			pRight->Set_Equipped();
 			if (ITEM_WEAPON == pRight->Get_ItemType())
 			{
+				if (pRight == pItem)
+					return;
 				if (nullptr != pItem && ITEM_WEAPON == pItem->Get_ItemType())
 					pItem->Set_State(STATE_INV);
 

@@ -394,6 +394,8 @@ void CInventory::Set_ItemEquip()
 					case ITEM_WEAPON:
 					{
 						CItem*		pRight = pPlayer->Get_Right();
+						if (pRight == pItem)
+							return;
 						if (nullptr != pRight)
 							pRight->Set_State(STATE_INV);
 
