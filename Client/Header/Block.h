@@ -25,7 +25,7 @@ public:
 	void				SetChanging() { m_bChanging = !m_bChanging; }
 	const _bool&		Get_IsSet() { return m_bSet; }
 	_bool				IsClone() { return m_bClone; }
-	_float				Get_Height() { return m_bdBox.vMax.y; }
+	_float				Get_Height() { return m_pColliderCom->Get_MaxPoint().y; }
 	void				SetTextureIndex(_int Num) { m_iTexture = Num; }
 	void				PlusTexture() { if (m_iTexture < m_pTextureCom->Get_FrameEnd()) m_iTexture++; }
 	void				MinusTexture() { if (m_iTexture > 0) m_iTexture--; }
@@ -42,6 +42,7 @@ public:
 
 private:
 	HRESULT			Add_Component(void);
+	void				CollisionEvent(CGameObject * pOtherObj);
 	void				Chase_MousePT();
 	void				Chase_Block();
 	void				MultiParentWorld();
@@ -70,6 +71,8 @@ public:
 
 	BLOCKTYPE		m_eCurrentType = BLOCK_CAVE;
 	BLOCKTYPE		m_eLastType = BLOCKTYPE_END;
+
+	_float				m_fTimeDelta = 0.f;
 
 	_bool				m_bSet = false;
 	_bool				m_bClone = false;

@@ -116,7 +116,7 @@ void CStage::LateUpdate_Scene(void)
 			//}
 			//CCollisionMgr::GetInstance()->CollisionSphere(pPlayer, pBlock);
 			//CCollisionMgr::GetInstance()->CollisionAABB(pPlayer, pBlock);
-			Engine::CollisionTest(pPlayer, pBlock);
+			Engine::CollisionTest(pBlock, pPlayer);
 		}
 	}
 
@@ -236,7 +236,7 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
-	/*for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	for (_int i = 0; i < BLOCKTYPE_END; ++i)
 	{
 		if (i == BLOCK_CAVE)
 		{
@@ -268,7 +268,7 @@ void CStage::Render_Scene(void)
 			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
 				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
 		}
-	}*/
+	}
 }
 
 HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
@@ -287,9 +287,9 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);
 
 	// Terrain
-	pGameObject = CTerrain::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
+	//pGameObject = CTerrain::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
 	
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
