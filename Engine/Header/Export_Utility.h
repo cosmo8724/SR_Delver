@@ -14,6 +14,8 @@
 #include "PtBuffer.h"
 #include "Collider.h"
 
+#include "Shader.h"
+
 // Logics
 #include "Transform.h"
 #include "Calculator.h"

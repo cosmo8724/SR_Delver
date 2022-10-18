@@ -57,33 +57,30 @@ namespace Engine
 		_ulong				dwIndex = 0;
 	}TILE;
 
-	// ��ƼŬ
+
 	typedef struct Particle
 	{
-		_vec3		vPosition;	// ��ġ
-		D3DCOLOR	tColor;		// �÷�
-								//_float			_size;		// ũ��
+		_vec3		vPosition;	
+		D3DCOLOR	tColor;		
+								
 	}PARTICLE;
-	const _ulong		FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_DIFFUSE; // D3DFVF_PSIZE : ũ�������� : �׷���ī�忡 ���� ���������� ������.
-																	//D3DFVF_XYZ : ��ȯ���� ���� ������ ��ġ�� ���Ե�.
-																	//D3DFVF_DIFFUSE : Ȯ��� ������Ұ� ���Ե�.
-
-																	// ��ƼŬ �Ӽ�
+	const _ulong		FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_DIFFUSE; 
+																	
+											
 	typedef struct Attribute
 	{
-		_vec3		_position;		// ���彺���̽� �� ��ƼŬ ��ġ
-		_vec3		_velocity;		// ��ƼŬ �ӵ�(���� /s)
-		_vec3		_acceleration;	// ��ƼŬ�� ����(���� /s)
-		_float		_lifeTime;		// ��ƼŬ �Ҹ���� �����Ǵ� �ð�.
-		_float		_age;			// ��ƼŬ�� ���� ����
-		D3DXCOLOR	_color;			// ��ƼŬ�� �÷�
-		D3DXCOLOR	_colorFade;		// ��ƼŬ�� �÷��� �ð��� �v�� ���� ����ϴ� ���
-		_bool		_isAlive;		// ��ƼŬ�� ������ ��� True, �Ҹ��� ��� False
+		_vec3		_position;		
+		_vec3		_velocity;		
+		_vec3		_acceleration;	
+		_float		_lifeTime;		
+		_float		_age;			
+		D3DXCOLOR	_color;			
+		D3DXCOLOR	_colorFade;		
+		_bool		_isAlive;		
 
 	}ATTRIBUTE;
 
 
-	// ��� �ڽ�
 	typedef struct tBoundingBox
 	{
 		_vec3	vMin;
@@ -91,7 +88,6 @@ namespace Engine
 
 		_bool isPointInside(_vec3 p)
 		{
-			// ������ ����Ʈ�� ������ ���� �ִ°�?
 			if (p.x >= vMin.x && p.y >= vMin.y && p.z >= vMin.z &&
 				p.x <= vMax.x && p.y <= vMax.y && p.z <= vMax.z)
 				return true;
@@ -100,7 +96,6 @@ namespace Engine
 		}
 	}BDBOX, *LPBDBOX;
 
-	// ��� ��
 	typedef struct tBoundingSphere
 	{
 		_vec3	vCenter;
@@ -122,35 +117,29 @@ namespace Engine
 			bIsAlive = true;
 		}
 
-		_vec3			vPosition;			// ���彺���̽� �� ��ƼŬ ��ġ
-		_vec3			vVelocity;			// ��ƼŬ�� �ӵ� (per second)
-		_vec3			vAcceleration;	// ��ƼŬ�� ���ӵ� (per second)
+		_vec3			vPosition;		
+		_vec3			vVelocity;		
+		_vec3			vAcceleration;
 
-		_float			fLifeTime;			// ��ƼŬ �Ҹ���� �����Ǵ� �ð�
-		_float			fAge;				// ��ƼŬ�� ���� ����
+		_float			fLifeTime;		
+		_float			fAge;			
 
-		D3DXCOLOR	tColor;			// ��ƼŬ�� ����
-		D3DXCOLOR	tColorFade;	// ��ƼŬ�� ������ �ð��� �帧�� ���� ����ϴ� ���
+		D3DXCOLOR	tColor;		
+		D3DXCOLOR	tColorFade;	
 
-		_bool			bIsAlive;			// ��ƼŬ�� ���� ����
+		_bool			bIsAlive;			
 	} ATTINFO;
 
-	typedef struct tParticleInfo // tool�� ����ü
+	typedef struct tParticleInfo 
 	{
-		_vec3			vOrigin;			// ��ƼŬ�� ���۵Ǵ� ��
-		BDBOX			tBdBox;			// ��ƼŬ�� �̵��� �� �ִ� ���� ����
-		_float			fEmitRate;		// �ý��ۿ� ���ο� ��ƼŬ�� �߰��Ǵ� ����. (����/s)
-		_float			fSize;				// �ý��� �� ��� ��ƼŬ�� ũ�� 
-		_int			iMaxParticles;		// �־��� �ð����� �ý����� ���� �� �ִ� �ִ� ��ƼŬ ��
-		_ulong			dwVbSize;			// ���ؽ� ���۰� ������ �� �ִ� ��ƼŬ ��
-											// ���� ��ƼŬ �ý��� �� ��ƼŬ ���ʹ� ������
-		_ulong			dwVbOffset;		// �������� �̿��
-										// ���ؽ� ���ۿ��� ���縦 ������ ��ƼŬ �� ���� �ܰ���� ������		
-										// ����Ʈ�� �ƴ� ��ƼŬ �����̴�.
-										// ex) �ܰ� 1�� 0���� 499���, �ܰ�2���� �������� 500
-		_ulong			dwVbBatchSize;	// �������� �̿��
-										// �ܰ� �ϳ��� ���ǵ� ��ƼŬ ��
-
+		_vec3			vOrigin;		
+		BDBOX			tBdBox;			
+		_float			fEmitRate;		
+		_float			fSize;			
+		_int			iMaxParticles;
+		_ulong			dwVbSize;		
+		_ulong			dwVbOffset;							
+		_ulong			dwVbBatchSize;	
 	} PINFO;
 
 	typedef struct tagCreatureInfo
@@ -172,7 +161,6 @@ namespace Engine
 		_int		iDef;
 		_float		fSpeed;
 
-		// ����
 		_bool		bStun;
 		_bool		bSlow;
 		_float		fSlowSpeed;
@@ -180,11 +168,11 @@ namespace Engine
 
 	typedef struct tItemInfo
 	{
-		_int		iHp;	// ������
-		_int		iLevel;	// ����
+		_int		iHp;	
+		_int		iLevel;	
 		_int		iExp;
 
-		_int		iHpHeal = 0;	// �������� ������ �ִ� �ɷ�ġ
+		_int		iHpHeal = 0;	
 		_int		iDef = 0;
 		_float		fSpeed = 0.f;
 		_int		iHunger = 0;

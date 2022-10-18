@@ -59,6 +59,14 @@ public:
 	_bool				Is_Snippered() { return m_bSnipper; }
 	void				Respawn();
 	void				Set_Info(ITEMINFO tInfo, _int iSign);
+	void				Add_CollisionGroup(CGameObject* pObj)
+	{
+		m_CollisionGroup.push_back(pObj);
+	}
+	vector<CGameObject*>*	Get_CollisionGroup()
+	{
+		return &m_CollisionGroup;
+	}
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -115,6 +123,10 @@ private:
 	// Related to Death & Respawn
 	_float				m_fDeathTime = 0.f;
 	_bool				m_bDeadMotion = false;
+
+
+	// Collision Group for Player
+	vector<CGameObject*>	 m_CollisionGroup;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

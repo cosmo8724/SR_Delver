@@ -14,6 +14,8 @@
 #include "CrossHair.h"
 #include "CameraMgr.h"
 #include "BonFire.h"
+#include "EcoObject.h"
+#include "RockFall.h"
 
 #include "Monster.h"
 #include "Bullet.h"
@@ -439,6 +441,16 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	if (pBullet == pOtherObj)
 		OnHit(pBullet->Get_BulletAttack());
 
+	CEcoObject* pEco = dynamic_cast<CEcoObject*>(pOtherObj);
+	if (nullptr != pEco)
+	{
+		if (ECO_ROCKFALL == pEco->Get_Type())
+		{
+			OnHit(static_cast<CRockFall*>(pEco)->Get_Attack());
+		}
+	}
+
+
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
 	{
@@ -547,6 +559,7 @@ void CPlayer::Respawn()
 	m_bDead = false;
 	m_bDeadMotion = false;
 	m_fDeathTime = 0.f;
+	m_tInfo.iHp = 10;
 
 	CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
 
@@ -572,6 +585,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{
 		//m_bKnockBack = true;
 		m_tInfo.iHp = 0;
+		m_bDead = true;
 		return;
 	}
 
@@ -704,5 +718,6 @@ CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CPlayer::Free(void)
 {
+	m_CollisionGroup.swap(vector<CGameObject*>());
 	CGameObject::Free();
 }

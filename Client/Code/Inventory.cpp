@@ -238,10 +238,13 @@ void CInventory::Set_Inventory(CItem * pItem)
 		}
 
 		pImg = static_cast<CItem*>(CItemMgr::GetInstance()->Add_GameObject(L"Layer_UI", pItem->Get_TextureTag(), pItem));
-		m_Inventory[iRow][iCol] = pImg;
-		static_cast<CInvImg*>(m_Inventory[iRow][iCol])->Set_InvPos(m_InvPosArr[iRow][iCol].x, m_InvPosArr[iRow][iCol].y);
-		CTransform* pTransCom = static_cast<CTransform*>(pImg->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
-		pTransCom->Set_Pos(m_InvPosArr[iRow][iCol].x, m_InvPosArr[iRow][iCol].y, 0.f);
+		if (true == bOut)
+		{
+			m_Inventory[iRow][iCol] = pImg;
+			static_cast<CInvImg*>(m_Inventory[iRow][iCol])->Set_InvPos(m_InvPosArr[iRow][iCol].x, m_InvPosArr[iRow][iCol].y);
+			CTransform* pTransCom = static_cast<CTransform*>(pImg->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+			pTransCom->Set_Pos(m_InvPosArr[iRow][iCol].x, m_InvPosArr[iRow][iCol].y, 0.f);
+		}
 		return;
 	}
 

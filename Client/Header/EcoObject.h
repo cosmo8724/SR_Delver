@@ -21,6 +21,7 @@ public:
 	void			Set_CurrentTexture(_uint iTexture) { m_iTexture = iTexture; }
 	void	PlusTexture() { if (m_iTexture < m_pTextureCom->Get_FrameEnd()) m_iTexture++; }
 	void	MinusTexture() { if (m_iTexture > 0) m_iTexture--; }
+	ECOOBJTYPE		Get_Type() { return m_eType; }
 
 public:
 	virtual HRESULT		Ready_Object(void) override;

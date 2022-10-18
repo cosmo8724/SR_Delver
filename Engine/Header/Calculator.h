@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CTerrainTex;
 class CTransform;
 class CCubeTex;
+class CRcTex;
 
 class ENGINE_DLL CCalculator :	public CComponent
 {

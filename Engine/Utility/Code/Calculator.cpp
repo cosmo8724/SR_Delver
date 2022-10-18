@@ -69,40 +69,41 @@ Engine::_float CCalculator::HeightOnTerrain(_vec3* pPos, const _vec3* pTerrainVt
 
 _bool CCalculator::Picking(HWND hWnd, CRcTex * pRcTex, const CTransform * pTransCom)
 {
-	POINT	ptMouse{};
+	//POINT	ptMouse{};
 
-	GetCursorPos(&ptMouse);
-	ScreenToClient(hWnd, &ptMouse);
+	//GetCursorPos(&ptMouse);
+	//ScreenToClient(hWnd, &ptMouse);
 
-	_vec3	vPoint;
+	//_vec3	vPoint;
 
-	D3DVIEWPORT9		ViewPort;
-	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
-	m_pGraphicDev->GetViewport(&ViewPort);
+	//D3DVIEWPORT9		ViewPort;
+	//ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+	//m_pGraphicDev->GetViewport(&ViewPort);
 
-	// 뷰포트 -> 투영
-	vPoint.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
-	vPoint.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
-	vPoint.z = 0.f;
+	//// 뷰포트 -> 투영
+	//vPoint.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
+	//vPoint.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
+	//vPoint.z = 0.f;
 
-	// 투영 -> 뷰 스페이스
-	_matrix		matProj;
+	//// 투영 -> 뷰 스페이스
+	//_matrix		matProj;
 
-	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
-	D3DXMatrixInverse(&matProj, nullptr, &matProj);
-	D3DXVec3TransformCoord(&vPoint, &vPoint, &matProj);
+	//m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+	//D3DXMatrixInverse(&matProj, nullptr, &matProj);
+	//D3DXVec3TransformCoord(&vPoint, &vPoint, &matProj);
 
-	_vec3	vRayDir, vRayPos;		// 뷰 스페이스 영역에 있는 상태
-	vRayPos = { 0.f, 0.f, 0.f };
-	vRayDir = vPoint - vRayPos;
+	//_vec3	vRayDir, vRayPos;		// 뷰 스페이스 영역에 있는 상태
+	//vRayPos = { 0.f, 0.f, 0.f };
+	//vRayDir = vPoint - vRayPos;
 
-	// 뷰 스페이스 -> 월드
-	_matrix		matView;
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	D3DXMatrixInverse(&matView, nullptr, &matView);
-	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
-	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
+	//// 뷰 스페이스 -> 월드
+	//_matrix		matView;
+	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	//D3DXMatrixInverse(&matView, nullptr, &matView);
+	//D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
+	//D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
 
+	return true;
 }
 
 Engine::_vec3 Engine::CCalculator::PickingOnTerrain(HWND hWnd, const CTerrainTex* pTerrainBufferCom, const CTransform* pTerrainTransformCom)

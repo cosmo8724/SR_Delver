@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -103,6 +103,12 @@
       <LargeAddressAware>true</LargeAddressAware>
       <AdditionalLibraryDirectories>../../Reference/Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -137,6 +143,12 @@
       <LargeAddressAware>true</LargeAddressAware>
       <AdditionalLibraryDirectories>../../Reference/Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -239,6 +251,7 @@
     <ClInclude Include="..\Header\PSystem.h" />
     <ClInclude Include="..\Header\QuickSlot.h" />
     <ClInclude Include="..\Header\Ring.h" />
+    <ClInclude Include="..\Header\RockFall.h" />
     <ClInclude Include="..\Header\Shield.h" />
     <ClInclude Include="..\Header\ShortTorch.h" />
     <ClInclude Include="..\Header\SkeletonGhost.h" />
@@ -373,6 +386,7 @@
     <ClCompile Include="..\Code\PSystem.cpp" />
     <ClCompile Include="..\Code\QuickSlot.cpp" />
     <ClCompile Include="..\Code\Ring.cpp" />
+    <ClCompile Include="..\Code\RockFall.cpp" />
     <ClCompile Include="..\Code\Shield.cpp" />
     <ClCompile Include="..\Code\ShortTorch.cpp" />
     <ClCompile Include="..\Code\SkeletonGhost.cpp" />
@@ -467,6 +481,9 @@
   <ItemGroup>
     <Image Include="Client.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Rect.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
