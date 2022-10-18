@@ -371,7 +371,7 @@ void CUserParticle::update(_float fTimeDelta)
 
 	case PTYPE_FOUNTAIN:
 	{
-		m_fSize -= 0.05f;
+		//m_fSize -= 0.05f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
 			if (iter->bIsAlive)
