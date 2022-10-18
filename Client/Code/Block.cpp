@@ -23,6 +23,7 @@ CBlock::CBlock(const CBlock& rhs)
 	, m_fScale(rhs.m_fScale)
 	, m_iTexture(rhs.m_iTexture)
 {
+	//memcpy(&m_bdBox, &rhs.m_bdBox, sizeof(BDBOX));
 	m_pBufferCom = dynamic_cast<CCubeTex*>(rhs.m_pBufferCom->Clone());
 	m_pTransCom = dynamic_cast<CTransform*>(rhs.m_pTransCom->Clone());
 	m_pCalculatorCom = dynamic_cast<CCalculator*>(rhs.m_pCalculatorCom->Clone());
@@ -102,8 +103,8 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 		m_fScale = TerrainSize / CubeSize;
 
 		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
-	}*/
-	m_fScale = 0.5f;
+	}
+	m_fScale = 0.5f;*/
 	if (m_pParentBlock)
 	{
 		m_pTransCom->Set_WorldMatrix(&m_matOriginWorld);
@@ -134,9 +135,9 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 		if (!m_bCreateIcon)
 		{
 			// Only For Stage
-			//CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
-			//pMiniMap->Add_Icon(m_pGraphicDev, this);
-			//m_bCreateIcon = true;
+			/*CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+			pMiniMap->Add_Icon(m_pGraphicDev, this);
+			m_bCreateIcon = true;*/
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 		Add_RenderGroup(RENDER_NONALPHA, this);
@@ -152,7 +153,9 @@ void CBlock::LateUpdate_Object(void)
 	if (Check_ParentDead())
 		return;
 
-	Engine::CGameObject::LateUpdate_Object();
+	
+
+	//Engine::CGameObject::LateUpdate_Object();
 }
 
 void CBlock::Render_Obejct(void)
