@@ -554,7 +554,7 @@ HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 	CBlock*		pBlock = nullptr;
 	static _int	iSelectObject = -1;
 	static _int	iSelectTexture = 0;
-	static BLOCKTYPE	eType = BLOCKTYPE_END;
+	static BLOCKTYPE	eType = BLOCK_CAVE;
 	_int			iObjectCnt = 0;
 	char**			szObjects = nullptr;
 
@@ -598,7 +598,7 @@ HRESULT CMapTool::BlockMapTool_Window(const _float& fTimeDelta)
 					pBlock = CBlock::Create(m_pGraphicDev, &vPos);
 					pBlock->SetParentBlock(pParentBlock);
 					pBlock->SetBlockType(eType);
-					pBlock->SetTextureIndex(iSelectTexture);
+					pBlock->SetTextureIndex(pParentBlock->GetTextureIndex());
 					pBlock->SetClone(true);
 					pBlock->SetBlock();
 

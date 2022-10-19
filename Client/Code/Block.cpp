@@ -109,6 +109,7 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 	m_fScale = 0.5f;
 	if (m_pParentBlock)
 	{
+		m_iTexture = m_pParentBlock->GetTextureIndex();
 		m_pTransCom->Set_WorldMatrix(&m_matOriginWorld);
 		MultiParentWorld();
 	}
@@ -165,7 +166,7 @@ void CBlock::Render_Obejct(void)
 	if (m_bSet && !m_bChanging)
 	{
 		if (m_pParentBlock)
-			m_pTextureCom->Set_Texture(m_pParentBlock->GetTextureIndex());
+			m_pTextureCom->Set_Texture(m_iTexture);
 		else
 			m_pTextureCom->Set_Texture(m_iTexture);
 		m_pBufferCom->Render_Buffer();
@@ -408,27 +409,27 @@ void CBlock::Chase_Block()
 	switch (LastPlane)
 	{
 	case FRONT_X:
-		m_pTransCom->Set_Pos(vCloseCubePos.x + (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x + (CubeSize), vCloseCubePos.y, vCloseCubePos.z);
 		break;
 
 	case BACK_X:
-		m_pTransCom->Set_Pos(vCloseCubePos.x - (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x - (CubeSize), vCloseCubePos.y, vCloseCubePos.z);
 		break;
 
 	case FRONT_Y:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (CubeSize * m_fScale), vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (CubeSize), vCloseCubePos.z);
 		break;
 
 	case BACK_Y:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (CubeSize * m_fScale), vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (CubeSize), vCloseCubePos.z);
 		break;
 
 	case FRONT_Z:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (CubeSize * m_fScale));
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (CubeSize));
 		break;
 
 	case BACK_Z:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (CubeSize * m_fScale));
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (CubeSize));
 		break;
 	}
 	bFirst = true;

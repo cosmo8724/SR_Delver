@@ -35,7 +35,7 @@ _int CTool_Scene::Update_Scene(const _float & fTimeDelta)
 
 	CImGuiMgr::GetInstance()->MapTool();
 	CImGuiMgr::GetInstance()->ObjectTool();
-	CImGuiMgr::GetInstance()->ParticleTool();
+	//CImGuiMgr::GetInstance()->ParticleTool();
 	CImGuiMgr::GetInstance()->InfoTool();
 
 	return iResult;
@@ -131,10 +131,10 @@ HRESULT CTool_Scene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CCameraMgr::GetInstance()->Add_GameObject(pLayer);
 	CCameraMgr::GetInstance()->Change_Camera(CAM_DYNAMIC);
 
-	pGameObject = CUserParticle::Create(m_pGraphicDev);
+	/*pGameObject = CUserParticle::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Particle", pGameObject), E_FAIL);
-	CImGuiMgr::GetInstance()->Set_Particle(static_cast<CUserParticle*>(pGameObject));
+	CImGuiMgr::GetInstance()->Set_Particle(static_cast<CUserParticle*>(pGameObject));*/
 
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
