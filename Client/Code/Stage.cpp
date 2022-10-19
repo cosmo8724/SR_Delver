@@ -360,7 +360,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks
 	{
-		string	strPath = "..\\..\\Data\\Map_Test2.dat";
+		string	strPath = "..\\..\\Data\\Map_Test3.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -417,7 +417,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		string	strPath = "..\\..\\Data\\EcoObject_Test2.dat";
+		string	strPath = "..\\..\\Data\\EcoObject_Test3.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
