@@ -253,16 +253,9 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	_vec3 vLook;
 	vLook = vPlayerPos - vPos;
 	D3DXVec3Normalize(&vLook, &vLook);
-	m_pTransCom->Set_Look(&vLook);
+	m_pTransCom->Set_Look(vLook);
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
-
-	// MonsterLook -> Player
-	_vec3 vLook;
-	vLook = vPlayerPos - vPos;
-	D3DXVec3Normalize(&vLook, &vLook);
-
-
 
 
 	// Look Vector Set
