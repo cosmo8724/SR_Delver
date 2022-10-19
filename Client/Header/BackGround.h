@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CTransform;
+class CShader;
 
 END
 class CBackGround :	public Engine::CGameObject
@@ -29,7 +30,8 @@ private:
 private:
 	CRcTex*				m_pBufferCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
-	CTransform*		m_pTransCom = nullptr;
+	//CTransform*			m_pTransCom = nullptr;
+	CShader*			m_pShaderCom = nullptr;
 
 
 public:
