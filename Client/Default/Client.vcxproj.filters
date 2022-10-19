@@ -1128,5 +1128,7 @@
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Rect.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Water.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Light.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Specular.hlsl" />
   </ItemGroup>
 </Project>

@@ -91,10 +91,6 @@ _uint CLoading::Loading_ForMapTool()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTorch2_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject14_%d.png", TEX_NORMAL, 8)), E_FAIL);
 
 
-	//Shader Files
-	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderWater", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Water.hlsl"))), E_FAIL);
-
-
 	m_bFinish = true;
 
 	//lstrcpy(m_szLoading, L"Loading Complete!!!!!!!!!!!");

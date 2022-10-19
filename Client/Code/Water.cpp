@@ -19,6 +19,9 @@ HRESULT CWater::Ready_Object(void)
 	//m_pTransCom->Set_Pos(10.f, 1.3f, 10.f);
 	//m_pTransCom->Set_Angle(D3DXToRadian(90.f), 0.f, 0.f);
 
+
+	//m_pTransCom->Set_Angle(D3DXToRadian(112.f), 0.f, 0.f);
+
 	return S_OK;
 }
 
