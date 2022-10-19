@@ -64,7 +64,7 @@ HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, co
 
 	_ulong	dwByte = 0;
 
-	m_hFile = CreateFile(L"../Bin/Resource/Texture/Terrain/Height.bmp", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NO_SCRUB_DATA, 0);
+	m_hFile = CreateFile(L"../Bin/Resource/Texture/Terrain/Height.png", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NO_SCRUB_DATA, 0);
 
 	ReadFile(m_hFile, &m_fH, sizeof(BITMAPFILEHEADER), &dwByte, nullptr);
 	ReadFile(m_hFile, &m_iH, sizeof(BITMAPINFOHEADER), &dwByte, nullptr);
@@ -88,14 +88,14 @@ HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, co
 		{
 			dwIndex = i * dwCntX + j;
 
-			pVertex[dwIndex].vPos = { _float(j) * dwVtxItv, 
+			pVertex[dwIndex].vPos = {20.f +  _float(j) * dwVtxItv, 
 									 0.f, //(pPixel[dwIndex] & 0x000000ff) / 20.f,  
-									_float(i) * dwVtxItv };
+									20.f + _float(i) * dwVtxItv };
 
 			m_pPos[dwIndex] = pVertex[dwIndex].vPos;
 			pVertex[dwIndex].vNormal = { 0.f, 0.f, 0.f };
 
-			pVertex[dwIndex].vTexUV = { _float(j) / (dwCntX - 1) * 20.f, 
+			pVertex[dwIndex].vTexUV = { _float(j) / (dwCntX - 1) * 20.f,	// 기억이 안나... 
 										_float(i) / (dwCntZ - 1) * 20.f };
 		}
 	}

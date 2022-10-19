@@ -747,6 +747,9 @@
     <ClInclude Include="..\Header\Mimic.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\10. Mimic</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Water.h">
+      <Filter>02. GameObject\01. For_Stage\03. Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1100,6 +1103,9 @@
     <ClCompile Include="..\Code\Mimic.cpp">
       <Filter>02. GameObject\01. For_Stage\02. Monster\10. Mimic</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\Water.cpp">
+      <Filter>02. GameObject\01. For_Stage\03. Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -1121,5 +1127,6 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Rect.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Water.hlsl" />
   </ItemGroup>
 </Project>

@@ -23,6 +23,8 @@ Engine::_int CBackGround::Update_Object(const _float& fTimeDelta)
 {
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
+
+
 	Add_RenderGroup(RENDER_PRIORITY, this);
 
 	return 0;
@@ -37,6 +39,8 @@ void CBackGround::Render_Obejct(void)
 {
 	//m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 	//m_pGraphicDev->SetTransform(D3DTS_WORLD, D3DXMatrixIdentity(&_matrix()));
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -60,6 +64,9 @@ void CBackGround::Render_Obejct(void)
 	m_pBufferCom->Render_Buffer();
 
 	m_pShaderCom->End_Shader();
+
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
 
 CBackGround * CBackGround::Create(LPDIRECT3DDEVICE9 pGraphicDev)
