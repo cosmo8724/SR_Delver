@@ -417,13 +417,13 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	if (Engine::Key_Down(DIK_E))
 		pOtherObj->InteractEvent();
 
-	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	if (pMonster == pOtherObj)
-		OnHit(pMonster->Get_MonsterAttack());
+	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	//if (pMonster == pOtherObj)
+	//	OnHit(pMonster->Get_MonsterAttack());
 
-	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	if (pBullet == pOtherObj)
-		OnHit(pBullet->Get_BulletAttack());
+	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	//if (pBullet == pOtherObj)
+	//	OnHit(pBullet->Get_BulletAttack());
 
 	CEcoObject* pEco = dynamic_cast<CEcoObject*>(pOtherObj);
 	if (nullptr != pEco)

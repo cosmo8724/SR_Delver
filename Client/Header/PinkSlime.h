@@ -1,11 +1,11 @@
 #pragma once
 #include "Monster.h"
+#include "MonsterMgr.h"
 
 class CPinkSlime : public CMonster
 {
 	enum STATE { IDLE, ATTACK, HIT, DIE, MOTION_END };
 	enum SKILL { SKILL_JUMP, SKILL_FOLLOW, SKILL_SCALE, SKILL_END };
-	enum SKILLSCALE { SKILLSCALE_BIG, SKILLSCALE_MEDIUM, SKILLSCALE_SMALL, SKILLSCALE_END };
 
 private:
 	explicit CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -14,7 +14,7 @@ private:
 	virtual ~CPinkSlime();
 
 public:
-	virtual HRESULT		Ready_Object(void)						override;
+	virtual HRESULT		Ready_Object(SEPARATION dID);
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void)					override;
 	virtual void		Render_Obejct(void)						override;
@@ -28,19 +28,14 @@ private:
 	void				Motion_Change();
 
 	void				SKill_Update(const _float & fTimeDelta);
-	void				SKillJump_Update(const _float& fTimeDelta);
-	void				SKillFollow_Update(const _float& fTimeDelta, _float fDist, _vec3* vPlayerPos);
-	void				SKillScale_Update(const _float& fTimeDelta);
-
-private:
-	CGameObject*		pGameObject = nullptr;
+	void				Jump(const _float & fTimeDelta);
 
 private:
 	STATE				m_ePreState;
 	STATE				m_eCurState;
 
 	SKILL				m_eSkill;
-	SKILLSCALE			m_eSkill_Scale;
+	SEPARATION			m_eSeparation;
 
 	_float				m_fScale;
 	_float				m_fHeight;
@@ -49,6 +44,7 @@ private:
 	_bool				m_bSkillJumpStart = false;
 	_bool				m_bSkillFollowStart = false;
 	_float				m_fSkillJumpTimeAcc = 0.f;
+	_float				Test = 0.f;
 
 	// jump
 	_bool				m_bJump;
@@ -62,13 +58,37 @@ private:
 	_float				m_fHitTimeAcc = 0.f;
 
 	// 중간 생성 관련 변수
-	_float				m_fTime = 0.f; 
-	_bool				m_bClone = false;
-	_bool				m_bDead = false;
+	_bool				m_bOneSeparation = false;
+	_bool				m_bTowSeparation = false;
+	_uint				m_iSeparation = 0;
+
+	_float				m_fOneJumpTimeAcc = 0.f;
+	_float				m_fTowJumpTimeAcc = 0.f;
+
+
+
+
+
+	// SEPARATION_ONE
+	_bool				m_bOneJump = false;
+	_bool				m_bOneDead = false;
+
+	_bool				m_bTwoJump = false;
+	_bool				m_bTwoDead = false;
+
+	_bool				m_bThreeJump = false;
+	_bool				m_bThreeDead = false;
+
+	_bool				m_bPinkJump = false;
+	_bool				m_bPinkDead = false;
+
 
 public:
-	static CPinkSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
-	static CPinkSlime*	Create(const CPinkSlime& rhs);
+	//static _uint		m_iSepatationNum;
+
+public:
+	static CPinkSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, SEPARATION dID);
+	static CPinkSlime*	Create(const CPinkSlime& rhs, SEPARATION dID);
 	virtual void		Free(void);
 };
 
