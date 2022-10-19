@@ -41,10 +41,32 @@ HRESULT CShader::End_Shader()
 	if (nullptr == m_pEffect)
 		return E_FAIL;
 
+	m_pEffect->EndPass();
 	m_pEffect->End();
 
 	return S_OK;
 }
+
+/*	(1인자)handle에 (2인자)무형의 값(void*)을 던지겠다.
+	(3인자) : 던질값의 어디부터 읽을거냐
+	(4인자) : 던질값의 크기
+*/
+HRESULT		CShader::Set_RawValue(D3DXHANDLE hHandle, const void* pData, _uint iLength)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+
+	/* texture와 bool 변수를 제외한 대부분의 데이터는 이 함수를 통해 값을 전달할 수 있다. */
+	return m_pEffect->SetRawValue(hHandle, pData, 0, iLength);
+}
+HRESULT		CShader::Set_Texture(D3DXHANDLE hHandle, IDirect3DBaseTexture9* pTexture)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+	return m_pEffect->SetTexture(hHandle, pTexture);
+}
+
+
 
 CShader * CShader::Create(LPDIRECT3DDEVICE9 pDevice, const _tchar* pShaderFilePath)
 {

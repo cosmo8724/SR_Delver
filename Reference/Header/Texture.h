@@ -14,9 +14,11 @@ private:
 
 public:
 	HRESULT		Ready_Texture(const _tchar* pPath, TEXTUREID eType, const _uint& iCnt);
-	void			Set_Texture(const _uint& iIndex = 0);		// 텍스처 그리기 관련 함수
+	void		Set_Texture(const _uint& iIndex = 0);		// 텍스처 그리기 관련 함수
+	void		Set_Texture(class CShader* pShaderCom, D3DXHANDLE hHandle, const _uint& iIndex = 0);
+	
 	const vector<IDirect3DBaseTexture9*>	Get_Texture() { return m_vecTexture; }
-	_uint			Get_FrameEnd() { return m_iFrameEnd - 1; }
+	_uint		Get_FrameEnd() { return m_iFrameEnd - 1; }
 
 private:
 	vector<IDirect3DBaseTexture9*>		m_vecTexture;

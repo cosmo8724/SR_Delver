@@ -16,19 +16,11 @@ CBackGround::~CBackGround()
 HRESULT CBackGround::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-	
-	
 	return S_OK;
 }
 
 Engine::_int CBackGround::Update_Object(const _float& fTimeDelta)
 {
-	//m_pTransCom->m_vScale.x = 2.f;
-	//m_pTransCom->m_vScale.y = 2.f;
-
-	//m_pTransCom->m_vAngle.z = D3DXToRadian(45.f);
-
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	Add_RenderGroup(RENDER_PRIORITY, this);
@@ -43,11 +35,31 @@ void CBackGround::LateUpdate_Object(void)
 
 void CBackGround::Render_Obejct(void)
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+	//m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+	//m_pGraphicDev->SetTransform(D3DTS_WORLD, D3DXMatrixIdentity(&_matrix()));
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	m_pTextureCom->Set_Texture(0);	// 텍스처 정보 세팅을 우선적으로 한다.
+	//m_pTextureCom->Set_Texture(0);	// 텍스처 정보 세팅을 우선적으로 한다.
+
+	// Shader Test
+	_matrix		IMatrix = *D3DXMatrixIdentity(&IMatrix);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &IMatrix, sizeof(_matrix))))
+		return;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &IMatrix, sizeof(_matrix))))
+		return;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &IMatrix, sizeof(_matrix))))
+		return;
+
+	m_pTextureCom->Set_Texture(m_pShaderCom, "g_DefaultTexture", 0);
+
+
+	m_pShaderCom->Begin_Shader(0); // pass 0
+
 	m_pBufferCom->Render_Buffer();
+
+	m_pShaderCom->End_Shader();
 }
 
 CBackGround * CBackGround::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -80,9 +92,14 @@ HRESULT CBackGround::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_LogoTexture", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	//pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
+	//NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	//m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
+	pComponent = m_pShaderCom = dynamic_cast<CShader*>(Clone_Proto(L"Proto_ShaderRect"));
+	NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ShaderRect", pComponent });
+	
+	
 	return S_OK;
 }
