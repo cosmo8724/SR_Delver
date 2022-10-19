@@ -33,6 +33,11 @@ HRESULT CDagger::Ready_Object(void)
 
 _int CDagger::Update_Object(const _float & fTimeDelta)
 {
+
+
+
+
+
 	//if (STATE_INV == m_eState)
 	//	return 0;
 
@@ -223,7 +228,6 @@ void CDagger::Attack(const _float & fTimeDelta)
 	if (!m_bAttack)
 		return;
 
-	cout << m_pTransCom->Get_AttackAngle() << endl;
 	if (-10.f > m_pTransCom->Get_AttackAngle() && !m_bParticle)
 	{
 		

@@ -114,17 +114,17 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	CGameObject*		pGameObject = nullptr;
 
 	//////////// Monster
-	//// GreenSlime
-	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3( 15.f, 1.f, 15.f ));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
-	//m_vecMonster.push_back(pGameObject);
+	// GreenSlime
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3( 5.f, 1.f, 5.f ));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
-	//// PinkSlime0
-	//pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(15.f, 2.f, 15.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
-	//m_vecMonster.push_back(pGameObject);
+	// PinkSlime0
+	pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(15.f, 1.5f, 15.f), SEPARATION_ONE);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
 	// Fist
 	//pGameObject = CFist::Create(m_pGraphicDev, _vec3(3.f, 1.f, 15.f));

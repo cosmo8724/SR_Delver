@@ -153,8 +153,6 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 	//		int m_eSkill = rand() % 3;
 	//		m_fSkillTimeAcc = 0.f;
 
-	//		cout << m_eSkill << endl;
-
 	//		switch (m_eSkill)
 	//		{
 	//		case CSongBoss::SKILL_BULLET:
