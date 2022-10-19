@@ -31,12 +31,12 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 	ImGuizmo::BeginFrame();
 
 	static ImGuizmo::OPERATION CurGuizmoType(ImGuizmo::TRANSLATE);
-	CTerrain* pGameObject = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Tool_Environment", L"Terrain"));
+	//CTerrain* pGameObject = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Tool_Environment", L"Terrain"));
 	CLayer*	pLayer = Engine::Get_Layer(L"Layer_Tool_GameLogic");
 	static CEcoObject* pCurObject = nullptr;
 	static	_bool	bNowCrafting = false;
-	if (pGameObject)
-	{
+	//if (pGameObject)
+	//{
 		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Jam"};
 		static _int item_current = 0;
 
@@ -365,9 +365,9 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 		for (_int i = 0; i < iObjectCnt; ++i)
 			Safe_Delete_Array(szObjects[i]);
 		Safe_Delete_Array(szObjects);
-	}
-	else
-		ImGui::Text("Create Terrain First.");
+	//}
+	//else
+	//	ImGui::Text("Create Terrain First.");
 
 	ImGui::End();
 

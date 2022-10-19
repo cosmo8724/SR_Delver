@@ -8,7 +8,7 @@
 #include "SongBossFloor.h"
 #include "ParticleMgr.h"
 
-// Ãæµ¹
+// ï¿½æµ¹
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
@@ -73,7 +73,7 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	//m_pTransCom->Set_Y(m_fHeight);
-	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7f); // TODO º¸½ºÀÇ HIT, DIEÀÇ ¼Óµµ Á¶Àý ÇØ¾ß ÇÒ ¼öµµ
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7f); // TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ HIT, DIEï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¾ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	Motion_Change(fTimeDelta);
 
 	if (0 >= m_tInfo.iHp)
@@ -141,35 +141,64 @@ HRESULT CSongBoss::Add_Component(void)
 
 void CSongBoss::SKill_Update(const _float & fTimeDelta)
 {
-	//int iRrandomNum = rand() % 3;
+	if (m_bSKill)
+		return;
 
-	//if (iRrandomNum == 0)
+	//// ï¿½Úµï¿½ - ï¿½Ì¿Ï¼ï¿½
+	//if (2 < m_bSkillBullet && !m_bSkillStun && !m_bSkillFloor)
 	//{
-	//	m_bBullet = true;
-	//	m_eSkill = SKILL_BULLET;
-	//}
-	//if (iRrandomNum == 1)
-	//{
-	//	m_bStun = true;
-	//	m_iStunCount = 0;
-	//	m_iStunCreate = 0;
-	//	m_eSkill = SKILL_STUN;
-	//}
-	//if (iRrandomNum == 2)
-	//{
-	//	m_bFloor = true;
-	//	m_iFloorCreate = 0;
-	//	m_bFloorOneCheck = true;
-	//	m_eSkill = SKILL_FLOOR;
+	//	m_fSkillTimeAcc += fTimeDelta;
+	//	if (2.f < m_fSkillTimeAcc)
+	//	{
+	//		int m_eSkill = rand() % 3;
+	//		m_fSkillTimeAcc = 0.f;
+
+	//		cout << m_eSkill << endl;
+
+	//		switch (m_eSkill)
+	//		{
+	//		case CSongBoss::SKILL_BULLET:
+	//		{
+	//			m_bSkillBullet = 0;
+	//			m_bBullet = true;
+	//			SKillBullet_Update(fTimeDelta);
+	//		}
+	//		break;
+	//		case CSongBoss::SKILL_STUN:
+	//		{
+	//			m_bSkillStun = true;
+	//			m_bStun = true;
+	//			m_iStunCount = 0;
+	//			m_iStunCreate = 0;
+	//			SKillStun_Update(fTimeDelta);
+	//		}
+	//		break;
+	//		case CSongBoss::SKILL_FLOOR:
+	//		{
+	//			m_bSkillFloor = true;
+	//			m_bFloor = true;
+	//			m_iFloorCreate = 0;
+	//			m_iLightningCreate = 0;
+	//			m_bFloorOneCheck = true;
+	//			SKillFloor_Update(fTimeDelta);
+	//		}
+	//		break;
+	//		}
+
+	//		m_bSKill = true;
+	//	}
 	//}
 
+	// ï¿½ï¿½ï¿½ï¿½
 	if (Key_Down(DIK_7))
 	{
+		m_bSkillBullet = 0;
 		m_bBullet = true;
 		m_eSkill = SKILL_BULLET;
 	}
 	if (Key_Down(DIK_8))
 	{
+		m_bSkillStun = true;
 		m_bStun = true;
 		m_iStunCount = 0;
 		m_iStunCreate = 0;
@@ -177,8 +206,10 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 	}
 	if (Key_Down(DIK_9))
 	{
+		m_bSkillFloor = true;
 		m_bFloor = true;
 		m_iFloorCreate = 0;
+		m_iLightningCreate = 0;
 		m_bFloorOneCheck = true;
 		m_eSkill = SKILL_FLOOR;
 	}
@@ -201,6 +232,13 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 
 void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 {
+	if (2 < m_bSkillBullet)
+	{
+		m_eCurState = IDLE;
+		m_bSKill = false;
+		return;
+	}
+
 	if (!m_bBullet)
 		return;
 
@@ -210,6 +248,12 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	_vec3		vPlayerPos, vPos;
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+	// MonsterLook -> Player
+	_vec3 vLook;
+	vLook = vPlayerPos - vPos;
+	D3DXVec3Normalize(&vLook, &vLook);
+	m_pTransCom->Set_Look(&vLook);
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
@@ -228,13 +272,12 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	// _vec3 vLookOld;
 	// m_pTransCom->Get_Info(INFO_LOOK, &vLookOld);
 	// D3DXVec3Normalize(&vLookOld, &vLookOld);
-	// m_pTransCom->Set_Angle(0, acosf(D3DXVec3Dot(&vLook, &vLookOld), 0); ÀÌ°Ô ¸Â´Â°Å °°Àºµ¥ ¿Ö ¾ÈµÇÁö
+	// m_pTransCom->Set_Angle(0, acosf(D3DXVec3Dot(&vLook, &vLookOld), 0); ï¿½Ì°ï¿½ ï¿½Â´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Èµï¿½ï¿½ï¿½
 
 	m_pTransCom->Set_Look(vLook);
 
 
 
-	// ÀÏÁ¤ °Å¸® ¾È À¸·Î µé¾î ¿ÔÀ» ¶§ °ø°Ý ½ÃÀÛ
 	if (fDist < 10.f)
 	{
 		m_fAttackTimeAcc += fTimeDelta;
@@ -249,6 +292,7 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 			m_eCurState = ATTACK;
 			CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);
+			m_bSkillBullet++;
 			m_fAttackTimeAcc = 0;
 		}
 		else if (5.5f < m_fIdleTimeAcc)
@@ -257,16 +301,16 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 			m_fIdleTimeAcc = 0.f;
 		}
 	}
-	else
-		m_eCurState = IDLE;
 }
 
 void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 {
+	if (!m_bSkillStun)
+		return;
+
 	if (!m_bStun)
 		return;
 
-	// ÀÏÁ¤ ½Ã°£ ³»¿¡ À½Ç¥¸¦ ´Ù ºÎ¼Å¾ß ÇÏ°í, ´Ù ºÎ½ÃÁö ¸ø ÇÏ¸é ÇÃ·¹ÀÌ¾î´Â ½ºÅÏ + º¸½ºÀÇ Ã¼·Â Áõ°¡
 	m_eCurState = ATTACK;
 
 	if (m_iStunCreate != 4) // MusicNote Create > 4
@@ -282,8 +326,8 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 		m_eCurState = IDLE;
 
 		m_fStunTimeAcc += fTimeDelta;
-		if (4.f < m_fStunTimeAcc) // 5.f >> ÀÌ³» À½Ç¥¸¦ ¸ø ºÎ½Ã¸é ½ºÅÏ (°ª ¼öÁ¤½Ã SongBossStun.cpp > LateUpdateµµ ¼öÁ¤ÇØ¾ßÇÔ)
-		{						  // ÇÃ·¹ÀÌ¾îÀÇ ½ºÅÏ½Ã°£À» °è»êÇÏ¸é¼­ °ªÀ» º¯°æÇØ¾ß ÇÑ´Ù
+		if (4.f < m_fStunTimeAcc)  // 5.f >> ï¿½Ì³ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ ï¿½Î½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ SongBossStun.cpp > LateUpdateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½)
+		{						   // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¸é¼­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Ñ´ï¿½
 			if (m_iStunCount != 4) // Player Stun
 			{
 				CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
@@ -291,16 +335,21 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 			}
 			m_fStunTimeAcc = 0.f;
 			m_bStun = false;
+			m_bSkillStun = false;
+			m_bSKill = false;
 		}
 	}
 }
 
 void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 {
+	if (!m_bSkillFloor)
+		return;
+
 	if (!m_bFloor)
 		return;
 
-	// ÇÃ·¹ÀÌ¾î¸¦ ±âÁØÀ¸·Î 5°³ÀÇ À½Ç¥°¡ »ý±â°í ÇÇÇØ¾ß ÇÑ´Ù
+	// ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 5ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Ñ´ï¿½
 	m_eCurState = ATTACK;
 
 	if (m_iFloorCreate != 5) // MusicNote Create > 5
@@ -326,34 +375,17 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 			CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", objTags[i].c_str()));
 			NULL_CHECK(pSongBossFloor);
 			if (pSongBossFloor->Get_StartLightning())
+			{
 				CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
+				++m_iLightningCreate;
+			}
 		}
 
-		//// for¹®À¸·Î ¼öÁ¤ÇÏ±â
-		//CSongBossFloor* pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor0"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor1"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor2"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor3"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
-
-		//pSongBossFloor = static_cast<CSongBossFloor*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_Floor4"));
-		//NULL_CHECK(pSongBossFloor);
-		//if (pSongBossFloor->Get_StartLightning())
-		//	CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
+		if (m_iLightningCreate >= 5)
+		{
+			m_bFloor = false;
+			m_bSkillFloor = false;
+		}
 	}
 }
 
@@ -365,7 +397,7 @@ void CSongBoss::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		//CMonster::Set_KnockBack();
+		CMonster::Set_KnockBack();
 		m_bOneCheck = true;
 	}
 

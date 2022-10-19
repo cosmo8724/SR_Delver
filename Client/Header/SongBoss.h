@@ -40,6 +40,12 @@ private:
 
 	SKILL				m_eSkill;
 
+	_int				m_bSkillBullet = 3;
+	_bool				m_bSKill = false;
+	_bool				m_bSkillStun = false;
+	_bool				m_bSkillFloor = false;
+	_float				m_fSkillTimeAcc = 0.f;
+
 	// Skill_Bullet
 	_bool				m_bBullet = false;
 
@@ -54,6 +60,7 @@ private:
 	_bool				m_bFloorOneCheck = false;
 	_float				m_fFloorTimeAcc = 0.f;
 	_int				m_iFloorCreate = 0;
+	_int				m_iLightningCreate = 0;
 
 	// Timer
 	_float				m_fTimeAcc;

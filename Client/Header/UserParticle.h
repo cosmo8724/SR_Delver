@@ -11,7 +11,7 @@ private:
 	virtual ~CUserParticle();
 
 public:
-	// ÇÊ¼ö·Î ¼³Á¤µÇ¾î¾ß ÇÏ´Â Ç×¸ñµé
+	// ï¿½Ê¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½×¸ï¿½ï¿½
 	inline void		Set_ParticleCnt(_int _iCnt) { m_maxParticles = _iCnt; }
 	inline void		Set_Settings()
 	{
@@ -40,12 +40,18 @@ public:
 public:
 	void			Set_Index(_int iIdx) { m_iIndex = iIdx; }
 	void			Set_Use(_bool bUse) { m_bUse = bUse; }
-	void			Set_Particle(PTYPE _eType);	// ÆÄÆ¼Å¬ÀÇ Å¸ÀÔ¿¡ µû¶ó ÇÊ¿äÇÑ ¿ä¼Ò ¼¼ÆÃ
+	void			Set_Particle(PTYPE _eType);	// ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ Å¸ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	void			Set_Texture(PTEXTUREID eTex);
 	void			Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
 	void			Set_Information(_bool _bUse, _int _iIdx, CGameObject* _pObj, ATTRIBUTE _att, PINFO _pInfo
 		, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand);
-	void			ReUse();	// ÆÄÆ¼Å¬ÀÌ ³¡³ª°í Ç®·Î µ¹¾Æ°¡¸é ¸®¼Â½ÃÄÑÁÜ.
+	void			ReUse();	// ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½.
+	void			Add_Info_Spot(_bool bMove, _bool bRand)
+	{
+		m_bFrameMove = bMove;
+		m_bFrameRand = bRand;
+	}
+
 	void			Add_Info(_bool _bFrameMove, _float _fFrame, _float _fDist, _float _fAngleSpeed)
 	{
 		m_bFrameMove = _bFrameMove;
@@ -81,12 +87,12 @@ private:
 	PTYPE		m_eType = PTYPE_END;
 	_float		m_fVelocityMulti = 1.f;
 
-	// Ç® °ü¸®¿ë
+	// Ç® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_int		m_iIndex = -1;
 	_bool		m_bUse = false;
 	_bool		m_bReady = false;
 
-	// Ãß°¡µÈ º¯¼ö
+	// ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	CGameObject*	m_pTarget = nullptr;
 
 	_int			m_iReturn;
@@ -96,12 +102,12 @@ private:
 	_float			m_fAngleSpeed;
 	_float			m_fStartAngles[50];
 	_float			m_fDist = 0.f;
-	_float			m_fFixFrame;
+	_float			m_fFixFrame = 0.f;
 
 	PTEXTUREID		m_eTex = TEXTURE_0;
 	CTransform*		m_pTransCom = nullptr; // for target
 
-
-
+	_bool			m_bFrameRand = false;
+	_bool			m_bFrameSet = false;
 };
 

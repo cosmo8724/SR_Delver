@@ -52,7 +52,6 @@ _int CDagger::Update_Object(const _float & fTimeDelta)
 		}
 	}
 
-
 	_vec3* pPlayerInfo = m_pCenter->Get_InfoAll();
 
 	_matrix matView;
@@ -167,6 +166,8 @@ void CDagger::CollisionEvent(CGameObject * pObj)
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
 	}
+
+
 }
 
 HRESULT CDagger::Add_Component(void)
@@ -174,18 +175,18 @@ HRESULT CDagger::Add_Component(void)
 
 	CComponent*		pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ÅØ½ºÃÄ ÄÄ°´Ã¼ ÄÄÆ÷³ÍÆ®
+	// ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½Ä°ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Dagger_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_Dagger_Texture", pComponent });
 	m_textureTag = L"Proto_Dagger_Texture";
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -201,7 +202,7 @@ HRESULT CDagger::Add_Component(void)
 
 void CDagger::Charge(const _float & fTimeDelta)
 {
-	// Â÷Áö´Â ÀÏ´Ü Â÷ÈÄ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
 	{
 		if (!m_bAttack)
@@ -222,19 +223,34 @@ void CDagger::Attack(const _float & fTimeDelta)
 	if (!m_bAttack)
 		return;
 
-	if (!m_bAttackPt)
+	// if (!m_bAttackPt)
+	// {
+	// 	CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 0.f },
+	// 		0.2f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+	// 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_10);
+	// 	m_bAttackPt = true;
+	// }
+
+	cout << m_pTransCom->Get_AttackAngle() << endl;
+	if (-10.f > m_pTransCom->Get_AttackAngle() && !m_bParticle)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 0.f },
-			0.2f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { -1.f, 1.f, 0.f },
+			0.1f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_10);
-		m_bAttackPt = true;
+
+		m_bParticle = true;
 	}
+
 
 	if (m_pTransCom->Item_Attack(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer()))
 	{
 		m_bAttack = false;
 		m_pColliderCom->Set_Free(true);
 		m_bAttackPt = false;
+		m_pTransCom->Prepare_Attack();
+		m_bParticle = false;
 	}
 	else
 		Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);

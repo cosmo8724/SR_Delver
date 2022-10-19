@@ -29,22 +29,27 @@ public:
 	void				Set_HpPlus(_int iHp = 1)  { if (m_tInfo.iHp < m_tInfo.iHpMax) m_tInfo.iHp += iHp; }
 	void				Set_HpMinus(_int iHp = 1) { if (0 < m_tInfo.iHp) m_tInfo.iHp -= iHp; }
 	void				Set_HungerPlus()		  { if (5 > m_tInfo.iHunger) m_tInfo.iHunger++; }
+	void				Set_HungerMinus()		  { if (0 < m_tInfo.iHunger) m_tInfo.iHunger--;	}
 
 	void				Set_Stun() { m_tInfo.bStun = true; }
 	void				Set_Slow() { m_tInfo.bSlow = true; }
+	void				Set_KnockBack() { m_bKnockBack = true; }
 
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
- 	PLAYERINFO			Get_PlayerInfo() { return m_tInfo; } // sh
+ 	PLAYERINFO		Get_PlayerInfo() { return m_tInfo; } // sh
+
+	const _float&		Get_CurSpeed() { return m_tInfo.fSpeed; }
+	void				Set_CurBlock(CBlock* pBlock) { m_pCurrentBlock = pBlock; }
 
 private:
 	HRESULT				Add_Component(void);
 	void				Key_Input(const _float& fTimeDelta);
 	void				Mouse_Move(void);
 	void				Mouse_Click(const _float& fTimeDelta);
-	void				Set_OnTerrain(void);
+	//void				Set_OnTerrain(void);
 	void				Jump(const _float& fTimeDelta);
-	_float				Get_Height();
+	//_float				Get_Height();
 	void				CollisionEvent(CGameObject * pOtherObj);
 	void				KnockBack(const _float& fTimeDelta); // sh
 	void				Stun(const _float& fTimeDelta); // sh

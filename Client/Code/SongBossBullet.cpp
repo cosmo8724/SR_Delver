@@ -36,24 +36,20 @@ HRESULT CSongBossBullet::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ���� ������Ʈ
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ������� ������Ʈ
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
-	// m_pAnimtorCom
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_AnimatorCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_MusicNote_Bullet_Texture");
 
-	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
@@ -154,7 +150,6 @@ void CSongBossBullet::Render_Obejct(void)
 
 void CSongBossBullet::Billboard()
 {
-	// ������
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
@@ -190,8 +185,6 @@ void CSongBossBullet::Billboard()
 
 _int CSongBossBullet::Target(const _float & fTimeDelta)
 {
-	// Bullet�� �θ� �� Leaf�� Transform
-	// Leaf�� Player�� �ٶ󺸴� ������ ���� Leaf, Player
 	_vec3	vParentPos, vPlayerPos;
 	CTransform*		pParent = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"SongBoss", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pParent, -1);
@@ -201,27 +194,24 @@ _int CSongBossBullet::Target(const _float & fTimeDelta)
 
 	pPlayer->Get_Info(INFO_POS, &vPlayerPos);
 	pParent->Get_Info(INFO_POS, &vParentPos);
-	m_pTransCom->Set_Pos(vParentPos.x, vParentPos.y + 2.f, vParentPos.z); // Bullet�� ������ġ
+	m_pTransCom->Set_Pos(vParentPos.x, vParentPos.y + 2.f, vParentPos.z); 
 
 	_vec3 vDir, vDistance;
-	vDir = vPlayerPos - vParentPos; // ���Ͱ� �÷��̾ �ٶ󺸴� ���� ����
-	D3DXVec3Normalize(&vDir, &vDir); // ���� ���ͷ� ����
+	vDir = vPlayerPos - vParentPos; 
+	D3DXVec3Normalize(&vDir, &vDir); 
 	D3DXVec3Normalize(&vDistance, &vDistance);
 
-	if (!m_bReady) // ó�� ��� ���� �� �� ���� �޴´�
+	if (!m_bReady)
 	{
 		m_vTrans = vParentPos;
 		m_bReady = true;
 	}
 
 	_matrix matScale, matRot, matTrans, matRev, matWorld;
-	// ��
 	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
 
-	// ��
 	D3DXMatrixTranslation(&matTrans, vDistance.x * 0.7f, vDistance.y * 0.7f, vDistance.z * 0.7f);
 
-	// ��
 	m_fAngle += 0.1f;
 	if (m_fAngle > 360.f)
 		m_fAngle -= 360.f;
@@ -239,7 +229,7 @@ _int CSongBossBullet::Target(const _float & fTimeDelta)
 	matParent = matScale * matRev;// *mat;
 
 	_matrix mat1;
-	mat1 = matTrans * matParent; // �����ϴ� ���
+	mat1 = matTrans * matParent; 
 
 	//m_pTransCom->Set_WorldMatrix(&matWorld);
 	

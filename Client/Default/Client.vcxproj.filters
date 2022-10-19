@@ -373,6 +373,9 @@
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Trap\KnifeTrap">
       <UniqueIdentifier>{8103a46a-64df-4703-a32a-b39bd0ea0996}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\10. Mimic">
+      <UniqueIdentifier>{1e21f335-49a3-4997-90ef-ea9ab086d90c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -741,6 +744,9 @@
     <ClInclude Include="..\Header\RockFall.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Trap\RockFall</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Mimic.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\10. Mimic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1090,6 +1096,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\RockFall.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Trap\RockFall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Mimic.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\10. Mimic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

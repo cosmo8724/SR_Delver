@@ -29,6 +29,7 @@ public:
 private:
 	_float		m_fAttackTime = 0.f;
 	_bool		m_bAttackPt = false;
+	_bool		m_bParticle = false;
 
 };
 
