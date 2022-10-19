@@ -68,7 +68,7 @@ CBlock::CBlock(const CBlock& rhs)
 
 	_matrix	matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
+	//CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
 }
 
 CBlock::~CBlock()
@@ -242,16 +242,27 @@ void CBlock::CollisionEvent(CGameObject * pOtherObj)
 
 		_vec3			vPlayerPos = pPlayerTransform->Get_Pos();
 		if (vPlayerPos.x > tBlockBox.vMin.x && vPlayerPos.x < tBlockBox.vMax.x
-			&& vPlayerPos.z > tBlockBox.vMin.z && vPlayerPos.z < tBlockBox.vMax.z
-			&& vPlayerPos.y < tBlockBox.vMax.y + (vPlayerPos.y - tPlayerBox.vMin.y))
-			pPlayer->Set_CurBlock(this);
+			&& vPlayerPos.z > tBlockBox.vMin.z && vPlayerPos.z < tBlockBox.vMax.z)
+		{
+			if (vPlayerPos.y < tBlockBox.vMax.y + (tBlockBox.vMax.y - tBlockBox.vMin.y)
+				&& vPlayerPos.y > m_pTransCom->Get_Pos().y)
+				pPlayer->Set_CurBlock(this);
+			
+			//return;
+		}
 
 		_float			fDistX = 0.f, fDistY = 0.f, fDistZ = 0.f;
 
-		fDistY = tPlayerBox.vMin.y - tBlockBox.vMax.y;
+		fDistY = 0.f;
 
-		//if (fabs(fDistY) < 0.1f)
+		//if (fabs(fDistY) < 0.01f || pPlayer->Get_CurState() == PLAYER_JUMP)
 		//	return;
+
+		if (tPlayerBox.vMin.y >= m_pTransCom->Get_Pos().y)
+			return;
+
+		_float		fDist = D3DXVec3Length(&(m_pTransCom->Get_Pos() - pPlayerTransform->Get_Pos()));
+		
 
 		// Player at Leftside
 		if (tPlayerBox.vMax.x > tBlockBox.vMin.x && tPlayerBox.vMax.x < tBlockBox.vMax.x)
@@ -279,25 +290,39 @@ void CBlock::CollisionEvent(CGameObject * pOtherObj)
 
 		// Player On Block		-> Player CollisionEvent
 		// Player Under Block	-> Player CollisionEvent
-
-		if ((vPlayerPos.x < tBlockBox.vMin.x || vPlayerPos.x > tBlockBox.vMax.x)
-			&& (vPlayerPos.z < tBlockBox.vMin.z || vPlayerPos.z > tBlockBox.vMax.z)
-			&& fabs(fDistX) > 0.0001f && fabs(fDistZ) > 0.0001f)
+		if (tPlayerBox.vMax.y > tBlockBox.vMin.y && tPlayerBox.vMax.y < m_pTransCom->Get_Pos().y)
 		{
-			if (sqrtf(fDistX * fDistX + fDistZ * fDistZ) < fabs(tBlockBox.vMax.x - tBlockBox.vMin.x) * 0.2f)
-				return;
+			_vec3	PlayerPos = pPlayerTransform->Get_Pos();
+			if ((PlayerPos.x > tBlockBox.vMin.x && PlayerPos.x < tBlockBox.vMax.x)
+				&& (PlayerPos.z > tBlockBox.vMin.z && PlayerPos.z < tBlockBox.vMax.z)
+				&& pPlayer->Get_CurState() == PLAYER_JUMP)
+			{
+				fDistX = 0.f;
+				fDistY = tBlockBox.vMin.y - tPlayerBox.vMax.y;
+				fDistZ = 0.f;
+				pPlayer->Set_JSpeed(0.f);
+				//pPlayerTransform->Set_Pos(PlayerPos.x, PlayerPos.y + fDistY, PlayerPos.z);
+			}
+		}
+
+		//if ((vPlayerPos.x < tBlockBox.vMin.x || vPlayerPos.x > tBlockBox.vMax.x)
+		//	&& (vPlayerPos.z < tBlockBox.vMin.z || vPlayerPos.z > tBlockBox.vMax.z)
+		//	&& fabs(fDistX) > 0.0001f && fabs(fDistZ) > 0.0001f)
+		{
+			//if (sqrtf(fDistX * fDistX + fDistZ * fDistZ) < fabs(tBlockBox.vMax.x - tBlockBox.vMin.x) * 0.2f)
+			//	return;
 			if (fabs(fDistX) > fabs(fDistZ))
 				fDistX = 0.f;
 			else if (fabs(fDistX) < fabs(fDistZ))
 				fDistZ = 0.f;
 		}
-		else
-			return;
+		//else
+		//	return;
 
 		_vec3	vDir = { fDistX, 0.f, fDistZ };
 
 		//pPlayerTransform->Move_Pos(&(vDir * pPlayer->Get_CurSpeed() * m_fTimeDelta));
-		pPlayerTransform->Set_Pos(vPlayerPos.x + fDistX, vPlayerPos.y, vPlayerPos.z + fDistZ);
+		pPlayerTransform->Set_Pos(vPlayerPos.x + fDistX, vPlayerPos.y + fDistY, vPlayerPos.z + fDistZ);
 	}
 }
 
