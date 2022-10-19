@@ -9,7 +9,7 @@
 
 CWandBullet::CWandBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
-	, m_fSpeed(30.f)
+	, m_fSpeed(20.f)
 {
 	//m_pGraphicDev->AddRef();
 	memset(&m_bdBox, 0, sizeof(BDBOX));
@@ -77,7 +77,7 @@ HRESULT CWandBullet::Add_Component(void)
 void CWandBullet::CollisionEvent(CGameObject * pObj)
 {
 	CParticleMgr::GetInstance()->Set_Info(this, 20, 0.3f, { 1.f, 1.f, 1.f },
-		1.f, { 1.f,0.f,0.f,1.f });
+		2.f, { 1.f,0.f,0.f,1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_5);
 
 	Reset();

@@ -156,11 +156,12 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
 
-	//// SkeletonGhost
+	// SkeletonGhost
 	//pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(20.f, 3.f, 20.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
 	//m_vecMonster.push_back(pGameObject);
+
 
 	//// GreenSpider
 	//pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(5.f, 1.f, 10.f));

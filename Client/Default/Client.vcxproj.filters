@@ -367,6 +367,12 @@
     <Filter Include="02. GameObject\01. For_Stage\06. Item\09. Food">
       <UniqueIdentifier>{3855446b-b5da-4a2f-bcfd-d6dbd4ab14d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Trap\RockFall">
+      <UniqueIdentifier>{2f99c98f-cada-440a-88ae-48f4d9aa2de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Trap\KnifeTrap">
+      <UniqueIdentifier>{8103a46a-64df-4703-a32a-b39bd0ea0996}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\02. Monster\10. Mimic">
       <UniqueIdentifier>{1e21f335-49a3-4997-90ef-ea9ab086d90c}</UniqueIdentifier>
     </Filter>
@@ -735,6 +741,9 @@
     <ClInclude Include="..\Header\Food.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\09. Food</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\RockFall.h">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Trap\RockFall</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\Mimic.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\10. Mimic</Filter>
     </ClInclude>
@@ -1085,6 +1094,9 @@
     <ClCompile Include="..\Code\Food.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\09. Food</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\RockFall.cpp">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Trap\RockFall</Filter>
+    </ClCompile>
     <ClCompile Include="..\Code\Mimic.cpp">
       <Filter>02. GameObject\01. For_Stage\02. Monster\10. Mimic</Filter>
     </ClCompile>
@@ -1106,5 +1118,8 @@
     <Text Include="ReadMe.txt">
       <Filter>99. Default</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Rect.hlsl" />
   </ItemGroup>
 </Project>
