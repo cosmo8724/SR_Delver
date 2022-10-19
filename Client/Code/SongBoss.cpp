@@ -218,10 +218,21 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	vLook = vPlayerPos - vPos;
 	D3DXVec3Normalize(&vLook, &vLook);
 
-	_vec3 vLookOld;
-	m_pTransCom->Get_Info(INFO_LOOK, &vLookOld);
 
-	//_float	fDot = 
+
+
+	// Look Vector Set
+	// Current : Look Vector is not working. (Billboard)
+	// when using the particle, it makes problem to some types.
+	// Monster will rotate only by the y axis
+	// _vec3 vLookOld;
+	// m_pTransCom->Get_Info(INFO_LOOK, &vLookOld);
+	// D3DXVec3Normalize(&vLookOld, &vLookOld);
+	// m_pTransCom->Set_Angle(0, acosf(D3DXVec3Dot(&vLook, &vLookOld), 0); 이게 맞는거 같은데 왜 안되지
+
+	m_pTransCom->Set_Look(vLook);
+
+
 
 	// 일정 거리 안 으로 들어 왔을 때 공격 시작
 	if (fDist < 10.f)
@@ -231,7 +242,7 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 		if (3.f < m_fAttackTimeAcc)
 		{
-			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.0f }, 3.f);
+			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 0.0f }, 3.f);
 			CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
 			CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
 

@@ -101,5 +101,7 @@ private:
 	PTEXTUREID		m_eTex = TEXTURE_0;
 	CTransform*		m_pTransCom = nullptr; // for target
 
+
+
 };
 
