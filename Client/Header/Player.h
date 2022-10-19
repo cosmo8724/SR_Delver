@@ -13,8 +13,6 @@ class CBlock;
 
 class CPlayer : public CGameObject
 {
-	enum PLAYER_STATE { PLAYER_GROUND, PLAYER_ON_BLOCK, PLAYER_JUMP, PLAYER_STATE_END };
-
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CPlayer();
@@ -37,16 +35,21 @@ public:
 
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
- 	PLAYERINFO			Get_PlayerInfo() { return m_tInfo; } // sh
+ 	PLAYERINFO		Get_PlayerInfo() { return m_tInfo; } // sh
+
+	const _float&		Get_CurSpeed() { return m_tInfo.fSpeed; }
+	const PLAYER_STATE&	Get_CurState() { return m_eState; }
+	void				Set_CurBlock(CBlock* pBlock) { m_pCurrentBlock = pBlock; }
+	void				Set_JSpeed(_float fJSpeed) { m_fJSpeed = fJSpeed; }
 
 private:
 	HRESULT				Add_Component(void);
 	void				Key_Input(const _float& fTimeDelta);
 	void				Mouse_Move(void);
 	void				Mouse_Click(const _float& fTimeDelta);
-	void				Set_OnTerrain(void);
+	//void				Set_OnTerrain(void);
 	void				Jump(const _float& fTimeDelta);
-	_float				Get_Height();
+	//_float				Get_Height();
 	void				CollisionEvent(CGameObject * pOtherObj);
 	void				KnockBack(const _float& fTimeDelta); // sh
 	void				Stun(const _float& fTimeDelta); // sh
@@ -61,6 +64,14 @@ public:
 	_bool				Is_Snippered() { return m_bSnipper; }
 	void				Respawn();
 	void				Set_Info(ITEMINFO tInfo, _int iSign);
+	void				Add_CollisionGroup(CGameObject* pObj)
+	{
+		m_CollisionGroup.push_back(pObj);
+	}
+	vector<CGameObject*>*	Get_CollisionGroup()
+	{
+		return &m_CollisionGroup;
+	}
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -117,6 +128,10 @@ private:
 	// Related to Death & Respawn
 	_float				m_fDeathTime = 0.f;
 	_bool				m_bDeadMotion = false;
+
+
+	// Collision Group for Player
+	vector<CGameObject*>	 m_CollisionGroup;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

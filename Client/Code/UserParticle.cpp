@@ -66,7 +66,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 	removeAllParticles();
 
 	if (nullptr == m_pTarget)
-		MSG_BOX("��ƼŬ Ÿ�� ���� �Ф�");
+		MSG_BOX("ttttt");
 	CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 
 	m_eType = _eType;
@@ -82,7 +82,7 @@ void CUserParticle::Set_Particle(PTYPE _eType)
 
 
 
-	m_bUse = true;
+	//m_bUse = true;
 
 }
 
@@ -108,17 +108,8 @@ HRESULT CUserParticle::Ready_Object(void)
 
 _int CUserParticle::Update_Object(const _float & fTimeDelta)
 {
-	//if (!m_bUse || !m_bReady)
-	//	return 0;
-	if (!m_bUse)
-		return 0;
-	else
-		m_bReady = true;// component������ ready���� �̷����� �����Ƿ� ������ ��Ʈ�� �ϱ� ����
-
 	if (isDead())
 	{
-		//CParticleMgr::GetInstance()->Collect_Particle(m_iIndex);
-		//ReUse();
 		return OBJ_TEST;
 
 	}
@@ -162,17 +153,11 @@ _int CUserParticle::Update_Object(const _float & fTimeDelta)
 
 void CUserParticle::LateUpdate_Object(void)
 {
-	if (!m_bUse || !m_bReady)
-		return;
-
-
 	CGameObject::LateUpdate_Object();
 }
 
 void CUserParticle::Render_Obejct(void)
 {
-	if (!m_bUse || !m_bReady)
-		return;
 
 	_matrix matWorld;
 	D3DXMatrixIdentity(&matWorld);
@@ -249,7 +234,6 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 
 		GetRandomVector(&attribute->vVelocity, &min, &max);
 
-		//��ü�� ����� ���� ����ȭ
 		D3DXVec3Normalize(&attribute->vVelocity, &attribute->vVelocity);
 
 		attribute->vVelocity *= 10.f;
@@ -372,32 +356,20 @@ void CUserParticle::update(_float fTimeDelta)
 
 	case PTYPE_FOUNTAIN:
 	{
-		m_fSize -= 0.05f;
+		//m_fSize -= 0.05f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// ������ ��ƼŬ�� ����
 			if (iter->bIsAlive)
 			{
 				
 				iter->vVelocity.y -= GetRandomFloat(0.f, 1.f);
 				iter->vPosition += (0.3f * iter->vVelocity * fTimeDelta);
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // ���δ�.
+				if (iter->fAge > iter->fLifeTime) 
 					iter->bIsAlive = false;
 			}
 		}
-		//for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
-		//{
-		//	// ������ ��ƼŬ�� ����
-		//	if (iter->bIsAlive)
-		//	{
-		//		iter->vVelocity.y -= GetRandomFloat(0.f, 1.4f);
-		//		iter->vPosition += (iter->vVelocity * fTimeDelta);
-		//		iter->fAge += fTimeDelta;
-		//		if (iter->fAge > iter->fLifeTime) // ���δ�.
-		//			iter->bIsAlive = false;
-		//	}
-		//}
+
 	}
 	break;
 
@@ -457,15 +429,15 @@ void CUserParticle::update(_float fTimeDelta)
 
 	case PTYPE_TRACER:
 	{
+		m_fSize -= 0.0005f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// ������ ��ƼŬ�� ����
 			if (iter->bIsAlive)
 			{
 				//iter->vPosition = pCom->Get_Pos();
 				iter->fAge += fTimeDelta;
 
-				if (iter->fAge > iter->fLifeTime) // ���δ�.
+				if (iter->fAge > iter->fLifeTime) 
 				{
 					iter->bIsAlive = false;
 				}
@@ -476,16 +448,23 @@ void CUserParticle::update(_float fTimeDelta)
 	break;
 
 	case PTYPE_CIRCLING:
-	{
+	{		
 		_vec3 vRight, vUp, vLook, vPos;
-		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
-		m_pTransCom->Get_Info(INFO_UP, &vUp);
-		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
-		D3DXVec3Normalize(&vRight, &vRight);
-		D3DXVec3Normalize(&vUp, &vUp);
-		D3DXVec3Normalize(&vLook, &vLook);
-
 		_matrix matRot, matTrans, matPos, matWorld;
+
+	/*	if (!m_bReady)
+		{*/
+			vUp = { 0.f, 1.f, 0.f };
+			vLook = m_pTransCom->Get_Look();
+			D3DXVec3Cross(&vRight, &vUp, &vLook);
+
+			D3DXVec3Normalize(&vRight, &vRight);
+			D3DXVec3Normalize(&vUp, &vUp);
+			D3DXVec3Normalize(&vLook, &vLook);
+			m_bReady = true;
+		//}
+		_vec3 vTargetPos = m_pTransCom->Get_Pos();
+
 
 		int i = 0;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
@@ -493,7 +472,7 @@ void CUserParticle::update(_float fTimeDelta)
 			if (iter->bIsAlive)
 			{
 
-				m_pTransCom->Get_Info(INFO_POS, &vPos);
+				vPos = vTargetPos;
 
 				m_fStartAngles[i] = _float((_int)(m_fStartAngles[i] + m_fAngleSpeed) % 360);
 				D3DXMatrixRotationAxis(&matRot, &vLook, D3DXToRadian(m_fStartAngles[i]));
@@ -515,7 +494,7 @@ void CUserParticle::update(_float fTimeDelta)
 				iter->vPosition = vPos + vTemp;
 
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // ���δ�.
+				if (iter->fAge > iter->fLifeTime)
 					iter->bIsAlive = false;
 			}
 
@@ -562,12 +541,10 @@ HRESULT CUserParticle::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	//// ���� ������Ʈ
 	pComponent = m_pBufferCom = dynamic_cast<CPtBuffer*>(Engine::Clone_Proto(L"Proto_PtBufferCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_PtBufferCom", pComponent });
 
-	// �ؽ��� �İ�ü ������Ʈ
 	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle5_Texture"));
 	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle5_Texture", pComponent });

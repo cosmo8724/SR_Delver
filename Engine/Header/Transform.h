@@ -33,7 +33,8 @@ public:
 	void				Set_WorldMatrix(_matrix* pWorld) { m_matWorld = *pWorld; }
 	_vec3*				Get_InfoAll() { return m_vInfo; }
 	void				Set_Info(_vec3 vRight, _vec3 vUp, _vec3 vLook);
-	void				Set_Look(const _vec3* vLook) { m_vInfo[INFO_LOOK] = *vLook; }
+	void				Set_Look(_vec3 vLook) { m_vLook = vLook; }
+	_vec3				Get_Look() { return m_vLook; }
 	_float				Get_AttackAngle() { return m_fAttackAngle; }
 
 public:
@@ -41,7 +42,7 @@ public:
 	void				ChangeHeight_Target(const _vec3* pTargetPos, const _float& fSTest, const _float& fSpeed, const _float& fTimeDelta);
 	const _matrix*		Compute_LookAtTarget(const _vec3* pTargetPos);
 	void				Revolution(const _vec3* pCenter, _matrix _matView, _float fAngle, const _float& fTimeDelta, ITEMSTATE eState);
-	void				KnockBack_Target(_vec3* pTargetLook, const _float& fSpeed, const _float& fTimeDelta); // ³Ë¹é
+	void				KnockBack_Target(_vec3* pTargetLook, const _float& fSpeed, const _float& fTimeDelta); // ï¿½Ë¹ï¿½
 	void				Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
 	_bool				Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
 	void				Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
@@ -62,7 +63,7 @@ public:
 	_vec3			m_vScale;
 	_vec3			m_vAngle;
 	_matrix			m_matWorld;
-	_float			m_fAngle;
+	_float			m_fAngle = 0.f;
 	_float			m_fAngleSpeed;
 
 	_vec3			m_vOldPos;
@@ -74,6 +75,7 @@ public:
 
 	_matrix			m_matOldBill;
 	_float			m_fShieldvLook;
+	_vec3			m_vLook;
 
 public:
 	static CTransform*		Create(void);

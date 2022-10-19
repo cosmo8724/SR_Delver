@@ -41,8 +41,10 @@ HRESULT CParticleMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle7_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle7/particle7_%d.png", TEX_NORMAL, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle8_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle8/particle8_%d.png", TEX_NORMAL, 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle9_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle9/particle9.png", TEX_NORMAL, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle10_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle10/particle10.png", TEX_NORMAL, 1)), E_FAIL);
+
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle10_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle10/particle10_%d.png", TEX_NORMAL, 3)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle10_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle11/particle11_%d.png", TEX_NORMAL, 15)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle11_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle11/particle11_%d.png", TEX_NORMAL, 15)), E_FAIL);
 
 	return S_OK;
 }
@@ -69,7 +71,6 @@ HRESULT CParticleMgr::Add_GameObject(CLayer * pLayer)
 }
 
 
-
 void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 {
 	TCHAR*	szObjTag = new TCHAR[MAX_PATH];
@@ -92,13 +93,18 @@ void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 
 		CUserParticle* pParticle = static_cast<CUserParticle*>(pGameObject);
 		pParticle->Set_Texture(eTex);
+
 		pParticle->Set_Information(
 			true, 0, m_pTarget, m_tAttribute, m_tPInfo, m_fFrameSpeed, m_bFrameRepeat, m_bRand);
+	
 		if(eType == PTYPE_SPOT)
 			pParticle->Add_Info_Spot(m_bFrameMove, m_bFrameRand);
 		else if(eType == PTYPE_CIRCLING)
 			pParticle->Add_Info(m_bFrameMove, m_fFrame, m_fDist, m_fAngleSpeed);
+		
 		pParticle->Set_Particle(eType);
+
+
 
 	}
 

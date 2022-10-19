@@ -17,11 +17,11 @@ CStaticCamera::~CStaticCamera()
 {
 }
 
-HRESULT CStaticCamera::Ready_Object(const _vec3* pEye, 
-	const _vec3* pAt, 
+HRESULT CStaticCamera::Ready_Object(const _vec3* pEye,
+	const _vec3* pAt,
 	const _vec3* pUp,
 	const _float& fFov,
-	const _float& fAspect ,
+	const _float& fAspect,
 	const _float& fNear,
 	const _float& fFar)
 {
@@ -56,6 +56,7 @@ Engine::_int CStaticCamera::Update_Object(const _float& fTimeDelta)
 
 	Key_Input(fTimeDelta);
 	ShakeY(fTimeDelta);
+	Shake_Camera(fTimeDelta);
 	Target_Renewal();
 
 	_int iExit = CCamera::Update_Object(fTimeDelta);
@@ -101,16 +102,16 @@ void CStaticCamera::Key_Input(const _float& fTimeDelta)
 		m_bFix = true;
 
 	/*if (Get_DIKeyState(DIK_W) & 0x80)
-		m_fDistance -= fTimeDelta * m_fSpeed;
+	m_fDistance -= fTimeDelta * m_fSpeed;
 
 	if(Get_DIKeyState(DIK_S) & 0x80)
-		m_fDistance += fTimeDelta * m_fSpeed;
+	m_fDistance += fTimeDelta * m_fSpeed;
 
 	if (Get_DIKeyState(DIK_D) & 0x80)
-		m_fAngle -= D3DXToRadian(180.f) * fTimeDelta;
+	m_fAngle -= D3DXToRadian(180.f) * fTimeDelta;
 
 	if (Get_DIKeyState(DIK_A) & 0x80)
-		m_fAngle += D3DXToRadian(180.f) * fTimeDelta;*/
+	m_fAngle += D3DXToRadian(180.f) * fTimeDelta;*/
 
 	if (Get_DIMouseState(DIM_RB))
 	{
@@ -131,7 +132,7 @@ void CStaticCamera::Key_Input(const _float& fTimeDelta)
 
 void CStaticCamera::Target_Renewal(void)
 {
-	if (m_bShakeY)
+	if (m_bShakeY || m_bShake)
 		return;
 
 	m_pPlayerTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -176,7 +177,7 @@ void CStaticCamera::ShakeY(const _float & fTimeDelta)
 	if (0.5f < m_fNoShakeYTimeAcc)
 	{
 		m_bShakeY = false;
-		m_fNoShakeYTimeAcc = 0.f; 
+		m_fNoShakeYTimeAcc = 0.f;
 	}
 }
 
@@ -186,4 +187,39 @@ void CStaticCamera::Mouse_Fix(void)
 
 	ClientToScreen(g_hWnd, &pt);
 	SetCursorPos(pt.x, pt.y);
+}
+
+void CStaticCamera::Shake_Camera(const _float & fTimeDelta)
+{
+	if (!m_bShake)
+		return;
+
+	m_fShakeTimeNow += fTimeDelta;
+	float fRand=0.f;
+	if (m_fShakeTime > m_fShakeTimeNow)
+	{
+		fRand = (rand() % (m_iShakePower * 2) - m_iShakePower*0.5f) * 0.03f;
+		m_vAt.y += fRand;
+	}
+	else
+	{
+		m_fShakeTimeNow = 0.f;
+		m_bShake = false;
+	}
+
+
+	_vec3   vPos;
+	m_pPlayerTransCom->Get_Info(INFO_POS, &vPos);
+
+	_vec3   vLook;
+	m_pPlayerTransCom->Get_Info(INFO_LOOK, &vLook);
+	D3DXVec3Normalize(&vLook, &vLook);
+	
+
+	vLook.y += fRand;
+
+	m_vEye = vPos + 0.3f * vLook;
+	m_vAt = vPos + vLook;
+
+
 }

@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CTerrainTex;
 class CTransform;
 class CCubeTex;
+class CRcTex;
 
 class ENGINE_DLL CCalculator :	public CComponent
 {
@@ -27,6 +28,8 @@ public:
 	_vec3			PickingOnTerrainIndex(HWND hWnd, const CTerrainTex* pTerrainBufferCom, const CTransform* pTerrainTransformCom);
 	CubePlane		PickingOnCube(HWND hWnd, const CCubeTex * pCubeTexBufferCom, const CTransform * pCubeTransCom, _bool* pCheck, _vec3* pVec);
 	_bool			CheckIntersectCube(HWND hWnd, const CCubeTex* pCubeTexBufferCom, const CTransform* pCubeTransCom, _float* fDistance);
+	
+	_bool			Picking(HWND hWnd, CRcTex* pRcTex, const CTransform* pTransCom);
 
 public:
 	virtual CComponent* Clone(void) override;

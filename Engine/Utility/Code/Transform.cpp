@@ -175,7 +175,7 @@ void CTransform::KnockBack_Target(_vec3 * pTargetLook, const _float & fSpeed, co
 
 void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {
-	_matrix matParent = _matWorld; // �θ������ �÷��̾��� �������
+	_matrix matParent = _matWorld; // 부모행렬은 플레이어의 월드행렬
 
 	_vec3 vRight, vUp, vLook, vPos;
 
@@ -213,7 +213,7 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
 
 
-	// ������
+	// 빌보드
 	_matrix matBill, matView;
 	D3DXMatrixIdentity(&matBill);
 	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
@@ -255,7 +255,7 @@ _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 	m_fAttackAngle -= m_fAttackSpeed;
 	if (m_fAttackAngle < -25.f)
 		m_fAttackSpeed *= -1;
-	if (m_fAttackAngle > 0.f)
+	if (m_fAttackAngle > 10.f)
 		m_bFinished = true;
 
 	fRad = D3DXToRadian(m_fAttackAngle);
@@ -402,8 +402,6 @@ HRESULT CTransform::Ready_Transform(void)
 _int CTransform::Update_Component(const _float & fTimeDelta)
 {
 	D3DXMatrixIdentity(&m_matWorld);
-
-	// ũ��
 
 	for (_uint i = 0; i < INFO_POS; ++i)
 	{

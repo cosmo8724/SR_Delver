@@ -14,6 +14,8 @@
 #include "CrossHair.h"
 #include "CameraMgr.h"
 #include "BonFire.h"
+#include "EcoObject.h"
+#include "RockFall.h"
 
 #include "Monster.h"
 #include "Bullet.h"
@@ -22,8 +24,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_vDirection(0.f, 0.f, 0.f)
 	, m_fAccel(0.01f)
-	, m_fJSpeed0(0.15f)
-	, m_fJSpeed(0.15f)
+	, m_fJSpeed0(0.2f)
+	, m_fJSpeed(0.2f)
 {
 	memset(&m_tInfo, 0, sizeof(PLAYERINFO));
 }
@@ -37,7 +39,7 @@ HRESULT CPlayer::Ready_Object(void)
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(3.f, 1.f, 3.f);
+	m_pTransCom->Set_Pos(3.f, 10.f, 3.f);
 
 	_vec3 vPos, vScale;
 	_matrix matWorld;
@@ -124,6 +126,10 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 	m_InvincibilityTimeAcc += fTimeDelta; // sh
+
+	if (!m_bKnockBack)
+		m_pCurrentBlock = nullptr;
+
 	return 0;
 }
 
@@ -136,50 +142,22 @@ void CPlayer::LateUpdate_Object(void)
 
 	Mouse_Click(m_fTimeDelta);
 
-	if (m_pColliderCom->Get_MinPoint().y < 0.1f)
-	{
-		Set_OnTerrain();
-	}
-	else
-	{
-		_vec3	vPlayerPos;
-		m_pTransCom->Get_Info(INFO_POS, &vPlayerPos);
-		vPlayerPos.y = m_pColliderCom->Get_MinPoint().y;
+	_vec3	vPlayerPos;
+	m_pTransCom->Get_Info(INFO_POS, &vPlayerPos);
+	vPlayerPos.y = m_pColliderCom->Get_MinPoint().y;
 
-		if (m_eState == PLAYER_ON_BLOCK)
+	if (m_eState == PLAYER_ON_BLOCK)
+	{
+		m_fJSpeed = m_fJSpeed0;
+		m_bJump = false;
+
+		if (m_pCurrentBlock == nullptr)
 		{
 			m_fJSpeed = 0.f;
-			m_bJump = false;
-
-			if (m_pCurrentBlock == nullptr)
-			{
-				m_eState = PLAYER_JUMP;
-				m_bJump = true;
-				return;
-			}
-
-			_vec3	vBlockPos;
-			m_pCurrentBlock->m_pTransCom->Get_Info(INFO_POS, &vBlockPos);
-
-			_float	fDistFromBlock;
-
-			if (m_pCurrentBlock)
-				fDistFromBlock = D3DXVec3Length(&(vBlockPos - vPlayerPos));
-
-			_float	fBlockRange = m_fScale + D3DXVec3Length(&(dynamic_cast<CCollider*>(m_pCurrentBlock->Get_Component(L"Proto_ColliderCom", ID_STATIC))->Get_MaxPoint() - m_pCurrentBlock->m_pTransCom->Get_Pos()));
-
-			if (fDistFromBlock < fBlockRange - 0.002f)
-				m_bBlockChanged = false;
-			else if (fDistFromBlock > fBlockRange - 0.002f && fDistFromBlock < fBlockRange - 0.001f)
-			{
-				m_bBlockChanged = true;
-			}
-			else if (fDistFromBlock > fBlockRange - 0.001f)
-				m_pCurrentBlock = nullptr;
+			m_eState = PLAYER_JUMP;
+			m_bJump = true;
 		}
 	}
-
-
 
 	// camera change Test
 	wstring pObjTag = (m_pRight != nullptr ? m_pRight->Get_ObjTag() : L"");
@@ -187,9 +165,6 @@ void CPlayer::LateUpdate_Object(void)
 		m_bSnipper = true; 
 	else
 		m_bSnipper = false;
-
-
-
 }
 
 void CPlayer::Render_Obejct(void)
@@ -376,15 +351,15 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 	//}
 }
 
-void CPlayer::Set_OnTerrain(void)
-{
-	_vec3		vPos;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-
-	_float fHeight = Get_Height();
-
-	m_pTransCom->Set_Y(fHeight);
-}
+//void CPlayer::Set_OnTerrain(void)
+//{
+//	_vec3		vPos;
+//	m_pTransCom->Get_Info(INFO_POS, &vPos);
+//
+//	_float fHeight = Get_Height();
+//
+//	m_pTransCom->Set_Y(fHeight);
+//}
 
 void CPlayer::Jump(const _float & fTimeDelta)
 {
@@ -393,16 +368,24 @@ void CPlayer::Jump(const _float & fTimeDelta)
 		_vec3 vPos;
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-		_float fHeight = Get_Height();
-
-		if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
+		//_float fHeight = Get_Height();
+		if (m_pCurrentBlock)
 		{
-			m_bJump = false;
-			m_eState = PLAYER_GROUND;
-			m_fJTimeDelta = 0.f;
-			m_pCurrentBlock = nullptr;
-			m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
-			m_fJSpeed = m_fJSpeed0;
+			if (m_fJTimeDelta > 2.f && m_pCurrentBlock->Get_Height() >= m_pColliderCom->Get_MinPoint().y)
+			{
+				m_bJump = false;
+				m_eState = PLAYER_ON_BLOCK;
+				m_fJTimeDelta = 0.f;
+				//m_pCurrentBlock = nullptr;
+				//m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
+				m_fJSpeed = m_fJSpeed0;
+			}
+			else
+			{
+				m_fJSpeed -= m_fAccel;
+				m_pTransCom->Plus_PosY(m_fJSpeed);
+				m_fJTimeDelta += 0.1f;
+			}
 		}
 		else
 		{
@@ -414,20 +397,20 @@ void CPlayer::Jump(const _float & fTimeDelta)
 
 }
 
-_float CPlayer::Get_Height()
-{
-	_vec3 vPos;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-
-	_int	iWidth, iDepth, iIntavel;
-
-	CImGuiMgr::GetInstance()->Get_MapWidth(&iWidth, &iDepth, &iIntavel);
-
-	Engine::CTerrainTex*	pTerrainTexCom = dynamic_cast<Engine::CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"Proto_TerrainTexCom", ID_STATIC));
-	NULL_CHECK_RETURN(pTerrainTexCom, 0.f);
-
-	return m_pCalculatorCom->HeightOnTerrain(&vPos, pTerrainTexCom->Get_VtxPos(), 20, 20) + 1.f * m_fScale;
-}
+//_float CPlayer::Get_Height()
+//{
+//	_vec3 vPos;
+//	m_pTransCom->Get_Info(INFO_POS, &vPos);
+//
+//	_int	iWidth, iDepth, iIntavel;
+//
+//	CImGuiMgr::GetInstance()->Get_MapWidth(&iWidth, &iDepth, &iIntavel);
+//
+//	Engine::CTerrainTex*	pTerrainTexCom = dynamic_cast<Engine::CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"Proto_TerrainTexCom", ID_STATIC));
+//	NULL_CHECK_RETURN(pTerrainTexCom, 0.f);
+//
+//	return m_pCalculatorCom->HeightOnTerrain(&vPos, pTerrainTexCom->Get_VtxPos(), 20, 20) + 1.f * m_fScale;
+//}
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
@@ -441,6 +424,16 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
 	//if (pBullet == pOtherObj)
 	//	OnHit(pBullet->Get_BulletAttack());
+
+	CEcoObject* pEco = dynamic_cast<CEcoObject*>(pOtherObj);
+	if (nullptr != pEco)
+	{
+		if (ECO_ROCKFALL == pEco->Get_Type())
+		{
+			OnHit(static_cast<CRockFall*>(pEco)->Get_Attack());
+		}
+	}
+
 
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
@@ -461,87 +454,44 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		_float		fDistY = 0.f;
 		_float		fDistZ = 0.f;
 
-		// Player at Leftside
- 		if (PlayerBox.vMax.x > BlockBox.vMin.x && PlayerBox.vMax.x < BlockBox.vMax.x)
-		{
-			fDistX = BlockBox.vMin.x - PlayerBox.vMax.x;
-		}
-
-		// Player at Rightside
-		else if (PlayerBox.vMin.x < BlockBox.vMax.x && PlayerBox.vMin.x > BlockBox.vMin.x)
-		{
-			fDistX = BlockBox.vMax.x - PlayerBox.vMin.x;
-		}
-
-		// Player at Frontside
-		if (PlayerBox.vMin.z < BlockBox.vMax.z  && PlayerBox.vMin.z > BlockBox.vMin.z)
-		{
-			fDistZ = BlockBox.vMax.z - PlayerBox.vMin.z;
-		}
-
-		// Player at Backside
-		else if (PlayerBox.vMax.z > BlockBox.vMin.z && PlayerBox.vMax.z < BlockBox.vMax.z)
-		{
-			fDistZ = BlockBox.vMin.z - PlayerBox.vMax.z;
-		}
-
 		// Player On Block
-		if (PlayerBox.vMin.y < BlockBox.vMax.y && PlayerBox.vMin.y > BlockBox.vMin.y && m_eState != PLAYER_GROUND)
+		if (PlayerBox.vMin.y < BlockBox.vMax.y && PlayerBox.vMin.y > BlockBox.vMin.y)
 		{
-			m_eState = PLAYER_ON_BLOCK;
-			m_bJump = false;
-			fDistX = 0.f;
-			fDistY = BlockBox.vMax.y - PlayerBox.vMin.y;
-			fDistZ = 0.f;
-
-			if (m_pCurrentBlock != nullptr && m_pCurrentBlock != pBlock)
+			if (m_pCurrentBlock == pBlock)
 			{
-				m_pCurrentBlock = pBlock;
-				m_bBlockChanged = false;
-				_vec3	PlayerPos;
-				m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
-				_vec3 vTemp = { 0.f, fDistY, 0.f };
-				_float	fBlockHeight = pBlock->Get_Height();
-				m_pTransCom->Set_Y(fBlockHeight + (PlayerPos.y - PlayerBox.vMin.y) - 0.0001f);
+				m_eState = PLAYER_ON_BLOCK;
+				m_bJump = false;
+				m_fJTimeDelta = 0.f;
+
+				fDistY = BlockBox.vMax.y - PlayerBox.vMin.y;
+
+				if (fDistY < 0.01f)
+					return;
+
+ 				_vec3	PlayerPos = m_pTransCom->Get_Pos();
+				_float	fBlockHeight = m_pCurrentBlock->Get_Height();
+				m_pTransCom->Set_Pos(PlayerPos.x, PlayerPos.y + fDistY, PlayerPos.z);
 				return;
 			}
-
- 			m_pCurrentBlock = pBlock;
-			fDistY = 0.f;
+			else
+				return;
 		}
 
 		// Player Under Block
-		else if (PlayerBox.vMax.y > BlockBox.vMin.y && PlayerBox.vMax.y < BlockBox.vMax.y)
+		/*else if (PlayerBox.vMax.y > BlockBox.vMin.y && PlayerBox.vMax.y < BlockBox.vMax.y)
 		{
-			fDistY = BlockBox.vMin.y - PlayerBox.vMax.y;
-			m_fJSpeed = 0.f;
-		}
-
-		_vec3	PlayerPos;
-		m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
-
-		//if (fabs(fabs(fDistX) - fabs(fDistZ)) < 0.15f)
-		//	return;
-		
-
-		if ((PlayerPos.x < BlockBox.vMin.x || PlayerPos.x > BlockBox.vMax.x) && (PlayerPos.z < BlockBox.vMin.z || PlayerPos.z > BlockBox.vMax.z) && fabs(fDistX) > 0.0001f && fabs(fDistZ) > 0.0001f)
-		{
-			if (sqrtf(fDistX * fDistX + fDistZ * fDistZ) < fabs(BlockBox.vMax.x - BlockBox.vMin.x) * 0.2f)
+			_vec3	PlayerPos = m_pTransCom->Get_Pos();
+			if ((PlayerPos.x < BlockBox.vMin.x || PlayerPos.x > BlockBox.vMax.x)
+				&& (PlayerPos.z < BlockBox.vMin.z || PlayerPos.z > BlockBox.vMax.z))
 				return;
-			if (fabs(fDistX) > fabs(fDistZ))
-				fDistX = 0.f;
-			else if (fabs(fDistX) < fabs(fDistZ))
-				fDistZ = 0.f;
-		}
-		else
-			return;		
 
-		_vec3	PlayerLook;
-		m_pTransCom->Get_Info(INFO_LOOK, &PlayerLook);
-		PlayerLook.y = 0.f;
-
-		m_pTransCom->Set_Pos(PlayerPos.x + fDistX, PlayerPos.y, PlayerPos.z + fDistZ);
-		//m_pTransCom->Move_Pos(&(_vec3(fDistX, 0.f, fDistZ) * m_fTimeDelta));
+			if (m_pCurrentBlock == nullptr && m_eState == PLAYER_JUMP)
+			{
+				fDistY = BlockBox.vMin.y - PlayerBox.vMax.y;
+				m_fJSpeed = 0.f;
+				m_pTransCom->Set_Pos(PlayerPos.x, PlayerPos.y + fDistY, PlayerPos.z);
+			}
+		}*/
 	}
 }
 
@@ -550,6 +500,7 @@ void CPlayer::Respawn()
 	m_bDead = false;
 	m_bDeadMotion = false;
 	m_fDeathTime = 0.f;
+	m_tInfo.iHp = 10;
 
 	CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
 
@@ -575,6 +526,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{
 		//m_bKnockBack = true;
 		m_tInfo.iHp = 0;
+		// m_bDead = true;
 		return;
 	}
 
@@ -606,22 +558,32 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
 
-	_float fHeight = Get_Height();
+	m_eState = PLAYER_JUMP;
 
-	if (m_fJTimeDelta > 2.f && 0.f >= m_pColliderCom->Get_MinPoint().y)
+	//_float fHeight = Get_Height();
+	if (m_pCurrentBlock)
 	{
-		m_bKnockBack = false;
-		m_pCurrentBlock = nullptr;
-		m_eState = PLAYER_GROUND;
-		m_fJTimeDelta = 0.f;
+		if (m_fJTimeDelta > 2.f && m_pCurrentBlock->Get_Height() + 0.2f >= m_pColliderCom->Get_MinPoint().y)
+		{
+			m_bKnockBack = false;
+			//m_pCurrentBlock = nullptr;
+			m_eState = PLAYER_ON_BLOCK;
+			m_fJTimeDelta = 0.f;
+			m_pTransCom->Set_Y(m_pCurrentBlock->Get_Height() + (m_pTransCom->Get_Pos().y - m_pColliderCom->Get_MinPoint().y));
+			//m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
+			m_fJSpeed = m_fJSpeed0;
+		}
+		else
+		{
+			m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta);
 
-		m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
-		m_fJSpeed = m_fJSpeed0;
+			m_fJSpeed -= m_fAccel;
+			m_pTransCom->Plus_PosY(m_fJSpeed);
+			m_fJTimeDelta += 0.1f;
+		}
 	}
 	else
 	{
-		m_pTransCom->KnockBack_Target(&vLook, -3.f, fTimeDelta);
-
 		m_fJSpeed -= m_fAccel;
 		m_pTransCom->Plus_PosY(m_fJSpeed);
 		m_fJTimeDelta += 0.1f;
@@ -637,6 +599,7 @@ void CPlayer::Stun(const _float & fTimeDelta)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.3f, 1.0f }, 
 												2.f, {1.f, 1.f, 1.f, 1.f}, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_3);
 		m_bStunParticle = true;
 	}
@@ -704,5 +667,6 @@ CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CPlayer::Free(void)
 {
+	m_CollisionGroup.swap(vector<CGameObject*>());
 	CGameObject::Free();
 }
