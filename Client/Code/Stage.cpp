@@ -27,6 +27,7 @@
 #include "BonFire.h"
 #include "ObjectCamera.h"
 #include "LongTorch.h"
+#include "RockFall.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -96,7 +97,7 @@ void CStage::LateUpdate_Scene(void)
 {
 	CBlock* pBlock = nullptr;
 	CLayer*	pLayer = m_mapLayer[L"Layer_GameLogic"];
-	CGameObject*	pPlayer = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	//vector<CGameObject*>*	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
 
 	for (auto iter = pLayer->Get_mapGameObject()->begin(); iter != pLayer->Get_mapGameObject()->end(); ++iter)
@@ -230,6 +231,16 @@ void CStage::LateUpdate_Scene(void)
 
 		//Engine::CollisionTest(pSour5, bullet);
 	}
+
+
+	// Player의 CollisionGroup
+	vector<CGameObject*>* pCollisionGroup = pPlayer->Get_CollisionGroup();
+	for (auto& obj : *pCollisionGroup)
+	{
+		Engine::CollisionAABB(obj, pPlayer);
+	}
+
+
 	
 	Engine::CScene::LateUpdate_Scene();
 }
@@ -333,13 +344,17 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
-	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 5.f, 0.9f, 5.f }));
+	//pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 5.f, 6.f, 5.f }));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RockFall", pGameObject), E_FAIL);
+
+	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 20.f, 0.9f, 5.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bonfire", pGameObject), E_FAIL);
 
-	pGameObject = CLongTorch::Create(m_pGraphicDev, _vec3({ 6.f, 0.9f, 5.f }));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch2", pGameObject), E_FAIL);
+	//pGameObject = CLongTorch::Create(m_pGraphicDev, _vec3({ 6.f, 0.9f, 5.f }));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch2", pGameObject), E_FAIL);
 
 
 

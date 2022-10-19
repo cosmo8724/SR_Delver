@@ -57,14 +57,16 @@ namespace Engine
 		_ulong				dwIndex = 0;
 	}TILE;
 
+
 	typedef struct Particle
 	{
 		_vec3		vPosition;	
-		D3DCOLOR	tColor;	
+		D3DCOLOR	tColor;		
 								
 	}PARTICLE;
 	const _ulong		FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_DIFFUSE; 
-
+																	
+											
 	typedef struct Attribute
 	{
 		_vec3		_position;		
@@ -72,8 +74,8 @@ namespace Engine
 		_vec3		_acceleration;	
 		_float		_lifeTime;		
 		_float		_age;			
-		D3DXCOLOR	_color;		
-		D3DXCOLOR	_colorFade;
+		D3DXCOLOR	_color;			
+		D3DXCOLOR	_colorFade;		
 		_bool		_isAlive;		
 
 	}ATTRIBUTE;
@@ -121,28 +123,22 @@ namespace Engine
 		_float			fLifeTime;		
 		_float			fAge;			
 
-		D3DXCOLOR	tColor;			
+		D3DXCOLOR	tColor;		
 		D3DXCOLOR	tColorFade;	
 
-		_bool			bIsAlive;		
+		_bool			bIsAlive;			
 	} ATTINFO;
 
-	typedef struct tParticleInfo
+	typedef struct tParticleInfo 
 	{
-		_vec3			vOrigin;			
+		_vec3			vOrigin;		
 		BDBOX			tBdBox;			
 		_float			fEmitRate;		
-		_float			fSize;				
-		_int			iMaxParticles;		
-		_ulong			dwVbSize;			
-											
-		_ulong			dwVbOffset;		
-													
-											
-											
+		_float			fSize;			
+		_int			iMaxParticles;
+		_ulong			dwVbSize;		
+		_ulong			dwVbOffset;							
 		_ulong			dwVbBatchSize;	
-											
-			
 	} PINFO;
 
 	typedef struct tagCreatureInfo

@@ -166,7 +166,9 @@ void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 	// MonsterLook -> Player
 	_vec3 vRight, vUp, vLook;
 	vLook = vPlayerPos - vPos;
-	m_pTransCom->Set_Look(&vLook);
+	m_pTransCom->Set_Look(vLook);
+
+	
 
 	// Distance Attack
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));

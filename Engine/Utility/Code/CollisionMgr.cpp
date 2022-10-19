@@ -29,18 +29,20 @@ void CCollisionMgr::CollisionSphere(CGameObject * _pDest, CGameObject * _pSour)
 
 void CCollisionMgr::CollisionAABB(CGameObject * _pDest, CGameObject * _pSour)
 {
-	//BDBOX*	pDestBox = _pDest->Get_bdBox();
-	//BDBOX*	pSourBox = _pSour->Get_bdBox();
+	/*
+	BDBOX*	pDestBox = _pDest->Get_bdBox();
+	BDBOX*	pSourBox = _pSour->Get_bdBox();
 
-	//if ((pDestBox->vMax.x < pSourBox->vMin.x) || (pDestBox->vMin.x > pSourBox->vMax.x))
-	//	return;
-	//if ((pDestBox->vMax.y < pSourBox->vMin.y) || (pDestBox->vMin.y > pSourBox->vMax.y))
-	//	return;
-	//if ((pDestBox->vMax.z < pSourBox->vMin.z) || (pDestBox->vMin.z > pSourBox->vMax.z))
-	//	return;
+	if ((pDestBox->vMax.x < pSourBox->vMin.x) || (pDestBox->vMin.x > pSourBox->vMax.x))
+		return;
+	if ((pDestBox->vMax.y < pSourBox->vMin.y) || (pDestBox->vMin.y > pSourBox->vMax.y))
+		return;
+	if ((pDestBox->vMax.z < pSourBox->vMin.z) || (pDestBox->vMin.z > pSourBox->vMax.z))
+		return;
 
-	//_pDest->CollisionEvent(_pSour);
-	//_pSour->CollisionEvent(_pDest);
+	_pDest->CollisionEvent(_pSour);
+	_pSour->CollisionEvent(_pDest);
+	*/
 
 	CTransform*	pDest = static_cast<CTransform*>(_pDest->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 	CTransform*	pSour = static_cast<CTransform*>(_pSour->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));

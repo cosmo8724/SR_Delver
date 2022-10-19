@@ -169,5 +169,7 @@ HRESULT CLogo::Ready_Proto(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LogoTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/DelverCreationBG.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DelverTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/DelverLogo.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LogoTextTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/PressSpacebarStart.png", TEX_NORMAL)), E_FAIL);
+	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderRect", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Rect.hlsl"))), E_FAIL);
 	return S_OK;
 }
