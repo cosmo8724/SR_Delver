@@ -62,14 +62,7 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	Out.vColor = tex2D(DefaultSampler, In.vTexUV);
 
-	if (true == g_isHit)
-		vColor.ra = 1.f;
-	else
-		vColor = tex2D(DefaultSampler, In.vTexUV);
 
-	//vColor.a = In.vTexUV.y;
-
-	Out.vColor = vColor;
 
 	return Out;
 }

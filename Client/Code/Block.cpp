@@ -409,27 +409,27 @@ void CBlock::Chase_Block()
 	switch (LastPlane)
 	{
 	case FRONT_X:
-		m_pTransCom->Set_Pos(vCloseCubePos.x + (CubeSize), vCloseCubePos.y, vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x + (2.f), vCloseCubePos.y, vCloseCubePos.z);
 		break;
 
 	case BACK_X:
-		m_pTransCom->Set_Pos(vCloseCubePos.x - (CubeSize), vCloseCubePos.y, vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x - (2.f), vCloseCubePos.y, vCloseCubePos.z);
 		break;
 
 	case FRONT_Y:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (CubeSize), vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (2.f), vCloseCubePos.z);
 		break;
 
 	case BACK_Y:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (CubeSize), vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (2.f), vCloseCubePos.z);
 		break;
 
 	case FRONT_Z:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (CubeSize));
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (2.f));
 		break;
 
 	case BACK_Z:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (CubeSize));
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (2.f));
 		break;
 	}
 	bFirst = true;
