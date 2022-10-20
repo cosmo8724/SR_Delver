@@ -71,6 +71,13 @@ HRESULT CCubeTex::Ready_Buffer(void)
 	pVertex[7].vTexUV = pVertex[7].vPos;
 	m_vPos[7] = pVertex[7].vPos;
 
+
+	for (int i = 0; i < 8; ++i)
+	{
+		//pVertex[i].vNormal = { 0.f, 0.f, 0.f };
+		D3DXVec3Normalize(&pVertex[i].vNormal, &pVertex[i].vPos);
+	}
+
 	m_pVB->Unlock();
 
 

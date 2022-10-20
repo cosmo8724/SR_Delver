@@ -39,6 +39,18 @@ HRESULT CWand::Ready_Object(void)
 	//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
 	//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
 
+	//D3DLIGHT9	tLightInfo;
+	//ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+
+	//tLightInfo.Type = D3DLIGHT_POINT;
+	//tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Position = _vec3(5.f, 3.f, 9.f );
+	//tLightInfo.
+
+	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 1), E_FAIL);
+
 	return S_OK;
 }
 
@@ -66,6 +78,10 @@ HRESULT CWand::Add_Component(void)
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
+
+	pComponent = m_pShaderCom = dynamic_cast<CShader*>(Clone_Proto(L"Proto_ShaderSpecular"));
+	NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_ShaderSpecular", pComponent });
 
 	return S_OK;
 
@@ -223,6 +239,10 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 
+	// vLook 세팅
+
+
+
 
 	return iResult;
 }
@@ -240,12 +260,13 @@ void CWand::Render_Obejct(void)
 	if (m_eState == STATE_INV)
 		return;
 
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
 	_vec3 vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	//m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
@@ -254,12 +275,75 @@ void CWand::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
+
+	D3DMATERIAL9		tMtrl;
+	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+	tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
+	tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f); // 환경반사
+	
+	// 수행 x
+	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+	tMtrl.Power = 0.f;
+
+	m_pGraphicDev->SetMaterial(&tMtrl);
+
 	m_pTextureCom->Set_Texture(_ulong(m_fFrame));
 
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+
+
+
+	// Shader Test
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
+	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+	//_matrix		IMatrix = *D3DXMatrixIdentity(&IMatrix);
+	//_matrix matWorld, matView, matProj, matViewInv;
+
+	//matView = matProj = IMatrix;
+
+
+	//m_pTransCom->Get_WorldMatrix(&matWorld);
+	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	//m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+	//D3DXMatrixInverse(&matViewInv, 0, &matView);
+	//if (FAILED(m_pShaderCom->Set_RawValue("g_WorldCameraPosition",
+	//				_vec4(matViewInv._41, matViewInv._42, matViewInv._43, 1.f)
+	//	, sizeof(_vec4))))
+	//	return;
+
+
+	//D3DXMatrixTranspose(&matWorld, &matWorld);
+	//D3DXMatrixTranspose(&matView, &matView);
+	//D3DXMatrixTranspose(&matProj, &matProj);
+
+	//if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &matWorld, sizeof(_matrix))))
+	//	return;
+	//if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &matView, sizeof(_matrix))))
+	//	return;
+	//if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &matProj, sizeof(_matrix))))
+	//	return;
+
+	//m_pTextureCom->Set_Texture(m_pShaderCom, "g_DefaultTexture", 0);
+
+
+	//m_pShaderCom->Begin_Shader(0); // pass 0
+
+	//m_pBufferCom->Render_Buffer();
+
+	//m_pShaderCom->End_Shader();
+
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
+
+
 
 #ifdef _DEBUG
 	// Collider

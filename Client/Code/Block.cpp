@@ -68,7 +68,7 @@ CBlock::CBlock(const CBlock& rhs)
 
 	_matrix	matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
+	//CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
 }
 
 CBlock::~CBlock()
@@ -162,12 +162,34 @@ void CBlock::Render_Obejct(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+
 	if (m_bSet && !m_bChanging)
 	{
 		if (m_pParentBlock)
 			m_pTextureCom->Set_Texture(m_pParentBlock->GetTextureIndex());
 		else
 			m_pTextureCom->Set_Texture(m_iTexture);
+		
+		
+		
+		D3DMATERIAL9		tMtrl;
+		ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+		tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+		tMtrl.Power = 0.f;
+
+		m_pGraphicDev->SetMaterial(&tMtrl);
+		
+		
+		
+		
+		
 		m_pBufferCom->Render_Buffer();
 	}
 	else
@@ -188,6 +210,17 @@ void CBlock::Render_Obejct(void)
 
 		m_pTextureCom->Set_Texture(m_iTexture);
 
+		D3DMATERIAL9		tMtrl;
+		ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+		tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+		tMtrl.Power = 0.f;
+
+		m_pGraphicDev->SetMaterial(&tMtrl);
+
 		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 		m_pBufferCom->Render_Buffer();
 		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -198,6 +231,8 @@ void CBlock::Render_Obejct(void)
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 }
 
 HRESULT CBlock::Add_Component(void)
