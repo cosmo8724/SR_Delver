@@ -166,25 +166,14 @@ void CBlock::Render_Obejct(void)
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
-
 
 	if (m_bSet && !m_bChanging)
 	{
-		m_pTextureCom->Set_Texture(m_iTexture);
+		//m_pTextureCom->Set_Texture(m_iTexture);
 		
 		
 		
-		D3DMATERIAL9		tMtrl;
-		ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
-
-		tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-		tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-		tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
-		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
-		tMtrl.Power = 0.f;
-
-		m_pGraphicDev->SetMaterial(&tMtrl);
+		
 		
 		
 		
@@ -231,8 +220,6 @@ void CBlock::Render_Obejct(void)
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-
 }
 
 HRESULT CBlock::Add_Component(void)

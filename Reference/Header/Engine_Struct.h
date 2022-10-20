@@ -81,7 +81,6 @@ namespace Engine
 
 	}ATTRIBUTE;
 
-
 	typedef struct tBoundingBox
 	{
 		_vec3	vMin;
