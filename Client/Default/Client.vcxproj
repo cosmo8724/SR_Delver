@@ -491,6 +491,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Rect.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Specular.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Water.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Wave.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

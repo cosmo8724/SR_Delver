@@ -17,8 +17,6 @@ float		g_UVSpeed=0.8f;
 sampler		DefaultSampler = sampler_state 
 {
 	texture = g_DefaultTexture;
-	//minfilter = linear;
-	//magfilter = linear;
 };
 
 struct VS_IN
@@ -63,7 +61,8 @@ VS_OUT VS_MAIN(VS_IN In)
 
 	Out.vPosition = vPosition;
 
-	Out.vTexUV = In.vTexUV + float2(g_fTime * g_UVSpeed, 0);
+	//Out.vTexUV = In.vTexUV + float2(g_fTime * g_UVSpeed, 0);
+	Out.vTexUV = In.vTexUV + float2(0, g_fTime * g_UVSpeed);
 
 	return Out;		
 }
@@ -86,6 +85,7 @@ PS_OUT PS_MAIN(PS_IN In)
 	//vector		vColor = (vector)0.f;
 
 	Out.vColor = tex2D(DefaultSampler, In.vTexUV);
+	Out.vColor.a = 0.5;
 
 	return Out;
 }

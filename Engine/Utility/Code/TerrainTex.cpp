@@ -27,7 +27,7 @@ CTerrainTex::~CTerrainTex()
 {
 }
 
-HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv)
+HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv, _vec3 vPos)
 {
 	/*LPDIRECT3DTEXTURE9		pTexture = nullptr;
 	D3DXCreateTexture(m_pGraphicDev, 129, 129, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &pTexture);
@@ -88,9 +88,9 @@ HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, co
 		{
 			dwIndex = i * dwCntX + j;
 
-			pVertex[dwIndex].vPos = {20.f +  _float(j) * dwVtxItv, 
-									 0.f, //(pPixel[dwIndex] & 0x000000ff) / 20.f,  
-									20.f + _float(i) * dwVtxItv };
+			pVertex[dwIndex].vPos = {vPos.x +  _float(j) * dwVtxItv, 
+								vPos.y , //(pPixel[dwIndex] & 0x000000ff) / 20.f,  
+									vPos.z + _float(i) * dwVtxItv };
 
 			m_pPos[dwIndex] = pVertex[dwIndex].vPos;
 			pVertex[dwIndex].vNormal = { 0.f, 0.f, 0.f };
@@ -161,11 +161,11 @@ void CTerrainTex::Render_Buffer(void)
 	CVIBuffer::Render_Buffer();
 }
 
-CTerrainTex * CTerrainTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv)
+CTerrainTex * CTerrainTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv, _vec3 vPos)
 {
 	CTerrainTex*	pInstance = new CTerrainTex(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Buffer(dwCntX, dwCntZ, dwVtxItv)))
+	if (FAILED(pInstance->Ready_Buffer(dwCntX, dwCntZ, dwVtxItv, vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

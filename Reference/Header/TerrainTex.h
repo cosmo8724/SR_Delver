@@ -17,7 +17,7 @@ public:
 	_ulong			Get_VtxCntZ(void) const { return m_dwCntZ; }
 
 public:
-	HRESULT Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv);
+	HRESULT Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv, _vec3 vPos);
 	virtual void Render_Buffer(void) override;
 
 private:
@@ -32,7 +32,7 @@ private:
 	_ulong				m_dwCntZ;
 
 public:
-	static CTerrainTex*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv);
+	static CTerrainTex*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv,_vec3 vPos);
 	CComponent*	Clone(void);
 	virtual void Free(void) override;
 };
