@@ -22,6 +22,17 @@ HRESULT CLight::Ready_Light(const D3DLIGHT9* pLightInfo, const _uint& iIndex)
 
 	m_iIndex = iIndex;
 
+	m_pGraphicDev->SetLight(iIndex, &m_tLightInfo);
+	m_pGraphicDev->LightEnable(iIndex, TRUE);
+
+	return S_OK;
+}
+
+HRESULT CLight::Ready_Light2(const D3DLIGHT9* pLightInfo, const _uint& iIndex)
+{
+	memcpy(&m_tLightInfo, pLightInfo, sizeof(D3DLIGHT9));
+
+	m_iIndex = iIndex;
 
 	m_pGraphicDev->SetLight(iIndex, &m_tLightInfo);
 	m_pGraphicDev->LightEnable(iIndex, TRUE);
@@ -29,12 +40,11 @@ HRESULT CLight::Ready_Light(const D3DLIGHT9* pLightInfo, const _uint& iIndex)
 	return S_OK;
 }
 
-
 CLight* Engine::CLight::Create(LPDIRECT3DDEVICE9 pGraphicDev, const D3DLIGHT9* pLightInfo, const _uint& iIndex)
 {
 	CLight*		pInstance = new CLight(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Light(pLightInfo, iIndex)))
+	if (FAILED(pInstance->Ready_Light2(pLightInfo, iIndex)))
 	{
 		MSG_BOX("CLight Create Failed");
 		Safe_Release(pInstance);

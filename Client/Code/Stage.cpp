@@ -606,17 +606,44 @@ void CStage::Free(void)
 
 HRESULT CStage::Ready_Light(void)
 {
+
+	// 방향성 광원
 	//D3DLIGHT9		tLightInfo;
 	//ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
 
 	//tLightInfo.Type		= D3DLIGHT_DIRECTIONAL;
-	//tLightInfo.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 0.6f);
 	//tLightInfo.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	//tLightInfo.Ambient	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	//tLightInfo.Direction  = _vec3(0.f, -1.f, 1.f);
 
 	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
 
+	D3DLIGHT9      tLightInfo;
+	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+
+	tLightInfo.Type = D3DLIGHT_POINT;
+	tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Direction  = _vec3(0.f, -1.f, 1.f);
+	tLightInfo.Position = _vec3(-6.f, 1.f, -30.f);
+	tLightInfo.Range = 5.f;
+
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
+
+
+	D3DLIGHT9   tLightInfo2;
+	ZeroMemory(&tLightInfo2, sizeof(D3DLIGHT9));
+
+	tLightInfo2.Type = D3DLIGHT_POINT;
+	tLightInfo2.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo2.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo2.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo2.Position = _vec3(5.f, 3.f, 9.f);
+	tLightInfo2.Range = 5.f;
+
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo2, 1), E_FAIL);
 	
 	return S_OK;
 }

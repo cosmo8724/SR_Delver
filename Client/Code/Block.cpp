@@ -204,7 +204,7 @@ void CBlock::Render_Obejct(void)
 
 		tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 		tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-		tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+		tMtrl.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
 		tMtrl.Power = 0.f;
 

@@ -13,6 +13,7 @@ public:
 	
 public:
 	HRESULT	Ready_Light(const D3DLIGHT9* pLightInfo, const _uint& iIndex);
+	
 	_uint	Get_Index() { return m_iIndex; }
 	void	Set_Pos(_vec3 vPos) { m_tLightInfo.Position = vPos; m_pGraphicDev->SetLight(m_iIndex, &m_tLightInfo);}
 
@@ -20,6 +21,8 @@ public:
 	{
 		m_pGraphicDev->SetLight(m_iIndex, pLightInfo);
 	}
+	HRESULT	Ready_Light2(const D3DLIGHT9* pLightInfo, const _uint& iIndex);
+
 private:
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
 	D3DLIGHT9				m_tLightInfo;

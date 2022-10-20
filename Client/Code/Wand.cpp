@@ -51,6 +51,10 @@ HRESULT CWand::Ready_Object(void)
 
 	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 1), E_FAIL);
 
+
+
+
+
 	return S_OK;
 }
 
@@ -116,6 +120,7 @@ void CWand::Charge(const _float & fTimeDelta)
 		m_fFrame += frameEnd * fTimeDelta;
 		m_fPlusSpeed += 0.3f;
 
+		//m_pGraphicDev->LightEnable(2, TRUE);
 		if (!m_bParticleCall)
 		{
 			m_bParticleCall = true;
@@ -266,7 +271,7 @@ void CWand::Render_Obejct(void)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	//m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);

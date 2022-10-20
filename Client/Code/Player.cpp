@@ -64,25 +64,6 @@ HRESULT CPlayer::Ready_Object(void)
 	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
 
 
-	m_pGraphicDev->GetLightEnable(0, FALSE);
-	m_pGraphicDev->GetLightEnable(1, FALSE);
-
-
-
-
-	D3DLIGHT9	tLightInfo;
-	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
-
-	tLightInfo.Type = D3DLIGHT_POINT;
-	tLightInfo.Diffuse = D3DXCOLOR(1.f, 0.f, 0.f, 0.f);
-	tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Position = _vec3(5.f, 3.f, 9.f);
-	tLightInfo.Range = 5.f;
-	
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 1), E_FAIL);
-
-
 
 
 	return S_OK;
@@ -181,7 +162,7 @@ void CPlayer::LateUpdate_Object(void)
 	m_pTransCom->Get_Info(INFO_POS, &vPlayerPos);
 	vPlayerPos.y = m_pColliderCom->Get_MinPoint().y;
 
-	CLightMgr::GetInstance()->Update_Pos(1, vPlayerPos+vLook);
+	//CLightMgr::GetInstance()->Update_Pos(2, vPlayerPos+vLook);
 
 
 	if (m_eState == PLAYER_ON_BLOCK)

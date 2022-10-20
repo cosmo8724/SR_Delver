@@ -25,7 +25,6 @@ HRESULT Engine::CLightMgr::Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev, const D3DL
 	return S_OK;
 }
 
-
 void	CLightMgr::Update_Light(const _uint& iIndex, const D3DLIGHT9* pLightInfo)
 {
 	for (auto& light : m_LightList)
