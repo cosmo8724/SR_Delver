@@ -6,6 +6,7 @@
 #include "MiniMap.h"
 #include "BlockVIBuffer.h"
 #include "Player.h"
+#include "CullingMgr.h"
 
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -68,7 +69,7 @@ CBlock::CBlock(const CBlock& rhs)
 
 	_matrix	matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	//CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
+	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
 }
 
 CBlock::~CBlock()
@@ -106,7 +107,7 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 
 		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 	}*/
-	m_fScale = 0.5f;
+	//m_fScale = 0.5f;
 	if (m_pParentBlock)
 	{
 		m_iTexture = m_pParentBlock->GetTextureIndex();
@@ -143,10 +144,11 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 			//m_bCreateIcon = true;
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
-		Add_RenderGroup(RENDER_NONALPHA, this);
+		//if (CCullingMgr::GetInstance()->Is_Inside(this))
+		//	Add_RenderGroup(RENDER_NONALPHA, this);
 	}
-	else
-		Add_RenderGroup(RENDER_ALPHA, this);
+	//else
+	//	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return 0;
 }
@@ -165,11 +167,8 @@ void CBlock::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	if (m_bSet && !m_bChanging)
 	{
-		if (m_pParentBlock)
-			m_pTextureCom->Set_Texture(m_iTexture);
-		else
-			m_pTextureCom->Set_Texture(m_iTexture);
-		m_pBufferCom->Render_Buffer();
+		m_pTextureCom->Set_Texture(m_iTexture);
+		//m_pBufferCom->Render_Buffer();
 	}
 	else
 	{
@@ -584,12 +583,7 @@ CBlock * CBlock::Create(const CBlock & rhs)
 
 void CBlock::Free(void)
 {
-	/*if (m_bClone)
-	{
-		Safe_Release(m_pBufferCom);
-		Safe_Release(m_pTransCom);
-		Safe_Release(m_pTextureCom);
-		Safe_Release(m_pCalculatorCom);
-	}*/
+	if (!m_pParentBlock)
+		m_bDeleted = true;
 	CGameObject::Free();
 }
