@@ -1,6 +1,9 @@
 #pragma once
 #include "Weapon.h"
 
+BEGIN(Engine)
+class CShader;
+END
 class CWand : public CWeapon
 {
 private:
@@ -29,5 +32,7 @@ public:
 	virtual void	Charge(const _float& fTimeDelta);
 	virtual void	Attack(const _float& fTimeDelta);
 
+private:
+	CShader*		m_pShaderCom = nullptr;
 };
 

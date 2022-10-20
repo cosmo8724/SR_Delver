@@ -88,7 +88,7 @@ void CRenderer::Set_RenderState(LPDIRECT3DDEVICE9 & pGraphicDev, _int _i)
 			static_cast<CCamera*>(pObj)->Get_ViewMatrix(matView);
 			static_cast<CCamera*>(pObj)->Get_ProjectMatrix(matProj);
 
-			//pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
+			pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
 			pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 		}
 	}

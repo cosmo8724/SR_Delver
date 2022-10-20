@@ -34,6 +34,8 @@
 #include "EcoWeb.h"
 #include "Statue.h"
 
+#include "Water.h"
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -307,6 +309,11 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
 	
+	pGameObject = CWater::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Water", pGameObject), E_FAIL);
+
+
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -339,7 +346,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
+	//CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
@@ -594,16 +601,17 @@ void CStage::Free(void)
 
 HRESULT CStage::Ready_Light(void)
 {
-	D3DLIGHT9		tLightInfo;
-	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+	//D3DLIGHT9		tLightInfo;
+	//ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
 
-	tLightInfo.Type		= D3DLIGHT_DIRECTIONAL;
-	tLightInfo.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Ambient	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Direction  = _vec3(0.f, -1.f, 1.f);
+	//tLightInfo.Type		= D3DLIGHT_DIRECTIONAL;
+	//tLightInfo.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Ambient	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Direction  = _vec3(0.f, -1.f, 1.f);
 
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
 
+	
 	return S_OK;
 }

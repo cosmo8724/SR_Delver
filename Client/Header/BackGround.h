@@ -32,7 +32,7 @@ private:
 	CTexture*			m_pTextureCom = nullptr;
 	//CTransform*			m_pTransCom = nullptr;
 	CShader*			m_pShaderCom = nullptr;
-
+	_float				m_fTime = 0.f;
 
 public:
 	static CBackGround*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
