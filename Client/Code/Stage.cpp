@@ -239,6 +239,20 @@ void CStage::LateUpdate_Scene(void)
 		//Engine::CollisionTest(pSour5, bullet);
 	}
 
+	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_GREENWAND);
+	for (auto& bullet : *pPlayerBullets)
+	{
+		for (auto& monster : *pMonster)
+			Engine::CollisionAABB(monster, bullet);
+	}
+
+	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_REDWAND);
+	for (auto& bullet : *pPlayerBullets)
+	{
+		for (auto& monster : *pMonster)
+			Engine::CollisionAABB(monster, bullet);
+	}
+
 
 	// Player의 CollisionGroup
 	vector<CGameObject*>* pCollisionGroup = pPlayer->Get_CollisionGroup();
@@ -346,7 +360,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	//CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
@@ -601,17 +615,31 @@ void CStage::Free(void)
 
 HRESULT CStage::Ready_Light(void)
 {
-	//D3DLIGHT9		tLightInfo;
-	//ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+	D3DLIGHT9		tLightInfo;
+	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
 
-	//tLightInfo.Type		= D3DLIGHT_DIRECTIONAL;
-	//tLightInfo.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tLightInfo.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tLightInfo.Ambient	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Type		= D3DLIGHT_POINT;
+	tLightInfo.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Ambient	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	//tLightInfo.Direction  = _vec3(0.f, -1.f, 1.f);
+	tLightInfo.Position= _vec3(-6.f, 1.f, -30.f);
+	tLightInfo.Range = 5.f;
 
-	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
 
+
+	D3DLIGHT9	tLightInfo2;
+	ZeroMemory(&tLightInfo2, sizeof(D3DLIGHT9));
+
+	tLightInfo2.Type = D3DLIGHT_POINT;
+	tLightInfo2.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo2.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo2.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo2.Position = _vec3(5.f, 3.f, 9.f);
+	tLightInfo2.Range = 5.f;
+
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo2, 1), E_FAIL);
 	
 	return S_OK;
 }

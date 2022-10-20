@@ -42,7 +42,7 @@ public:
 	void				ChangeHeight_Target(const _vec3* pTargetPos, const _float& fSTest, const _float& fSpeed, const _float& fTimeDelta);
 	const _matrix*		Compute_LookAtTarget(const _vec3* pTargetPos);
 	void				Revolution(const _vec3* pCenter, _matrix _matView, _float fAngle, const _float& fTimeDelta, ITEMSTATE eState);
-	void				KnockBack_Target(_vec3* pTargetLook, const _float& fSpeed, const _float& fTimeDelta); // �˹�
+	void				KnockBack_Target(_vec3* pTargetLook, const _float& fSpeed, const _float& fTimeDelta);
 	void				Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
 	_bool				Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);
 	void				Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld);

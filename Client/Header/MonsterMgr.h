@@ -25,7 +25,7 @@ public:
 
 public:
 	vector<CGameObject*>*	Get_Monster() { return &m_vecMonster; }
-	void	Add_Monster(CGameObject* pMonster) { m_vecMonster.push_back(pMonster); }
+	void					Add_Monster(CGameObject* pMonster) { m_vecMonster.push_back(pMonster); }
 
 private:
 	LPDIRECT3DDEVICE9		m_pGraphicDev;

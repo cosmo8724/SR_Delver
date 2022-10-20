@@ -207,6 +207,8 @@
     <ClInclude Include="..\Header\GreenSlime.h" />
     <ClInclude Include="..\Header\GreenSpider.h" />
     <ClInclude Include="..\Header\GreenSpiderBullet.h" />
+    <ClInclude Include="..\Header\GreenWand.h" />
+    <ClInclude Include="..\Header\GreenWandBullet.h" />
     <ClInclude Include="..\Header\GuitarMan.h" />
     <ClInclude Include="..\Header\HealthBar.h" />
     <ClInclude Include="..\Header\Helmat.h" />
@@ -251,6 +253,8 @@
     <ClInclude Include="..\Header\Potion.h" />
     <ClInclude Include="..\Header\PSystem.h" />
     <ClInclude Include="..\Header\QuickSlot.h" />
+    <ClInclude Include="..\Header\RedWand.h" />
+    <ClInclude Include="..\Header\RedWandBullet.h" />
     <ClInclude Include="..\Header\Ring.h" />
     <ClInclude Include="..\Header\RockFall.h" />
     <ClInclude Include="..\Header\Shield.h" />
@@ -341,6 +345,8 @@
     <ClCompile Include="..\Code\GreenSlime.cpp" />
     <ClCompile Include="..\Code\GreenSpider.cpp" />
     <ClCompile Include="..\Code\GreenSpiderBullet.cpp" />
+    <ClCompile Include="..\Code\GreenWand.cpp" />
+    <ClCompile Include="..\Code\GreenWandBullet.cpp" />
     <ClCompile Include="..\Code\GuitarMan.cpp" />
     <ClCompile Include="..\Code\HealthBar.cpp" />
     <ClCompile Include="..\Code\Helmat.cpp" />
@@ -388,6 +394,8 @@
     <ClCompile Include="..\Code\Potion.cpp" />
     <ClCompile Include="..\Code\PSystem.cpp" />
     <ClCompile Include="..\Code\QuickSlot.cpp" />
+    <ClCompile Include="..\Code\RedWand.cpp" />
+    <ClCompile Include="..\Code\RedWandBullet.cpp" />
     <ClCompile Include="..\Code\Ring.cpp" />
     <ClCompile Include="..\Code\RockFall.cpp" />
     <ClCompile Include="..\Code\Shield.cpp" />

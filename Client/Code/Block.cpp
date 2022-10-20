@@ -169,11 +169,7 @@ void CBlock::Render_Obejct(void)
 
 	if (m_bSet && !m_bChanging)
 	{
-		//m_pTextureCom->Set_Texture(m_iTexture);
-		
-		
-		
-		
+		//m_pTextureCom->Set_Texture(m_iTexture);	
 		
 		
 		

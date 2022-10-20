@@ -22,6 +22,7 @@ private:
 	virtual void		Target_Follow(const _float& fTimeDelta) override;
 	virtual void		OnHit(const _float& fTimeDelta)			override;
 	virtual void		Dead()									override;
+	void				Lock(const _float& fTimeDelta);
 
 	void				Motion_Change();
 
@@ -29,8 +30,11 @@ private:
 	STATE				m_ePreState;
 	STATE				m_eCurState;
 
+	_bool				m_bLock = false;
+
 	// Timer
 	_float				m_fTimeAcc;
+	_float				m_fLockTimeAcc = 0.f;
 
 public:
 	//static CGreenSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev);

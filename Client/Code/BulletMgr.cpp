@@ -14,6 +14,8 @@
 #include "ArrowBullet.h"
 #include "LeafBullet.h"
 #include "GreenSpiderBullet.h"
+#include "GreenWandBullet.h"
+#include "RedWandBullet.h"
 
 IMPLEMENT_SINGLETON(CBulletMgr)
 
@@ -27,12 +29,14 @@ CBulletMgr::CBulletMgr()
 	m_MaxIdx[BULLET_WAND] = 20;
 	m_MaxIdx[BULLET_M_FIST] = 5;
 	m_MaxIdx[BULLET_SONGBOSS] = 5;
-	m_MaxIdx[STUN_SONGBOSS] = 4; // ENUM ������ġ ���� X
-	m_MaxIdx[FLOOR_SONGBOSS] = 5; // ENUM ������ġ ���� X
-	m_MaxIdx[LIGHTNING_SONGBOSS] = 5; // ENUM ������ġ ���� X
+	m_MaxIdx[STUN_SONGBOSS] = 4; // ENUM Sequence X
+	m_MaxIdx[FLOOR_SONGBOSS] = 5; // ENUM Sequence X
+	m_MaxIdx[LIGHTNING_SONGBOSS] = 5; // ENUM Sequence X
 	m_MaxIdx[BULLET_ARROW] = 10;
 	m_MaxIdx[BULLET_M_LEAF] = 5;
 	m_MaxIdx[BULLET_M_SPIDER] = 5;
+	m_MaxIdx[BULLET_GREENWAND] = 20;
+	m_MaxIdx[BULLET_REDWAND] = 20;
 
 	for (int bulletId = 0; bulletId < BULLET_END; ++bulletId)
 	{
@@ -68,6 +72,10 @@ HRESULT CBulletMgr::Ready_Proto(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	// ArrowBullet
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ArrowBullet_Texture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/Item/Bullet/ArrowBullet.png", TEX_NORMAL)), E_FAIL);
+
+	// Wand_Cube
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenBullet_CubeTexture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/SkyBox/GreenBullet.dds", TEX_CUBE)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RedBullet_CubeTexture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/SkyBox/RadBullet.dds", TEX_CUBE)), E_FAIL);
 
 	return S_OK;
 }
@@ -250,6 +258,42 @@ HRESULT CBulletMgr::Ready_Clone(CLayer* pLayer, LPDIRECT3DDEVICE9 pGraphicDev)
 		m_vecObjPool[BULLET_M_SPIDER].push_back(pGameObject);
 	}
 
+	// GreenWandBullet
+	objTags = nullptr;
+	objTags = new wstring[m_MaxIdx[BULLET_GREENWAND]];
+	m_vecObjTags[BULLET_GREENWAND].push_back(objTags);
+	for (int i = 0; i < m_MaxIdx[BULLET_GREENWAND]; ++i)
+	{
+		pGameObject = CGreenWandBullet::Create(pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		objTags[i] = L"GreenWand_Bullet";
+		wchar_t index[10];
+		_itow_s(i, index, 10);
+		objTags[i] = objTags[i] + index;
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objTags[i].c_str(), pGameObject), E_FAIL);
+
+		m_vecObjPool[BULLET_GREENWAND].push_back(pGameObject);
+	}
+
+	// RedWandBullet
+	objTags = nullptr;
+	objTags = new wstring[m_MaxIdx[BULLET_REDWAND]];
+	m_vecObjTags[BULLET_REDWAND].push_back(objTags);
+	for (int i = 0; i < m_MaxIdx[BULLET_REDWAND]; ++i)
+	{
+		pGameObject = CRedWandBullet::Create(pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		objTags[i] = L"RedWandBullet";
+		wchar_t index[10];
+		_itow_s(i, index, 10);
+		objTags[i] = objTags[i] + index;
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objTags[i].c_str(), pGameObject), E_FAIL);
+
+		m_vecObjPool[BULLET_REDWAND].push_back(pGameObject);
+	}
+
 	return S_OK;
 }
 
@@ -326,6 +370,13 @@ void CBulletMgr::Pre_Setting(BULLETID eID, _float fSet)
 		{
 			iIdx = m_IdxQue[eID].front();
 			static_cast<CArrowBullet*>(m_vecObjPool[eID][iIdx])->Plus_Speed(fSet);
+		}
+		break;
+	case BULLET_GREENWAND:
+		if (!m_IdxQue[eID].empty())
+		{
+			iIdx = m_IdxQue[eID].front();
+			static_cast<CGreenWandBullet*>(m_vecObjPool[eID][iIdx])->Set_Angle(fSet);
 		}
 		break;
 	}

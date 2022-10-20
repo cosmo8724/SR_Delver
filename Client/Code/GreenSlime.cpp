@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
+#include "RedWandBullet.h"
 
 CGreenSlime::CGreenSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -35,9 +36,10 @@ HRESULT CGreenSlime::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iHp = 2;
+	m_tInfo.iHp = 20;
 	m_tInfo.iAttack = 1;
 
+	m_fHeight = m_vPos.y;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 	//m_pTransCom->Set_Pos(15.f, 1.f, 15.f);
 
@@ -81,6 +83,7 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	}
 
+	Lock(fTimeDelta);
 	OnHit(fTimeDelta);
 
 	if (!m_bHit)
@@ -210,7 +213,7 @@ void CGreenSlime::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		CMonster::KnockBack(fTimeDelta, m_fHeight);
 		m_bOneCheck = true;
 	}
 
@@ -249,11 +252,37 @@ void CGreenSlime::Dead()
 	m_bDead = true;
 }
 
+void CGreenSlime::Lock(const _float& fTimeDelta)
+{
+	if (!m_bLock || m_tInfo.iHp == 0)
+		return;
+
+	m_eCurState = IDLE;
+	m_fAttack_Speed = 0.f;
+
+	//CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 1.f, 1.f },
+	//	2.f, { 1.f, 0.f, 0.f, 1.f });
+	//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_12);
+
+	m_fLockTimeAcc += fTimeDelta;
+	if (2.f < m_fLockTimeAcc)
+	{
+		m_eCurState = ATTACK;
+		m_fAttack_Speed = 2.f;
+		m_fLockTimeAcc = 0.f;
+		m_bLock = false;
+	}
+}
+
 void CGreenSlime::CollisionEvent(CGameObject* pObj)
 {
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 	if(pPlayer != pObj)
-		m_bHit = true;		
+		m_bHit = true;
+
+ 	CRedWandBullet* pRedWandBullet = dynamic_cast<CRedWandBullet*>(pObj);
+	if (pRedWandBullet == pObj)
+		m_bLock = true;
 }
 
 void CGreenSlime::Motion_Change()

@@ -20,7 +20,7 @@ public:
 	virtual	void	Render_Obejct(void) override;
 
 public:
-	static CArrowBullet*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CArrowBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void			Free(void) override;
 	virtual void			Reset() override;
 

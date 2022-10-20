@@ -115,7 +115,7 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 
 	//////////// Monster
 	// GreenSlime
-	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3( 5.f, 1.f, 5.f ));
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(-6.f, 2.f, -35.f ));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
