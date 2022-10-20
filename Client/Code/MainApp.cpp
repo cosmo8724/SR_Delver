@@ -30,7 +30,7 @@ HRESULT CMainApp::Ready_MainApp(void)
 
 	FAILED_CHECK_RETURN(Ready_Scene(m_pGraphicDev, &m_pManagementClass), E_FAIL);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 
 	if (::AllocConsole() == TRUE)
 	{
@@ -41,7 +41,7 @@ HRESULT CMainApp::Ready_MainApp(void)
 		std::ios::sync_with_stdio();
 	}
 
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	
 	return S_OK;
@@ -86,6 +86,7 @@ void CMainApp::Render_MainApp(void)
 	// ImGui Render
 	CImGuiMgr::GetInstance()->Render_ImGui();
 	// *ImGui Render
+
 
 	Engine::Render_End();
 }

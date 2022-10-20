@@ -39,7 +39,7 @@ HRESULT CPlayer::Ready_Object(void)
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(5.f, 2.f, 5.f);
+	m_pTransCom->Set_Pos(7.f, 2.f, 5.f);
 
 	_vec3 vPos, vScale;
 	_matrix matWorld;
@@ -157,8 +157,11 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 
 
+	_vec3 vPos;
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-
+	// sh
+	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 
 	return 0;
