@@ -15,6 +15,8 @@ private:
 
 public:
 	CCamera*			Get_CurCamera() { return m_vecCamera[m_CurId]; }
+	CCamera*			Get_CurCamera(CAMERAID eId) { return m_vecCamera[eId]; }
+
 
 public:
 	void			Ready_CameraMgr(LPDIRECT3DDEVICE9 pGraphicDev);
