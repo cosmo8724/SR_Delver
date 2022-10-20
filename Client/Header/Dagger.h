@@ -31,5 +31,8 @@ private:
 	_bool		m_bAttackPt = false;
 	_bool		m_bParticle = false;
 
+
+
+
 };
 

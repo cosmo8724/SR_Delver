@@ -173,7 +173,6 @@ void CInventory::Get_Index(int & iRow, int & iCol)
 	iCol = -1;
 }
 
-
 void CInventory::Set_Inventory(CItem * pItem)
 {
 	CItem* pImg = nullptr;
@@ -203,8 +202,6 @@ void CInventory::Set_Inventory(CItem * pItem)
 		}
 		return;
 	}
-
-
 
 	// if the item is potion -> Counting
 	if (ITEM_POTION == pItem->Get_ItemType())
@@ -423,6 +420,9 @@ void CInventory::Set_ItemEquip()
 
 						if (0 >= pPotion->Get_Cnt())
 						{
+							//sh
+							//pPotion->Set_Potion();
+
 							m_Inventory[i][j]->Set_Dead(true);
 							m_Inventory[i][j] = nullptr;
 						}
@@ -509,38 +509,63 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 		m_bShow = true;
 		m_fClickTime += fTimeDelta;
 
-		if (m_fClickTime < 0.6f)
+		//sh
+		POINT		ptMouse;
+		GetCursorPos(&ptMouse);
+		ScreenToClient(g_hWnd, &ptMouse);
+
+		RECT rc = { _long(m_InvPosArr[0][0].x - 32), _long(m_InvPosArr[0][0].y - 32)
+			,_long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].x + 32), _long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].y + 32) };
+
+		if (!PtInRect(&rc, ptMouse))
+			return;
+
+		for (int i = 0; i < m_iMaxRow; ++i)
 		{
-			if (Engine::Mouse_Down(DIM_LB))
-				++m_iClickedCnt;
-			if (2 == m_iClickedCnt)
+			for (int j = 0; j < m_iMaxCol; ++j)
 			{
-				Set_ItemEquip();
-				m_fClickTime = 0.f;
-				m_iClickedCnt = 0;
+
 			}
 		}
-		else if (m_fClickTime > 0.6f)
-		{
-			//if (2 == m_iClickedCnt)		// double click
-			//{
-			//	Set_ItemEquip();
-			//}
-			if (1 == m_iClickedCnt)	// one click
-			{
-				Pick();
-			}
-			m_fClickTime = 0.f;
-			m_iClickedCnt = 0;
-		}
-	}
-	else
-	{
-		if (m_ppPickedItem != nullptr)
-		{
-			static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);
-			m_ppPickedItem = nullptr;
-		}
-		m_bShow = false;
+
+
+
+
+
+
+
+	//	if (m_fClickTime < 0.6f)
+	//	{
+	//		if (Engine::Mouse_Down(DIM_LB))
+	//			++m_iClickedCnt;
+	//		if (2 == m_iClickedCnt)
+	//		{
+	//			Set_ItemEquip();
+	//			m_fClickTime = 0.f;
+	//			m_iClickedCnt = 0;
+	//		}
+	//	}
+	//	else if (m_fClickTime > 0.6f)
+	//	{
+	//		//if (2 == m_iClickedCnt)		// double click
+	//		//{
+	//		//	Set_ItemEquip();
+	//		//}
+	//		if (1 == m_iClickedCnt)	// one click
+	//		{
+	//			Pick();
+	//		}
+	//		m_fClickTime = 0.f;
+	//		m_iClickedCnt = 0;
+	//	}
+	//}
+	//else
+	//{
+	//	if (m_ppPickedItem != nullptr)
+	//	{
+	//		static_cast<CInvImg*>(*m_ppPickedItem)->Set_Picked(false);
+	//		m_ppPickedItem = nullptr;
+	//	}
+	//	m_bShow = false;
 	}
 }

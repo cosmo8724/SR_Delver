@@ -50,7 +50,7 @@ HRESULT CPlayer::Ready_Object(void)
 	// 플레이어 스탯정보
 	//m_tInfo.iHp = 20;
 	m_tInfo.iHp = 10;
-	m_tInfo.iHpMax = 20;
+	m_tInfo.iHpMax = 100;
 	//m_tInfo.iHpMax = m_tInfo.iHp; // sh
 	m_tInfo.iAtk = 1;
 	//m_tInfo.iAtk = 10; // sh
