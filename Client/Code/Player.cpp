@@ -39,7 +39,7 @@ HRESULT CPlayer::Ready_Object(void)
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(-6.f, 2.f, -38.f);
+	m_pTransCom->Set_Pos(5.f, 2.f, 5.f);
 
 	_vec3 vPos, vScale;
 	_matrix matWorld;
@@ -74,7 +74,7 @@ HRESULT CPlayer::Ready_Object(void)
 	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
 
 	tLightInfo.Type = D3DLIGHT_POINT;
-	tLightInfo.Diffuse = D3DXCOLOR(1.f, 0.f, 0.f, 0.f);
+	tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo.Position = _vec3(5.f, 3.f, 9.f);

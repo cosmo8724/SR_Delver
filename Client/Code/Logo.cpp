@@ -172,6 +172,7 @@ HRESULT CLogo::Ready_Proto(void)
 	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderRect", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Rect.hlsl"))), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderWater", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Water.hlsl"))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderWave", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Wave.hlsl"))), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderLight", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Light.hlsl"))), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderSpecular", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Specular.hlsl"))), E_FAIL);
 		
