@@ -22,7 +22,6 @@ HRESULT CLight::Ready_Light(const D3DLIGHT9* pLightInfo, const _uint& iIndex)
 
 	m_iIndex = iIndex;
 
-	
 
 	m_pGraphicDev->SetLight(iIndex, &m_tLightInfo);
 	m_pGraphicDev->LightEnable(iIndex, TRUE);

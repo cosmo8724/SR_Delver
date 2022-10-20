@@ -28,6 +28,13 @@
 #include "ObjectCamera.h"
 #include "LongTorch.h"
 #include "RockFall.h"
+#include "Jam.h"
+#include "ShortTorch.h"
+#include "EcoMush.h"
+#include "EcoWeb.h"
+#include "Statue.h"
+
+#include "Water.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -182,11 +189,11 @@ void CStage::LateUpdate_Scene(void)
 			Engine::CollisionAABB(bullet, weapon);
 
 		// Eco
-		Engine::CollisionAABB(pSour, weapon);
+		//Engine::CollisionAABB(pSour, weapon);
 
-		Engine::CollisionAABB(pSour2, weapon);
+		//Engine::CollisionAABB(pSour2, weapon);
 
-		Engine::CollisionAABB(pSour3, weapon);
+		//Engine::CollisionAABB(pSour3, weapon);
 
 		//Engine::CollisionAABB(pSour4, weapon);
 
@@ -202,11 +209,11 @@ void CStage::LateUpdate_Scene(void)
 
 		// Eco
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
-		Engine::CollisionTest(pSour, bullet);
+		//Engine::CollisionTest(pSour, bullet);
 
-		Engine::CollisionTest(pSour2, bullet);
+		//Engine::CollisionTest(pSour2, bullet);
 
-		Engine::CollisionTest(pSour3, bullet);
+		//Engine::CollisionTest(pSour3, bullet);
 
 		//Engine::CollisionTest(pSour4, bullet);
 
@@ -221,11 +228,11 @@ void CStage::LateUpdate_Scene(void)
 
 		// Eco
 		pSour = Engine::Get_GameObject(L"Layer_GameLogic", L"Jar");
-		Engine::CollisionTest(pSour, bullet);
+		//Engine::CollisionTest(pSour, bullet);
 
-		Engine::CollisionTest(pSour2, bullet);
+		//Engine::CollisionTest(pSour2, bullet);
 
-		Engine::CollisionTest(pSour3, bullet);
+		//Engine::CollisionTest(pSour3, bullet);
 
 		//Engine::CollisionTest(pSour4, bullet);
 
@@ -302,6 +309,11 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
 	
+	pGameObject = CWater::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Water", pGameObject), E_FAIL);
+
+
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -334,7 +346,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
+	//CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
@@ -344,9 +356,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
-	//pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 5.f, 6.f, 5.f }));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RockFall", pGameObject), E_FAIL);
+	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 5.f, 6.f, 5.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RockFall", pGameObject), E_FAIL);
 
 	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 20.f, 0.9f, 5.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -360,7 +372,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks
 	{
-		string	strPath = "..\\..\\Data\\Map_Test3.dat";
+		string	strPath = "..\\..\\Data\\Map_Intro.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -417,7 +429,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		string	strPath = "..\\..\\Data\\EcoObject_Test3.dat";
+		string	strPath = "..\\..\\Data\\EcoObject_Intro.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -481,7 +493,36 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pCloneObject = CJar::Create(pEcoObject);
 				break;
 
+			case ECO_BONFIRE:
+				pCloneObject = CBonFire::Create(pEcoObject);
+				break;
+
 			case ECO_JAM:
+				pCloneObject = CJam::Create(pEcoObject);
+				break;
+
+			case ECO_TORCH2:
+				pCloneObject = CShortTorch::Create(pEcoObject);
+				break;
+
+			case ECO_TORCH1:
+				pCloneObject = CLongTorch::Create(pEcoObject);
+				break;
+
+			case ECO_MUSHROOM:
+				pCloneObject = CEcoMush::Create(pEcoObject);
+				break;
+
+			case ECO_WEB:
+				pCloneObject = CEcoWeb::Create(pEcoObject);
+				break;
+
+			case ECO_STATUE:
+				pCloneObject = CStatue::Create(pEcoObject);
+				break;
+
+			case ECO_ROCKFALL:
+				pCloneObject = CRockFall::Create(pEcoObject);
 				break;
 			}
 			pLayer->Add_GameObject(vecObjTags.back(), pCloneObject);
@@ -511,16 +552,16 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 HRESULT CStage::Ready_Proto(void)
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Terrain/Tile/textures_%d.png", TEX_NORMAL, 21)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cave_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cave/textures_%d.dds", TEX_CUBE, 7)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cave_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cave/textures_%d.png", TEX_NORMAL, 7)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cave_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cave/textures_%d.dds", TEX_CUBE, 9)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cave_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cave/textures_%d.png", TEX_NORMAL, 9)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cold_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cold/textures_%d.dds", TEX_CUBE, 16)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Cold_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Cold/textures_%d.png", TEX_NORMAL, 16)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Dungeon_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Dungeon/textures_%d.dds", TEX_CUBE, 25)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Dungeon_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Dungeon/textures_%d.png", TEX_NORMAL, 25)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Room_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Room/textures_%d.dds", TEX_CUBE, 16)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Room_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Room/textures_%d.png", TEX_NORMAL, 16)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Sewer_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Sewer/textures_%d.dds", TEX_CUBE, 17)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Sewer_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Sewer/textures_%d.png", TEX_NORMAL, 17)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Sewer_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Sewer/textures_%d.dds", TEX_CUBE, 19)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Sewer_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Sewer/textures_%d.png", TEX_NORMAL, 19)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Temple_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Temple/textures_%d.dds", TEX_CUBE, 21)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Temple_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Temple/textures_%d.png", TEX_NORMAL, 21)), E_FAIL);
 
@@ -560,16 +601,17 @@ void CStage::Free(void)
 
 HRESULT CStage::Ready_Light(void)
 {
-	D3DLIGHT9		tLightInfo;
-	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+	//D3DLIGHT9		tLightInfo;
+	//ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
 
-	tLightInfo.Type		= D3DLIGHT_DIRECTIONAL;
-	tLightInfo.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Ambient	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Direction  = _vec3(0.f, -1.f, 1.f);
+	//tLightInfo.Type		= D3DLIGHT_DIRECTIONAL;
+	//tLightInfo.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Ambient	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo.Direction  = _vec3(0.f, -1.f, 1.f);
 
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
 
+	
 	return S_OK;
 }

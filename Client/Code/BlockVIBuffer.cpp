@@ -85,35 +85,43 @@ HRESULT CBlockVIBuffer::Ready_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eT
 		// FRONT
 		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, 1.f, -1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { -1.f, 1.f, -1.f };
+		D3DXVec3Normalize(&pVertex[dwIndex].vNormal, &pVertex[dwIndex].vPos);
 		++dwIndex;
 
 		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, 1.f, -1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { 1.f, 1.f, -1.f };
+		D3DXVec3Normalize(&pVertex[dwIndex].vNormal, &pVertex[dwIndex].vPos);
 		++dwIndex;
 
 		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, -1.f, -1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { 1.f, -1.f, -1.f };
+		D3DXVec3Normalize(&pVertex[dwIndex].vNormal, &pVertex[dwIndex].vPos);
 		++dwIndex;
 
 		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, -1.f, -1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { -1.f, -1.f, -1.f };
+		D3DXVec3Normalize(&pVertex[dwIndex].vNormal, &pVertex[dwIndex].vPos);
 		++dwIndex;
 
 		// BACK
 		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, 1.f, 1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { -1.f, 1.f, 1.f };
+		D3DXVec3Normalize(&pVertex[dwIndex].vNormal, &pVertex[dwIndex].vPos);
 		++dwIndex;
 
 		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, 1.f, 1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { 1.f, 1.f, 1.f };
+		D3DXVec3Normalize(&pVertex[dwIndex].vNormal, &pVertex[dwIndex].vPos);
 		++dwIndex;
 
 		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(1.f, -1.f, 1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { 1.f, -1.f, 1.f };
+		D3DXVec3Normalize(&pVertex[dwIndex].vNormal, &pVertex[dwIndex].vPos);
 		++dwIndex;
 
 		pVertex[dwIndex].vPos = *D3DXVec3TransformCoord(&pVertex[dwIndex].vPos, &_vec3(-1.f, -1.f, 1.f), pBPT->m_vecMatWorld[i]->Get_WorldMatrixPointer());
 		pVertex[dwIndex].vTexUV = { -1.f, -1.f, 1.f };
+		D3DXVec3Normalize(&pVertex[dwIndex].vNormal, &pVertex[dwIndex].vPos);
 		++dwIndex;
 	}
 
@@ -209,11 +217,26 @@ void CBlockVIBuffer::Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eTyp
 	pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
+	// Set Material
+	D3DMATERIAL9		tMtrl;
+	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+	tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+	tMtrl.Power = 0.f;
+
+	pGraphicDev->SetMaterial(&tMtrl);
+	// *Set Material
+	
+	pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	pGraphicDev->SetTexture(0, pBPT->m_pTexture);
 	pGraphicDev->SetStreamSource(0, pBPT->m_pVB, 0, m_dwVtxSize);
 	pGraphicDev->SetFVF(m_dwFVF);
 	pGraphicDev->SetIndices(pBPT->m_pIB);
 	pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, pBPT->m_dwVtxCnt, 0, pBPT->m_dwTriCnt);
+	pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
 
 void CBlockVIBuffer::Free()

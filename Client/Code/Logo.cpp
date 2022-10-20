@@ -44,7 +44,7 @@ Engine::_int CLogo::Update_Scene(const _float& fTimeDelta)
 
 	_int iResult = Engine::CScene::Update_Scene(fTimeDelta);
 
-	// ·Îµù Å¬·¡½º »ý¼º
+	// ï¿½Îµï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (!m_pLoading)
 	{
 		if (Key_Down(DIK_SPACE))
@@ -107,7 +107,7 @@ void CLogo::LateUpdate_Scene(void)
 
 void CLogo::Render_Scene(void)
 {
-	// °³¹ßÀÚ ¸ðµå Ãâ·Â ÇÔ¼ö
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 	if (m_pLoading)
 		Render_Font(L"Font_Jinji", m_pLoading->Get_String(), &_vec2(230.f, 500.f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 
@@ -170,6 +170,11 @@ HRESULT CLogo::Ready_Proto(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DelverTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/DelverLogo.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LogoTextTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/PressSpacebarStart.png", TEX_NORMAL)), E_FAIL);
 	
-  	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderRect", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Rect.hlsl"))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderRect", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Rect.hlsl"))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderWater", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Water.hlsl"))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderLight", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Light.hlsl"))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShaderSpecular", CShader::Create(m_pGraphicDev, TEXT("../Bin/ShaderFiles/Shader_Specular.hlsl"))), E_FAIL);
+		
+	
 	return S_OK;
 }

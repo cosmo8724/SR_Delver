@@ -9,6 +9,14 @@
 #include "Stone.h"
 #include "Grass.h"
 #include "Tree.h"
+#include "BonFire.h"
+#include "Jam.h"
+#include "ShortTorch.h"
+#include "LongTorch.h"
+#include "EcoMush.h"
+#include "EcoWeb.h"
+#include "Statue.h"
+#include "RockFall.h"
 
 CObjectTool::CObjectTool(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -37,7 +45,7 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 	static	_bool	bNowCrafting = false;
 	//if (pGameObject)
 	//{
-		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Jam"};
+		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Bonfire", "Jam", "Long Torch", "Short Torch", "MushRoom", "Web", "Statue", "RockFall"};
 		static _int item_current = 0;
 
 		ImGui::Combo("Item Type", &item_current, items, IM_ARRAYSIZE(items), 4);
@@ -95,10 +103,102 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 				m_iJarCnt++;
 				break;
 			}
+			case ECO_BONFIRE:
+			{
+				wsprintf(szObjTag, L"BonFire_%d", m_iBonFireCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CBonFire::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iBonFireCnt++;
+				break;
+			}
 			case ECO_JAM:
+			{
 				wsprintf(szObjTag, L"Jam_%d", m_iJamCnt);
 				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CJam::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iJamCnt++;
 				break;
+			}
+			case ECO_TORCH2:
+			{
+				wsprintf(szObjTag, L"ShortTorch_%d", m_iShortTorchCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CShortTorch::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iShortTorchCnt++;
+				break;
+			}
+			case ECO_TORCH1:
+			{
+				wsprintf(szObjTag, L"LongTorch_%d", m_iLongTorchCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CLongTorch::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iLongTorchCnt++;
+				break;
+			}
+			case ECO_MUSHROOM:
+			{
+				wsprintf(szObjTag, L"Mushroom_%d", m_iMushroomCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CEcoMush::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iMushroomCnt++;
+				break;
+			}
+			case ECO_WEB:
+			{
+				wsprintf(szObjTag, L"Web_%d", m_iWebCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CEcoWeb::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iWebCnt++;
+				break;
+			}
+			case ECO_STATUE:
+			{
+				wsprintf(szObjTag, L"Statue_%d", m_iStatueCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CStatue::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iStatueCnt++;
+				break;
+			}
+			case ECO_ROCKFALL:
+			{
+				wsprintf(szObjTag, L"RockFall_%d", m_iRockFallCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CRockFall::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iRockFallCnt++;
+				break;
+			}
 
 			case ECO_END:
 				break;
@@ -348,7 +448,44 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 						m_iJarCnt++;
 						break;
 
+					case ECO_BONFIRE:
+						pCloneObject = CBonFire::Create(pEcoObject);
+						m_iBonFireCnt++;
+						break;
+
 					case ECO_JAM:
+						pCloneObject = CJam::Create(pEcoObject);
+						m_iJamCnt++;
+						break;
+
+					case ECO_TORCH2:
+						pCloneObject = CShortTorch::Create(pEcoObject);
+						m_iShortTorchCnt++;
+						break;
+
+					case ECO_TORCH1:
+						pCloneObject = CLongTorch::Create(pEcoObject);
+						m_iLongTorchCnt++;
+						break;
+
+					case ECO_MUSHROOM:
+						pCloneObject = CEcoMush::Create(pEcoObject);
+						m_iMushroomCnt++;
+						break;
+
+					case ECO_WEB:
+						pCloneObject = CEcoWeb::Create(pEcoObject);
+						m_iWebCnt++;
+						break;
+
+					case ECO_STATUE:
+						pCloneObject = CStatue::Create(pEcoObject);
+						m_iStatueCnt++;
+						break;
+
+					case ECO_ROCKFALL:
+						pCloneObject = CRockFall::Create(pEcoObject);
+						m_iRockFallCnt++;
 						break;
 					}
 					pLayer->Add_GameObject(m_vecObjTags.back(), pCloneObject);

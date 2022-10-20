@@ -58,7 +58,7 @@ _int CMainApp::Update_MainApp(const _float & fTimeDelta)
 		
 	m_pManagementClass->Update_Scene(fTimeDelta);
 
-	CCullingMgr::GetInstance()->Update(fTimeDelta);
+	//CCullingMgr::GetInstance()->Update(fTimeDelta);
 
 	return 0;
 }
@@ -119,7 +119,7 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 
 	//m_pGraphicDev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	//m_pGraphicDev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	//m_pGraphicDev->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	m_pGraphicDev->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);

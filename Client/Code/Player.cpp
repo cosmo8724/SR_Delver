@@ -39,7 +39,7 @@ HRESULT CPlayer::Ready_Object(void)
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(3.f, 10.f, 3.f);
+	m_pTransCom->Set_Pos(-6.f, 2.f, -38.f);
 
 	_vec3 vPos, vScale;
 	_matrix matWorld;
@@ -62,6 +62,29 @@ HRESULT CPlayer::Ready_Object(void)
 	m_tInfo.iLevel = 1;
 
 	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
+
+
+	m_pGraphicDev->GetLightEnable(0, FALSE);
+	m_pGraphicDev->GetLightEnable(1, FALSE);
+
+
+
+
+	D3DLIGHT9	tLightInfo;
+	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+
+	tLightInfo.Type = D3DLIGHT_POINT;
+	tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Position = _vec3(5.f, 3.f, 9.f);
+	tLightInfo.Range = 5.f;
+	
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 1), E_FAIL);
+
+
+
+
 	return S_OK;
 }
 
@@ -78,6 +101,10 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	// *Create Minimap Icon
 
 //	
+	
+
+
+
 	if (!m_bDeadMotion && m_bDead)
 	{
 		CCameraMgr::GetInstance()->Action_PlayerDie();
@@ -130,21 +157,32 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	if (!m_bKnockBack)
 		m_pCurrentBlock = nullptr;
 
+
+
+
+
+
+
 	return 0;
 }
 
 void CPlayer::LateUpdate_Object(void)
 {
 
-	_vec3 vPos, vScale;
+	_vec3 vPos, vScale, vLook;
 	_matrix matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
+	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+	D3DXVec3Normalize(&vLook, &vLook);
 
 	Mouse_Click(m_fTimeDelta);
 
 	_vec3	vPlayerPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPlayerPos);
 	vPlayerPos.y = m_pColliderCom->Get_MinPoint().y;
+
+	CLightMgr::GetInstance()->Update_Pos(1, vPlayerPos+vLook);
+
 
 	if (m_eState == PLAYER_ON_BLOCK)
 	{

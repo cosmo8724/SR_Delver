@@ -280,6 +280,7 @@
     </ClInclude>
     <ClInclude Include="..\Header\Wand.h" />
     <ClInclude Include="..\Header\WandBullet.h" />
+    <ClInclude Include="..\Header\Water.h" />
     <ClInclude Include="..\Header\WinkMan.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ImGui\dirent.h" />
@@ -416,6 +417,7 @@
     </ClCompile>
     <ClCompile Include="..\Code\Wand.cpp" />
     <ClCompile Include="..\Code\WandBullet.cpp" />
+    <ClCompile Include="..\Code\Water.cpp" />
     <ClCompile Include="..\Code\WinkMan.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\GraphEditor.cpp">
@@ -485,7 +487,10 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Light.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Rect.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Specular.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Water.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

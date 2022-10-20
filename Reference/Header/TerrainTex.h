@@ -12,9 +12,9 @@ private:
 	virtual ~CTerrainTex();
 
 public:
-	const _vec3*		Get_VtxPos(void) const { return m_pPos; }
-	_ulong		Get_VtxCntX(void) const { return m_dwCntX; }
-	_ulong		Get_VtxCntZ(void) const { return m_dwCntZ; }
+	const _vec3*	Get_VtxPos(void) const	{ return m_pPos; }
+	_ulong			Get_VtxCntX(void) const { return m_dwCntX; }
+	_ulong			Get_VtxCntZ(void) const { return m_dwCntZ; }
 
 public:
 	HRESULT Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv);

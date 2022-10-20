@@ -6,6 +6,7 @@
 #include "MiniMap.h"
 #include "BlockVIBuffer.h"
 #include "Player.h"
+#include "CullingMgr.h"
 
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -68,7 +69,7 @@ CBlock::CBlock(const CBlock& rhs)
 
 	_matrix	matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	//CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
+	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
 }
 
 CBlock::~CBlock()
@@ -106,9 +107,10 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 
 		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 	}*/
-	m_fScale = 0.5f;
+	//m_fScale = 0.5f;
 	if (m_pParentBlock)
 	{
+		m_iTexture = m_pParentBlock->GetTextureIndex();
 		m_pTransCom->Set_WorldMatrix(&m_matOriginWorld);
 		MultiParentWorld();
 	}
@@ -142,7 +144,8 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 			//m_bCreateIcon = true;
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
-		Add_RenderGroup(RENDER_NONALPHA, this);
+		//if (CCullingMgr::GetInstance()->Is_Inside(this))
+		//	Add_RenderGroup(RENDER_NONALPHA, this);
 	}
 	else
 		Add_RenderGroup(RENDER_ALPHA, this);
@@ -162,13 +165,21 @@ void CBlock::Render_Obejct(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+
 	if (m_bSet && !m_bChanging)
 	{
-		if (m_pParentBlock)
-			m_pTextureCom->Set_Texture(m_pParentBlock->GetTextureIndex());
-		else
-			m_pTextureCom->Set_Texture(m_iTexture);
-		m_pBufferCom->Render_Buffer();
+		//m_pTextureCom->Set_Texture(m_iTexture);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//m_pBufferCom->Render_Buffer();
 	}
 	else
 	{
@@ -187,6 +198,17 @@ void CBlock::Render_Obejct(void)
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 		m_pTextureCom->Set_Texture(m_iTexture);
+
+		D3DMATERIAL9		tMtrl;
+		ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+		tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+		tMtrl.Power = 0.f;
+
+		m_pGraphicDev->SetMaterial(&tMtrl);
 
 		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 		m_pBufferCom->Render_Buffer();
@@ -408,27 +430,27 @@ void CBlock::Chase_Block()
 	switch (LastPlane)
 	{
 	case FRONT_X:
-		m_pTransCom->Set_Pos(vCloseCubePos.x + (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x + (2.f), vCloseCubePos.y, vCloseCubePos.z);
 		break;
 
 	case BACK_X:
-		m_pTransCom->Set_Pos(vCloseCubePos.x - (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x - (2.f), vCloseCubePos.y, vCloseCubePos.z);
 		break;
 
 	case FRONT_Y:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (CubeSize * m_fScale), vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (2.f), vCloseCubePos.z);
 		break;
 
 	case BACK_Y:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (CubeSize * m_fScale), vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (2.f), vCloseCubePos.z);
 		break;
 
 	case FRONT_Z:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (CubeSize * m_fScale));
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (2.f));
 		break;
 
 	case BACK_Z:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (CubeSize * m_fScale));
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (2.f));
 		break;
 	}
 	bFirst = true;
@@ -583,12 +605,7 @@ CBlock * CBlock::Create(const CBlock & rhs)
 
 void CBlock::Free(void)
 {
-	/*if (m_bClone)
-	{
-		Safe_Release(m_pBufferCom);
-		Safe_Release(m_pTransCom);
-		Safe_Release(m_pTextureCom);
-		Safe_Release(m_pCalculatorCom);
-	}*/
+	if (!m_pParentBlock)
+		m_bDeleted = true;
 	CGameObject::Free();
 }
