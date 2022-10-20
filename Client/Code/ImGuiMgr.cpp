@@ -84,6 +84,7 @@ void CImGuiMgr::SetupDevice(LPDIRECT3DDEVICE9 pGraphicDev)
 
 HRESULT CImGuiMgr::ImGui_Map_Tool(LPDIRECT3DDEVICE9 pGraphicDev, const _float & fTimeDelta)
 {
+	/*
 #pragma region Terrain Tool
 	ImGui::Begin("Terrain Settings");
 	static _bool	bWireFrame = false;
@@ -591,6 +592,7 @@ HRESULT CImGuiMgr::ImGui_Map_Tool(LPDIRECT3DDEVICE9 pGraphicDev, const _float & 
 
 	ImGui::End();
 #pragma endregion Map Tool
+*/
 	return S_OK;
 }
 

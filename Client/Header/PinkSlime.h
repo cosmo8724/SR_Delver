@@ -70,15 +70,6 @@ private:
 
 
 	// SEPARATION_ONE
-	_bool				m_bOneJump = false;
-	_bool				m_bOneDead = false;
-
-	_bool				m_bTwoJump = false;
-	_bool				m_bTwoDead = false;
-
-	_bool				m_bThreeJump = false;
-	_bool				m_bThreeDead = false;
-
 	_bool				m_bPinkJump = false;
 	_bool				m_bPinkDead = false;
 

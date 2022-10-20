@@ -3,9 +3,10 @@
 #include "Export_Function.h"
 #include "StaticCamera.h"
 
-CWater::CWater(LPDIRECT3DDEVICE9 pGraphicDev)
+CWater::CWater(LPDIRECT3DDEVICE9 pGraphicDev, WATERTYPE eType)
 	:CGameObject(pGraphicDev), m_vDirection({0.f, 0.f, 1.f})
 {
+	m_eType = eType;
 }
 
 CWater::~CWater()
@@ -30,8 +31,50 @@ _int CWater::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 	m_fTime += fTimeDelta;
-	FAILED_CHECK(m_pShaderCom->
+	FAILED_CHECK_RETURN(m_pShaderCom->
 		Set_RawValue("g_fTime", &m_fTime, sizeof(_float)), 0);
+
+
+	switch (m_eType)
+	{
+	case WATER_FLOW1:
+	{
+		_float fUVSpeed = -0.5f;
+		FAILED_CHECK_RETURN(m_pShaderCom->
+			Set_RawValue("g_UVSpeed", &fUVSpeed, sizeof(_float)), 0);
+
+		_float fHeight = 0.f;
+		FAILED_CHECK_RETURN(m_pShaderCom->
+			Set_RawValue("g_WaveHeight", &fHeight, sizeof(_float)), 0);
+	}
+		break;
+
+	case WATER_FALL1:
+	{
+		_float fSpeed = -5.0f;
+		FAILED_CHECK_RETURN(m_pShaderCom->
+			Set_RawValue("g_UVSpeed", &fSpeed, sizeof(_float)), 0);
+
+		_float fHeight = 0.f;
+		FAILED_CHECK_RETURN(m_pShaderCom->
+			Set_RawValue("g_WaveHeight", &fHeight, sizeof(_float)), 0);
+	}
+
+		break;
+
+	case WATER_OCEAN1:
+	{
+		_float fUVSpeed = 0.f;
+		FAILED_CHECK_RETURN(m_pShaderCom->
+			Set_RawValue("g_UVSpeed", &fUVSpeed, sizeof(_float)), 0);
+
+		_float fHeight = 0.5f;
+		FAILED_CHECK_RETURN(m_pShaderCom->
+			Set_RawValue("g_WaveHeight", &fHeight, sizeof(_float)), 0);
+	}
+		break;
+	}
+
 
 	Add_RenderGroup(RENDER_NONALPHA, this);
 
@@ -83,8 +126,32 @@ void CWater::Render_Obejct(void)
 
 	//matView = matProj = IMatrix;
 
-
 	m_pTransCom->Get_WorldMatrix(&matWorld);
+
+	switch (m_eType)
+	{
+	case WATER_FLOW1:
+		{
+		}
+		break;
+	case WATER_FALL1:
+		{
+			_matrix matRot;
+			D3DXMatrixRotationX(&matRot, D3DXToRadian(90.f));
+			_matrix matTrans;
+			D3DXMatrixTranslation(&matTrans, 25.f, 0.f, 27.f);
+			matWorld = matRot * matTrans;
+		}
+		break;
+	case WATER_OCEAN1:
+		{
+			_matrix matTrans;
+			D3DXMatrixTranslation(&matTrans, -3.f, -100.f, -3.f);
+			matWorld = matTrans;
+		}
+		break;
+	}
+
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
 
@@ -122,9 +189,41 @@ HRESULT CWater::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 
-	pComponent = m_pBufferCom = dynamic_cast<CTerrainTex*>(Clone_Proto(L"Proto_TerrainTexCom"));
-	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_TerrainTexCom", pComponent });
+	switch (m_eType)
+	{
+	case WATER_FLOW1:
+		pComponent = m_pBufferCom = dynamic_cast<CTerrainTex*>(Clone_Proto(L"Proto_WaterTexCom"));
+		NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_WaterTexCom", pComponent });
+
+		pComponent = m_pShaderCom = dynamic_cast<CShader*>(Clone_Proto(L"Proto_ShaderWater"));
+		NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_ShaderWater", pComponent });
+		break;
+	case WATER_FALL1:
+		pComponent = m_pBufferCom = dynamic_cast<CTerrainTex*>(Clone_Proto(L"Proto_WaterFallTexCom"));
+		NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_WaterFallTexCom", pComponent });
+
+		pComponent = m_pShaderCom = dynamic_cast<CShader*>(Clone_Proto(L"Proto_ShaderWater"));
+		NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_ShaderWater", pComponent });
+		break;
+	case WATER_OCEAN1:
+		pComponent = m_pBufferCom = dynamic_cast<CTerrainTex*>(Clone_Proto(L"Proto_OceanTexCom"));
+		NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_OceanTexCom", pComponent });
+
+		pComponent = m_pShaderCom = dynamic_cast<CShader*>(Clone_Proto(L"Proto_ShaderWave"));
+		NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
+		m_mapComponent[ID_STATIC].insert({ L"Proto_ShaderWave", pComponent });
+		break;
+	}
+
+
+
+
+	
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_TerrainTexture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
@@ -134,16 +233,14 @@ HRESULT CWater::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
-	pComponent = m_pShaderCom = dynamic_cast<CShader*>(Clone_Proto(L"Proto_ShaderWater"));
-	NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_ShaderWater", pComponent });
+
 
 
 }
 
-CWater * CWater::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CWater * CWater::Create(LPDIRECT3DDEVICE9 pGraphicDev, WATERTYPE eType)
 {
-	CWater *	pInstance = new CWater(pGraphicDev);
+	CWater *	pInstance = new CWater(pGraphicDev, eType);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

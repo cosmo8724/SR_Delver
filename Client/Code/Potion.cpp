@@ -3,6 +3,7 @@
 #include "Export_Function.h"
 #include "Player.h"
 #include "CullingMgr.h"
+#include "StaticCamera.h"
 
 CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CItem(pGraphicDev)
@@ -28,14 +29,14 @@ CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
 	D3DXMatrixIdentity(&m_matWorld);
 	m_ObjTag = L"Potion";
 	m_iTextureIdx = _eType;
-
+	m_tPotionType = _eType;
 }
 
 CPotion::~CPotion()
 {
 }
 
-HRESULT CPotion::Ready_Object(void)
+HRESULT CPotion::Ready_Object()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -44,6 +45,7 @@ HRESULT CPotion::Ready_Object(void)
 	m_eState = STATE_GROUND;
 	m_tInfo.iHpHeal = 10;
 	m_eItemType = ITEM_POTION;
+
 	return S_OK;
 }
 
@@ -52,27 +54,20 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 	if (m_eState == STATE_INV)
 		return 0;
 
+
+	if (m_bFinished)
+		return OBJ_NOEVENT;
+
 	if (m_bDead)
 		return OBJ_DEAD;
+
+
 
 	int iResult = CItem::Update_Object(fTimeDelta);
 
 	if (STATE_EQUIP == m_eState)
 	{
-		m_fDotTime += fTimeDelta;
-		if (1.f < m_fDotTime)
-		{
-			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-
-			// sh_Test
-			PLAYERINFO tPlayerInfo = pPlayer->Get_PlayerInfo();
-			if (tPlayerInfo.iHp >= tPlayerInfo.iHpMax)
-				return iResult;
-
-			pPlayer->Set_HpPlus();
-			m_iDot++;
-			m_fDotTime = 0.f;
-		}
+		RandomItem(fTimeDelta);
 	}
 	else if (STATE_GROUND == m_eState)
 	{
@@ -88,14 +83,19 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 
 void CPotion::LateUpdate_Object(void)
 {
+	if (m_iCnt == 0 && m_bFinished)
+	{
+		m_bDead = true;
+	}
+
+
 	if (m_eState != STATE_GROUND)
 		return;
 
 	if (CCullingMgr::GetInstance()->Is_Inside(this))
 		Add_RenderGroup(RENDER_ALPHA, this);
 
-	if (m_iDot > m_tInfo.iHpHeal)
-		m_bDead = true;
+
 
 	Billboard();
 	CGameObject::LateUpdate_Object();
@@ -134,18 +134,18 @@ HRESULT CPotion::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ���� ������Ʈ
+	//            Ʈ
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// �ؽ��� �İ�ü ������Ʈ
+	//  ؽ     İ ü       Ʈ
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Potion_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_Potion_Texture", pComponent });
 	m_textureTag = L"Proto_Potion_Texture";
 
-	// ������� ������Ʈ
+	//               Ʈ
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -157,7 +157,6 @@ HRESULT CPotion::Add_Component(void)
 
 	return S_OK;
 }
-
 
 CPotion * CPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
 {
@@ -181,6 +180,72 @@ void CPotion::CollisionEvent(CGameObject * pObj)
 	{
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
+	}
+
+}
+
+void CPotion::RandomItem(const _float& fTimeDelta)
+{
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	PLAYERINFO pPlayerInfo = pPlayer->Get_Info();
+
+	switch (m_tPotionType)
+	{
+	case POTION_0: // yellow
+	{
+		//pPlayer->Set_HpFull();
+		CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+		pCam->Wave_Camera(10.f, _vec3(0.f, 0.f, 1.f), 30.f);
+		m_bFinished = true;
+	}
+	break;
+	case POTION_1: // red
+	{
+		m_fDotTime += fTimeDelta;
+		if (1.f < m_fDotTime)
+		{
+			if (m_iDot > m_tInfo.iHpHeal)
+			{
+				m_bFinished = true;
+				return;
+			}
+
+			pPlayer->Set_HpPlus(+1);
+			m_iDot++;
+			m_fDotTime = 0.f;
+		}
+	}
+	break;
+	case POTION_2: // green
+	{
+		m_fDotTime += fTimeDelta;
+		if (1.f < m_fDotTime)
+		{
+
+			if (m_iDot > m_tInfo.iHpHeal)
+			{
+				m_bFinished = true;
+				return;
+			}
+
+			pPlayer->Set_HpPlus(-1);
+			m_iDot++;
+			m_fDotTime = 0.f;
+		}
+	}
+	break;
+	case POTION_3: // blue
+	{
+		pPlayer->Set_Slow();
+		m_bFinished = true;
+	}
+	break;
+	case POTION_4: // pink
+	{
+		pPlayer->Set_Stun();
+		m_bFinished = true;
+	}
+	break;
 	}
 
 }

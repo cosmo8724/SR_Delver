@@ -39,7 +39,7 @@ HRESULT CPlayer::Ready_Object(void)
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(-6.f, 2.f, -38.f);
+	m_pTransCom->Set_Pos(5.f, 2.f, 5.f);
 
 	_vec3 vPos, vScale;
 	_matrix matWorld;
@@ -50,7 +50,7 @@ HRESULT CPlayer::Ready_Object(void)
 	// 플레이어 스탯정보
 	//m_tInfo.iHp = 20;
 	m_tInfo.iHp = 10;
-	m_tInfo.iHpMax = 20;
+	m_tInfo.iHpMax = 100;
 	//m_tInfo.iHpMax = m_tInfo.iHp; // sh
 	m_tInfo.iAtk = 1;
 	//m_tInfo.iAtk = 10; // sh
@@ -66,6 +66,19 @@ HRESULT CPlayer::Ready_Object(void)
 
 
 
+
+
+	D3DLIGHT9	tLightInfo;
+	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+
+	tLightInfo.Type = D3DLIGHT_POINT;
+	tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Position = _vec3(5.f, 3.f, 9.f);
+	tLightInfo.Range = 1000.f;
+	
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 1), E_FAIL);
 
 
 
@@ -644,7 +657,7 @@ void CPlayer::Slow(const _float & fTimeDelta)
 	m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
 
 	m_fSlowTimeAcc += fTimeDelta;
-	if (3.f < m_fSlowTimeAcc)
+	if (8.f < m_fSlowTimeAcc)
 	{
 		m_tInfo.bSlow = false;
 		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;

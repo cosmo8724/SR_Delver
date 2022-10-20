@@ -49,7 +49,7 @@ _int CHPGauge::Update_Object(const _float & fTimeDelta)
 
 	//PlayerInfo
 	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-	tPlayerInfo = pPlayer->Get_PlayerInfo();
+	tPlayerInfo = pPlayer->Get_Info();
 
 	// ▶ 입력하는 숫자가 게이지와 나눠질 값
 	m_iHp = tPlayerInfo.iHp;

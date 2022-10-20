@@ -12,7 +12,7 @@ END
 class CWater : public CGameObject
 {
 private:
-	explicit CWater(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CWater(LPDIRECT3DDEVICE9 pGraphicDev, WATERTYPE eType);
 	virtual ~CWater();
 
 public:
@@ -32,9 +32,10 @@ private:
 
 	_vec3				m_vDirection;
 	_float				m_fTime = 0.f;
+	WATERTYPE			m_eType = WATER_END;
 
 public:
-	static CWater*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CWater*		Create(LPDIRECT3DDEVICE9 pGraphicDev, WATERTYPE eType);
 	virtual void		Free(void);
 
 };

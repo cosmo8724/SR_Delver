@@ -47,8 +47,8 @@ _uint CLoading::Loading_ForMapTool()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Dungeon_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Dungeon/textures_%d.png", TEX_NORMAL, 25)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Room_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Room/textures_%d.dds", TEX_CUBE, 16)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Room_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Room/textures_%d.png", TEX_NORMAL, 16)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Sewer_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Sewer/textures_%d.dds", TEX_CUBE, 19)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Sewer_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Sewer/textures_%d.png", TEX_NORMAL, 19)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Sewer_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Sewer/textures_%d.dds", TEX_CUBE, 24)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Sewer_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Sewer/textures_%d.png", TEX_NORMAL, 24)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Temple_BlockTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Temple/textures_%d.dds", TEX_CUBE, 21)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Temple_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Temple/textures_%d.png", TEX_NORMAL, 21)), E_FAIL);
 
@@ -58,7 +58,7 @@ _uint CLoading::Loading_ForMapTool()
 	_int	iWidth, iDepth, iInterval;
 	//CImGuiMgr::GetInstance()->Get_MapWidth(&iWidth, &iDepth, &iInterval);
 	iWidth = 10; iDepth = 10; iInterval = 1;
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexCom", CTerrainTex::Create(m_pGraphicDev, iWidth, iDepth, iInterval)), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexCom", CTerrainTex::Create(m_pGraphicDev, iWidth, iDepth, iInterval)), E_FAIL);
 
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformCom", CTransform::Create()), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorCom", CCalculator::Create(m_pGraphicDev)), E_FAIL);
@@ -85,7 +85,7 @@ _uint CLoading::Loading_ForMapTool()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoBonfire_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject6_0.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoJam_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject8_%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoWeb_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject9_%d.png", TEX_NORMAL, 6)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoMushroom_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject10_%d.png", TEX_NORMAL, 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoMushroom_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject10_%d.png", TEX_NORMAL, 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoDoor_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject11_%d.png", TEX_NORMAL, 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoStatue_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject12_%d.png", TEX_NORMAL, 5)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTorch1_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject13_%d.png", TEX_NORMAL, 7)), E_FAIL);
@@ -109,8 +109,8 @@ _uint CLoading::Loading_ForStage(void)
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Player/Player%d.png", TEX_NORMAL, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EffectTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Explosion/Explosion%d.png", TEX_NORMAL, 90)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/RedSky.dds", TEX_CUBE)), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/Waterfall Skybox.dds", TEX_CUBE)), E_FAIL);
+	
 	// Logics
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformCom", CTransform::Create()), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorCom", CCalculator::Create(m_pGraphicDev)), E_FAIL);
@@ -144,7 +144,7 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoBonfire_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject6_0.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoJam_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject8_%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoWeb_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject9_%d.png", TEX_NORMAL, 6)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoMushroom_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject10_%d.png", TEX_NORMAL, 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoMushroom_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject10_%d.png", TEX_NORMAL, 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoDoor_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject11_%d.png", TEX_NORMAL, 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoStatue_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject12_%d.png", TEX_NORMAL, 5)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTorch1_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject13_%d.png", TEX_NORMAL, 7)), E_FAIL);

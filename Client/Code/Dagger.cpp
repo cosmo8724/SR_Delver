@@ -236,7 +236,6 @@ void CDagger::Attack(const _float & fTimeDelta)
 	// 	m_bAttackPt = true;
 	// }
 
-	cout << m_pTransCom->Get_AttackAngle() << endl;
 	if (-10.f > m_pTransCom->Get_AttackAngle() && !m_bParticle)
 	{
 		

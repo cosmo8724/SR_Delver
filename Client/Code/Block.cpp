@@ -139,13 +139,13 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 		if (!m_bCreateIcon)
 		{
 			// Only For Stage
-			//CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
-			//pMiniMap->Add_Icon(m_pGraphicDev, this);
-			//m_bCreateIcon = true;
+			/*CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
+			pMiniMap->Add_Icon(m_pGraphicDev, this);
+			m_bCreateIcon = true;*/
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 		//if (CCullingMgr::GetInstance()->Is_Inside(this))
-		//	Add_RenderGroup(RENDER_NONALPHA, this);
+			//Add_RenderGroup(RENDER_NONALPHA, this);
 	}
 	else
 		Add_RenderGroup(RENDER_ALPHA, this);
@@ -169,12 +169,7 @@ void CBlock::Render_Obejct(void)
 
 	if (m_bSet && !m_bChanging)
 	{
-		//m_pTextureCom->Set_Texture(m_iTexture);	
-		
-		
-		
-		
-		
+		//m_pTextureCom->Set_Texture(m_iTexture);
 		//m_pBufferCom->Render_Buffer();
 	}
 	else
@@ -194,17 +189,6 @@ void CBlock::Render_Obejct(void)
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 		m_pTextureCom->Set_Texture(m_iTexture);
-
-		D3DMATERIAL9		tMtrl;
-		ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
-
-		tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-		tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-		tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
-		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
-		tMtrl.Power = 0.f;
-
-		m_pGraphicDev->SetMaterial(&tMtrl);
 
 		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 		m_pBufferCom->Render_Buffer();

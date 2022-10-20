@@ -18,7 +18,7 @@ namespace Engine
 #define COLDTEX_CNT		16
 #define DUNGEONTEX_CNT	25
 #define ROOMTEX_CNT		16
-#define SEWERTEX_CNT	19
+#define SEWERTEX_CNT	24
 #define TEMPLETEX_CNT	21
 
 #ifndef			MSG_BOX
