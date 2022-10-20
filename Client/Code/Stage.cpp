@@ -298,9 +298,9 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CCameraMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// skybox
-	/*pGameObject = CSkyBox::Create(m_pGraphicDev);
+	pGameObject = CSkyBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);*/
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);
 
 	// Terrain
 	//pGameObject = CTerrain::Create(m_pGraphicDev);
