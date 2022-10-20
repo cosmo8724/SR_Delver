@@ -14,11 +14,11 @@ namespace Engine
 #define		VTXCNTZ		129
 #define		VTXITV		1
 
-#define CAVETEX_CNT		7
+#define CAVETEX_CNT		9
 #define COLDTEX_CNT		16
 #define DUNGEONTEX_CNT	25
 #define ROOMTEX_CNT		16
-#define SEWERTEX_CNT	17
+#define SEWERTEX_CNT	19
 #define TEMPLETEX_CNT	21
 
 #ifndef			MSG_BOX

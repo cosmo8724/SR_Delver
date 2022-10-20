@@ -19,7 +19,14 @@ private:
 	_uint		m_iGrassCnt = 0;
 	_uint		m_iTreeCnt = 0;
 	_uint		m_iJarCnt = 0;
+	_uint		m_iBonFireCnt = 0;
 	_uint		m_iJamCnt = 0;
+	_uint		m_iShortTorchCnt = 0;
+	_uint		m_iLongTorchCnt = 0;
+	_uint		m_iMushroomCnt = 0;
+	_uint		m_iWebCnt = 0;
+	_uint		m_iStatueCnt = 0;
+	_uint		m_iRockFallCnt = 0;
 	_uint		m_iLadderCnt = 0;
 };
 

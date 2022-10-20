@@ -545,32 +545,32 @@ HRESULT CUserParticle::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_PtBufferCom", pComponent });
 
-	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle5_Texture"));
-	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle5_Texture", pComponent });
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle5_Texture"));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle5_Texture", pComponent });
 
 
 
 
-	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle0_Texture"));
-	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle0_Texture", pComponent });
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle0_Texture"));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle0_Texture", pComponent });
 
-	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle1_Texture"));
-	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle1_Texture", pComponent });
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle1_Texture"));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle1_Texture", pComponent });
 
-	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle2_Texture"));
-	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle2_Texture", pComponent });
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle2_Texture"));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle2_Texture", pComponent });
 
-	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle3_Texture"));
-	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle3_Texture", pComponent });
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle3_Texture"));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle3_Texture", pComponent });
 
-	//pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle4_Texture"));
-	//NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	//m_mapComponent[ID_STATIC].insert({ L"Proto_Particle4_Texture", pComponent });
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_Particle4_Texture"));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Particle4_Texture", pComponent });
 
 	return S_OK;
 }

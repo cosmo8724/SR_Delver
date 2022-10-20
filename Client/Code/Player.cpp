@@ -24,8 +24,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_vDirection(0.f, 0.f, 0.f)
 	, m_fAccel(0.01f)
-	, m_fJSpeed0(0.15f)
-	, m_fJSpeed(0.15f)
+	, m_fJSpeed0(0.2f)
+	, m_fJSpeed(0.2f)
 {
 	memset(&m_tInfo, 0, sizeof(PLAYERINFO));
 }
@@ -39,7 +39,7 @@ HRESULT CPlayer::Ready_Object(void)
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(3.f, 10.f, 3.f);
+	m_pTransCom->Set_Pos(-6.f, 2.f, -38.f);
 
 	_vec3 vPos, vScale;
 	_matrix matWorld;
@@ -455,13 +455,13 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	if (Engine::Key_Down(DIK_E))
 		pOtherObj->InteractEvent();
 
-	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	if (pMonster == pOtherObj)
-		OnHit(pMonster->Get_MonsterAttack());
+	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	//if (pMonster == pOtherObj)
+	//	OnHit(pMonster->Get_MonsterAttack());
 
-	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	if (pBullet == pOtherObj)
-		OnHit(pBullet->Get_BulletAttack());
+	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	//if (pBullet == pOtherObj)
+	//	OnHit(pBullet->Get_BulletAttack());
 
 	CEcoObject* pEco = dynamic_cast<CEcoObject*>(pOtherObj);
 	if (nullptr != pEco)
@@ -501,34 +501,35 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 				m_bJump = false;
 				m_fJTimeDelta = 0.f;
 
-				fDistX = 0.f;
 				fDistY = BlockBox.vMax.y - PlayerBox.vMin.y;
-				fDistZ = 0.f;
 
-				_vec3	PlayerPos;
-				m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
+				if (fDistY < 0.01f)
+					return;
+
+ 				_vec3	PlayerPos = m_pTransCom->Get_Pos();
 				_float	fBlockHeight = m_pCurrentBlock->Get_Height();
-				//m_pTransCom->Set_Y(fBlockHeight + (PlayerPos.y - PlayerBox.vMin.y));
-				m_pTransCom->Set_Pos(PlayerPos.x, fBlockHeight + (PlayerPos.y - PlayerBox.vMin.y) + 0.0001f, PlayerPos.z);
+				m_pTransCom->Set_Pos(PlayerPos.x, PlayerPos.y + fDistY, PlayerPos.z);
 				return;
 			}
+			else
+				return;
 		}
 
 		// Player Under Block
-		else if (PlayerBox.vMax.y > BlockBox.vMin.y && PlayerBox.vMax.y < BlockBox.vMax.y)
+		/*else if (PlayerBox.vMax.y > BlockBox.vMin.y && PlayerBox.vMax.y < BlockBox.vMax.y)
 		{
-			if (m_pCurrentBlock != pBlock && m_eState == PLAYER_JUMP)
+			_vec3	PlayerPos = m_pTransCom->Get_Pos();
+			if ((PlayerPos.x < BlockBox.vMin.x || PlayerPos.x > BlockBox.vMax.x)
+				&& (PlayerPos.z < BlockBox.vMin.z || PlayerPos.z > BlockBox.vMax.z))
+				return;
+
+			if (m_pCurrentBlock == nullptr && m_eState == PLAYER_JUMP)
 			{
 				fDistY = BlockBox.vMin.y - PlayerBox.vMax.y;
 				m_fJSpeed = 0.f;
+				m_pTransCom->Set_Pos(PlayerPos.x, PlayerPos.y + fDistY, PlayerPos.z);
 			}
-		}
-
-		_vec3	PlayerPos;
-		m_pTransCom->Get_Info(INFO_POS, &PlayerPos);
-
-		m_pTransCom->Set_Pos(PlayerPos.x, PlayerPos.y + fDistY, PlayerPos.z);
-		//m_pTransCom->Move_Pos(&(_vec3(fDistX, 0.f, fDistZ) * m_fTimeDelta));
+		}*/
 	}
 }
 
@@ -606,7 +607,7 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 			//m_pCurrentBlock = nullptr;
 			m_eState = PLAYER_ON_BLOCK;
 			m_fJTimeDelta = 0.f;
-			m_pTransCom->Set_Y(m_pCurrentBlock->Get_Height() + (m_pTransCom->Get_Pos().y - m_pColliderCom->Get_MinPoint().y) + 0.0001f);
+			m_pTransCom->Set_Y(m_pCurrentBlock->Get_Height() + (m_pTransCom->Get_Pos().y - m_pColliderCom->Get_MinPoint().y));
 			//m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
 			m_fJSpeed = m_fJSpeed0;
 		}

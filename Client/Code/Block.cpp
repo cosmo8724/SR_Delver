@@ -6,6 +6,7 @@
 #include "MiniMap.h"
 #include "BlockVIBuffer.h"
 #include "Player.h"
+#include "CullingMgr.h"
 
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -68,7 +69,7 @@ CBlock::CBlock(const CBlock& rhs)
 
 	_matrix	matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	//CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
+	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
 }
 
 CBlock::~CBlock()
@@ -106,9 +107,10 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 
 		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 	}*/
-	m_fScale = 0.5f;
+	//m_fScale = 0.5f;
 	if (m_pParentBlock)
 	{
+		m_iTexture = m_pParentBlock->GetTextureIndex();
 		m_pTransCom->Set_WorldMatrix(&m_matOriginWorld);
 		MultiParentWorld();
 	}
@@ -142,7 +144,8 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 			//m_bCreateIcon = true;
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
-		Add_RenderGroup(RENDER_NONALPHA, this);
+		//if (CCullingMgr::GetInstance()->Is_Inside(this))
+		//	Add_RenderGroup(RENDER_NONALPHA, this);
 	}
 	else
 		Add_RenderGroup(RENDER_ALPHA, this);
@@ -168,10 +171,7 @@ void CBlock::Render_Obejct(void)
 
 	if (m_bSet && !m_bChanging)
 	{
-		if (m_pParentBlock)
-			m_pTextureCom->Set_Texture(m_pParentBlock->GetTextureIndex());
-		else
-			m_pTextureCom->Set_Texture(m_iTexture);
+		m_pTextureCom->Set_Texture(m_iTexture);
 		
 		
 		
@@ -190,7 +190,7 @@ void CBlock::Render_Obejct(void)
 		
 		
 		
-		m_pBufferCom->Render_Buffer();
+		//m_pBufferCom->Render_Buffer();
 	}
 	else
 	{
@@ -277,16 +277,27 @@ void CBlock::CollisionEvent(CGameObject * pOtherObj)
 
 		_vec3			vPlayerPos = pPlayerTransform->Get_Pos();
 		if (vPlayerPos.x > tBlockBox.vMin.x && vPlayerPos.x < tBlockBox.vMax.x
-			&& vPlayerPos.z > tBlockBox.vMin.z && vPlayerPos.z < tBlockBox.vMax.z
-			&& vPlayerPos.y < tBlockBox.vMax.y + (vPlayerPos.y - tPlayerBox.vMin.y))
-			pPlayer->Set_CurBlock(this);
+			&& vPlayerPos.z > tBlockBox.vMin.z && vPlayerPos.z < tBlockBox.vMax.z)
+		{
+			if (vPlayerPos.y < tBlockBox.vMax.y + (tBlockBox.vMax.y - tBlockBox.vMin.y)
+				&& vPlayerPos.y > m_pTransCom->Get_Pos().y)
+				pPlayer->Set_CurBlock(this);
+			
+			//return;
+		}
 
 		_float			fDistX = 0.f, fDistY = 0.f, fDistZ = 0.f;
 
-		fDistY = tPlayerBox.vMin.y - tBlockBox.vMax.y;
+		fDistY = 0.f;
 
-		//if (fabs(fDistY) < 0.1f)
+		//if (fabs(fDistY) < 0.01f || pPlayer->Get_CurState() == PLAYER_JUMP)
 		//	return;
+
+		if (tPlayerBox.vMin.y >= m_pTransCom->Get_Pos().y)
+			return;
+
+		_float		fDist = D3DXVec3Length(&(m_pTransCom->Get_Pos() - pPlayerTransform->Get_Pos()));
+		
 
 		// Player at Leftside
 		if (tPlayerBox.vMax.x > tBlockBox.vMin.x && tPlayerBox.vMax.x < tBlockBox.vMax.x)
@@ -314,25 +325,39 @@ void CBlock::CollisionEvent(CGameObject * pOtherObj)
 
 		// Player On Block		-> Player CollisionEvent
 		// Player Under Block	-> Player CollisionEvent
-
-		if ((vPlayerPos.x < tBlockBox.vMin.x || vPlayerPos.x > tBlockBox.vMax.x)
-			&& (vPlayerPos.z < tBlockBox.vMin.z || vPlayerPos.z > tBlockBox.vMax.z)
-			&& fabs(fDistX) > 0.0001f && fabs(fDistZ) > 0.0001f)
+		if (tPlayerBox.vMax.y > tBlockBox.vMin.y && tPlayerBox.vMax.y < m_pTransCom->Get_Pos().y)
 		{
-			if (sqrtf(fDistX * fDistX + fDistZ * fDistZ) < fabs(tBlockBox.vMax.x - tBlockBox.vMin.x) * 0.2f)
-				return;
+			_vec3	PlayerPos = pPlayerTransform->Get_Pos();
+			if ((PlayerPos.x > tBlockBox.vMin.x && PlayerPos.x < tBlockBox.vMax.x)
+				&& (PlayerPos.z > tBlockBox.vMin.z && PlayerPos.z < tBlockBox.vMax.z)
+				&& pPlayer->Get_CurState() == PLAYER_JUMP)
+			{
+				fDistX = 0.f;
+				fDistY = tBlockBox.vMin.y - tPlayerBox.vMax.y;
+				fDistZ = 0.f;
+				pPlayer->Set_JSpeed(0.f);
+				//pPlayerTransform->Set_Pos(PlayerPos.x, PlayerPos.y + fDistY, PlayerPos.z);
+			}
+		}
+
+		//if ((vPlayerPos.x < tBlockBox.vMin.x || vPlayerPos.x > tBlockBox.vMax.x)
+		//	&& (vPlayerPos.z < tBlockBox.vMin.z || vPlayerPos.z > tBlockBox.vMax.z)
+		//	&& fabs(fDistX) > 0.0001f && fabs(fDistZ) > 0.0001f)
+		{
+			//if (sqrtf(fDistX * fDistX + fDistZ * fDistZ) < fabs(tBlockBox.vMax.x - tBlockBox.vMin.x) * 0.2f)
+			//	return;
 			if (fabs(fDistX) > fabs(fDistZ))
 				fDistX = 0.f;
 			else if (fabs(fDistX) < fabs(fDistZ))
 				fDistZ = 0.f;
 		}
-		else
-			return;
+		//else
+		//	return;
 
 		_vec3	vDir = { fDistX, 0.f, fDistZ };
 
 		//pPlayerTransform->Move_Pos(&(vDir * pPlayer->Get_CurSpeed() * m_fTimeDelta));
-		pPlayerTransform->Set_Pos(vPlayerPos.x + fDistX, vPlayerPos.y, vPlayerPos.z + fDistZ);
+		pPlayerTransform->Set_Pos(vPlayerPos.x + fDistX, vPlayerPos.y + fDistY, vPlayerPos.z + fDistZ);
 	}
 }
 
@@ -418,27 +443,27 @@ void CBlock::Chase_Block()
 	switch (LastPlane)
 	{
 	case FRONT_X:
-		m_pTransCom->Set_Pos(vCloseCubePos.x + (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x + (2.f), vCloseCubePos.y, vCloseCubePos.z);
 		break;
 
 	case BACK_X:
-		m_pTransCom->Set_Pos(vCloseCubePos.x - (CubeSize * m_fScale), vCloseCubePos.y, vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x - (2.f), vCloseCubePos.y, vCloseCubePos.z);
 		break;
 
 	case FRONT_Y:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (CubeSize * m_fScale), vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y + (2.f), vCloseCubePos.z);
 		break;
 
 	case BACK_Y:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (CubeSize * m_fScale), vCloseCubePos.z);
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y - (2.f), vCloseCubePos.z);
 		break;
 
 	case FRONT_Z:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (CubeSize * m_fScale));
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z + (2.f));
 		break;
 
 	case BACK_Z:
-		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (CubeSize * m_fScale));
+		m_pTransCom->Set_Pos(vCloseCubePos.x, vCloseCubePos.y, vCloseCubePos.z - (2.f));
 		break;
 	}
 	bFirst = true;
@@ -593,12 +618,7 @@ CBlock * CBlock::Create(const CBlock & rhs)
 
 void CBlock::Free(void)
 {
-	/*if (m_bClone)
-	{
-		Safe_Release(m_pBufferCom);
-		Safe_Release(m_pTransCom);
-		Safe_Release(m_pTextureCom);
-		Safe_Release(m_pCalculatorCom);
-	}*/
+	if (!m_pParentBlock)
+		m_bDeleted = true;
 	CGameObject::Free();
 }

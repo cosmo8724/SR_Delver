@@ -13,8 +13,6 @@ class CBlock;
 
 class CPlayer : public CGameObject
 {
-	enum PLAYER_STATE { PLAYER_GROUND, PLAYER_ON_BLOCK, PLAYER_JUMP, PLAYER_STATE_END };
-
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CPlayer();
@@ -40,7 +38,9 @@ public:
  	PLAYERINFO		Get_PlayerInfo() { return m_tInfo; } // sh
 
 	const _float&		Get_CurSpeed() { return m_tInfo.fSpeed; }
+	const PLAYER_STATE&	Get_CurState() { return m_eState; }
 	void				Set_CurBlock(CBlock* pBlock) { m_pCurrentBlock = pBlock; }
+	void				Set_JSpeed(_float fJSpeed) { m_fJSpeed = fJSpeed; }
 
 private:
 	HRESULT				Add_Component(void);

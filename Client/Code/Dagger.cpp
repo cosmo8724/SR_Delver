@@ -33,6 +33,11 @@ HRESULT CDagger::Ready_Object(void)
 
 _int CDagger::Update_Object(const _float & fTimeDelta)
 {
+
+
+
+
+
 	//if (STATE_INV == m_eState)
 	//	return 0;
 
