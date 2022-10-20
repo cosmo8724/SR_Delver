@@ -37,6 +37,13 @@ public:
 		m_fShakeTime = fTime;
 		m_iShakePower = iPower;
 	}
+	void		Wave_Camera(_float fTime, _vec3 vAxis, _float fAngle)
+	{
+		m_bWave = true;
+		m_fWaveTime = fTime;
+		m_fWaveAngle = fAngle;
+		m_vAxis = vAxis;
+	}
 
 private:
 	void		Key_Input(const _float& fTimeDelta);
@@ -44,6 +51,7 @@ private:
 	void		ShakeY(const _float& fTimeDelta);
 	void		Mouse_Fix(void);
 	void		Shake_Camera(const _float& fTimeDelta);
+	void		Wave_Camera(const _float& fTimeDelta);
 
 private:
 	_float			m_fDistance = 10.f;
@@ -66,6 +74,16 @@ private:
 	_float		m_fShakeTime = 0.f;
 	_float		m_fShakeTimeNow = 0.f;
 	_int		m_iShakePower = 0;
+
+	// Wave Camera 
+	_bool		m_bWave = false;
+	_float		m_fWaveSpeed = 0.5f;
+	_float		m_fWaveAngleNow = 0.f;
+	_float		m_fWaveAngle = 0.f;
+	_float		m_fWaveTime = 0.f;
+	_float		m_fWaveTimeNow = 0.f;
+	_vec3		m_vAxis;
+
 
 	// Releated to Motion
 	CTransform* m_pPlayerTransCom = nullptr;

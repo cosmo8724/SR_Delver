@@ -74,7 +74,7 @@ HRESULT CPlayer::Ready_Object(void)
 	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
 
 	tLightInfo.Type = D3DLIGHT_POINT;
-	tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo.Diffuse = D3DXCOLOR(1.f, 0.f, 0.f, 0.f);
 	tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo.Position = _vec3(5.f, 3.f, 9.f);
@@ -659,7 +659,7 @@ void CPlayer::Slow(const _float & fTimeDelta)
 	m_tInfo.fSpeed = m_tInfo.fSlowSpeed;
 
 	m_fSlowTimeAcc += fTimeDelta;
-	if (3.f < m_fSlowTimeAcc)
+	if (8.f < m_fSlowTimeAcc)
 	{
 		m_tInfo.bSlow = false;
 		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
