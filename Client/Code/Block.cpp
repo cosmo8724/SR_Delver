@@ -69,7 +69,7 @@ CBlock::CBlock(const CBlock& rhs)
 
 	_matrix	matWorld;
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	//CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
+	CBlockVIBuffer::GetInstance()->Add_Instancing(m_eCurrentType, m_pTextureCom, m_iTexture, m_pTransCom);
 }
 
 CBlock::~CBlock()
@@ -144,8 +144,8 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 			m_bCreateIcon = true;*/
 		}
 		m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
-		if (CCullingMgr::GetInstance()->Is_Inside(this))
-			Add_RenderGroup(RENDER_NONALPHA, this);
+		//if (CCullingMgr::GetInstance()->Is_Inside(this))
+			//Add_RenderGroup(RENDER_NONALPHA, this);
 	}
 	else
 		Add_RenderGroup(RENDER_ALPHA, this);
@@ -169,8 +169,8 @@ void CBlock::Render_Obejct(void)
 
 	if (m_bSet && !m_bChanging)
 	{
-		m_pTextureCom->Set_Texture(m_iTexture);		
-		m_pBufferCom->Render_Buffer();
+		m_pTextureCom->Set_Texture(m_iTexture);
+		//m_pBufferCom->Render_Buffer();
 	}
 	else
 	{
