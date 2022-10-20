@@ -222,6 +222,7 @@
     <ClInclude Include="..\Header\Jam.h" />
     <ClInclude Include="..\Header\Jar.h" />
     <ClInclude Include="..\Header\Key.h" />
+    <ClInclude Include="..\Header\KnifeTrap.h" />
     <ClInclude Include="..\Header\Lantern.h" />
     <ClInclude Include="..\Header\Leaf.h" />
     <ClInclude Include="..\Header\LeafBullet.h" />
@@ -356,6 +357,7 @@
     <ClCompile Include="..\Code\Jam.cpp" />
     <ClCompile Include="..\Code\Jar.cpp" />
     <ClCompile Include="..\Code\Key.cpp" />
+    <ClCompile Include="..\Code\KnifeTrap.cpp" />
     <ClCompile Include="..\Code\Lantern.cpp" />
     <ClCompile Include="..\Code\Leaf.cpp" />
     <ClCompile Include="..\Code\LeafBullet.cpp" />

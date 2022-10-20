@@ -750,6 +750,9 @@
     <ClInclude Include="..\Header\Water.h">
       <Filter>02. GameObject\01. For_Stage\03. Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\KnifeTrap.h">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Trap\KnifeTrap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1105,6 +1108,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Water.cpp">
       <Filter>02. GameObject\01. For_Stage\03. Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\KnifeTrap.cpp">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Trap\KnifeTrap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

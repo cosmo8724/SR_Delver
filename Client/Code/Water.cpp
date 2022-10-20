@@ -74,9 +74,13 @@ void CWater::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	*/
 
+	
 	// Shader Test
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+
+
 
 	_matrix		IMatrix = *D3DXMatrixIdentity(&IMatrix);
 	_matrix matWorld , matView, matProj;

@@ -33,6 +33,9 @@ public:
 
 public:
 	_int			Get_Attack() { return m_iAttack; }
+	void			Set_GroundY(_float y) { m_fGroundY = y; }
+	void			Set_OriginY(_float y) { m_fOriginPosY = y; }
+
 
 private:
 	CCubeTex*		m_pBufferCom = nullptr;

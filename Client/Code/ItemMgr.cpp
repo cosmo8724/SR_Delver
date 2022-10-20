@@ -282,15 +282,15 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
 
 
-	pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -25.f }), POTION_0);
+	pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -20.f }), POTION_0);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_0", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-	pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -23.f }), POTION_0);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+	//pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -23.f }), POTION_0);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
+	//m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
 
 	return S_OK;

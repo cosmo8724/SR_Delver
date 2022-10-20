@@ -75,7 +75,6 @@ void CRockFall::LateUpdate_Object(void)
 	if(CCullingMgr::GetInstance()->Is_Inside(this))
 		Add_RenderGroup(RENDER_ALPHA, this);
 
-	//Billboard();
 	CEcoObject::LateUpdate_Object();
 }
 
