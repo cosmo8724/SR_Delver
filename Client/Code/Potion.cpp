@@ -3,6 +3,7 @@
 #include "Export_Function.h"
 #include "Player.h"
 #include "CullingMgr.h"
+#include "StaticCamera.h"
 
 CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CItem(pGraphicDev)
@@ -42,7 +43,7 @@ HRESULT CPotion::Ready_Object()
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eState = STATE_GROUND;
-	m_tInfo.iHpHeal = 5;
+	m_tInfo.iHpHeal = 10;
 	m_eItemType = ITEM_POTION;
 
 	return S_OK;
@@ -53,8 +54,14 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 	if (m_eState == STATE_INV)
 		return 0;
 
+
+	if (m_bFinished)
+		return OBJ_NOEVENT;
+
 	if (m_bDead)
 		return OBJ_DEAD;
+
+
 
 	int iResult = CItem::Update_Object(fTimeDelta);
 
@@ -76,14 +83,19 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 
 void CPotion::LateUpdate_Object(void)
 {
+	if (m_iCnt == 0 && m_bFinished)
+	{
+		m_bDead = true;
+	}
+
+
 	if (m_eState != STATE_GROUND)
 		return;
 
 	if (CCullingMgr::GetInstance()->Is_Inside(this))
 		Add_RenderGroup(RENDER_ALPHA, this);
 
-	if (m_iDot > m_tInfo.iHpHeal)
-		m_bDead = true;
+
 
 	Billboard();
 	CGameObject::LateUpdate_Object();
@@ -177,86 +189,63 @@ void CPotion::RandomItem(const _float& fTimeDelta)
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	PLAYERINFO pPlayerInfo = pPlayer->Get_Info();
 
-	if (!m_bPotion || pPlayerInfo.iHpMax < pPlayerInfo.iHp /*|| pPlayerInfo.bSlow || pPlayerInfo.bStun*/)
+	switch (m_tPotionType)
 	{
-		if (!Test)
-		{
-			cout << "OUT" << m_bPotion << endl;
-			cout << "OUT" << pPlayerInfo.iHpMax << endl;
-			cout << "OUT" << pPlayerInfo.iHp << endl;
-			cout << "OUT" << pPlayerInfo.bSlow << endl;
-			cout << "OUT" << pPlayerInfo.bStun << endl;
-
-			Test = true;
-		}
-		return;
+	case POTION_0: // yellow
+	{
+		//pPlayer->Set_HpFull();
+		CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+		pCam->Wave_Camera(10.f, _vec3(0.f, 0.f, 1.f), 30.f);
+		m_bFinished = true;
 	}
-	Test = false;
-	cout << "In" << endl;
-
-	if (POTION_0 == m_tPotionType)
+	break;
+	case POTION_1: // red
 	{
 		m_fDotTime += fTimeDelta;
-		m_fItemTimeAcc += fTimeDelta;
 		if (1.f < m_fDotTime)
 		{
-			pPlayer->Set_HpPlus();
+			if (m_iDot > m_tInfo.iHpHeal)
+			{
+				m_bFinished = true;
+				return;
+			}
 
+			pPlayer->Set_HpPlus(+1);
 			m_iDot++;
 			m_fDotTime = 0.f;
-
-			cout << "1" << endl;
-
-			if (10.f < m_fItemTimeAcc)
-			{
-				cout << "1 -- " << endl;
-				m_bPotion = false;
-				m_bDead = true;
-				m_fItemTimeAcc = 0.f;
-			}
 		}
 	}
-	else if (POTION_1 == m_tPotionType)
+	break;
+	case POTION_2: // green
 	{
 		m_fDotTime += fTimeDelta;
-		m_fItemTimeAcc += fTimeDelta;
 		if (1.f < m_fDotTime)
 		{
-			pPlayer->Set_HpPlus(2);
 
+			if (m_iDot > m_tInfo.iHpHeal)
+			{
+				m_bFinished = true;
+				return;
+			}
+
+			pPlayer->Set_HpPlus(-1);
 			m_iDot++;
 			m_fDotTime = 0.f;
-
-			cout << "2" << endl;
-
-			if (5.f < m_fItemTimeAcc)
-			{
-				cout << "2 -- " << endl;
-				m_bPotion = false;
-				m_bDead = true;
-				m_fItemTimeAcc = 0.f;
-			}
 		}
 	}
-	else if (POTION_2 == m_tPotionType)
+	break;
+	case POTION_3: // blue
 	{
-		cout << "3" << endl;
-		pPlayer->Set_Stun();
-		m_bPotion = false;
-		m_bDead = true;
-	}
-	else if (POTION_3 == m_tPotionType)
-	{
-		cout << "4" << endl;
 		pPlayer->Set_Slow();
-		m_bPotion = false;
-		m_bDead = true;
+		m_bFinished = true;
 	}
-	else if (POTION_4 == m_tPotionType)
+	break;
+	case POTION_4: // pink
 	{
-		cout << "5" << endl;
-		//pPlayer->Set_HpFull(); // TODO 주석 해제
-		m_bPotion = false;
-		m_bDead = true;
+		pPlayer->Set_Stun();
+		m_bFinished = true;
 	}
+	break;
+	}
+
 }

@@ -40,6 +40,8 @@ HRESULT CStaticCamera::Ready_Object(const _vec3* pEye,
 
 	m_bSwitch = true;
 
+	m_fWaveSpeed = 0.5f;
+
 	return S_OK;
 }
 
@@ -57,6 +59,7 @@ Engine::_int CStaticCamera::Update_Object(const _float& fTimeDelta)
 	Key_Input(fTimeDelta);
 	ShakeY(fTimeDelta);
 	Shake_Camera(fTimeDelta);
+	Wave_Camera(fTimeDelta);
 	Target_Renewal();
 
 	_int iExit = CCamera::Update_Object(fTimeDelta);
@@ -221,5 +224,49 @@ void CStaticCamera::Shake_Camera(const _float & fTimeDelta)
 	m_vEye = vPos + 0.3f * vLook;
 	m_vAt = vPos + vLook;
 
+
+}
+
+void CStaticCamera::Wave_Camera(const _float & fTimeDelta)
+{
+	if (!m_bWave)
+		return;
+
+	m_fWaveTimeNow += fTimeDelta;
+
+	if (m_fWaveTimeNow < m_fWaveTime)
+	{
+		_matrix matView;
+		m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+		D3DXMatrixInverse(&matView, 0, &matView);
+
+		_vec3 vRight, vUp, vLook;
+		D3DXVec3Normalize(&vRight, &_vec3(matView._11, matView._12, matView._13));
+		D3DXVec3Normalize(&vUp, &_vec3(matView._21, matView._22, matView._23));
+		D3DXVec3Normalize(&vLook, &_vec3(matView._31, matView._32, matView._33));
+
+		//_vec3   vLook;
+		//m_pPlayerTransCom->Get_Info(INFO_LOOK, &vLook);
+		//D3DXVec3Normalize(&vLook, &vLook);
+
+		_vec3 vAxis = m_vAxis.x * vRight + m_vAxis.y * vUp + m_vAxis.z * vLook;
+
+		m_fWaveAngleNow += m_fWaveSpeed;
+		if (m_fWaveAngleNow < -m_fWaveAngle || m_fWaveAngleNow > m_fWaveAngle)
+			m_fWaveSpeed *= -1;
+		
+		_matrix matRot;
+		D3DXMatrixRotationAxis(&matRot, &vAxis, D3DXToRadian(m_fWaveAngleNow));
+
+		_vec3 Up = { 0.f, 1.f, 0.f };
+		D3DXVec3TransformCoord(&m_vUp, &Up, &matRot);
+	}
+	else
+	{
+		m_bWave = false;
+		m_fWaveAngleNow = 0.f;
+		m_fWaveTimeNow = 0.f;
+		m_vUp = { 0.f,1.f,0.f };
+	}
 
 }
