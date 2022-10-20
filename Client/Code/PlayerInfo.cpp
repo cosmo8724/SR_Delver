@@ -66,7 +66,7 @@ _int CPlayerInfo::Update_Object(const _float & fTimeDelta)
 
 	//PlayerInfo
 	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-	PLAYERINFO tPlayerInfo = pPlayer->Get_PlayerInfo();
+	PLAYERINFO tPlayerInfo = pPlayer->Get_Info();
 
 	swprintf_s(m_szLevel,	L"레벨 : %d / %d", tPlayerInfo.iLevel, 10);
 	swprintf_s(m_szExp,		L"경험치 : %d / %d", tPlayerInfo.iExp, 100);

@@ -24,6 +24,7 @@ public:
 	virtual void		Render_Obejct(void) override;
 
 public:
+	void				Set_HpFull() { m_tInfo.iHp = m_tInfo.iHpMax; }
 	void				Set_HpPlus(_int iHp = 1)  { if (m_tInfo.iHpMax > m_tInfo.iHp) m_tInfo.iHp += iHp; }
 	void				Set_HpMinus(_int iHp = 1) { if (0 < m_tInfo.iHp) m_tInfo.iHp -= iHp; }
 	void				Set_HungerPlus()		  { if (5 > m_tInfo.iHunger) m_tInfo.iHunger++; }
@@ -35,7 +36,8 @@ public:
 
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
- 	PLAYERINFO		Get_PlayerInfo() { return m_tInfo; } // sh
+ 	PLAYERINFO			Get_Info() { return m_tInfo; } // sh
+
 
 	const _float&		Get_CurSpeed() { return m_tInfo.fSpeed; }
 	const PLAYER_STATE&	Get_CurState() { return m_eState; }

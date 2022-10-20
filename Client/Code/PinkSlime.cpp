@@ -195,12 +195,12 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 		if (m_tInfo.iHp <= 0)
 		{
 			CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 3.f, vPlayerPos.y, vPlayerPos.z - 3.f), SEPARATION_TWO);
+			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 3.f, 2.f, vPlayerPos.z - 3.f), SEPARATION_TWO);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime0", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 3.f, vPlayerPos.y, vPlayerPos.z + 3.f), SEPARATION_THREE);
+			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 3.f, 2.f, vPlayerPos.z + 3.f), SEPARATION_THREE);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime1", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
@@ -226,12 +226,12 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 		if (m_tInfo.iHp <= 0)
 		{
 			CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 4.f, vPlayerPos.y - 0.3f, vPlayerPos.z - 3.f), SEPARATION_FOUR);
+			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 4.f, 1.7f, vPlayerPos.z - 3.f), SEPARATION_FOUR);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime2", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 4.f, vPlayerPos.y - 0.3f, vPlayerPos.z + 3.f), SEPARATION_FOUR);
+			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 4.f, 1.7f, vPlayerPos.z + 3.f), SEPARATION_FOUR);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime3", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
@@ -259,12 +259,12 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 		if (m_tInfo.iHp <= 0)
 		{
 			CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 3.f, vPlayerPos.y - 0.3f, vPlayerPos.z + 2.f), SEPARATION_FIVE);
+			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 3.f, 1.7f, vPlayerPos.z + 2.f), SEPARATION_FIVE);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime4", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 3.f, vPlayerPos.y - 0.3f, vPlayerPos.z - 2.f), SEPARATION_FIVE);
+			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 3.f, 1.7f, vPlayerPos.z - 2.f), SEPARATION_FIVE);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime5", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);

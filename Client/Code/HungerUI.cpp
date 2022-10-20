@@ -37,7 +37,7 @@ _int CHungerUI::Update_Object(const _float & fTimeDelta)
 
 	//PlayerInfo
 	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-	PLAYERINFO	tPlayerInfo = pPlayer->Get_PlayerInfo();
+	PLAYERINFO	tPlayerInfo = pPlayer->Get_Info();
 
 	m_fFrame = _float(tPlayerInfo.iHunger);
 

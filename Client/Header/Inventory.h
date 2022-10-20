@@ -64,5 +64,6 @@ private:
 	_matrix			m_matProj;
 	CItem*			m_pEquipped = nullptr;
 
+
 };
 
