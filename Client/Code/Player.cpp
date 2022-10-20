@@ -78,7 +78,7 @@ HRESULT CPlayer::Ready_Object(void)
 	tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo.Position = _vec3(5.f, 3.f, 9.f);
-	tLightInfo.Range = 5.f;
+	tLightInfo.Range = 1000.f;
 	
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 1), E_FAIL);
 
