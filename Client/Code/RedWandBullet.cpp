@@ -74,10 +74,9 @@ HRESULT CRedWandBullet::Add_Component(void)
 
 void CRedWandBullet::CollisionEvent(CGameObject * pObj)
 {
-
-	CParticleMgr::GetInstance()->Set_Info(this, 10, 0.3f, { 1.f, 1.f, 1.f },
-		2.f, { 1.f, 0.f, 0.f, 1.f });
-	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_12);
+	CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 1.f },
+		3.f, { 1.f, 0.f, 0.f, 1.f });
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_12);
 
 	m_bCollision = true;
 	//Reset();

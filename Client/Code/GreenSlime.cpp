@@ -257,12 +257,8 @@ void CGreenSlime::Lock(const _float& fTimeDelta)
 	if (!m_bLock || m_tInfo.iHp == 0)
 		return;
 
-	m_eCurState = IDLE;
+	m_eCurState = HIT;
 	m_fAttack_Speed = 0.f;
-
-	//CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 1.f, 1.f },
-	//	2.f, { 1.f, 0.f, 0.f, 1.f });
-	//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_12);
 
 	m_fLockTimeAcc += fTimeDelta;
 	if (2.f < m_fLockTimeAcc)
