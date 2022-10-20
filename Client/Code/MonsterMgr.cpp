@@ -121,7 +121,7 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	m_vecMonster.push_back(pGameObject);
 
 	// PinkSlime0
-	pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(15.f, 1.5f, 15.f), SEPARATION_ONE);
+	pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(15.f, 2.5f, 15.f), SEPARATION_ONE);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);

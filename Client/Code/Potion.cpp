@@ -64,10 +64,10 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 		{
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			// sh_Test
-			PLAYERINFO tPlayerInfo = pPlayer->Get_PlayerInfo();
-			if (tPlayerInfo.iHp >= tPlayerInfo.iHpMax)
-				return iResult;
+			//// sh_Test
+			//PLAYERINFO tPlayerInfo = pPlayer->Get_PlayerInfo();
+			//if (tPlayerInfo.iHp >= tPlayerInfo.iHpMax)
+			//	return iResult;
 
 			pPlayer->Set_HpPlus();
 			m_iDot++;
