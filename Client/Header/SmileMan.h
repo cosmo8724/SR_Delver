@@ -18,7 +18,7 @@ private:
 	void				OnText(const _float& fTimeDelta);
 
 public:
-	static CSmileMan*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CSmileMan*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void		Free(void);
 
 private:

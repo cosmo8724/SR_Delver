@@ -21,7 +21,7 @@ HRESULT CDog::Ready_Object(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransCom->Set_Scale(0.6f, 0.6f, 0.6f);
-	m_pTransCom->Set_Pos(3.f, 1.f, 3.f);
+	m_pTransCom->Set_Pos(3.f, 2.f, 3.f);
 
 	// 다이얼로그 테스트 (※메모리 누수 주의)
 	wstring str = L"";
@@ -53,7 +53,6 @@ _int CDog::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	m_pTransCom->Set_Y(0.6f);
 	m_pAnimtorCom->Play_Animation(fTimeDelta, 0.5f);
 
 	OnText(fTimeDelta);

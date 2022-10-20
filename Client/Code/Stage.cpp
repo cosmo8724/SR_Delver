@@ -388,7 +388,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RockFall", pGameObject), E_FAIL);
 
-	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 20.f, 0.9f, 5.f }));
+	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 107.f, -38.f, 77.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bonfire", pGameObject), E_FAIL);
 
