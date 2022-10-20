@@ -4,6 +4,7 @@
 #include "CullingMgr.h"
 #include "StaticCamera.h"
 #include "Player.h"
+#include "ParticleMgr.h"
 
 CRockFall::CRockFall(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	:CEcoObject(pGraphicDev)
@@ -15,7 +16,7 @@ CRockFall::CRockFall(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_fFallSpeed	= 0.5f;
 	m_fCurSpeed		= m_fFallSpeed;
 	m_fOriginPosY	= vPos.y;
-	m_fGroundY = 0.5f;
+	m_fGroundY		= 4.f;
 }
 
 CRockFall::CRockFall(const CEcoObject & rhs)
@@ -156,12 +157,27 @@ void CRockFall::Activate()
 	{
 		m_fCurSpeed = -m_fFallSpeed;
 		m_bFall = true;
+		m_bParticle = false;
 	}
 	else if (true == m_bFall && m_fGroundY >= fY)
 	{
 		m_fCurSpeed = m_fRisingSpeed;
 		m_bFall = false;
 		m_bHit = true;
+
+		// sh
+		if (!m_bParticle)
+		{
+			CParticleMgr::GetInstance()->Set_Info(this,
+				30,
+				1.f,
+				{ 0.5f, 0.5f, 0.5f },
+				0.3f,
+				{ 0.5f, 0.5f, 0.5f, 1.f });
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_11);
+
+			m_bParticle = true;
+		}
 	}
 	else if (fY > m_fGroundY)
 		m_bHit = false;

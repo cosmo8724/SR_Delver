@@ -25,7 +25,7 @@ private:
 	HRESULT				Add_Component(void);
 
 private:
-	CTerrainTex*			m_pBufferCom = nullptr;
+	CTerrainTex*		m_pBufferCom = nullptr;
 	CTransform*			m_pTransCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
 	CShader*			m_pShaderCom = nullptr;

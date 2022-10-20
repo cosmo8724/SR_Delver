@@ -77,8 +77,8 @@ HRESULT CWandBullet::Add_Component(void)
 void CWandBullet::CollisionEvent(CGameObject * pObj)
 {
 	CParticleMgr::GetInstance()->Set_Info(this, 20, 0.3f, { 1.f, 1.f, 1.f },
-		2.f, { 1.f,0.f,0.f,1.f });
-	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_5);
+		2.f, { 1.f, 0.2f, 0.8f, 1.f });
+	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
 
 	Reset();
 }
@@ -121,8 +121,7 @@ _int CWandBullet::Update_Object(const _float & fTimeDelta)
 	if (0.1f < m_fParticleTime)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,
-			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 0.f, 0.f, 1.f },
-			1.f, false, true);
+			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 0.2f, 0.8f, 1.f }, 1.f);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_5);
 		m_fParticleTime = 0.f;
 	}
@@ -150,7 +149,7 @@ void CWandBullet::LateUpdate_Object(void)
 	if (1.f < m_fLifeTime)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 20, 0.3f, { 1.f, 1.f, 1.f },
-			1.f, { 1.f,0.f,0.f,1.f });
+			1.f, { 1.f, 0.2f, 0.8f, 1.f });
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_5);
 		Reset();
 	}

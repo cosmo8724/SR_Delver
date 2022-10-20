@@ -151,6 +151,13 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTorch2_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject14_%d.png", TEX_NORMAL, 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RockFall_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject15_%d.dds", TEX_CUBE, 1)), E_FAIL);
 
+	// Cat
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CatIDLE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Cat/Idle/Cat_%d.png", TEX_NORMAL, 16)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CatWALKING_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Cat/Walking/Cat_%d.png", TEX_NORMAL, 16)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CatHILL_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Cat/Hill/Cat_%d.png", TEX_NORMAL, 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CatATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Cat/Attack/Cat_%d.png", TEX_NORMAL, 7)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CatHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Cat/Hit/Cat_%d.png", TEX_NORMAL, 8)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CatDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Cat/Die/Cat_%d.png", TEX_NORMAL, 4)), E_FAIL);
 
 	
 	m_bFinish = true;

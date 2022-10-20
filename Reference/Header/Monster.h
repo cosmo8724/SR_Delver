@@ -73,8 +73,8 @@ protected:
 
 private:
 	_bool				m_bKnockBack = false;
-	_float				m_fBSpeed = 0.1f;
-	_float				m_fBSpeed0 = 0.1f;
+	_float				m_fBSpeed = 0.2f;
+	_float				m_fBSpeed0 = 0.2f;
 	_float				m_fBAccel = 0.01f;
 	_float				m_fBTimeDelta = 0.f;
 };

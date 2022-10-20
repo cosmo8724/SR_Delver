@@ -64,8 +64,6 @@ HRESULT CPlayer::Ready_Object(void)
 	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
 
 
-	m_pGraphicDev->GetLightEnable(0, FALSE);
-	m_pGraphicDev->GetLightEnable(1, FALSE);
 
 
 

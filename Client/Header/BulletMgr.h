@@ -40,5 +40,10 @@ private:
 	int							m_MaxIdx[BULLET_END];
 	queue<int>					m_IdxQue[BULLET_END];	// 사용가능한 모든 인덱스들을 삽입하고, 사용시 pop, 복구 시 다시 집어넣는다.
 
+//	_float						m_fBulletAngle;
+//
+//
+//public:
+//	void		Set_Angle(_float fAngle) { m_fBulletAngle = fAngle; }
 };
 

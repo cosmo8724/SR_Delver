@@ -3,6 +3,8 @@
 #include "Export_Function.h"
 #include "Arrow.h"
 #include "Wand.h"
+#include "GreenWand.h"
+#include "RedWand.h"
 #include "InvImg.h"
 #include "Potion.h"
 #include "Dagger.h"
@@ -38,6 +40,8 @@ HRESULT CItemMgr::Ready_Proto()
 {
 	// Weapon
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Wand1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Wand/wand%d.png", TEX_NORMAL, 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenWand1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/GreenWand/GreenWand%d.png", TEX_NORMAL, 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RadWand1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/RadWand/RadWand.png", TEX_NORMAL, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Arrow1Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Arrow/Arrow1/Arrow1_%d.png", TEX_NORMAL, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Dagger_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Dagger/Dagger%d.png", TEX_NORMAL, 4)), E_FAIL);
 
@@ -135,6 +139,17 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, const _tchar * objTag, ITEMTYP
 
 		m_vecItemPool[eType].push_back(pGameObject);
 	}
+	else if (objName == L"GreenWand")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CGreenWand::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[eType].push_back(pGameObject);
+	}
 	else if (objName == L"Dagger")
 	{
 		m_vecItemObjTags[eType].push_back(szObjTag);
@@ -183,9 +198,21 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Wand
-	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 5.f, 3.f, 10.f }));
+	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -37.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wand", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+
+	// GreenWand
+	pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -38.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenWand", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+
+	// RadWand
+	pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -33.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RadWand", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Key
