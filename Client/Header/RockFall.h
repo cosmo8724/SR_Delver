@@ -50,5 +50,7 @@ private:
 	CTransform*		m_pPlayerTransCom = nullptr;
 	CStaticCamera*	m_pCamera = nullptr;
 
+	_bool			m_bParticle = false;
+
 };
 

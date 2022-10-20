@@ -36,6 +36,8 @@
 
 #include "Water.h"
 
+#include "Cat.h"
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -370,7 +372,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
-	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 5.f, 6.f, 5.f }));
+	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ -6.f, 7.f, -50.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RockFall", pGameObject), E_FAIL);
 
@@ -382,6 +384,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch2", pGameObject), E_FAIL);
 
+	// Cat
+	pGameObject = CCat::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -40.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Cat", pGameObject), E_FAIL);
 
 
 	// Blocks
@@ -637,7 +643,7 @@ HRESULT CStage::Ready_Light(void)
 	tLightInfo2.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo2.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo2.Position = _vec3(5.f, 3.f, 9.f);
-	tLightInfo2.Range = 5.f;
+	tLightInfo2.Range = 1000.f;
 
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo2, 1), E_FAIL);
 	

@@ -382,6 +382,24 @@
     <Filter Include="02. GameObject\01. For_Stage\06. Item\01. Weapon\RedWand">
       <UniqueIdentifier>{6a72a823-9e7c-42e8-95f3-a55b11e3b42e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\01. Player\Cat">
+      <UniqueIdentifier>{ea4f19a8-eb51-4954-8513-d067370e98d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\00. Player\Arrow">
+      <UniqueIdentifier>{a80ebb61-891e-4aa0-9fc0-79fb92f62074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\00. Player\Explode">
+      <UniqueIdentifier>{e3c4df16-95be-4046-97d8-cec5c8142f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\00. Player\Green">
+      <UniqueIdentifier>{7be85d4a-beb3-45fa-909b-3857cb1477b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\00. Player\Pink">
+      <UniqueIdentifier>{7a2114ad-47d8-4412-9bf1-a23cd912e208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\07. Bullet\00. Player\Red">
+      <UniqueIdentifier>{53d49cc3-d1b5-4eb3-a5ab-5251f05e4267}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -489,9 +507,6 @@
     <ClInclude Include="..\Header\GreenSlime.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\01. GreenSlime</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\WandBullet.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\PinkSlime.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\02. PinkSlime</Filter>
     </ClInclude>
@@ -594,9 +609,6 @@
     <ClInclude Include="..\Header\ParticleMgr.h">
       <Filter>02. GameObject\02. For_Public\03. Particle\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\ArrowBullet.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\LeafBullet.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
     </ClInclude>
@@ -690,9 +702,6 @@
     <ClInclude Include="..\Header\SongBossFloorLightning.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. FloorLightning</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\ExplodeBullet.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Jam.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\04. Jam</Filter>
     </ClInclude>
@@ -759,14 +768,26 @@
     <ClInclude Include="..\Header\GreenWand.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\GreenWand</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\GreenWandBullet.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\RedWand.h">
       <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\RedWand</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\ArrowBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ExplodeBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Explode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\GreenWandBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Green</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\WandBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Pink</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\RedWandBullet.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Cat.h">
+      <Filter>02. GameObject\01. For_Stage\01. Player\Cat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -856,9 +877,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\GreenSlime.cpp">
       <Filter>02. GameObject\01. For_Stage\02. Monster\01. GreenSlime</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\WandBullet.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\PinkSlime.cpp">
       <Filter>02. GameObject\01. For_Stage\02. Monster\02. PinkSlime</Filter>
@@ -962,9 +980,6 @@
     <ClCompile Include="..\Code\ParticleMgr.cpp">
       <Filter>02. GameObject\02. For_Public\03. Particle\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\ArrowBullet.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\LeafBullet.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\02. Leaf</Filter>
     </ClCompile>
@@ -1055,9 +1070,6 @@
     <ClCompile Include="..\Code\SongBossFloorLightning.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. FloorLightning</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\ExplodeBullet.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Jam.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\04. Jam</Filter>
     </ClCompile>
@@ -1127,14 +1139,26 @@
     <ClCompile Include="..\Code\GreenWand.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\GreenWand</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\GreenWandBullet.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\RedWand.cpp">
       <Filter>02. GameObject\01. For_Stage\06. Item\01. Weapon\RedWand</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\ArrowBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ExplodeBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Explode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GreenWandBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Green</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\WandBullet.cpp">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Pink</Filter>
+    </ClCompile>
     <ClCompile Include="..\Code\RedWandBullet.cpp">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player</Filter>
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\00. Player\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Cat.cpp">
+      <Filter>02. GameObject\01. For_Stage\01. Player\Cat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

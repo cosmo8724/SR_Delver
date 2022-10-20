@@ -185,6 +185,7 @@
     <ClInclude Include="..\Header\BrownBat.h" />
     <ClInclude Include="..\Header\BulletMgr.h" />
     <ClInclude Include="..\Header\CameraMgr.h" />
+    <ClInclude Include="..\Header\Cat.h" />
     <ClInclude Include="..\Header\CrossHair.h" />
     <ClInclude Include="..\Header\CullingMgr.h" />
     <ClInclude Include="..\Header\Dagger.h" />
@@ -323,6 +324,7 @@
     <ClCompile Include="..\Code\BrownBat.cpp" />
     <ClCompile Include="..\Code\BulletMgr.cpp" />
     <ClCompile Include="..\Code\CameraMgr.cpp" />
+    <ClCompile Include="..\Code\Cat.cpp" />
     <ClCompile Include="..\Code\CrossHair.cpp" />
     <ClCompile Include="..\Code\CullingMgr.cpp" />
     <ClCompile Include="..\Code\Dagger.cpp" />
