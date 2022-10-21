@@ -387,6 +387,7 @@ _bool CTransform::Item_Defense(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 	return m_bFinished;
 
+
 }
 
 HRESULT CTransform::Ready_Transform(void)
