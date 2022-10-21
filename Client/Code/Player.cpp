@@ -325,7 +325,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 			pMap->Set_OpenMap();
 	}
 
-	if (Engine::Key_Down(DIK_X))
+	if (Engine::Key_Down(DIK_S))
 	{
 		CPlayerInfo* pPlayerInfo = dynamic_cast<CPlayerInfo*>(Engine::Get_GameObject(L"Layer_UI", L"UI_PlayerInfo"));
 		
