@@ -33,6 +33,7 @@
 #include "EcoMush.h"
 #include "EcoWeb.h"
 #include "Statue.h"
+#include "Door.h"
 
 #include "Water.h"
 
@@ -380,6 +381,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch2", pGameObject), E_FAIL);
 
+	pGameObject = CDoor::Create(m_pGraphicDev, _vec3({ 5.f, 2, 10.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Door", pGameObject), E_FAIL);
 
 
 	// Blocks

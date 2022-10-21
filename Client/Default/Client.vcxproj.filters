@@ -376,6 +376,9 @@
     <Filter Include="02. GameObject\01. For_Stage\02. Monster\10. Mimic">
       <UniqueIdentifier>{1e21f335-49a3-4997-90ef-ea9ab086d90c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\Door">
+      <UniqueIdentifier>{79b90ebf-162d-4bf3-a21f-4880bf7a445b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -750,6 +753,9 @@
     <ClInclude Include="..\Header\Water.h">
       <Filter>02. GameObject\01. For_Stage\03. Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Door.h">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\Door</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1105,6 +1111,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Water.cpp">
       <Filter>02. GameObject\01. For_Stage\03. Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Door.cpp">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\Door</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

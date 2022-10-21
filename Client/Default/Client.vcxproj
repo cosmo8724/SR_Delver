@@ -189,6 +189,7 @@
     <ClInclude Include="..\Header\CullingMgr.h" />
     <ClInclude Include="..\Header\Dagger.h" />
     <ClInclude Include="..\Header\Dog.h" />
+    <ClInclude Include="..\Header\Door.h" />
     <ClInclude Include="..\Header\DynamicCamera.h" />
     <ClInclude Include="..\Header\EcoMush.h" />
     <ClInclude Include="..\Header\EcoObject.h" />
@@ -323,6 +324,7 @@
     <ClCompile Include="..\Code\CullingMgr.cpp" />
     <ClCompile Include="..\Code\Dagger.cpp" />
     <ClCompile Include="..\Code\Dog.cpp" />
+    <ClCompile Include="..\Code\Door.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
     <ClCompile Include="..\Code\EcoMush.cpp" />
     <ClCompile Include="..\Code\EcoObject.cpp" />

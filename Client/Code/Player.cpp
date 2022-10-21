@@ -452,33 +452,40 @@ void CPlayer::Jump(const _float & fTimeDelta)
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-	if (Engine::Key_Down(DIK_E))
-		pOtherObj->InteractEvent();
-
-	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	//if (pMonster == pOtherObj)
-	//	OnHit(pMonster->Get_MonsterAttack());
-
-	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	//if (pBullet == pOtherObj)
-	//	OnHit(pBullet->Get_BulletAttack());
-
-	CEcoObject* pEco = dynamic_cast<CEcoObject*>(pOtherObj);
-	if (nullptr != pEco)
+	CGameObject* pObj = dynamic_cast<CBlock*>(pOtherObj);
+	if (nullptr == pObj)
 	{
-		if (ECO_ROCKFALL == pEco->Get_Type())
+		if (Engine::Key_Down(DIK_E))
+			pOtherObj->InteractEvent();
+
+		//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+		//if (pMonster == pOtherObj)
+		//	OnHit(pMonster->Get_MonsterAttack());
+
+		//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+		//if (pBullet == pOtherObj)
+		//	OnHit(pBullet->Get_BulletAttack());
+
+		CEcoObject* pEco = dynamic_cast<CEcoObject*>(pOtherObj);
+		if (nullptr != pEco)
 		{
-			OnHit(static_cast<CRockFall*>(pEco)->Get_Attack());
+			if (ECO_ROCKFALL == pEco->Get_Type())
+			{
+				OnHit(static_cast<CRockFall*>(pEco)->Get_Attack());
+			}
 		}
-	}
 
 
-	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
-	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
-	{
-		CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
-		pInv->Set_Inventory(pItem);
+		CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
+		if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
+		{
+			CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+			pInv->Set_Inventory(pItem);
+		}
+
+		return;
 	}
+
 
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
 	if (pBlock)
