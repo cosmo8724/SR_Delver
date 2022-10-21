@@ -17,6 +17,7 @@
 #include "Pants.h"
 #include "Ring.h"
 #include "Food.h"
+#include "Lantern.h"
 
 IMPLEMENT_SINGLETON(CItemMgr)
 
@@ -63,6 +64,10 @@ HRESULT CItemMgr::Ready_Proto()
 	// Shield
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Shield_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equipment/shield%d.png", TEX_NORMAL,1)), E_FAIL);
 
+	// Lantern
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Lantern_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equipment/lantern%d.png", TEX_NORMAL, 1)), E_FAIL);
+
+	
 	return S_OK;
 }
 
@@ -318,6 +323,13 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+
+
+	pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
+	
 
 
 	return S_OK;

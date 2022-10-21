@@ -3,6 +3,7 @@
 #include "Export_Function.h"
 #include "ParticleMgr.h"
 #include "BulletMgr.h"
+#include "LightMgr.h"
 
 CWand::CWand(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CWeapon(pGraphicDev)
@@ -39,18 +40,6 @@ HRESULT CWand::Ready_Object(void)
 	//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
 	//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
 
-	//D3DLIGHT9	tLightInfo;
-	//ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
-
-	//tLightInfo.Type = D3DLIGHT_POINT;
-	//tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tLightInfo.Position = _vec3(5.f, 3.f, 9.f );
-	//tLightInfo.
-
-	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 1), E_FAIL);
-
 	return S_OK;
 }
 
@@ -58,18 +47,15 @@ HRESULT CWand::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ���� ������Ʈ
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// �ؽ��� �İ�ü ������Ʈ
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Wand1Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_Wand1Texture", pComponent });
 	m_textureTag = L"Proto_Wand1Texture";
 
-	// ������� ������Ʈ
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -96,13 +82,6 @@ void CWand::CollisionEvent(CGameObject * pObj)
 		m_vPos = { -1000.f, -1000.f, -1000.f };
 
 		m_pColliderCom->Set_Free(true);
-		//_vec3 vScale;
-		//_matrix matWorld;
-		//m_pTransCom->Get_WorldMatrix(&matWorld);
-
-		//vScale = m_pTransCom->Get_Scale();
-		//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
-		//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
 	}
 
 }
@@ -115,6 +94,7 @@ void CWand::Charge(const _float & fTimeDelta)
 	{
 		m_fFrame += frameEnd * fTimeDelta;
 		m_fPlusSpeed += 0.3f;
+		m_pTransCom->Set_Stop(true);
 
 		if (!m_bParticleCall)
 		{
@@ -131,41 +111,47 @@ void CWand::Charge(const _float & fTimeDelta)
 			m_fChargeTime = 0.f;
 			m_bCharge = false;
 			m_bAttack = true;
+			m_pTransCom->Set_Stop(false);
 		}
 
 	}
 
-	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)	// ���� ��ư�� ���ȴ�.
+	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)	
 	{
 		m_bClick = true;
 		m_fChargeTime += m_fTimeDelta;
 
-		if (m_fChargeTime > 0.3f)	// ��¡��Ȳ�̶��
+		if (m_fChargeTime > 0.3f)	
 		{
-			m_bClick = false;		// Ŭ���� �ƴ϶� ��¡�̴�.
+			m_bClick = false;		
 			m_bCharge = true;
+			m_pTransCom->Set_Stop(true);
+			m_pGraphicDev->LightEnable(LIGHT_WAND, TRUE);
+
 		}
 	}
 	else
 	{
-		if (true == m_bClick)	// ���� ��ư�� ���������� ������ ������ ���Ⱦ��ٸ�
+		if (true == m_bClick)	
 		{
-			m_fFrame += frameEnd * fTimeDelta * 3.f;	// �ܼ� ������ �Ѵ�.
+			m_fFrame += frameEnd * fTimeDelta * 3.f;
 			if (m_fFrame >= frameEnd)
 			{
 				m_fFrame = 0.f;
 				m_bClick = false;
 				m_bAttack = true;
 				m_fChargeTime = 0.f;
+				m_pTransCom->Set_Stop(true);
 			}
 		}
-		else if (true == m_bCharge)  // ���� ���� ��Ȳ�̾��ٸ� ��¡������ �Ѵ�.
+		else if (true == m_bCharge) 
 		{
 			m_fFrame = 0.f;
 			m_bCharge = false;
 			m_fChargeTime = 0.f;
 			m_bAttack = true;
 			m_bParticleCall = false;
+			m_pTransCom->Set_Stop(false);
 		}
 	}
 }
@@ -180,6 +166,9 @@ void CWand::Attack(const _float & fTimeDelta)
 		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_LASER, TEXTURE_0);
 		m_bAttack = false;
 		m_fPlusSpeed = 0.f;
+
+		m_pGraphicDev->LightEnable(LIGHT_WAND, FALSE);
+		m_pTransCom->Set_Stop(false);
 	}
 }
 
@@ -229,6 +218,15 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 		//m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
 
 		m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
+
+		//_vec3 vTrans = vPos + 0.25f * vRight + 0.8f * vLook;
+		_vec3 vPos, vRight, vLook, vUp;
+		m_pCenter->Get_Info(INFO_POS, &vPos);
+		m_pCenter->Get_Info(INFO_RIGHT, &vRight);
+		m_pCenter->Get_Info(INFO_LOOK, &vLook);
+		m_pCenter->Get_Info(INFO_UP, &vUp);
+		_vec3 vTrans = vPos + 0.25f * vRight + 0.7f * vLook + 0.2f * vUp;
+		CLightMgr::GetInstance()->Update_Pos(LIGHT_WAND, vTrans);
 		break;
 	}
 

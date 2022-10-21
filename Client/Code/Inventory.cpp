@@ -461,6 +461,19 @@ void CInventory::Set_ItemEquip()
 						m_Inventory[i][j] = nullptr;
 					}
 					break;
+					case ITEM_LANTERN:
+					{
+						CItem*		pLeft = pPlayer->Get_Left();
+						if (nullptr != pLeft)
+							pLeft->Set_State(STATE_INV);
+
+						pPlayer->Set_Left(pItem);
+
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_LANTERN);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
 					case ITEM_HELMAT:
 					{
 						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));

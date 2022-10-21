@@ -36,6 +36,7 @@ public:
 	void				Set_Look(_vec3 vLook) { m_vLook = vLook; }
 	_vec3				Get_Look() { return m_vLook; }
 	_float				Get_AttackAngle() { return m_fAttackAngle; }
+	void				Set_Stop(_bool bStop) { m_bStop = bStop; }
 
 public:
 	void				Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
@@ -76,6 +77,8 @@ public:
 	_matrix			m_matOldBill;
 	_float			m_fShieldvLook;
 	_vec3			m_vLook;
+
+	_bool			m_bStop = false;
 
 public:
 	static CTransform*		Create(void);

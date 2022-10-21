@@ -340,30 +340,6 @@
     <Filter Include="02. GameObject\01. For_Stage\02. Potion">
       <UniqueIdentifier>{ec9c8099-79a2-465a-a1f5-704697f0ff81}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\03. Equipment">
-      <UniqueIdentifier>{325a6f15-9fb1-4333-9660-7d50586dbfc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\03. Equipment\Armor">
-      <UniqueIdentifier>{5a0d528a-36bd-4e4f-9039-8b82c8fd15e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\03. Equipment\Helmet">
-      <UniqueIdentifier>{e1d5e7de-ac0d-4f96-b93b-7df3c4c9eef8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\03. Equipment\Pants">
-      <UniqueIdentifier>{183be2ad-1f55-4db3-97ca-80ec85d9442c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\03. Equipment\Ring">
-      <UniqueIdentifier>{16a55630-e4d7-4646-b162-27864ab57b06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\03. Equipment\Necklace">
-      <UniqueIdentifier>{5d7a84c5-76f9-4763-a4e2-e08e0d93e29a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\03. Equipment\LeftHand">
-      <UniqueIdentifier>{55b30218-dbb7-400b-9dc0-1b9215d49199}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\03. Equipment\Shield">
-      <UniqueIdentifier>{417ab719-2141-4004-9e9e-3ada34cd58bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\04. LeftHand">
       <UniqueIdentifier>{e2f53283-eb85-46d4-9ff6-31eea0fd5b16}</UniqueIdentifier>
     </Filter>
@@ -375,9 +351,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\09. Food">
       <UniqueIdentifier>{3855446b-b5da-4a2f-bcfd-d6dbd4ab14d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. For_Stage\Lantern">
-      <UniqueIdentifier>{5cc18c69-bf15-4311-a29c-79692f26c707}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\01. Weapon\RedWand">
       <UniqueIdentifier>{6a72a823-9e7c-42e8-95f3-a55b11e3b42e}</UniqueIdentifier>
@@ -399,6 +372,33 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\00. Player\Red">
       <UniqueIdentifier>{53d49cc3-d1b5-4eb3-a5ab-5251f05e4267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment">
+      <UniqueIdentifier>{325a6f15-9fb1-4333-9660-7d50586dbfc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\Armor">
+      <UniqueIdentifier>{5a0d528a-36bd-4e4f-9039-8b82c8fd15e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\Helmet">
+      <UniqueIdentifier>{e1d5e7de-ac0d-4f96-b93b-7df3c4c9eef8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\Pants">
+      <UniqueIdentifier>{183be2ad-1f55-4db3-97ca-80ec85d9442c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\Ring">
+      <UniqueIdentifier>{16a55630-e4d7-4646-b162-27864ab57b06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\Necklace">
+      <UniqueIdentifier>{5d7a84c5-76f9-4763-a4e2-e08e0d93e29a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\LeftHand">
+      <UniqueIdentifier>{55b30218-dbb7-400b-9dc0-1b9215d49199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\Shield">
+      <UniqueIdentifier>{417ab719-2141-4004-9e9e-3ada34cd58bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\Lantern">
+      <UniqueIdentifier>{5cc18c69-bf15-4311-a29c-79692f26c707}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -664,10 +664,10 @@
       <Filter>02. GameObject\01. For_Stage\06. Key</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Lantern.h">
-      <Filter>02. GameObject\01. For_Stage\Lantern</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Lantern</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Shield.h">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Shield</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Shield</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CameraMgr.h">
       <Filter>02. GameObject\02. For_Public</Filter>
@@ -694,10 +694,10 @@
       <Filter>97. Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Armor.h">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Armor</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Armor</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Equipment.h">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SongBossFloorLightning.h">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. FloorLightning</Filter>
@@ -733,19 +733,19 @@
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Armor</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Helmat.h">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Helmet</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Helmet</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Ring.h">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Ring</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Ring</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Pants.h">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Pants</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Pants</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Necklace.h">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Necklace</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Necklace</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\LeftHand.h">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\LeftHand</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\LeftHand</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\PlayerInfo.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\10. PlayerInfo</Filter>
@@ -1032,10 +1032,10 @@
       <Filter>02. GameObject\01. For_Stage\06. Key</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Lantern.cpp">
-      <Filter>02. GameObject\01. For_Stage\Lantern</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Lantern</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Shield.cpp">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Shield</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Shield</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CameraMgr.cpp">
       <Filter>02. GameObject\02. For_Public</Filter>
@@ -1062,10 +1062,10 @@
       <Filter>97. Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Armor.cpp">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Armor</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Armor</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Equipment.cpp">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SongBossFloorLightning.cpp">
       <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\03. FloorLightning</Filter>
@@ -1104,19 +1104,19 @@
       <Filter>02. GameObject\01. For_Stage\06. Item\03. Equipment\Armor</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Helmat.cpp">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Helmet</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Helmet</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Ring.cpp">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Ring</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Ring</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Pants.cpp">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Pants</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Pants</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Necklace.cpp">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\Necklace</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\Necklace</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\LeftHand.cpp">
-      <Filter>02. GameObject\01. For_Stage\03. Equipment\LeftHand</Filter>
+      <Filter>02. GameObject\01. For_Stage\06. Item\02. Equipment\LeftHand</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\PlayerInfo.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\10. PlayerInfo</Filter>

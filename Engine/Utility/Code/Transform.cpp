@@ -199,7 +199,12 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 	_matrix matRev;
 	_float fRad = 0.f;
-	if (m_vOldPos.y == vPos.y && m_vOldPos != vPos)
+	if (m_bStop)
+	{
+		m_fAngle = 5.f;
+	}
+
+	if (!m_bStop && m_vOldPos.y == vPos.y && m_vOldPos != vPos)
 	{
 		m_fAngle += m_fAngleSpeed;
 		if (m_fAngle > 5.f || m_fAngle < -5.f)
@@ -303,7 +308,11 @@ void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorl
 
 	_matrix matRev;
 	_float fRad = 0.f;
-	if (m_vOldPos.y == vPos.y && m_vOldPos != vPos)
+	if (m_bStop)
+	{
+		m_fAngle = 5.f;
+	}
+	if (!m_bStop && m_vOldPos.y == vPos.y && m_vOldPos != vPos)
 	{
 		m_fAngle += m_fAngleSpeed;
 		if (m_fAngle > 5.f || m_fAngle < -5.f)
