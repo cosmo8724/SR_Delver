@@ -65,7 +65,7 @@ _int CDoor::Update_Object(const _float & fTimeDelta)
 		D3DXVec3Normalize(&vRight, &vRight);
 
 		_matrix matTrans;
-
+		//D3DXMatrixTranslation(&matTrans, )
 
 		
 
