@@ -261,18 +261,26 @@ void CStick::Motion_Change()
 			break;
 
 		case ANGER:
+			Engine::StopSound(SOUND_STICK);
+			Engine::Play_Sound(L"M_Stick_Alert.mp3", SOUND_STICK, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_StickANGER_Texture");
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_STICK);
+			Engine::Play_Sound(L"M_Stick_Attack.mp3", SOUND_STICK, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_StickATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_STICK);
+			Engine::Play_Sound(L"M_Stick_Hit.mp3", SOUND_STICK, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_StickHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_STICK);
+			Engine::Play_Sound(L"M_Stick_Die.mp3", SOUND_STICK, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_StickDIE_Texture");
 			break;
 		}

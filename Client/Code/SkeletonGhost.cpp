@@ -179,6 +179,8 @@ void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 		m_fHpMinusTimeAcc += fTimeDelta;
 		if (2.f < m_fHpMinusTimeAcc) // 2초마다 플레이어 체력 감소
 		{
+			m_eCurState = ATTACK;
+
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 			pPlayer->Set_HpMinus();
 
@@ -189,7 +191,10 @@ void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 		Circle();
 	}
 	else
+	{
+		m_eCurState = IDLE;
 		m_bCircle = false;
+	}
 
 
 	if (!m_bCircle && fDist < 15.f)
@@ -346,14 +351,20 @@ void CSkeletonGhost::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_SKELETONGHOST);
+			Engine::Play_Sound(L"M_SkeletonGhost_Attack.mp3", SOUND_SKELETONGHOST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_SkeletonGhostATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_SKELETONGHOST);
+			Engine::Play_Sound(L"M_SkeletonGhost_Hit.mp3", SOUND_SKELETONGHOST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_SkeletonGhostHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_SKELETONGHOST);
+			Engine::Play_Sound(L"M_SkeletonGhost_Die.mp3", SOUND_SKELETONGHOST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_SkeletonGhostDIE_Texture");
 			break;
 		}

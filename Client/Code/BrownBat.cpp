@@ -173,6 +173,9 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 		m_fTimeAcc += fTimeDelta;
 		if (1.f < m_fTimeAcc)
 		{
+			Engine::StopSound(SOUND_BROWNDBAT);
+			Engine::Play_Sound(L"M_BrownBat_Idle.mp3", SOUND_BROWNDBAT, 1.f);
+
 			m_fIdle_Speed *= -1;
 			m_fTimeAcc = 0.f;
 		}
@@ -275,14 +278,20 @@ void CBrownBat::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_BROWNDBAT);
+			Engine::Play_Sound(L"M_BrownBat_Attack.mp3", SOUND_BROWNDBAT, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_BROWNDBAT);
+			Engine::Play_Sound(L"M_BrownBat_Hit.mp3", SOUND_BROWNDBAT, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_BROWNDBAT);
+			Engine::Play_Sound(L"M_BrownBat_Die.mp3", SOUND_BROWNDBAT, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_BrownBatDIE_Texture");
 			break;
 		}

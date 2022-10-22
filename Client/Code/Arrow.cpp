@@ -292,6 +292,6 @@ void CArrow::Attack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_fPlusSpeed = 0.f;
 		m_pTransCom->Set_Stop(false);
-
+		Engine::Play_Sound(L"bow.mp3", SOUND_EFFECT, 1.f);
 	}
 }

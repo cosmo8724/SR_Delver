@@ -266,14 +266,20 @@ void CLeaf::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_LEAF);
+			Engine::Play_Sound(L"M_Leaf_Attack.mp3", SOUND_LEAF, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_LeafATTACK_Texture");
 			break;
 		
 		case HIT:
+			Engine::StopSound(SOUND_LEAF);
+			Engine::Play_Sound(L"M_Leaf_Hit.mp3", SOUND_LEAF, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_LeafHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_LEAF);
+			Engine::Play_Sound(L"M_Leaf_Die.mp3", SOUND_LEAF, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_LeafDIE_Texture");
 			break;
 		}

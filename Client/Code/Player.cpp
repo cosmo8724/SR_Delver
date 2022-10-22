@@ -259,7 +259,15 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
+
+		//bW = true;
+		//if (bS || bA || bD)
+		//	Engine::StopSound(SOUND_PLAYER);
+		//else
+		//	Engine::Play_Sound(L"steps.mp3", SOUND_PLAYER, 1.f);
 	}
+	//else
+	//	bW = false;
 
 	if (Engine::Get_DIKeyState(DIK_S) & 0x80)
 	{
@@ -267,7 +275,15 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_vDirection *= -1.f;
 		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
+
+		//bS = true;
+		//if (bW || bA || bD)
+		//	Engine::StopSound(SOUND_PLAYER);
+		//else
+		//	Engine::Play_Sound(L"steps.mp3", SOUND_PLAYER, 1.f);
 	}
+	//else
+	//	bS = false;
 
 	if (Engine::Get_DIKeyState(DIK_A) & 0x80)
 	{
@@ -276,7 +292,15 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_vDirection *= -1.f;
 		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
+
+		//bA = true;
+		//if (bW || bS || bD)
+		//	Engine::StopSound(SOUND_PLAYER);
+		//else
+		//	Engine::Play_Sound(L"steps.mp3", SOUND_PLAYER, 1.f);
 	}
+	//else
+	//	bA = false;
 
 	if (Engine::Get_DIKeyState(DIK_D) & 0x80)
 	{
@@ -284,8 +308,15 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
-	}
 
+		//bD = true;
+		//if (bW || bS || bA)
+		//	Engine::StopSound(SOUND_PLAYER);
+		//else
+		//	Engine::Play_Sound(L"steps.mp3", SOUND_PLAYER, 1.f);
+	}
+	//else
+	//	bD = false;
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) & 0x80)
 	{
@@ -319,7 +350,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	}
 
 	// camera test
-	if (Key_Down(DIK_C))
+	if (Engine::Key_Down(DIK_C))
 	{
 		// 한바퀴 돌기
 		//CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT);
@@ -333,7 +364,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 
 	}
-	if (Key_Down(DIK_V))
+	if (Engine::Key_Down(DIK_V))
 	{
 		CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
 	}
@@ -662,10 +693,10 @@ void CPlayer::Slow(const _float & fTimeDelta)
 void CPlayer::Hunger(const _float & fTimeDelta)
 {
 	// test
-	if (Key_Down(DIK_K))
+	if (Engine::Key_Down(DIK_K))
 		Set_HungerMinus();
 
-	if (Key_Down(DIK_L))
+	if (Engine::Key_Down(DIK_L))
 		Set_HungerPlus();
 	// test
 

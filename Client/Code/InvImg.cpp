@@ -63,9 +63,15 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 	if (m_eState == STATE_INV)
 	{
 		if ((Engine::Get_DIKeyState(DIK_TAB) & 0X80))
+		{
 			m_bOn = true;
+			//Engine::Play_Sound(L"ui_dialogue_open.mp3", SOUND_UI, 1.f);
+		}
 		else
+		{
 			m_bOn = false;
+			//Engine::Play_Sound(L"ui_dialogue_close.mp3", SOUND_UI, 1.f);
+		}
 	}
 	else if (m_eState == STATE_QUICK)
 		m_bOn = true;

@@ -44,7 +44,6 @@ Engine::_int CLogo::Update_Scene(const _float& fTimeDelta)
 
 	_int iResult = Engine::CScene::Update_Scene(fTimeDelta);
 
-	// �ε� Ŭ���� ����
 	if (!m_pLoading)
 	{
 		if (Key_Down(DIK_SPACE))

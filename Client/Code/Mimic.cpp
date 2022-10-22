@@ -209,7 +209,6 @@ void CMimic::CollisionEvent(CGameObject* pObj)
 
 void CMimic::InteractEvent()
 {
-	cout << "jjj" << endl;
 	m_bInteract = true;
 }
 
@@ -225,15 +224,21 @@ void CMimic::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_MIMIC);
+			Engine::Play_Sound(L"M_Mimic_Attack.mp3", SOUND_MIMIC, 1.f);
 			m_tInfo.iAttack = 2;
 			m_pAnimtorCom->Change_Animation(L"Proto_MimicATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_MIMIC);
+			Engine::Play_Sound(L"M_Mimic_Hit.mp3", SOUND_MIMIC, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_MimicHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_MIMIC);
+			Engine::Play_Sound(L"M_Mimic_Die.mp3", SOUND_MIMIC, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_MimicDIE_Texture");
 			break;
 		}

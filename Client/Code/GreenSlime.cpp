@@ -316,16 +316,22 @@ void CGreenSlime::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_GREENSLIME);
+			Engine::Play_Sound(L"M_GreenSlime_Attack.mp3", SOUND_GREENSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_GreenSlimeATTACK_Texture");
 			//m_pTextureCom = static_cast<CTexture*>(Find_Component(L"Proto_GreenSlimeATTACK_Texture", ID_STATIC));
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_GREENSLIME);
+			Engine::Play_Sound(L"M_GreenSlime_Hit.mp3", SOUND_GREENSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_GreenSlimeHIT_Texture");
 			//m_pTextureCom = static_cast<CTexture*>(Find_Component(L"Proto_GreenSlimeHIT_Texture", ID_STATIC));
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_GREENSLIME);
+			Engine::Play_Sound(L"M_GreenSlime_Die.mp3", SOUND_GREENSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_GreenSlimeDIE_Texture");
 			//m_pTextureCom = static_cast<CTexture*>(Find_Component(L"Proto_GreenSlimeDIE_Texture", ID_STATIC));
 			break;
