@@ -57,9 +57,9 @@ HRESULT CWandBullet::Add_Component(void)
 	m_mapComponent[ID_STATIC].insert({ L"Proto_CubeTexCom", pComponent });
 
 	// 텍스쳐 컴객체 컴포넌트
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_CubeTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_PinkBullet_CubeTexture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_CubeTexture", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Proto_PinkBullet_CubeTexture", pComponent });
 
 	// 월드행렬 컴포넌트
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
@@ -150,7 +150,7 @@ void CWandBullet::LateUpdate_Object(void)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 20, 0.3f, { 1.f, 1.f, 1.f },
 			1.f, { 1.f, 0.2f, 0.8f, 1.f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_5);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
 		Reset();
 	}
 

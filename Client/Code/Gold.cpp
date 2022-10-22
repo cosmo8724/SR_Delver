@@ -166,7 +166,6 @@ void CGold::CollisionEvent(CGameObject * pObj)
 
 		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		m_iTextureIdx = (m_iTextureIdx + 1) * 2;
-		cout << "+++gold Up : " << m_iTextureIdx << endl;
 		pPlayer->Set_GoldPlus(m_iTextureIdx);
 
 		m_eState = STATE_INV;

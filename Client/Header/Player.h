@@ -38,8 +38,9 @@ public:
 
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
- 	PLAYERINFO			Get_Info() { return m_tInfo; } // sh
-
+	PLAYERINFO			Get_Info() { return m_tInfo; } // sh
+	_int				Get_Hp() { return m_tInfo.iHp; } // sh
+	void				Set_Level(const _int& iMonsterHp, const _int& iMonsterExp); // sh
 
 	const _float&		Get_CurSpeed() { return m_tInfo.fSpeed; }
 	const PLAYER_STATE&	Get_CurState() { return m_eState; }

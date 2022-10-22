@@ -99,15 +99,12 @@ void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 		pParticle->Set_Information(
 			true, 0, m_pTarget, m_tAttribute, m_tPInfo, m_fFrameSpeed, m_bFrameRepeat, m_bRand);
 	
-		if(eType == PTYPE_SPOT)
+		//if(eType == PTYPE_SPOT)
 			pParticle->Add_Info_Spot(m_bFrameMove, m_bFrameRand);
-		else if(eType == PTYPE_CIRCLING)
+		//else if(eType == PTYPE_CIRCLING)
 			pParticle->Add_Info(m_bFrameMove, m_fFrame, m_fDist, m_fAngleSpeed);
 		
 		pParticle->Set_Particle(eType);
-
-
-
 	}
 
 	/*
@@ -156,7 +153,6 @@ void CParticleMgr::Set_Info(CGameObject* pObj
 	m_fFrameSpeed = _fFrameSpeed;
 	m_bFrameRepeat = _bFrameRepeat;
 	m_bRand = _bRand;
-
 }
 
 inline void CParticleMgr::Free(void)

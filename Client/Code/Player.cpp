@@ -49,18 +49,17 @@ HRESULT CPlayer::Ready_Object(void)
 	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	// 플레이어 스탯정보
-	m_tInfo.iHp = 10;
+	m_tInfo.iHp = 20;
 	m_tInfo.iHpMax = 20;
 	m_tInfo.iAtk = 1;
 	m_tInfo.iDef = 10;
 	m_tInfo.iExp = 0;
-	m_tInfo.iExpMax = 7;
+	m_tInfo.iExpMax = 10;
 	m_tInfo.iHunger = 5;
 	m_tInfo.fSpeed = 5.f;
 	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
 	m_tInfo.iLevel = 1;
 	m_tInfo.iGold = 0;
-
 
 	return S_OK;
 }
@@ -448,6 +447,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	if (pMonster == pOtherObj)
 		OnHit(pMonster->Get_MonsterAttack());
 
+
 	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
 	if (pBullet == pOtherObj)
 		OnHit(pBullet->Get_BulletAttack());
@@ -559,19 +559,9 @@ void CPlayer::OnHit(_int _HpMinus)
 
 	// 플레이어는 2초간 무적
 	if (2.f < m_InvincibilityTimeAcc)
-	{
-		//CParticleMgr::GetInstance()->Set_Info(this,
-		//	1,
-		//	1.f,
-		//	{ 1.f, 1.f, 1.f },
-		//	2.f,
-		//	{ 1.f, 0.f, 0.f, 0.01f });
-		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_7);
-		
-
-
-			if(0 < _HpMinus)
-			m_bKnockBack = true;
+	{	
+		if(0 < _HpMinus)
+		m_bKnockBack = true;
 		
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
@@ -691,6 +681,28 @@ void CPlayer::Hunger(const _float & fTimeDelta)
 		Set_HungerMinus();
 		m_fHungerTimeAcc = 0.f;
 	}
+}
+
+void CPlayer::Set_Level(const _int& iMonsterHp, const _int& iMonsterExp)
+{
+	cout << "Level()" << iMonsterHp << endl;
+	if (0 >= iMonsterHp || 1 >= iMonsterHp)
+	{
+		cout << "in" << endl;
+
+		if (m_tInfo.iExpMax > m_tInfo.iExp)
+		{
+			cout << "up" << endl;
+			m_tInfo.iExp += iMonsterExp;
+		}
+		else
+		{
+			m_tInfo.iLevel += 1;
+			cout << m_tInfo.iLevel << endl;
+		}
+	}
+
+
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

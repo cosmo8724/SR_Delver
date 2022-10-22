@@ -42,6 +42,7 @@ HRESULT CBrownBat::Ready_Object(void)
 
 	m_tInfo.iHp = 2;
 	m_tInfo.iAttack = 1;
+	m_tInfo.iExp = 2;
 
 	m_fHeight = m_vPos.y; // 3.f
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
@@ -146,7 +147,7 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 	if (fDist < 7.f)
 	{
 		m_fAttackTimeAcc += fTimeDelta;
-		if (1.f < m_fAttackTimeAcc)
+		if (0.7f < m_fAttackTimeAcc)
 		{
 			if (0 < m_fAttack_Speed)
 				m_eCurState = IDLE;
@@ -166,13 +167,8 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 	{
 		m_eCurState = IDLE;
 
-		// 플레이어를 따라다니지 않을 때 좌우 이동
-		_vec3 vRight, vUp, vLook;
-		vLook = vPlayerPos - vPos;
-		D3DXVec3Normalize(&vLook, &vLook);
-		vUp = _vec3(0.f, 1.f, 0.f);
-
-		D3DXVec3Cross(&vRight, &vUp, &vLook);
+		_vec3		vRight;
+		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
 
 		m_fTimeAcc += fTimeDelta;
 		if (1.f < m_fTimeAcc)
@@ -183,6 +179,24 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 
 		D3DXVec3Normalize(&vRight, &vRight);
 		m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
+
+		//// 플레이어를 따라다니지 않을 때 좌우 이동
+		//_vec3 vRight, vUp, vLook;
+		//vLook = vPlayerPos - vPos;
+		//D3DXVec3Normalize(&vLook, &vLook);
+		//vUp = _vec3(0.f, 1.f, 0.f);
+
+		//D3DXVec3Cross(&vRight, &vUp, &vLook);
+
+		//m_fTimeAcc += fTimeDelta;
+		//if (1.f < m_fTimeAcc)
+		//{
+		//	m_fIdle_Speed *= -1;
+		//	m_fTimeAcc = 0.f;
+		//}
+
+		//D3DXVec3Normalize(&vRight, &vRight);
+		//m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
 	}
 }
 
@@ -199,7 +213,7 @@ void CBrownBat::OnHit(const _float & fTimeDelta)
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
 
 		m_bOneCheck = true;
 	}

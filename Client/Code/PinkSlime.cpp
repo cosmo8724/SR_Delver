@@ -81,6 +81,7 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	{
 		m_tInfo.iHp = 4;
 		m_tInfo.iAttack = 1;
+		m_tInfo.iExp = 1;
 		m_fScale = 4.f;
 		m_fHeight = m_vPos.y;
 	}
@@ -88,6 +89,7 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	{
 		m_tInfo.iHp = 5;
 		m_tInfo.iAttack = 2;
+		m_tInfo.iExp = 1;
 		m_fScale = 2.f;
 		m_fHeight = m_vPos.y;
 	}
@@ -95,6 +97,7 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	{
 		m_tInfo.iHp = 5;
 		m_tInfo.iAttack = 3;
+		m_tInfo.iExp = 5;
 		m_fScale = 1.f;
 		m_fHeight = m_vPos.y;
 	}
@@ -208,7 +211,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 			m_bPinkDead = true;
 		}
 
-		if (!m_bPinkJump && fDist < 7.f)
+		if (!m_bPinkJump && fDist < 15.f)
 		{
 			m_bJump = true;
 			Jump(fTimeDelta);
@@ -226,12 +229,12 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 		if (m_tInfo.iHp <= 0)
 		{
 			CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 4.f, -100.f, vPlayerPos.z - 3.f), SEPARATION_FOUR);
+			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 4.f, -98.f, vPlayerPos.z - 3.f), SEPARATION_FOUR);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime2", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 4.f, -100.f, vPlayerPos.z + 3.f), SEPARATION_FOUR);
+			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 4.f, -98.f, vPlayerPos.z + 3.f), SEPARATION_FOUR);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime3", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
@@ -361,10 +364,10 @@ void CPinkSlime::OnHit(const _float & fTimeDelta)
 		m_eCurState = HIT;
 		CMonster::KnockBack(fTimeDelta, m_fHeight);
 
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, -0.5f, 0.f },
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, -0.5f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
 
 		m_bOneCheck = true;
 	}
