@@ -17,6 +17,7 @@
 #include "EcoWeb.h"
 #include "Statue.h"
 #include "RockFall.h"
+#include "TreasureBox.h"
 
 CObjectTool::CObjectTool(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -45,7 +46,7 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 	static	_bool	bNowCrafting = false;
 	//if (pGameObject)
 	//{
-		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Bonfire", "Jam", "Long Torch", "Short Torch", "MushRoom", "Web", "Statue", "RockFall"};
+		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Bonfire", "Jam", "Long Torch", "Short Torch", "MushRoom", "Web", "Statue", "RockFall", "TreasureBox"};
 		static _int item_current = 0;
 
 		ImGui::Combo("Item Type", &item_current, items, IM_ARRAYSIZE(items), 4);
@@ -197,6 +198,18 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
 
 				m_iRockFallCnt++;
+				break;
+			}
+			case ECO_TREASUREBOX:
+			{
+				wsprintf(szObjTag, L"TreasureBox_%d", m_iTreasureBoxCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CTreasureBox::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iTreasureBoxCnt++;
 				break;
 			}
 
@@ -378,7 +391,16 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 				m_iGrassCnt = 0;
 				m_iTreeCnt = 0;
 				m_iJarCnt = 0;
+				m_iBonFireCnt = 0;
 				m_iJamCnt = 0;
+				m_iShortTorchCnt = 0;
+				m_iLongTorchCnt = 0;
+				m_iMushroomCnt = 0;
+				m_iWebCnt = 0;
+				m_iStatueCnt = 0;
+				m_iRockFallCnt = 0;
+				m_iLadderCnt = 0;
+				m_iTreasureBoxCnt = 0;
 
 				string	strPath = ImGuiFileDialog::Instance()->GetFilePathName();
 				const char* pPath = strPath.c_str();
@@ -486,6 +508,11 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 					case ECO_ROCKFALL:
 						pCloneObject = CRockFall::Create(pEcoObject);
 						m_iRockFallCnt++;
+						break;
+
+					case ECO_TREASUREBOX:
+						pCloneObject = CTreasureBox::Create(pEcoObject);
+						m_iTreasureBoxCnt++;
 						break;
 					}
 					pLayer->Add_GameObject(m_vecObjTags.back(), pCloneObject);

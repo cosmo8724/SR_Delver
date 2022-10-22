@@ -20,6 +20,7 @@
 #include "Monster.h"
 #include "Bullet.h"
 #include "Mimic.h"
+#include "TreasureBox.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -475,6 +476,13 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	{
 		if (Engine::Key_Down(DIK_E))
 			pMimic->InteractEvent();
+	}
+
+	CTreasureBox*	pTreasureBox = dynamic_cast<CTreasureBox*>(pOtherObj);
+	if (pTreasureBox)
+	{
+		if (Engine::Key_Down(DIK_E))
+			pTreasureBox->InteractEvent();
 	}
 
 	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);

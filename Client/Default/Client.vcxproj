@@ -283,6 +283,7 @@
     <ClInclude Include="..\Header\TalkWindow.h" />
     <ClInclude Include="..\Header\Terrain.h" />
     <ClInclude Include="..\Header\Tool_Scene.h" />
+    <ClInclude Include="..\Header\TreasureBox.h" />
     <ClInclude Include="..\Header\Tree.h" />
     <ClInclude Include="..\Header\UIMgr.h" />
     <ClInclude Include="..\Header\UserParticle.h">
@@ -431,6 +432,7 @@
     <ClCompile Include="..\Code\TalkWindow.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
     <ClCompile Include="..\Code\Tool_Scene.cpp" />
+    <ClCompile Include="..\Code\TreasureBox.cpp" />
     <ClCompile Include="..\Code\Tree.cpp" />
     <ClCompile Include="..\Code\UIMgr.cpp" />
     <ClCompile Include="..\Code\UserParticle.cpp">

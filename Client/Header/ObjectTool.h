@@ -28,5 +28,6 @@ private:
 	_uint		m_iStatueCnt = 0;
 	_uint		m_iRockFallCnt = 0;
 	_uint		m_iLadderCnt = 0;
+	_uint		m_iTreasureBoxCnt = 0;
 };
 
