@@ -241,6 +241,9 @@ void CStick::Dead()
 
 	m_eCurState = DIE;
 
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
+
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
 		0.1f,
@@ -273,18 +276,26 @@ void CStick::Motion_Change()
 			break;
 
 		case ANGER:
+			Engine::StopSound(SOUND_STICK);
+			Engine::Play_Sound(L"M_Stick_Alert.mp3", SOUND_STICK, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_StickANGER_Texture");
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_STICK);
+			Engine::Play_Sound(L"M_Stick_Attack.mp3", SOUND_STICK, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_StickATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_STICK);
+			Engine::Play_Sound(L"M_Stick_Hit.mp3", SOUND_STICK, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_StickHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_STICK);
+			Engine::Play_Sound(L"M_Stick_Die.mp3", SOUND_STICK, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_StickDIE_Texture");
 			break;
 		}

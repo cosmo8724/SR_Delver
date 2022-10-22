@@ -23,6 +23,7 @@ private:
 	virtual void		Target_Follow(const _float& fTimeDelta) override;
 	virtual void		OnHit(const _float& fTimeDelta)			override;
 	virtual void		Dead()									override;
+
 	void				Lock(const _float& fTimeDelta);
 
 	void				Motion_Change();

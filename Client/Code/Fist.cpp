@@ -162,6 +162,8 @@ void CFist::Target_Follow(const _float & fTimeDelta)
 	// 플레이어가 일정 거리 안 으로 들어왔을 경우 뒤로 물러남
 	if (fDist < 5.f)
 	{
+		Engine::StopSound(SOUND_FIST);
+		Engine::Play_Sound(L"M_Fist_Alert.mp3", SOUND_FIST, 1.f);
 		m_eCurState = IDLE;
 		m_pTransCom->Set_Y(m_vPos.y);
 		m_pTransCom->Chase_Target(&vPlayerPos, -m_fAttack_Speed, fTimeDelta);
@@ -171,6 +173,9 @@ void CFist::Target_Follow(const _float & fTimeDelta)
 	// 일정 거리 안 으로 들어 왔을 때 공격 시작
 	if (fDist < 10.f)
 	{
+		Engine::StopSound(SOUND_FIST);
+		Engine::Play_Sound(L"M_Fist_Idle.mp3", SOUND_FIST, 1.f);
+
 		m_fAttackTimeAcc += fTimeDelta;
 		m_fIdleTimeAcc += m_fAttackTimeAcc;
 
@@ -229,6 +234,9 @@ void CFist::Dead()
 
 	m_eCurState = DIE;
 
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
+
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
 		0.1f,
@@ -261,14 +269,20 @@ void CFist::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_FIST);
+			Engine::Play_Sound(L"M_Fist_Attack.mp3", SOUND_FIST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_FistATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_FIST);
+			Engine::Play_Sound(L"M_Fist_Hit.mp3", SOUND_FIST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_FistHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_FIST);
+			Engine::Play_Sound(L"M_Fist_Die.mp3", SOUND_FIST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_FistDIE_Texture");
 			break;
 		}

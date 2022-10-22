@@ -117,6 +117,9 @@ private:
 	_float				m_fHungerTimeAcc = 0.f;
 	_bool				m_bHungerOneCheck = false;
 
+	// Sound
+	_bool	bW, bS, bA, bD = false;
+
 	// click Test?
 	_float				m_fLBClick = 0.f;
 	_float				m_fTimeDelta = 0.f;

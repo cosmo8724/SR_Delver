@@ -47,7 +47,7 @@ HRESULT CGreenSlime::Ready_Object(void)
 
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
-	m_tInfo.iExp = 5;
+	m_tInfo.iExp = 2;
 
 	m_fHeight = m_vPos.y;
 	if (!m_bClone)
@@ -260,6 +260,9 @@ void CGreenSlime::Dead()
 
 	m_eCurState = DIE;
 
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
+
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
 		0.1f,
@@ -337,16 +340,22 @@ void CGreenSlime::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_GREENSLIME);
+			Engine::Play_Sound(L"M_GreenSlime_Attack.mp3", SOUND_GREENSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_GreenSlimeATTACK_Texture");
 			//m_pTextureCom = static_cast<CTexture*>(Find_Component(L"Proto_GreenSlimeATTACK_Texture", ID_STATIC));
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_GREENSLIME);
+			Engine::Play_Sound(L"M_GreenSlime_Hit.mp3", SOUND_GREENSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_GreenSlimeHIT_Texture");
 			//m_pTextureCom = static_cast<CTexture*>(Find_Component(L"Proto_GreenSlimeHIT_Texture", ID_STATIC));
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_GREENSLIME);
+			Engine::Play_Sound(L"M_GreenSlime_Die.mp3", SOUND_GREENSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_GreenSlimeDIE_Texture");
 			//m_pTextureCom = static_cast<CTexture*>(Find_Component(L"Proto_GreenSlimeDIE_Texture", ID_STATIC));
 			break;

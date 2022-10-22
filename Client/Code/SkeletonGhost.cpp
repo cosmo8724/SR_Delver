@@ -196,6 +196,8 @@ void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 		m_fHpMinusTimeAcc += fTimeDelta;
 		if (2.f < m_fHpMinusTimeAcc) // 2초마다 플레이어 체력 감소
 		{
+			m_eCurState = ATTACK;
+
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 			pPlayer->Set_HpMinus();
 
@@ -206,7 +208,10 @@ void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 		Circle();
 	}
 	else
+	{
+		m_eCurState = IDLE;
 		m_bCircle = false;
+	}
 
 
 	if (!m_bCircle && fDist < 15.f)
@@ -266,14 +271,25 @@ void CSkeletonGhost::Billboard()
 	m_pTransCom->Get_WorldMatrix(&matWorld);
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
+
+	if (matView._21 > 0.f)
+	{
+		matBill = m_matOldBill;
+	}
+	else
+	{
+		D3DXMatrixIdentity(&matBill);
+		matBill._11 = matView._11;
+		matBill._13 = matView._13;
+		matBill._31 = matView._31;
+		matBill._33 = matView._33;
+
+		m_matOldBill = matBill;
+	}
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	m_matWorld = matBill * m_matWorld;
+	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 
 void CSkeletonGhost::OnHit(const _float & fTimeDelta)
@@ -317,6 +333,9 @@ void CSkeletonGhost::Dead()
 	m_eCurState = DIE;
 	m_pTransCom->Set_Y(m_vPos.y - 3.f);
 
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
+
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
 		0.1f,
@@ -349,14 +368,20 @@ void CSkeletonGhost::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_SKELETONGHOST);
+			Engine::Play_Sound(L"M_SkeletonGhost_Attack.mp3", SOUND_SKELETONGHOST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_SkeletonGhostATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_SKELETONGHOST);
+			Engine::Play_Sound(L"M_SkeletonGhost_Hit.mp3", SOUND_SKELETONGHOST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_SkeletonGhostHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_SKELETONGHOST);
+			Engine::Play_Sound(L"M_SkeletonGhost_Die.mp3", SOUND_SKELETONGHOST, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_SkeletonGhostDIE_Texture");
 			break;
 		}

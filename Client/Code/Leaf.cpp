@@ -244,6 +244,9 @@ void CLeaf::Dead()
 
 	m_eCurState = DIE;
 
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
+
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
 		0.1f,
@@ -276,14 +279,20 @@ void CLeaf::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_LEAF);
+			Engine::Play_Sound(L"M_Leaf_Attack.mp3", SOUND_LEAF, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_LeafATTACK_Texture");
 			break;
 		
 		case HIT:
+			Engine::StopSound(SOUND_LEAF);
+			Engine::Play_Sound(L"M_Leaf_Hit.mp3", SOUND_LEAF, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_LeafHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_LEAF);
+			Engine::Play_Sound(L"M_Leaf_Die.mp3", SOUND_LEAF, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_LeafDIE_Texture");
 			break;
 		}

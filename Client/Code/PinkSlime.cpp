@@ -414,6 +414,9 @@ void CPinkSlime::Dead()
 
 	m_eCurState = DIE;
 
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
+
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
 		0.1f,
@@ -446,14 +449,20 @@ void CPinkSlime::Motion_Change()
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_PINKSLIME);
+			Engine::Play_Sound(L"M_PinkSlime_Attack.mp3", SOUND_PINKSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_PinkSlimeATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_PINKSLIME);
+			Engine::Play_Sound(L"M_PinkSlime_Hit.mp3", SOUND_PINKSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_PinkSlimeHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_PINKSLIME);
+			Engine::Play_Sound(L"M_PinkSlime_Die.mp3", SOUND_PINKSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_PinkSlimeDIE_Texture");
 			break;
 		}

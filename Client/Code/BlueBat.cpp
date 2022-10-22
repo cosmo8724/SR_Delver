@@ -169,6 +169,9 @@ void CBlueBat::Target_Follow(const _float & fTimeDelta)
 
 	if (fDist < 7.f && fDist > 4.f) // Follow
 	{
+		Engine::StopSound(SOUND_BLUEBAT);
+		Engine::Play_Sound(L"M_BlueBat_Alert.mp3", SOUND_BLUEBAT, 1.f);
+
 		m_eCurState = IDLE;
 
 		m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
@@ -278,6 +281,9 @@ void CBlueBat::Dead()
 
 	m_eCurState = DIE;
 
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
+
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
 		0.1f,
@@ -310,14 +316,20 @@ void CBlueBat::Motion_Change(const _float& fTimeDelta)
 			break;
 
 		case ATTACK:
+			Engine::StopSound(SOUND_BLUEBAT);
+			Engine::Play_Sound(L"M_BlueBat_Attack.mp3", SOUND_BLUEBAT, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_BlueBatATTACK_Texture");
 			break;
 
 		case HIT:
+			Engine::StopSound(SOUND_BLUEBAT);
+			Engine::Play_Sound(L"M_BlueBat_Hit.mp3", SOUND_BLUEBAT, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_BlueBatHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_BLUEBAT);
+			Engine::Play_Sound(L"M_BlueBat_Die.mp3", SOUND_BLUEBAT, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_BlueBatDIE_Texture");
 			break;
 		}
