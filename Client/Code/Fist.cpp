@@ -147,7 +147,7 @@ void CFist::Target_Follow(const _float & fTimeDelta)
 	if (fDist < 5.f)
 	{
 		m_eCurState = IDLE;
-		m_pTransCom->Set_Y(m_fHeight);
+		m_pTransCom->Set_Y(m_vPos.y);
 		m_pTransCom->Chase_Target(&vPlayerPos, -m_fAttack_Speed, fTimeDelta);
 		return;
 	}
@@ -182,7 +182,13 @@ void CFist::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 

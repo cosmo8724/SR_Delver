@@ -373,6 +373,12 @@
     <Filter Include="02. GameObject\01. For_Stage\07. Bullet\00. Player\Red">
       <UniqueIdentifier>{53d49cc3-d1b5-4eb3-a5ab-5251f05e4267}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\11. Octopus">
+      <UniqueIdentifier>{55da7d5b-7f93-4482-a200-c03b130a0e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\11. Gold">
+      <UniqueIdentifier>{5176b027-0729-4756-a856-e84fa32c835b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment">
       <UniqueIdentifier>{325a6f15-9fb1-4333-9660-7d50586dbfc9}</UniqueIdentifier>
     </Filter>
@@ -789,6 +795,9 @@
     <ClInclude Include="..\Header\Cat.h">
       <Filter>02. GameObject\01. For_Stage\01. Player\Cat</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Gold.h">
+      <Filter>02. GameObject\01. For_Stage\11. Gold</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1159,6 +1168,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Cat.cpp">
       <Filter>02. GameObject\01. For_Stage\01. Player\Cat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Gold.cpp">
+      <Filter>02. GameObject\01. For_Stage\11. Gold</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

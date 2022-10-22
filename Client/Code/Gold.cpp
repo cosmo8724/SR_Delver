@@ -1,78 +1,65 @@
 #include "stdafx.h"
-#include "Potion.h"
+#include "Gold.h"
+
 #include "Export_Function.h"
 #include "Player.h"
 #include "CullingMgr.h"
-#include "StaticCamera.h"
 
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev)
+CGold::CGold(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CItem(pGraphicDev)
 {
 	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
+	m_ObjTag = L"Gold";
 }
 
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CGold::CGold(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	:CItem(pGraphicDev)
 {
 	m_vPos = vPos;
 	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
-	m_eItemType = ITEM_POTION;
+	m_ObjTag = L"Gold";
+	m_eItemType = ITEM_GOLD;
 
 }
 
-CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
+CGold::CGold(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
 	:CItem(pGraphicDev)
 {
 	m_vPos = vPos;
 	D3DXMatrixIdentity(&m_matWorld);
-	m_ObjTag = L"Potion";
+	m_ObjTag = L"Gold";
 	m_iTextureIdx = _eType;
-	m_tPotionType = _eType;
 }
 
-CPotion::~CPotion()
+CGold::~CGold()
 {
 }
 
-HRESULT CPotion::Ready_Object()
+HRESULT CGold::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eState = STATE_GROUND;
-	m_tInfo.iHpHeal = 10;
-	m_eItemType = ITEM_POTION;
-
+	m_eItemType = ITEM_GOLD;
 	return S_OK;
 }
 
-_int CPotion::Update_Object(const _float & fTimeDelta)
+_int CGold::Update_Object(const _float & fTimeDelta)
 {
 	if (m_eState == STATE_INV)
 		return 0;
 
-
-	if (m_bFinished)
-		return OBJ_NOEVENT;
-
 	if (m_bDead)
 		return OBJ_DEAD;
 
-
-
 	int iResult = CItem::Update_Object(fTimeDelta);
 
-	if (STATE_EQUIP == m_eState)
-	{
-		RandomItem(fTimeDelta);
-	}
-	else if (STATE_GROUND == m_eState)
+	if (STATE_GROUND == m_eState)
 	{
 		m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
-		m_pTransCom->Set_Y(m_vPos.y - 0.3f);
+		m_pTransCom->Set_Y(m_vPos.y - 0.5f);
 	}
 
 
@@ -81,29 +68,20 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 	return iResult;
 }
 
-void CPotion::LateUpdate_Object(void)
+void CGold::LateUpdate_Object(void)
 {
-	if (m_iCnt == 0 && m_bFinished)
-	{
-		m_bDead = true;
-	}
-
-
 	if (m_eState != STATE_GROUND)
 		return;
 
 	if (CCullingMgr::GetInstance()->Is_Inside(this))
 		Add_RenderGroup(RENDER_ALPHA, this);
 
-
-
 	Billboard();
 	CGameObject::LateUpdate_Object();
 }
 
-void CPotion::Render_Obejct(void)
+void CGold::Render_Obejct(void)
 {
-
 	if (m_eState != STATE_GROUND)
 		return;
 
@@ -130,22 +108,22 @@ void CPotion::Render_Obejct(void)
 #endif
 }
 
-HRESULT CPotion::Add_Component(void)
+HRESULT CGold::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	//            Æ®
+	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	//  Ø½     Ä° Ã¼       Æ®
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Potion_Texture"));
+	// ÅØ½ºÃÄ ÄÄ°´Ã¼ ÄÄÆ÷³ÍÆ®
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Gold_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_Potion_Texture", pComponent });
-	m_textureTag = L"Proto_Potion_Texture";
+	m_mapComponent[ID_STATIC].insert({ L"Proto_Gold_Texture", pComponent });
+	m_textureTag = L"Proto_Gold_Texture";
 
-	//               Æ®
+	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -158,9 +136,10 @@ HRESULT CPotion::Add_Component(void)
 	return S_OK;
 }
 
-CPotion * CPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
+
+CGold * CGold::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
 {
-	CPotion*	pInstance = new CPotion(pGraphicDev, vPos, _eType);
+	CGold*	pInstance = new CGold(pGraphicDev, vPos, _eType);
 	if (FAILED(pInstance->Ready_Object()))
 	{
 		Safe_Release(pInstance);
@@ -169,83 +148,28 @@ CPotion * CPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType
 	return pInstance;
 }
 
-void CPotion::Free(void)
+void CGold::Free(void)
 {
 	CGameObject::Free();
 }
 
-void CPotion::CollisionEvent(CGameObject * pObj)
+void CGold::CollisionEvent(CGameObject * pObj)
 {
 	if (STATE_GROUND == m_eState)
 	{
+		/*
+		GOLD_0 : 2
+		GOLD_1 : 4
+		GOLD_2 : 6
+		GOLD_3 : 8
+		*/
+
+		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		m_iTextureIdx = (m_iTextureIdx + 1) * 2;
+		cout << "+++gold Up : " << m_iTextureIdx << endl;
+		pPlayer->Set_GoldPlus(m_iTextureIdx);
+
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
 	}
-
-}
-
-void CPotion::RandomItem(const _float& fTimeDelta)
-{
-	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-	PLAYERINFO pPlayerInfo = pPlayer->Get_Info();
-
-	switch (m_tPotionType)
-	{
-	case POTION_0: // yellow
-	{
-		pPlayer->Set_HpFull();
-		CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
-		pCam->Wave_Camera(10.f, _vec3(0.f, 0.f, 1.f), 30.f);
-		m_bFinished = true;
-	}
-	break;
-	case POTION_1: // red
-	{
-		m_fDotTime += fTimeDelta;
-		if (1.f < m_fDotTime)
-		{
-			if (m_iDot > m_tInfo.iHpHeal)
-			{
-				m_bFinished = true;
-				return;
-			}
-
-			pPlayer->Set_HpPlus(+1);
-			m_iDot++;
-			m_fDotTime = 0.f;
-		}
-	}
-	break;
-	case POTION_2: // green
-	{
-		m_fDotTime += fTimeDelta;
-		if (1.f < m_fDotTime)
-		{
-
-			if (m_iDot > m_tInfo.iHpHeal)
-			{
-				m_bFinished = true;
-				return;
-			}
-
-			pPlayer->Set_HpPlus(-1);
-			m_iDot++;
-			m_fDotTime = 0.f;
-		}
-	}
-	break;
-	case POTION_3: // blue
-	{
-		pPlayer->Set_Slow();
-		m_bFinished = true;
-	}
-	break;
-	case POTION_4: // pink
-	{
-		pPlayer->Set_Stun();
-		m_bFinished = true;
-	}
-	break;
-	}
-
 }

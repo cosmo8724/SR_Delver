@@ -149,13 +149,13 @@ void CGreenSpider::Target_Follow(const _float & fTimeDelta)
 	if (fDist < 5.f)
 	{
 		m_eCurState = IDLE;
-		m_pTransCom->Set_Y(m_fHeight);
+		m_pTransCom->Set_Y(m_vPos.y);
 		m_pTransCom->Chase_Target(&vPlayerPos, -m_fAttack_Speed, fTimeDelta);
 		return;
 	}
 
 	// 일정 거리 안 으로 들어 왔을 때 공격 시작
-	if (fDist < 10.f)
+	if (fDist < 25.f)
 	{
 		m_fAttackTimeAcc += fTimeDelta;
 		m_fIdleTimeAcc += m_fAttackTimeAcc;
@@ -184,7 +184,13 @@ void CGreenSpider::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 0.3f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 

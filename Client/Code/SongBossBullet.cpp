@@ -27,7 +27,7 @@ HRESULT CSongBossBullet::Ready_Object(void)
 	m_tInfo.iAttack = 3;
 	m_fSpeed = 20.f;
 
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_pTransCom->Set_Scale(1.f, 1.f, 1.f);
 	
 	return S_OK;
 }
@@ -79,30 +79,6 @@ _int CSongBossBullet::Update_Object(const _float & fTimeDelta)
 		m_bOneCheck = true;
 	}
 
-	//if (!m_bReady)
-	//{
-	//	CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"SongBoss", L"Proto_TransformCom", ID_DYNAMIC));
-	//	NULL_CHECK_RETURN(pFist, -1);
-
-	//	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	//	NULL_CHECK_RETURN(pPlayer, -1);
-
-	//	pFist->Get_Info(INFO_POS, &vParentPos);
-	//	m_pTransCom->Set_Pos(vParentPos.x, vParentPos.y, vParentPos.z);
-
-	//	pPlayer->Get_Info(INFO_POS, &m_vPlayerPos);
-	//	m_vPlayerPos.y -= 0.01f;
-
-	//	m_bReady = true;
-	//}
-
-	//_vec3	vDir;
-	//vDir = m_vPlayerPos - vParentPos;
-	//D3DXVec3Normalize(&vDir, &vDir);
-	//vDir *= m_fSpeed * fTimeDelta;
-
-	//m_pTransCom->Move_Pos(&vDir);
-
 	m_fLifeTime += fTimeDelta;
 	return iResult;
 }
@@ -114,7 +90,7 @@ void CSongBossBullet::LateUpdate_Object(void)
 	if (!m_bFire)
 		return;
 
-	if (1.f < m_fLifeTime)
+	if (3.f < m_fLifeTime)
 		Reset();
 
 	CGameObject::LateUpdate_Object();
@@ -208,7 +184,7 @@ _int CSongBossBullet::Target(const _float & fTimeDelta)
 	}
 
 	_matrix matScale, matRot, matTrans, matRev, matWorld;
-	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
+	D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
 
 	D3DXMatrixTranslation(&matTrans, vDistance.x * 0.7f, vDistance.y * 0.7f, vDistance.z * 0.7f);
 

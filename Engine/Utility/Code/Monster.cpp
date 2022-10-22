@@ -81,7 +81,7 @@ void CMonster::Billboard()
 	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 
-void CMonster::KnockBack(const _float & fTimeDeleta, _float fHeight, _float	fKnockBackSpeed)
+void CMonster::KnockBack(const _float & fTimeDeleta, _float	fKnockBackSpeed)
 {
 	if (!m_bKnockBack)
 		return;
@@ -93,12 +93,12 @@ void CMonster::KnockBack(const _float & fTimeDeleta, _float fHeight, _float	fKno
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	pPlayerTransformCom->Get_Info(INFO_LOOK, &vTargetLook);
 
-	if (m_fBTimeDelta > 0.3f && fHeight >= vPos.y)
+	if (m_fBTimeDelta > 0.3f && m_fHeight >= vPos.y)
 	{
 		m_bKnockBack = false;
 		m_fBTimeDelta = 0.f;
 
-		m_pTransCom->Set_Y(fHeight);
+		m_pTransCom->Set_Y(m_fHeight);
 		m_pTransCom->KnockBack_Target(&vTargetLook, fKnockBackSpeed, fTimeDeleta);
 		m_fBSpeed = m_fBSpeed0;
 	}
