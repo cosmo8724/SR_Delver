@@ -75,7 +75,6 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 		if ( m_pInv->Is_Open() || (Engine::Get_DIKeyState(DIK_TAB) & 0X80))
 			m_bOn = true;
 			//Engine::Play_Sound(L"ui_dialogue_open.mp3", SOUND_UI, 1.f);
-		}
 		else
 		{
 			m_bOn = false;
