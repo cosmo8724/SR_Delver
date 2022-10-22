@@ -397,9 +397,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch2", pGameObject), E_FAIL);
 
 	// Cat
-	pGameObject = CCat::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -40.f }));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Cat", pGameObject), E_FAIL);
+	//pGameObject = CCat::Create(m_pGraphicDev, _vec3({ -6.f, 2.f, -40.f }));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Cat", pGameObject), E_FAIL);
 
 
 	// Blocks

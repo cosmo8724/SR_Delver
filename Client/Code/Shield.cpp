@@ -51,12 +51,14 @@ _int CShield::Update_Object(const _float & fTimeDelta)
 		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
 		break;
 	case STATE_EQUIP:
+		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
+
 		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
 		{
 			Charge(fTimeDelta);
 			Attack(fTimeDelta);
 		}
-		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
+
 
 		if (!m_bAttack)
 		{

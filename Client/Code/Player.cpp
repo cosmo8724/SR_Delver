@@ -186,11 +186,11 @@ void CPlayer::LateUpdate_Object(void)
 	}
 
 	// camera change Test
-	wstring pObjTag = (m_pRight != nullptr ? m_pRight->Get_ObjTag() : L"");
-	if (L"Arrow" == pObjTag && Get_DIMouseState(DIM_RB) & 0x80)
-		m_bSnipper = true; 
-	else
-		m_bSnipper = false;
+	//wstring pObjTag = (m_pRight != nullptr ? m_pRight->Get_ObjTag() : L"");
+	//if (L"Arrow" == pObjTag && Get_DIMouseState(DIM_RB) & 0x80)
+	//	m_bSnipper = true; 
+	//else
+	//	m_bSnipper = false;
 }
 
 void CPlayer::Render_Obejct(void)

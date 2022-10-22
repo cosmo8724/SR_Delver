@@ -209,16 +209,16 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	// GreenWand
-	pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 4.f }));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenWand", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+	//pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 4.f }));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenWand", pGameObject), E_FAIL);
+	//m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
-	// RadWand
-	pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 5.f }));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RadWand", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+	//// RadWand
+	//pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 5.f }));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RadWand", pGameObject), E_FAIL);
+	//m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Key
 	//pGameObject = CKey::Create(m_pGraphicDev, _vec3({ 5.f, 1.f, 10.f }));

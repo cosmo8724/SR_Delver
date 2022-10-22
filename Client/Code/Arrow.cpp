@@ -105,15 +105,15 @@ void CArrow::LateUpdate_Object(void)
 {
 	CGameObject::LateUpdate_Object();
 
-	if (STATE_INV == m_eState)
-		return;
+	//if (STATE_INV == m_eState)
+	//	return;
 
 }
 
 void CArrow::Render_Obejct(void)
 {
-	if (m_eState == STATE_INV)
-		return;
+	//if (m_eState == STATE_INV)
+	//	return;
 													
 
  	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
