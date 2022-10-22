@@ -191,7 +191,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	CGameObject* pGameObject = nullptr;
 	
 	//Arrow
-	pGameObject= CArrow::Create(m_pGraphicDev, _vec3({ 30.f, 2.f, 30.f }));
+	pGameObject= CArrow::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 10.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Arrow", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
