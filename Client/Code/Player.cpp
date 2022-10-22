@@ -19,6 +19,7 @@
 
 #include "Monster.h"
 #include "Bullet.h"
+#include "Mimic.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -440,9 +441,12 @@ void CPlayer::Jump(const _float & fTimeDelta)
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-	if (Engine::Key_Down(DIK_E))
-		pOtherObj->InteractEvent();
-
+	CMimic*	pMimic = dynamic_cast<CMimic*>(pOtherObj);
+	if (pMimic)
+	{
+		if (Engine::Key_Down(DIK_E))
+			pMimic->InteractEvent();
+	}
 	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
 	//if (pMonster == pOtherObj)
 	//	OnHit(pMonster->Get_MonsterAttack());
