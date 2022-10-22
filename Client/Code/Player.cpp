@@ -19,6 +19,7 @@
 
 #include "Monster.h"
 #include "Bullet.h"
+#include "Mimic.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -48,20 +49,17 @@ HRESULT CPlayer::Ready_Object(void)
 	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	// 플레이어 스탯정보
-	//m_tInfo.iHp = 20;
 	m_tInfo.iHp = 10;
-	m_tInfo.iHpMax = 100;
-	//m_tInfo.iHpMax = m_tInfo.iHp; // sh
+	m_tInfo.iHpMax = 20;
 	m_tInfo.iAtk = 1;
-	//m_tInfo.iAtk = 10; // sh
 	m_tInfo.iDef = 10;
 	m_tInfo.iExp = 0;
 	m_tInfo.iExpMax = 7;
 	m_tInfo.iHunger = 5;
 	m_tInfo.fSpeed = 5.f;
-	m_tInfo.iLevel = 1;
-
 	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
+	m_tInfo.iLevel = 1;
+	m_tInfo.iGold = 0;
 
 
 
@@ -161,8 +159,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
-
+	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	return 0;
 }
@@ -454,15 +451,18 @@ void CPlayer::Jump(const _float & fTimeDelta)
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
 	if (Engine::Key_Down(DIK_E))
+	{
+		CMimic* pMimic = dynamic_cast<CMimic*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Mimic"));
 		pOtherObj->InteractEvent();
+	}
 
-	//CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
-	//if (pMonster == pOtherObj)
-	//	OnHit(pMonster->Get_MonsterAttack());
+	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
+	if (pMonster == pOtherObj)
+		OnHit(pMonster->Get_MonsterAttack());
 
-	//CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
-	//if (pBullet == pOtherObj)
-	//	OnHit(pBullet->Get_BulletAttack());
+	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
+	if (pBullet == pOtherObj)
+		OnHit(pBullet->Get_BulletAttack());
 
 	CEcoObject* pEco = dynamic_cast<CEcoObject*>(pOtherObj);
 	if (nullptr != pEco)
@@ -475,7 +475,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 
 
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
-	if (nullptr != pItem && STATE_GROUND == pItem->Get_State())
+	if (nullptr != pItem && STATE_GROUND == pItem->Get_State() && pItem->Get_ItemType() != ITEM_GOLD)
 	{
 		CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
 		pInv->Set_Inventory(pItem);

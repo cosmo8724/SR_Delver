@@ -115,13 +115,28 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 
 	//////////// Monster
 	// GreenSlime
-	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(8.f, -22.f, 95.f ));
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(8.f, -22.f, 95.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
+	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(5.f, 2.f, 12.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime1", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
+
+	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(5.f, 2.f, 11.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime2", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
+
+	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(7.f, 2.f, 10.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime3", pGameObject), E_FAIL);
+	//m_vecMonster.push_back(pGameObject);
+
 	// PinkSlime
-	pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(94.f, -96.5f, 17.f), SEPARATION_ONE);
+	pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(94.f, -95.f, 17.f), SEPARATION_ONE);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PinkSlime", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
@@ -139,9 +154,14 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	m_vecMonster.push_back(pGameObject);
 
 	// BrownBat
-	pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3(15.f, 5.f, 15.f));
+	pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3(-7.f, -57.f, 18.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
+
+	pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3( -10.f, -57.f, 12.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat1", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
 	// Stick
@@ -156,32 +176,38 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	m_vecMonster.push_back(pGameObject);
 
 	// Leaf
-	pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(50.f, -30.f, 62.f));
+	//pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(50.f, -30.f, 62.f));
+	pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(5.f, 2.f, 6.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
 	// SkeletonGhost
-	pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(11.f, -63.f, 31.f));
+	pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(1.f, -63.f, -33.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
 	// GreenSpider
-	pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(41.f, -67.f, -24.f));
+	pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(36.f, -70.f, -26.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSpider", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
+	pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(45.f, -70.f, -9.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSpider1", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
+
 	// Mimic
-	pGameObject = CMimic::Create(m_pGraphicDev, _vec3(76.f, -16.f, -10.f));
+	pGameObject = CMimic::Create(m_pGraphicDev, _vec3(77.f, -16.f, -7.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Mimic", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
 	//////////Boss
 	// SongBoss
-	pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(-22.f, -65.f, -23.f));
+	pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(-22.f, -63.5f, -23.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);

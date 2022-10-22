@@ -214,6 +214,12 @@ void CGreenSlime::OnHit(const _float & fTimeDelta)
 	{
 		m_eCurState = HIT;
 		CMonster::KnockBack(fTimeDelta, m_fHeight);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 0.3f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 
@@ -246,7 +252,20 @@ void CGreenSlime::Dead()
 		{ 0.f, 1.f, 0.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	_int iTex = rand() % 3;
+	iTex = 2;
+	if (iTex == 0)
+	{
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	}
+	else if (iTex == 1)
+	{
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
+	}
+	else if (iTex == 2)
+	{
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+	}
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;
@@ -276,9 +295,9 @@ void CGreenSlime::CollisionEvent(CGameObject* pObj)
 	if(pPlayer != pObj)
 		m_bHit = true;
 
- 	CRedWandBullet* pRedWandBullet = dynamic_cast<CRedWandBullet*>(pObj);
-	if (pRedWandBullet == pObj)
-		m_bLock = true;
+ //	CRedWandBullet* pRedWandBullet = dynamic_cast<CRedWandBullet*>(pObj);
+	//if (pRedWandBullet == pObj)
+	//	m_bLock = true;
 }
 
 void CGreenSlime::Motion_Change()

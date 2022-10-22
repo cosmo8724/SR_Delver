@@ -8,7 +8,6 @@
 #include "SongBossFloor.h"
 #include "ParticleMgr.h"
 
-// �浹
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
@@ -51,6 +50,7 @@ HRESULT CSongBoss::Ready_Object(void)
 
 	m_fHeight = m_vPos.y;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	m_pTransCom->Set_Scale(2.5f, 2.5f, 2.5f);
 
 	m_eCurState = IDLE;
 	m_eSkill = SKILL_BULLET;
@@ -253,7 +253,7 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	D3DXVec3Normalize(&vLook, &vLook);
 	m_pTransCom->Set_Look(vLook);
 
-	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
+	//_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
 
 	// Look Vector Set
@@ -267,30 +267,24 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 	m_pTransCom->Set_Look(vLook);
 
+	m_fAttackTimeAcc += fTimeDelta;
+	m_fIdleTimeAcc += m_fAttackTimeAcc;
 
-
-	if (fDist < 10.f)
+	if (3.f < m_fAttackTimeAcc)
 	{
-		m_fAttackTimeAcc += fTimeDelta;
-		m_fIdleTimeAcc += m_fAttackTimeAcc;
+		CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.f }, 3.f);
+		CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
 
-		if (3.f < m_fAttackTimeAcc)
-		{
-			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 0.0f }, 3.f);
-			CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
-			CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
-
-
-			m_eCurState = ATTACK;
-			CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);
-			m_bSkillBullet++;
-			m_fAttackTimeAcc = 0;
-		}
-		else if (5.5f < m_fIdleTimeAcc)
-		{
-			m_eCurState = IDLE;
-			m_fIdleTimeAcc = 0.f;
-		}
+		m_eCurState = ATTACK;
+		CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);
+		m_bSkillBullet++;
+		m_fAttackTimeAcc = 0;
+	}
+	else if (5.5f < m_fIdleTimeAcc)
+	{
+		m_eCurState = IDLE;
+		m_fIdleTimeAcc = 0.f;
 	}
 }
 
@@ -388,7 +382,17 @@ void CSongBoss::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		//CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 1.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+		//CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 1.f, 1.f },
+		//	0.2f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		//CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 

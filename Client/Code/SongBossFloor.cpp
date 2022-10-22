@@ -27,7 +27,7 @@ HRESULT CSongBossFloor::Ready_Object(_int iBulletCount)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_tInfo.iAttack = 5;
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_pTransCom->Set_Scale(1.f, 1.f, 1.f);
 	m_pTransCom->Rotation(ROT_X, 45.555f);
 
 	m_iBulletCount = iBulletCount;
@@ -90,8 +90,8 @@ void CSongBossFloor::MusicNoteCreatePos()
 
 	if (!m_bReady)
 	{
-		_float fNotePos = 2.f;
-		_float fNotePosY = 0.01f;
+		_float fNotePos = 3.f;
+		_float fNotePosY = -65.8f;
 
 		if (m_iBulletCount == 0)
 			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z + fNotePos);
@@ -117,11 +117,11 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 		m_iTransparency += 10; // 투명도가 진해지는 숫자 > 10
 		m_fTransparencyTimeAcc = 0.f;
 		
-#ifdef SH_Debug
-		cout << m_iTransparency << endl;
-#endif
+//#ifdef SH_Debug
+		//cout << m_iTransparency << endl;
+//#endif
 		
-		if (m_iTransparency >= 250)
+		if (m_iTransparency >= 240)
 		{
 			m_bStartLightning = true;
 			m_iTransparency = 40;
@@ -131,7 +131,7 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 	// 처음에는 충돌처리를 하지 않았다가, 번개가 내리치는 순간 충돌처리
 	if (m_bStartLightning)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.2f,
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.5f,
 			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 0.f, 1.f });
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_9);
 

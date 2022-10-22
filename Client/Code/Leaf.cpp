@@ -178,16 +178,16 @@ void CLeaf::Teleporting(const _float& fPlayerPosX, const _float& fPlayerPosZ)
 	if (iRandomNum % 2 == 0) // 짝수
 	{
 		if (iRandomNum < 5) // 5보다 크면으로 한 번 더 렌덤
-			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
+			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, m_vPos.y, m_OriginalPos.z + iRandomNum);
 		else
-			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
+			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, m_vPos.y, m_OriginalPos.z + iRandomNum);
 	}
 	else // 홀수
 	{
 		if (iRandomNum < 5)
-			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, 1.f, m_OriginalPos.z - iRandomNum);
+			m_pTransCom->Set_Pos(m_OriginalPos.x + iRandomNum, m_vPos.y, m_OriginalPos.z - iRandomNum);
 		else 
-			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, 1.f, m_OriginalPos.z + iRandomNum);
+			m_pTransCom->Set_Pos(m_OriginalPos.x - iRandomNum, m_vPos.y, m_OriginalPos.z + iRandomNum);
 	}
 }
 
@@ -199,7 +199,13 @@ void CLeaf::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 

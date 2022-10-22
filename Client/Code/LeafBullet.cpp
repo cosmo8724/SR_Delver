@@ -235,7 +235,7 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 
 	_matrix matScale, matRot, matTrans, matRev, matWorld;
 	// 스
-	//D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
+	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
 
 	// 이
 	D3DXMatrixTranslation(&matTrans, vDistance.x * 0.7f, vDistance.y * 0.7f, vDistance.z * 0.7f);
@@ -251,12 +251,11 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 	//matWorld = matTrans * matRev;
 
 	_matrix matParent;
-	pLeaf->Get_WorldMatrix(&matParent);
-	
+	pLeaf->Get_WorldMatrix(&matParent);	
 	_matrix mat;
 	D3DXMatrixTranslation(&mat, matParent._41, matParent._42, matParent._43);
 
-	matParent = matRev;// *mat;
+	matParent = matScale * matRev;// *mat;
 
 	_matrix mat1;
 	mat1 = matTrans * matParent; // 공전하는 행렬

@@ -160,6 +160,7 @@ namespace Engine
 		_int		iAtk;
 		_int		iDef;
 		_float		fSpeed;
+		_int		iGold;
 
 		_bool		bStun;
 		_bool		bSlow;

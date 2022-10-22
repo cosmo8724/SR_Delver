@@ -15,6 +15,7 @@ CPlayerInfo::CPlayerInfo(LPDIRECT3DDEVICE9 pGraphicDev)
 	ZeroMemory(m_szHunger, sizeof(m_szHp));
 	ZeroMemory(m_szAtk, sizeof(m_szHp));
 	ZeroMemory(m_szDef, sizeof(m_szHp));
+	ZeroMemory(m_szGold, sizeof(m_szHp));
 }
 
 CPlayerInfo::~CPlayerInfo()
@@ -52,6 +53,7 @@ HRESULT CPlayerInfo::Ready_Object(void)
 	swprintf_s(m_szHunger,	L"배고픔 : %d / %d", 5, 5);
 	swprintf_s(m_szAtk,		L"공격력 : %d", 1);
 	swprintf_s(m_szDef,		L"방어력 : %d", 10);
+	swprintf_s(m_szGold,	L"현금 : %d", 0);
 
 	return S_OK;
 }
@@ -75,6 +77,7 @@ _int CPlayerInfo::Update_Object(const _float & fTimeDelta)
 	swprintf_s(m_szHunger,	L"배고픔 : %d / %d", tPlayerInfo.iHunger, 5);
 	swprintf_s(m_szAtk,		L"공격력 : %d", tPlayerInfo.iAtk);
 	swprintf_s(m_szDef,		L"방어력 : %d", tPlayerInfo.iDef);
+	swprintf_s(m_szGold,	L"현금 : %d", tPlayerInfo.iGold);
 
 	return 0;
 }
@@ -116,13 +119,14 @@ void CPlayerInfo::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-	Render_Font(L"Font_Jinji", m_szLevel,	&_vec2(750, 355), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-	Render_Font(L"Font_Jinji", m_szExp,		&_vec2(750, 385), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-	Render_Font(L"Font_Jinji", m_szHp,		&_vec2(750, 415), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-	Render_Font(L"Font_Jinji", m_szSpeed,	&_vec2(750, 445), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-	Render_Font(L"Font_Jinji", m_szHunger,	&_vec2(750, 475), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-	Render_Font(L"Font_Jinji", m_szAtk,		&_vec2(750, 505), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-	Render_Font(L"Font_Jinji", m_szDef,		&_vec2(750, 535), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szLevel,	&_vec2(750, 345), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szExp,		&_vec2(750, 375), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szHp,		&_vec2(750, 405), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szSpeed,	&_vec2(750, 435), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szHunger,	&_vec2(750, 465), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szAtk,		&_vec2(750, 495), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szDef,		&_vec2(750, 525), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	Render_Font(L"Font_Jinji", m_szGold,	&_vec2(750, 555), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 
 }
 

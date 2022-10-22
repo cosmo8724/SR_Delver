@@ -73,7 +73,7 @@ _int CBrownBat::Update_Object(const _float & fTimeDelta)
 	{
 		Dead();
 		m_fRenderOFFTimeAcc += fTimeDelta;
-		if (1.5f < m_fRenderOFFTimeAcc)
+		if (2.f < m_fRenderOFFTimeAcc)
 		{
 			m_bRenderOFF = true;
 			m_fRenderOFFTimeAcc = 0.f;
@@ -143,7 +143,7 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
-	if (fDist < 10.f)
+	if (fDist < 7.f)
 	{
 		m_fAttackTimeAcc += fTimeDelta;
 		if (1.f < m_fAttackTimeAcc)
@@ -157,10 +157,10 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 			m_fAttackTimeAcc = 0.f;
 		}
 
-		if (1.f <= vPlayerPos.y) // Player.y가 1.f 이상이면 Height 조정
-			m_pTransCom->Set_Y(m_fHeight);
+		if (-60.f <= vPlayerPos.y) // Player.y가 1.f 이상이면 Height 조정
+			m_pTransCom->Set_Y(m_vPos.y);
 
-		m_pTransCom->Chase_Target(&_vec3(vPlayerPos.x, vPlayerPos.y + 1.f, vPlayerPos.z), m_fAttack_Speed, fTimeDelta);
+		m_pTransCom->Chase_Target(&_vec3(vPlayerPos.x, vPlayerPos.y + 0.5f, vPlayerPos.z), m_fAttack_Speed, fTimeDelta);
 	}
 	else
 	{
@@ -194,7 +194,13 @@ void CBrownBat::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::KnockBack(fTimeDelta, m_fHeight, 20.f);
+		CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 
@@ -216,9 +222,9 @@ void CBrownBat::Dead()
 {
 	if (m_bDead)
 		return;
-
+	
 	m_eCurState = DIE;
-	m_pTransCom->Set_Y(1.f);
+	m_pTransCom->Set_Y(m_vPos.y - 3.f);
 
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,

@@ -79,23 +79,23 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	m_eSeparation = dID;
 	if (m_eSeparation == SEPARATION_ONE)
 	{
-		m_tInfo.iHp = 2;
+		m_tInfo.iHp = 4;
 		m_tInfo.iAttack = 1;
-		m_fScale = 1.5f;
+		m_fScale = 4.f;
 		m_fHeight = m_vPos.y;
 	}
 	else if (m_eSeparation == SEPARATION_TWO || m_eSeparation == SEPARATION_THREE)
 	{
-		m_tInfo.iHp = 3;
+		m_tInfo.iHp = 5;
 		m_tInfo.iAttack = 2;
-		m_fScale = 1.f;
+		m_fScale = 2.f;
 		m_fHeight = m_vPos.y;
 	}
 	else if (m_eSeparation == SEPARATION_FOUR || m_eSeparation == SEPARATION_FIVE)
 	{
-		m_tInfo.iHp = 2;
+		m_tInfo.iHp = 5;
 		m_tInfo.iAttack = 3;
-		m_fScale = 0.5f;
+		m_fScale = 1.f;
 		m_fHeight = m_vPos.y;
 	}
 
@@ -120,7 +120,7 @@ _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 	if (m_bPinkDead)
 	{
 		Dead();
- 		m_fRenderOFFTimeAcc += fTimeDelta;
+		m_fRenderOFFTimeAcc += fTimeDelta;
 		if (1.5f < m_fRenderOFFTimeAcc)
 		{
 			m_bRenderOFF = true;
@@ -195,12 +195,12 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 		if (m_tInfo.iHp <= 0)
 		{
 			CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 3.f, 2.f, vPlayerPos.z - 3.f), SEPARATION_TWO);
+			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 3.f, -97.f, vPlayerPos.z - 3.f), SEPARATION_TWO);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime0", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 3.f, 2.f, vPlayerPos.z + 3.f), SEPARATION_THREE);
+			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 3.f, -97.f, vPlayerPos.z + 3.f), SEPARATION_THREE);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime1", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
@@ -208,7 +208,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 			m_bPinkDead = true;
 		}
 
-		if (!m_bPinkJump && fDist < 5.f)
+		if (!m_bPinkJump && fDist < 7.f)
 		{
 			m_bJump = true;
 			Jump(fTimeDelta);
@@ -226,12 +226,12 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 		if (m_tInfo.iHp <= 0)
 		{
 			CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 4.f, 1.7f, vPlayerPos.z - 3.f), SEPARATION_FOUR);
+			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 4.f, -100.f, vPlayerPos.z - 3.f), SEPARATION_FOUR);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime2", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 4.f, 1.7f, vPlayerPos.z + 3.f), SEPARATION_FOUR);
+			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 4.f, -100.f, vPlayerPos.z + 3.f), SEPARATION_FOUR);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime3", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
@@ -241,7 +241,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 
 		m_eCurState = IDLE;
 
-		if (!m_bPinkJump && fDist < 10.f)
+		if (!m_bPinkJump && fDist < 17.f)
 		{
 			m_bJump = true;
 			Jump(fTimeDelta);
@@ -259,12 +259,12 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 		if (m_tInfo.iHp <= 0)
 		{
 			CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 3.f, 1.7f, vPlayerPos.z + 2.f), SEPARATION_FIVE);
+			CGameObject* pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x - 3.f, -98.f, vPlayerPos.z + 2.f), SEPARATION_FIVE);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime4", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 3.f, 1.7f, vPlayerPos.z - 2.f), SEPARATION_FIVE);
+			pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(vPlayerPos.x + 3.f, -98.f, vPlayerPos.z - 2.f), SEPARATION_FIVE);
 			NULL_CHECK(pGameObject);
 			pLayer->Add_GameObject(L"PinkSlime5", pGameObject);
 			CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
@@ -274,7 +274,7 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 
 		m_eCurState = IDLE;
 
-		if (!m_bPinkJump && fDist < 10.f)
+		if (!m_bPinkJump && fDist < 17.f)
 		{
 			m_bJump = true;
 			Jump(fTimeDelta);
@@ -307,7 +307,6 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 	}
 }
 
-
 void CPinkSlime::Jump(const _float & fTimeDelta)
 {
 	if (Engine::Key_Down(DIK_G))
@@ -322,11 +321,11 @@ void CPinkSlime::Jump(const _float & fTimeDelta)
 		{
 			_float fSize = 0.f;
 			if (m_eSeparation == SEPARATION_ONE)
-				fSize = 1.f;
+				fSize = 2.f;
 			else if (m_eSeparation == SEPARATION_TWO || m_eSeparation == SEPARATION_THREE)
-				fSize = 0.7f;
+				fSize = 1.f;
 			else if (m_eSeparation == SEPARATION_FOUR || m_eSeparation == SEPARATION_FIVE)
-				fSize = 0.5f;
+				fSize = 1.f;
 
 
 			CParticleMgr::GetInstance()->Set_Info(this, 25, 1.f, { fSize, fSize, fSize },
@@ -360,7 +359,13 @@ void CPinkSlime::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		CMonster::KnockBack(fTimeDelta, m_fHeight);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, -0.5f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 

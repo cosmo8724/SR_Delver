@@ -67,7 +67,7 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
-
+	m_bRender = true; // TODO : false
 	if (0 >= m_tInfo.iHp)
 	{
 		Dead();
@@ -266,7 +266,13 @@ void CSkeletonGhost::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::KnockBack(fTimeDelta, m_fHeight, 20.f);
+		CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 4.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 
@@ -291,7 +297,7 @@ void CSkeletonGhost::Dead()
 		return;
 
 	m_eCurState = DIE;
-	m_pTransCom->Set_Y(1.f);
+	m_pTransCom->Set_Y(m_vPos.y - 3.f);
 
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
