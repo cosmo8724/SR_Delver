@@ -148,8 +148,9 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 			//Add_RenderGroup(RENDER_NONALPHA, this);
 	}
 	else
-		Add_RenderGroup(RENDER_ALPHA, this);
-
+	{
+		//Add_RenderGroup(RENDER_ALPHA, this);
+	}
 	return 0;
 }
 
