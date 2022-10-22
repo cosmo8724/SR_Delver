@@ -71,7 +71,6 @@ _int CShield::Update_Object(const _float & fTimeDelta)
 
 
 	m_fTimeDelta = fTimeDelta;
-
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 
@@ -84,15 +83,18 @@ void CShield::LateUpdate_Object(void)
 	if (STATE_INV != m_eState)
 		Add_RenderGroup(RENDER_ALPHA, this);
 
+	// 0(ground) 1(inv) 2(equip) 3(quick)
+
 	CGameObject::LateUpdate_Object();
 }
 
 void CShield::Render_Obejct(void)
-{
-	//if (m_eState == STATE_INV)
-	//	return;
+{		
+	cout << m_eState << endl;
 
-
+	if (m_eState == STATE_INV)
+		return;
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
 	_vec3 vPos;

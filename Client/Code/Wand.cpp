@@ -251,8 +251,8 @@ void CWand::LateUpdate_Object(void)
 {
 	CGameObject::LateUpdate_Object();
 
-	if (STATE_INV == m_eState)
-		return;
+	//if (STATE_INV == m_eState)
+	//	return;
 }
 
 void CWand::Render_Obejct(void)
@@ -266,7 +266,7 @@ void CWand::Render_Obejct(void)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	//m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);

@@ -203,10 +203,10 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Wand
-	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 3.f }));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wand", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+	//pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 3.f }));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wand", pGameObject), E_FAIL);
+	//m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	// GreenWand
 	//pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 4.f }));

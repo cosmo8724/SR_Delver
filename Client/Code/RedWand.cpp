@@ -261,7 +261,7 @@ void CRedWand::Render_Obejct(void)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
