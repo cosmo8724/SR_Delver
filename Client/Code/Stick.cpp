@@ -50,6 +50,7 @@ HRESULT CStick::Ready_Object()
 
 	m_tInfo.iHp = 5;
 	m_tInfo.iAttack = 2;
+	m_tInfo.iExp = 3;
 
 	if (!m_bClone)
 	{
@@ -173,13 +174,22 @@ void CStick::Target_Follow(const _float & fTimeDelta)
 			if (fDist < 5.f)
 			{
 				m_eCurState = ATTACK;
+
+				m_fParticleTimeAcc += fTimeDelta;
+				if (m_bParticle && 0.1f < m_fParticleTimeAcc)
+				{
+					m_bParticle = false;
+					m_fParticleTimeAcc = 0.f;
+				}
+
 				if (!m_bParticle)
 				{
-					CParticleMgr::GetInstance()->Set_Info(this, 10, 1.f, { 1.f, 1.f, 1.f },
+					CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 1.f, 1.f },
 						1.f, { 1.f,1.f,1.f, 0.1f });
 					CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_7);
 					m_bParticle = true;
 				}
+
 				if (m_pAnimtorCom->Get_Currentframe() >= 5.f)
 				{
 					m_bParticle = false;
@@ -205,7 +215,7 @@ void CStick::OnHit(const _float & fTimeDelta)
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
 
 		m_bOneCheck = true;
 	}

@@ -45,8 +45,9 @@ HRESULT CGreenSlime::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iHp = 2;
+	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
+	m_tInfo.iExp = 5;
 
 	m_fHeight = m_vPos.y;
 	if (!m_bClone)
@@ -231,9 +232,9 @@ void CGreenSlime::OnHit(const _float & fTimeDelta)
 		CMonster::KnockBack(fTimeDelta, m_fHeight);
 
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 0.3f, 0.f },
-			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true, false);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
 
 		m_bOneCheck = true;
 	}
@@ -268,7 +269,7 @@ void CGreenSlime::Dead()
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
 	_int iTex = rand() % 3;
-	iTex = 2;
+
 	if (iTex == 0)
 	{
 		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());

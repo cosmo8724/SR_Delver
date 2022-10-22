@@ -128,7 +128,6 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 		}
 	}
 
-	// ó������ �浹ó���� ���� �ʾҴٰ�, ������ ����ġ�� ���� �浹ó��
 	if (m_bStartLightning)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.5f,

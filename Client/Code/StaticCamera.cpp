@@ -99,7 +99,7 @@ CStaticCamera* CStaticCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3*
 
 void CStaticCamera::Key_Input(const _float& fTimeDelta)
 {
-	if (Get_DIKeyState(DIK_TAB) & 0x80)
+	if (m_bFree || Get_DIKeyState(DIK_TAB) & 0x80)
 		m_bFix = false;
 	else
 		m_bFix = true;

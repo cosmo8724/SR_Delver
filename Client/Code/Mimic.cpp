@@ -47,6 +47,7 @@ HRESULT CMimic::Ready_Object(void)
 
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 2;
+	m_tInfo.iExp = 5;
 
 	if (m_bClone)
 		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
@@ -168,7 +169,7 @@ void CMimic::OnHit(const _float & fTimeDelta)
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 0.3f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
 
 		m_bOneCheck = true;
 	}

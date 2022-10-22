@@ -38,6 +38,7 @@ private:
 
 	//Timer
 	_float				m_fMoveTimeAcc;
+	_float				m_fParticleTimeAcc = 0.f;
 
 public:
 	static CStick*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });

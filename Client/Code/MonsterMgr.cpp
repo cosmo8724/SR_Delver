@@ -120,12 +120,12 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
-	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(5.f, 2.f, 12.f));
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(18.f, 2.f, 12.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime1", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
-	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(5.f, 2.f, 11.f));
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(12.f, 2.f, 11.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime2", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
@@ -135,7 +135,7 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime3", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
-	// 200 ¸¶¸® ±îÁö´Â °Å¶á	
+	// 200 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¶ï¿½	
 	/*for (int i = 0; i < 200; i++)
 	{
 		wstring tag = L"GreenSlime_";
@@ -168,12 +168,12 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	m_vecMonster.push_back(pGameObject);
 
 	// BrownBat
-	pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3(-7.f, -57.f, 18.f));
+	pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3(-7.f, -57.f, 21.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
-	pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3( -10.f, -57.f, 12.f));
+	pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3( -10.f, -57.f, 13.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BrownBat1", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
@@ -190,8 +190,8 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	m_vecMonster.push_back(pGameObject);
 
 	// Leaf
-	//pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(50.f, -30.f, 62.f));
-	pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(5.f, 2.f, 6.f));
+	pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(50.f, -30.f, 62.f));
+	//pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(5.f, 2.f, 6.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);

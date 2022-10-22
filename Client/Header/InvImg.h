@@ -1,8 +1,10 @@
 #pragma once
 #include "Item.h"
 
+
 // Stage의 아이템들을 획득 시, 인벤토리에 생기는 이미지 객체
 // 아이템들과 연동되어 있어야 한다.
+class CInventory;
 class CInvImg : public CItem
 {
 private:
@@ -44,6 +46,9 @@ private:
 
 	_matrix				m_matProj;
 	_float				m_fPosX, m_fPosY, m_fScaleX, m_fScaleY;
+
+	_bool				m_bReady = false;
+	CInventory*			m_pInv = nullptr;
 
 
 };

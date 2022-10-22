@@ -28,6 +28,7 @@ public:
 	void		Play_Animation(const _float& fTimeDelta, const _float & fTimeSpeed = 1.f);
 	void		Change_Animation(const _tchar * pTectureTag);
 	void		Set_Texture();
+	void		Set_FrameTexture(const _float fFrame = 1);
 	void		Set_UITexture(const _float& fTextEnd);
 
 private: // Key : Tag, Velaue : TextComponent

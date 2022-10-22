@@ -16,7 +16,9 @@ public:
 	virtual ~CMonster();
 
 public:
+	_int				Get_MonsterHp() { return m_tInfo.iHp; }
 	_int				Get_MonsterAttack() { return m_tInfo.iAttack; }
+	_int				Get_MonsterExp() { return m_tInfo.iExp; }
 
 protected:
 	virtual HRESULT		Ready_Object(void);

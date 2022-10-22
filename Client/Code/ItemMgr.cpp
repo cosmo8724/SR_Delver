@@ -206,22 +206,22 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Wand
-	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 3.f }));
+	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 3.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wand", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	// GreenWand
-	//pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 4.f }));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenWand", pGameObject), E_FAIL);
-	//m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+	pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 4.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenWand", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
-	//// RadWand
-	//pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 5.f }));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RadWand", pGameObject), E_FAIL);
-	//m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+	// RadWand
+	pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 5.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RadWand", pGameObject), E_FAIL);
+	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Key
 	//pGameObject = CKey::Create(m_pGraphicDev, _vec3({ 5.f, 1.f, 10.f }));
@@ -325,28 +325,6 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_POTION].push_back(pGameObject);
-
-	// Gold
-	pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 5.f }), 0);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
-
-	pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 6.f }), 1);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold2", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
-
-	pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 7.f }), 2);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold3", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
-
-	pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 8.f }), 3);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold4", pGameObject), E_FAIL);
-	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
-
 
 	pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -512,6 +490,86 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
 		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
+	}
+
+	else
+	{
+		delete[] szObjTag;
+		szObjTag = nullptr;
+	}
+
+
+
+	return S_OK;
+}
+
+CItem * CItemMgr::Add_GameObject_Shop(const _tchar * pLayerTag, const _tchar * objTag, ITEMTYPE eType, _vec3 vPos)
+{
+
+	wstring tag = objTag;
+	tag += L"%d";
+
+	TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
+	wsprintf(szObjTag, objTag);
+	_tcscat_s(szObjTag, MAX_PATH, L"%d");
+	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
+
+
+	wstring objName = objTag;
+	if (objName == L"RadWand")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CItem* pGameObject = CRedWand::Create(m_pGraphicDev, vPos);
+		if (nullptr == pGameObject)
+			MSG_BOX("레드완드 생성실패");
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+
+		if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
+			MSG_BOX("레이어 불러오기실패");
+
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+
+		return pGameObject;
+	}
+
+	else if (objName == L"Potion")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CItem* pGameObject = CPotion::Create(m_pGraphicDev, vPos, 0);
+		if (nullptr == pGameObject)
+			MSG_BOX("포션 생성실패");
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+
+		if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
+			MSG_BOX("레이어 불러오기실패");
+
+		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+
+		return pGameObject;
+
+	}
+
+	else if (objName == L"Lantern")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CItem* pGameObject = CLantern::Create(m_pGraphicDev, vPos);
+		if (nullptr == pGameObject)
+			MSG_BOX("랜턴 생성실패");
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+
+		if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
+			MSG_BOX("레이어 불러오기실패");
+
+		m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
+
+		return pGameObject;
+
 	}
 
 	else
