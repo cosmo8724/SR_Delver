@@ -53,8 +53,8 @@ HRESULT CInfoTool::InfoTool_Window(const _float & fTimeDelta)
 	const char* Monsters[] = { "Green Slime", "Pink Slime", "Fist", "Blue Bat", "Brown Bat", "Stick", "Leaf", "Skeleton Ghost", "Green Spider", "Mimic", "Octopus", "Song Boss" };
 	static _int iCurrent_Monster = 0;
 
-	ImGui::Combo("Item Type", &iCurrent_Monster, Monsters, IM_ARRAYSIZE(Monsters), 4);
-	ImGui::Text("Current Object Type : %s", Monsters[iCurrent_Monster]);
+	ImGui::Combo("Monster Type", &iCurrent_Monster, Monsters, IM_ARRAYSIZE(Monsters), 4);
+	ImGui::Text("Current Monster Type : %s", Monsters[iCurrent_Monster]);
 	if (ImGui::Button("Create") && !bNowCrafting)
 	{
 		bNowCrafting = true;

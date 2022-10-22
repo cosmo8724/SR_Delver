@@ -39,7 +39,7 @@ HRESULT CTreasureBox::Ready_Object(void)
 
 _int CTreasureBox::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bReady)
+	if (!g_bIsTool && !m_bReady)
 	{
 		CPlayer* pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		NULL_CHECK(pPlayer);

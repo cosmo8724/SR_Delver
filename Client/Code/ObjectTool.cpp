@@ -46,7 +46,7 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 	static	_bool	bNowCrafting = false;
 	//if (pGameObject)
 	//{
-		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Bonfire", "Jam", "Long Torch", "Short Torch", "MushRoom", "Web", "Statue", "RockFall", "TreasureBox"};
+		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Bonfire", "Jam", "Long Torch", "Short Torch", "MushRoom", "Web", "Statue", "RockFall", "Door", "TreasureBox"};
 		static _int item_current = 0;
 
 		ImGui::Combo("Item Type", &item_current, items, IM_ARRAYSIZE(items), 4);
@@ -198,6 +198,10 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
 
 				m_iRockFallCnt++;
+				break;
+			}
+			case ECO_DOOR:
+			{
 				break;
 			}
 			case ECO_TREASUREBOX:
