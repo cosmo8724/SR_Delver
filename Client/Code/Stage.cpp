@@ -37,6 +37,7 @@
 #include "Water.h"
 
 #include "Cat.h"
+#include "TreasureBox.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -407,6 +408,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CTree::Create(m_pGraphicDev, _vec3({ 1.f, 2.f, 6.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tree", pGameObject), E_FAIL);
+
+	pGameObject = CTreasureBox::Create(m_pGraphicDev, _vec3({ 5.f, 2.f, 5.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TreasureBox", pGameObject), E_FAIL);
 
 	//pGameObject = CLongTorch::Create(m_pGraphicDev, _vec3({ 6.f, 0.9f, 5.f }));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);

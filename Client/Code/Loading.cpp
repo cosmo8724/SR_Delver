@@ -174,6 +174,7 @@ _uint CLoading::Loading_ForIntro()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTorch1_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject13_%d.png", TEX_NORMAL, 7)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTorch2_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject14_%d.png", TEX_NORMAL, 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RockFall_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject15_%d.dds", TEX_CUBE, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TreasureBox_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject16_%d.png", TEX_NORMAL, 2)), E_FAIL);
 
 	// Cat
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CatIDLE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/NPC/Cat/Idle/Cat_%d.png", TEX_NORMAL, 16)), E_FAIL);

@@ -387,7 +387,7 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\11. Gold">
       <UniqueIdentifier>{5176b027-0729-4756-a856-e84fa32c835b}</UniqueIdentifier>
-    </Filter>      
+    </Filter>
     <Filter Include="02. GameObject\01. For_Stage\06. Item\03. Equipment\Armor">
       <UniqueIdentifier>{5a0d528a-36bd-4e4f-9039-8b82c8fd15e4}</UniqueIdentifier>
     </Filter>
@@ -426,6 +426,9 @@
     </Filter>
     <Filter Include="02. GameObject\03. For_Loading\Loading_BG">
       <UniqueIdentifier>{546d85a5-f7db-47e3-b2e1-21f73f5c9b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\TreasureBox">
+      <UniqueIdentifier>{499376c3-fa91-4027-b8b3-4afe6a1b96b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -821,7 +824,7 @@
     </ClInclude>
     <ClInclude Include="..\Header\MyButton.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\13. Button</Filter>
-    </ClInclude>      
+    </ClInclude>
     <ClInclude Include="..\Header\Gold.h">
       <Filter>02. GameObject\01. For_Stage\11. Gold</Filter>
     </ClInclude>
@@ -833,6 +836,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\Loading_BG.h">
       <Filter>02. GameObject\03. For_Loading\Loading_BG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\TreasureBox.h">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\TreasureBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1210,7 +1216,7 @@
     </ClCompile>
     <ClCompile Include="..\Code\MyButton.cpp">
       <Filter>02. GameObject\01. For_Stage\99. UI\13. Button</Filter>
-    </ClCompile>      
+    </ClCompile>
     <ClCompile Include="..\Code\Gold.cpp">
       <Filter>02. GameObject\01. For_Stage\11. Gold</Filter>
     </ClCompile>
@@ -1222,6 +1228,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Loading_BG.cpp">
       <Filter>02. GameObject\03. For_Loading\Loading_BG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\TreasureBox.cpp">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\TreasureBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
