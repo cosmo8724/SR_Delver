@@ -36,18 +36,12 @@ CPlayer::~CPlayer()
 {
 }
 
-HRESULT CPlayer::Ready_Object(void)
+HRESULT CPlayer::Ready_Object(_vec3 vPos)
 {
 	m_fTimeDelta = 0.f;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(0.5f, 1.f, 1.5f);
-	m_pTransCom->Set_Pos(7.f, 2.f, 5.f);
-
-	_vec3 vPos, vScale;
-	_matrix matWorld;
-	m_pTransCom->Get_WorldMatrix(&matWorld);
-	//m_fScale = 0.6f;
-	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
 	// 플레이어 스탯정보
 	m_tInfo.iHp = 20;
@@ -739,11 +733,11 @@ void CPlayer::Set_Level(const _int& iMonsterHp, const _int& iMonsterExp)
 	}
 }
 
-CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CPlayer *	pInstance = new CPlayer(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Object()))
+	if (FAILED(pInstance->Ready_Object(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

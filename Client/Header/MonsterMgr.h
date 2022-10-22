@@ -18,7 +18,7 @@ public:
 	void					Ready_MonsterMgr(LPDIRECT3DDEVICE9 pGraphicDev);
 	HRESULT					Ready_Proto();
 
-	HRESULT					Add_GameObject(CLayer* pLayer);
+	HRESULT					Add_GameObject(CLayer* pLayer, const _tchar* szFilePath = L"");
 
 public:
 	inline virtual void		Free(void);
@@ -30,5 +30,6 @@ public:
 private:
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
 	vector<CGameObject*>	m_vecMonster;
+	vector<TCHAR*>			m_vecObjTags;
 };
 

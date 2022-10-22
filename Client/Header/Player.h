@@ -18,7 +18,7 @@ private:
 	virtual ~CPlayer();
 
 public:
-	virtual HRESULT		Ready_Object(void) override;
+	HRESULT		Ready_Object(_vec3 vPos);
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void) override;
 	virtual void		Render_Obejct(void) override;
@@ -143,7 +143,7 @@ private:
 	vector<CGameObject*>	 m_CollisionGroup;
 
 public:
-	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);
 
 };
