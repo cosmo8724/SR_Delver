@@ -19,6 +19,7 @@ CLeaf::CLeaf(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fTeleportingTimeAcc(0.f)
 	, m_fBulletTimeAcc(0.f)
 {
+	m_eType = MOB_LEAF;
 	m_ObjTag = L"Leaf";
 }
 
@@ -31,7 +32,14 @@ CLeaf::CLeaf(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fTeleportingTimeAcc(0.f)
 	, m_fBulletTimeAcc(0.f)
 {
+	m_eType = MOB_LEAF;
 	m_vPos = vPos;
+	m_ObjTag = L"Leaf";
+}
+
+CLeaf::CLeaf(const CMonster& rhs)
+	:CMonster(rhs)
+{
 	m_ObjTag = L"Leaf";
 }
 
@@ -47,8 +55,10 @@ HRESULT CLeaf::Ready_Object(void)
 	m_tInfo.iAttack = 1;
 
 	m_OriginalPos = { m_vPos.x, m_vPos.y, m_vPos.z };
-	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
-
+	if (!m_bClone)
+	{
+		m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
+	}
 	m_eCurState = IDLE;
 
 	m_fIdle_Speed = 1.f;
@@ -59,7 +69,7 @@ HRESULT CLeaf::Ready_Object(void)
 
 _int CLeaf::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bCreateIcon)
+	if (!m_bCreateIcon && !g_bIsTool)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
@@ -71,6 +81,9 @@ _int CLeaf::Update_Object(const _float & fTimeDelta)
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
 	
+	if (g_bIsTool)
+		return 0;
+
 	if (0 >= m_tInfo.iHp)
 	{
 		Dead();
@@ -122,7 +135,7 @@ HRESULT CLeaf::Add_Component(void)
 
 	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_LeafIDLE_Texture");
@@ -280,6 +293,19 @@ void CLeaf::Motion_Change()
 CLeaf * CLeaf::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CLeaf *	pInstance = new CLeaf(pGraphicDev, vPos);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CLeaf * CLeaf::Create(CMonster * pMonster)
+{
+	CLeaf *	pInstance = new CLeaf(*pMonster);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

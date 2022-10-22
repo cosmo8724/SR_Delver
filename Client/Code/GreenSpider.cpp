@@ -19,6 +19,7 @@ CGreenSpider::CGreenSpider(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fAttackTimeAcc(0.f)
 
 {
+	m_eType = MOB_GREENSPIDER;
 	m_ObjTag = L"GreenSpider";
 }
 
@@ -31,7 +32,14 @@ CGreenSpider::CGreenSpider(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fAttackTimeAcc(0.f)
 
 {
+	m_eType = MOB_GREENSPIDER;
 	m_vPos = vPos;
+	m_ObjTag = L"GreenSpider";
+}
+
+CGreenSpider::CGreenSpider(const CMonster& rhs)
+	: CMonster(rhs)
+{
 	m_ObjTag = L"GreenSpider";
 }
 
@@ -46,7 +54,8 @@ HRESULT CGreenSpider::Ready_Object()
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
 
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	if (!m_bClone)
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eCurState = IDLE;
 
@@ -58,7 +67,7 @@ HRESULT CGreenSpider::Ready_Object()
 
 _int CGreenSpider::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bCreateIcon)
+	if (!m_bCreateIcon && !g_bIsTool)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
@@ -69,6 +78,9 @@ _int CGreenSpider::Update_Object(const _float & fTimeDelta)
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 1.5f);
 	Motion_Change();
+
+	if (g_bIsTool)
+		return 0;
 
 	if (0 >= m_tInfo.iHp)
 	{
@@ -109,10 +121,12 @@ HRESULT CGreenSpider::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
-
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
 	// m_pAnimtorCom
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
@@ -120,7 +134,7 @@ HRESULT CGreenSpider::Add_Component(void)
 
 	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_GreenSpiderIDLE_Texture");
@@ -265,6 +279,19 @@ void CGreenSpider::Motion_Change()
 CGreenSpider * CGreenSpider::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CGreenSpider *	pInstance = new CGreenSpider(pGraphicDev, vPos);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CGreenSpider * CGreenSpider::Create(CMonster * pMonster)
+{
+	CGreenSpider *	pInstance = new CGreenSpider(*pMonster);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

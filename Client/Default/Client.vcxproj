@@ -220,6 +220,7 @@
     <ClInclude Include="..\Header\Icon.h" />
     <ClInclude Include="..\Header\ImGuiMgr.h" />
     <ClInclude Include="..\Header\InfoTool.h" />
+    <ClInclude Include="..\Header\Intro.h" />
     <ClInclude Include="..\Header\Inventory.h" />
     <ClInclude Include="..\Header\InvImg.h" />
     <ClInclude Include="..\Header\ItemMgr.h" />
@@ -231,6 +232,8 @@
     <ClInclude Include="..\Header\LeafBullet.h" />
     <ClInclude Include="..\Header\LeftHand.h" />
     <ClInclude Include="..\Header\Loading.h" />
+    <ClInclude Include="..\Header\Loading_BG.h" />
+    <ClInclude Include="..\Header\Loading_Scene.h" />
     <ClInclude Include="..\Header\Logo.h" />
     <ClInclude Include="..\Header\LongTorch.h" />
     <ClInclude Include="..\Header\MainApp.h" />
@@ -360,6 +363,7 @@
     <ClCompile Include="..\Code\Icon.cpp" />
     <ClCompile Include="..\Code\ImGuiMgr.cpp" />
     <ClCompile Include="..\Code\InfoTool.cpp" />
+    <ClCompile Include="..\Code\Intro.cpp" />
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\InvImg.cpp" />
     <ClCompile Include="..\Code\ItemMgr.cpp" />
@@ -371,6 +375,8 @@
     <ClCompile Include="..\Code\LeafBullet.cpp" />
     <ClCompile Include="..\Code\LeftHand.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />
+    <ClCompile Include="..\Code\Loading_BG.cpp" />
+    <ClCompile Include="..\Code\Loading_Scene.cpp" />
     <ClCompile Include="..\Code\Logo.cpp" />
     <ClCompile Include="..\Code\LongTorch.cpp" />
     <ClCompile Include="..\Code\MainApp.cpp" />

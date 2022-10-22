@@ -9,6 +9,7 @@ class CSkeletonGhost : public CMonster
 private:
 	explicit CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	explicit CSkeletonGhost(const CMonster& rhs);
 	virtual ~CSkeletonGhost();
 
 public:
@@ -51,7 +52,8 @@ private:
 	_float				m_fHpMinusTimeAcc;
 
 public:
-	static CSkeletonGhost*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CSkeletonGhost*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CSkeletonGhost* Create(CMonster* pMonster);
 	virtual void			Free(void);
 };
 

@@ -120,20 +120,34 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
 	m_vecMonster.push_back(pGameObject);
 
-	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(5.f, 2.f, 12.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime1", pGameObject), E_FAIL);
-	//m_vecMonster.push_back(pGameObject);
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(5.f, 2.f, 12.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime1", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
-	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(5.f, 2.f, 11.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime2", pGameObject), E_FAIL);
-	//m_vecMonster.push_back(pGameObject);
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(5.f, 2.f, 11.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime2", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
 
-	//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(7.f, 2.f, 10.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime3", pGameObject), E_FAIL);
-	//m_vecMonster.push_back(pGameObject);
+	pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(7.f, 2.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime3", pGameObject), E_FAIL);
+	m_vecMonster.push_back(pGameObject);
+
+	// 200 마리 까지는 거뜬	
+	/*for (int i = 0; i < 200; i++)
+	{
+		wstring tag = L"GreenSlime_";
+		tag += i;
+		TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
+		wsprintf(szObjTag, tag.c_str());
+
+		pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3((8.f + i) / 3.f, -22.f, 95.f));
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+		m_vecMonster.push_back(pGameObject);
+	}*/
 
 	// PinkSlime
 	pGameObject = CPinkSlime::Create(m_pGraphicDev, _vec3(94.f, -95.f, 17.f), SEPARATION_ONE);

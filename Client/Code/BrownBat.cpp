@@ -17,6 +17,7 @@ CBrownBat::CBrownBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
 {
+	m_eType = MOB_BROWNBAT;
 	m_ObjTag = L"BrownBat";
 }
 
@@ -28,7 +29,14 @@ CBrownBat::CBrownBat(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
 {
+	m_eType = MOB_BROWNBAT;
 	m_vPos = vPos;
+	m_ObjTag = L"BrownBat";
+}
+
+CBrownBat::CBrownBat(const CMonster& rhs)
+	: CMonster(rhs)
+{
 	m_ObjTag = L"BrownBat";
 }
 
@@ -43,10 +51,12 @@ HRESULT CBrownBat::Ready_Object(void)
 	m_tInfo.iHp = 2;
 	m_tInfo.iAttack = 1;
 
-	m_fHeight = m_vPos.y; // 3.f
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	//m_pTransCom->Set_Pos(15.f, m_fHeight, 15.f);
-
+	if (!m_bClone)
+	{
+		m_fHeight = m_vPos.y; // 3.f
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+		//m_pTransCom->Set_Pos(15.f, m_fHeight, 15.f);
+	}
 	m_eCurState = IDLE;
 
 	m_fIdle_Speed = 5.f;
@@ -57,7 +67,7 @@ HRESULT CBrownBat::Ready_Object(void)
 
 _int CBrownBat::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bCreateIcon)
+	if (!m_bCreateIcon && !g_bIsTool)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
@@ -68,6 +78,9 @@ _int CBrownBat::Update_Object(const _float & fTimeDelta)
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 3.f);
 	Motion_Change();
+
+	if (g_bIsTool)
+		return 0;
 
 	if (0 >= m_tInfo.iHp)
 	{
@@ -109,10 +122,12 @@ HRESULT CBrownBat::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
-
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
 	// m_pAnimtorCom
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
@@ -120,7 +135,7 @@ HRESULT CBrownBat::Add_Component(void)
 
 	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_BrownBatIDLE_Texture");
@@ -276,6 +291,19 @@ void CBrownBat::Motion_Change()
 CBrownBat * CBrownBat::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CBrownBat *	pInstance = new CBrownBat(pGraphicDev, vPos);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CBrownBat * CBrownBat::Create(CMonster * pMonster)
+{
+	CBrownBat *	pInstance = new CBrownBat(*pMonster);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

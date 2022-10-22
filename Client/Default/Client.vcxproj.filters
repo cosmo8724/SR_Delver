@@ -406,6 +406,21 @@
     <Filter Include="02. GameObject\01. For_Stage\06. Item\02. Equipment\Lantern">
       <UniqueIdentifier>{5cc18c69-bf15-4311-a29c-79692f26c707}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\02. Intro">
+      <UniqueIdentifier>{8ecd3665-c5b6-4723-a5c2-18a0a0a80696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\03. WaterFall">
+      <UniqueIdentifier>{515174c3-267e-4efc-a6a6-2cc2bdc2ac50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\99. Loading\00. Loading Scene">
+      <UniqueIdentifier>{7de395d8-cefa-4253-82fc-349554d8dcd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. For_Loading">
+      <UniqueIdentifier>{a73a7655-38c0-4ced-844f-d1b599023b54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. For_Loading\Loading_BG">
+      <UniqueIdentifier>{546d85a5-f7db-47e3-b2e1-21f73f5c9b9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -798,6 +813,15 @@
     <ClInclude Include="..\Header\Gold.h">
       <Filter>02. GameObject\01. For_Stage\11. Gold</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Intro.h">
+      <Filter>01. Scene\02. Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Loading_Scene.h">
+      <Filter>01. Scene\99. Loading\00. Loading Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Loading_BG.h">
+      <Filter>02. GameObject\03. For_Loading\Loading_BG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1171,6 +1195,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\Gold.cpp">
       <Filter>02. GameObject\01. For_Stage\11. Gold</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Intro.cpp">
+      <Filter>01. Scene\02. Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Loading_Scene.cpp">
+      <Filter>01. Scene\99. Loading\00. Loading Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Loading_BG.cpp">
+      <Filter>02. GameObject\03. For_Loading\Loading_BG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

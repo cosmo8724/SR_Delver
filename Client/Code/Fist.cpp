@@ -18,6 +18,7 @@ CFist::CFist(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fIdleTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
 {
+	m_eType = MOB_FIST;
 	m_ObjTag = L"Fist";
 }
 
@@ -29,7 +30,14 @@ CFist::CFist(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fIdleTimeAcc(0.f)
 	, m_fAttackTimeAcc(0.f)
 {
+	m_eType = MOB_FIST;
 	m_vPos = vPos;
+	m_ObjTag = L"Fist";
+}
+
+CFist::CFist(const CMonster & rhs)
+	: CMonster(rhs)
+{
 	m_ObjTag = L"Fist";
 }
 
@@ -44,7 +52,8 @@ HRESULT CFist::Ready_Object(void)
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
 
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	if (!m_bClone)
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 	//m_pTransCom->Set_Pos(3.f, 1.f, 15.f);
 
 	m_eCurState = IDLE;
@@ -57,7 +66,7 @@ HRESULT CFist::Ready_Object(void)
 
 _int CFist::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bCreateIcon)
+	if (!m_bCreateIcon && !g_bIsTool)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
@@ -68,6 +77,9 @@ _int CFist::Update_Object(const _float & fTimeDelta)
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
+
+	if (g_bIsTool)
+		return 0;
 
 	if (0 >= m_tInfo.iHp)
 	{
@@ -109,9 +121,12 @@ HRESULT CFist::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
 
 	// m_pAnimtorCom
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
@@ -120,7 +135,7 @@ HRESULT CFist::Add_Component(void)
 
 	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_FistIDLE_Texture");
@@ -263,6 +278,19 @@ void CFist::Motion_Change()
 CFist * CFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CFist *	pInstance = new CFist(pGraphicDev, vPos);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CFist * CFist::Create(CMonster * pMonster)
+{
+	CFist *	pInstance = new CFist(*pMonster);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

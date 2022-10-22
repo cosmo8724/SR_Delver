@@ -24,6 +24,7 @@ CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fJSpeed0(0.f)
 	, m_fAccel(0.f)
 {
+	m_eType = MOB_PINKSLIME;
 	//m_ObjTag = L"PinkSlime";
 }
 
@@ -43,6 +44,7 @@ CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fAccel(0.f)
 {
 	m_vPos = vPos;
+	m_eType = MOB_PINKSLIME;
 	//m_ObjTag = L"PinkSlime";
 }
 
@@ -55,7 +57,16 @@ CPinkSlime::CPinkSlime(const CPinkSlime& rhs)
 	, m_fScale(rhs.m_fScale)
 	, m_fHeight(rhs.m_fHeight)
 {
+	m_eType = MOB_PINKSLIME;
 	//m_ObjTag = L"PinkSlime";
+}
+
+CPinkSlime::CPinkSlime(const CMonster& rhs)
+	: CMonster(rhs)
+	, m_eCurState(IDLE)
+{
+	m_eType = MOB_PINKSLIME;
+	m_ObjTag = L"PinkSlime";
 }
 
 CPinkSlime::~CPinkSlime()
@@ -99,14 +110,17 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 		m_fHeight = m_vPos.y;
 	}
 
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+	if (!m_bClone)
+	{
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+	}
 	return S_OK;
 }
 
 _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bCreateIcon)
+	if (!m_bCreateIcon && !g_bIsTool)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
@@ -116,6 +130,10 @@ _int CPinkSlime::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 1.5f);
 	Motion_Change();
+
+	if (g_bIsTool)
+		return 0;
+
 
 	if (m_bPinkDead)
 	{
@@ -157,9 +175,12 @@ HRESULT CPinkSlime::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
 
 	// m_pAnimtorCom
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
@@ -168,7 +189,7 @@ HRESULT CPinkSlime::Add_Component(void)
 
 	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_PinkSlimeIDLE_Texture");
@@ -455,6 +476,19 @@ CPinkSlime * CPinkSlime::Create(const CPinkSlime & rhs, SEPARATION dID)
 	CPinkSlime *	pInstance = new CPinkSlime(rhs);
 
 	if (FAILED(pInstance->Ready_Object(dID)))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CPinkSlime * CPinkSlime::Create(CMonster * pMonster)
+{
+	CPinkSlime *	pInstance = new CPinkSlime(*pMonster);
+
+	if (FAILED(pInstance->Ready_Object(SEPARATION_ONE)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
