@@ -213,10 +213,7 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 	{
 		m_bSKill = false;
 
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-		_int pPlayerInfo = pPlayer->Get_Hp();
-
-		if (30 > pPlayerInfo)
+		if (10 > m_tInfo.iHp)
 		{
 			m_bSkillFloor = true;
 			m_iFloorCreate = 0;
@@ -452,9 +449,9 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 			NULL_CHECK(pSongBossFloor);
 			if (pSongBossFloor->Get_StartLightning())
 			{
-				CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
-				NULL_CHECK(pStaticCamera);
-				pStaticCamera->Shake_Camera(1.f, 0.5f);
+				//CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+				//NULL_CHECK(pStaticCamera);
+				//pStaticCamera->Shake_Camera(1.f, 0.5f);
 
 				CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 				++m_iLightningCreate;

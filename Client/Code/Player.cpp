@@ -49,7 +49,7 @@ HRESULT CPlayer::Ready_Object(void)
 	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	// 플레이어 스탯정보
-	m_tInfo.iHp = 30;
+	m_tInfo.iHp = 20;
 	m_tInfo.iHpMax = 20;
 	m_tInfo.iAtk = 1;
 	m_tInfo.iDef = 10;
