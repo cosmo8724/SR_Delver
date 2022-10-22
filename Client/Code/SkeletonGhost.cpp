@@ -43,6 +43,7 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
+	m_tInfo.iExp = 5;
 
 	m_fHeight = m_vPos.y; // 3.f;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);

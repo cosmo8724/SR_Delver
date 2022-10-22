@@ -146,7 +146,6 @@ namespace Engine
 	{
 		_int		iHp;
 		_int		iAttack;
-
 		_int		iExp;
 
 	}MONTSERINFO;

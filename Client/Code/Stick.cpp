@@ -42,6 +42,7 @@ HRESULT CStick::Ready_Object()
 
 	m_tInfo.iHp = 5;
 	m_tInfo.iAttack = 2;
+	m_tInfo.iExp = 3;
 
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 	//m_pTransCom->Set_Scale(0.7f, 0.7f, 0.7f);

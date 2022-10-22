@@ -45,6 +45,7 @@ HRESULT CGreenSpider::Ready_Object()
 
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
+	m_tInfo.iExp = 4;
 
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 

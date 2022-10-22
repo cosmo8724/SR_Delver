@@ -46,8 +46,8 @@ HRESULT CPlayerInfo::Ready_Object(void)
 	//m_matView._41 = m_fPosX;
 	//m_matView._42 = m_fPosX;
 
-	swprintf_s(m_szLevel,	L"레벨 : %d / %d", 1, 10);
-	swprintf_s(m_szExp,		L"경험치 : %d / %d", 0, 100);
+	swprintf_s(m_szLevel,	L"레벨 : %d", 1);
+	swprintf_s(m_szExp,		L"경험치 : %d / %d", 0, 10);
 	swprintf_s(m_szHp,		L"체력 : %d / %d", 10, 20);
 	swprintf_s(m_szSpeed,	L"속력 : %.1f\n", 5.f);
 	swprintf_s(m_szHunger,	L"배고픔 : %d / %d", 5, 5);
@@ -70,8 +70,8 @@ _int CPlayerInfo::Update_Object(const _float & fTimeDelta)
 	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	PLAYERINFO tPlayerInfo = pPlayer->Get_Info();
 
-	swprintf_s(m_szLevel,	L"레벨 : %d / %d", tPlayerInfo.iLevel, 10);
-	swprintf_s(m_szExp,		L"경험치 : %d / %d", tPlayerInfo.iExp, 100);
+	swprintf_s(m_szLevel,	L"레벨 : %d", tPlayerInfo.iLevel);
+	swprintf_s(m_szExp,		L"경험치 : %d / %d", tPlayerInfo.iExp, tPlayerInfo.iExpMax);
 	swprintf_s(m_szHp,		L"체력 : %d / %d", tPlayerInfo.iHp, tPlayerInfo.iHpMax);
 	swprintf_s(m_szSpeed,	L"속력 : %.1f\n", tPlayerInfo.fSpeed);
 	swprintf_s(m_szHunger,	L"배고픔 : %d / %d", tPlayerInfo.iHunger, 5);

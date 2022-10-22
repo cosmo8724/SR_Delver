@@ -36,8 +36,9 @@ HRESULT CGreenSlime::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iHp = 2;
+	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
+	m_tInfo.iExp = 5;
 
 	m_fHeight = m_vPos.y;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);

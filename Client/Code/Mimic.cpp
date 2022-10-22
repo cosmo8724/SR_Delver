@@ -39,6 +39,7 @@ HRESULT CMimic::Ready_Object(void)
 
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 2;
+	m_tInfo.iExp = 5;
 
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 

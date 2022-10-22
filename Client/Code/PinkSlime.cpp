@@ -81,6 +81,7 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	{
 		m_tInfo.iHp = 4;
 		m_tInfo.iAttack = 1;
+		m_tInfo.iExp = 1;
 		m_fScale = 4.f;
 		m_fHeight = m_vPos.y;
 	}
@@ -88,6 +89,7 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	{
 		m_tInfo.iHp = 5;
 		m_tInfo.iAttack = 2;
+		m_tInfo.iExp = 1;
 		m_fScale = 2.f;
 		m_fHeight = m_vPos.y;
 	}
@@ -95,6 +97,7 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	{
 		m_tInfo.iHp = 5;
 		m_tInfo.iAttack = 3;
+		m_tInfo.iExp = 5;
 		m_fScale = 1.f;
 		m_fHeight = m_vPos.y;
 	}
