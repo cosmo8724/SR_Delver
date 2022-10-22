@@ -84,6 +84,7 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
 		//m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
 		
+		// a
 		m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
 		break;
 	}
