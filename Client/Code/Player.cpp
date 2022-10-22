@@ -49,18 +49,17 @@ HRESULT CPlayer::Ready_Object(void)
 	//m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
 
 	// 플레이어 스탯정보
-	m_tInfo.iHp = 10;
+	m_tInfo.iHp = 30;
 	m_tInfo.iHpMax = 20;
 	m_tInfo.iAtk = 1;
 	m_tInfo.iDef = 10;
 	m_tInfo.iExp = 0;
-	m_tInfo.iExpMax = 7;
+	m_tInfo.iExpMax = 10;
 	m_tInfo.iHunger = 5;
 	m_tInfo.fSpeed = 5.f;
 	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
 	m_tInfo.iLevel = 1;
 	m_tInfo.iGold = 0;
-
 
 	return S_OK;
 }

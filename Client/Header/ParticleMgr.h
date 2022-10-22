@@ -49,7 +49,7 @@ public:
 
 
 	void			Add_Info_Circling(
-		_bool		_bFrameMove = true
+		_bool			_bFrameMove = true
 		, _float		_fFrame = 0
 		, _float		_fDist = 1.f
 		, _float		_fAngleSpeed= 1.f

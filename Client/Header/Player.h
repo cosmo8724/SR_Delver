@@ -38,7 +38,8 @@ public:
 
 	void				OnHit(_int _HpMinus); // sh
 	int					Get_PlayerAttack() { return m_tInfo.iAtk; } // sh
- 	PLAYERINFO			Get_Info() { return m_tInfo; } // sh
+	PLAYERINFO			Get_Info() { return m_tInfo; } // sh
+	_int				Get_Hp() { return m_tInfo.iHp; } // sh
 
 
 	const _float&		Get_CurSpeed() { return m_tInfo.fSpeed; }

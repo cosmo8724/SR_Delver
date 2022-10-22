@@ -271,7 +271,7 @@ void CSkeletonGhost::OnHit(const _float & fTimeDelta)
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 4.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_14);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
 
 		m_bOneCheck = true;
 	}

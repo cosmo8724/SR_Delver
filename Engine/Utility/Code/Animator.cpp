@@ -52,6 +52,11 @@ void CAnimator::Set_Texture()
 	m_pCurAnim->Set_Texture((_ulong)m_fFrame);
 }
 
+void CAnimator::Set_FrameTexture(const _float fFrame)
+{
+	m_pCurAnim->Set_Texture(fFrame);
+}
+
 void CAnimator::Set_UITexture(const _float & fTextEnd)
 {
 	m_fFrame = fTextEnd;
