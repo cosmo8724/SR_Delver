@@ -12,6 +12,7 @@ class CStick : public CMonster
 private:
 	explicit CStick(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CStick(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	explicit CStick(const CMonster& rhs);
 	virtual ~CStick();
 
 public:
@@ -40,7 +41,8 @@ private:
 	_float				m_fParticleTimeAcc = 0.f;
 
 public:
-	static CStick*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CStick*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CStick*		Create(CMonster* pMonster);
 	virtual void		Free(void);
 };
 

@@ -53,5 +53,6 @@
 
 extern HINSTANCE	g_hInst;
 extern HWND			g_hWnd;
+extern bool			g_bIsTool;
 
 using namespace std;

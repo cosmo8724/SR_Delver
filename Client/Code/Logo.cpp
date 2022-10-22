@@ -9,6 +9,8 @@
 #include "FontLogo.h"
 #include "FontStart.h"
 #include "ImGuiMgr.h"
+#include "Intro.h"
+#include "Loading_Scene.h"
 
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -45,42 +47,42 @@ Engine::_int CLogo::Update_Scene(const _float& fTimeDelta)
 	_int iResult = Engine::CScene::Update_Scene(fTimeDelta);
 
 	// �ε� Ŭ���� ����
-	if (!m_pLoading)
-	{
-		if (Key_Down(DIK_SPACE))
-		{
-			m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_STAGE);
-			NULL_CHECK_RETURN(m_pLoading, E_FAIL);
-		}
-		if (Key_Down(DIK_F1))
-		{
-			m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_TOOL);
-			NULL_CHECK_RETURN(m_pLoading, E_FAIL);
-		}
-	}
-	else
-	{
-		if (m_pLoading->Get_Finish())
-		{
-			//if (Key_Down(DIK_SPACE))
-			//{
-			//	//CScene*		pScene = CStage::Create(m_pGraphicDev);
-			//	//NULL_CHECK_RETURN(pScene, E_FAIL);
+	//if (!m_pLoading)
+	//{
+	//	if (Key_Down(DIK_SPACE))
+	//	{
+	//		m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_INTRO);
+	//		NULL_CHECK_RETURN(m_pLoading, E_FAIL);
+	//	}
+	//	if (Key_Down(DIK_F1))
+	//	{
+	//		m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_TOOL);
+	//		NULL_CHECK_RETURN(m_pLoading, E_FAIL);
+	//	}
+	//}
+	//else
+	//{
+	//	if (m_pLoading->Get_Finish())
+	//	{
+	//		//if (Key_Down(DIK_SPACE))
+	//		//{
+	//		//	//CScene*		pScene = CStage::Create(m_pGraphicDev);
+	//		//	//NULL_CHECK_RETURN(pScene, E_FAIL);
 
-			//	//FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
+	//		//	//FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
 
-			//	return 0;
-			//}
-			if (Key_Down(DIK_F1))
-			{
-				CScene* pScene = CTool_Scene::Create(m_pGraphicDev);
-				NULL_CHECK_RETURN(pScene, E_FAIL);
-				FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
+	//		//	return 0;
+	//		//}
+	//		if (Key_Down(DIK_F1))
+	//		{
+	//			CScene* pScene = CTool_Scene::Create(m_pGraphicDev);
+	//			NULL_CHECK_RETURN(pScene, E_FAIL);
+	//			FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
 
-				return 0;
-			}
-		}
-	}
+	//			return 0;
+	//		}
+	//	}
+	//}
 
 	return iResult;
 }
@@ -89,20 +91,37 @@ void CLogo::LateUpdate_Scene(void)
 {
 	Engine::CScene::LateUpdate_Scene();
 
-	if (!m_pLoading)
+	if (Engine::Key_Down(DIK_F1))
+	{
+		g_bIsTool = true;
+
+		CScene*	pLoadingScene = CLoading_Scene::Create(m_pGraphicDev, LOADING_TOOL);
+		NULL_CHECK(pLoadingScene);
+		Engine::Set_Scene(pLoadingScene);
+		return;
+	}
+
+	if (Engine::Key_Down(DIK_SPACE))
+	{
+		CScene*	pLoadingScene = CLoading_Scene::Create(m_pGraphicDev, LOADING_INTRO);
+		NULL_CHECK(pLoadingScene);
+		Engine::Set_Scene(pLoadingScene);
+		return;
+	}
+
+	/*if (!m_pLoading)
 		return;
 
 	if (m_pLoading->Get_Finish())
 	{
 		if (Key_Down(DIK_SPACE))
 		{
-			CScene*		pScene = CStage::Create(m_pGraphicDev);
+			CScene*		pScene = CIntro::Create(m_pGraphicDev);
 			NULL_CHECK(pScene);
 
 			Engine::Set_Scene(pScene);
-
 		}
-	}
+	}*/
 }
 
 void CLogo::Render_Scene(void)

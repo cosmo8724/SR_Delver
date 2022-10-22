@@ -9,6 +9,7 @@ class CBrownBat : public CMonster
 private:
 	explicit CBrownBat(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CBrownBat(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	explicit CBrownBat(const CMonster& rhs);
 	virtual ~CBrownBat();
 
 public:
@@ -38,7 +39,8 @@ private:
 	_float				m_fAttackTimeAcc;
 
 public:
-	static CBrownBat*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CBrownBat*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CBrownBat*	Create(CMonster* pMonster);
 	virtual void		Free(void);
 };
 

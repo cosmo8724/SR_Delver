@@ -12,6 +12,8 @@
 #include "UIMgr.h"
 #include "CullingMgr.h"
 
+_bool	g_bIsTool = false;
+
 USING(Engine)
 CMainApp::CMainApp()	
 	: m_pGraphicDev(nullptr)

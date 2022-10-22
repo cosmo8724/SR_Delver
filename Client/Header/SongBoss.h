@@ -9,6 +9,7 @@ class CSongBoss : public CMonster
 private:
 	explicit CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CSongBoss(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	explicit CSongBoss(const CMonster& rhs);
 	virtual ~CSongBoss();
 
 public:
@@ -73,6 +74,7 @@ private:
 	_float				m_fMoveTimeAcc;
 
 public:
-	static CSongBoss*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CSongBoss*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CSongBoss*		Create(CMonster* pMonster);
 	virtual void			Free(void);
 };
