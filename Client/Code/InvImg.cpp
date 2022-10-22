@@ -2,6 +2,7 @@
 #include "InvImg.h"
 #include "Export_Function.h"
 #include "Potion.h"
+#include "Inventory.h"
 
 CInvImg::CInvImg(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
@@ -60,9 +61,18 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 	if (m_bDead)
 		return 0;
 
+	if (!m_bReady)
+	{
+		m_pInv = dynamic_cast<CInventory*>(Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+		if (nullptr != m_pInv)
+			m_bReady = true;
+		else
+			return 0;
+	}
+
 	if (m_eState == STATE_INV)
 	{
-		if ((Engine::Get_DIKeyState(DIK_TAB) & 0X80))
+		if ( m_pInv->Is_Open() || (Engine::Get_DIKeyState(DIK_TAB) & 0X80))
 			m_bOn = true;
 		else
 			m_bOn = false;

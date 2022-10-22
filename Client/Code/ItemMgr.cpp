@@ -503,6 +503,86 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 	return S_OK;
 }
 
+CItem * CItemMgr::Add_GameObject_Shop(const _tchar * pLayerTag, const _tchar * objTag, ITEMTYPE eType, _vec3 vPos)
+{
+
+	wstring tag = objTag;
+	tag += L"%d";
+
+	TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
+	wsprintf(szObjTag, objTag);
+	_tcscat_s(szObjTag, MAX_PATH, L"%d");
+	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
+
+
+	wstring objName = objTag;
+	if (objName == L"RadWand")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CItem* pGameObject = CRedWand::Create(m_pGraphicDev, vPos);
+		if (nullptr == pGameObject)
+			MSG_BOX("레드완드 생성실패");
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+
+		if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
+			MSG_BOX("레이어 불러오기실패");
+
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+
+		return pGameObject;
+	}
+
+	else if (objName == L"Potion")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CItem* pGameObject = CPotion::Create(m_pGraphicDev, vPos, 0);
+		if (nullptr == pGameObject)
+			MSG_BOX("포션 생성실패");
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+
+		if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
+			MSG_BOX("레이어 불러오기실패");
+
+		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+
+		return pGameObject;
+
+	}
+
+	else if (objName == L"Lantern")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CItem* pGameObject = CLantern::Create(m_pGraphicDev, vPos);
+		if (nullptr == pGameObject)
+			MSG_BOX("랜턴 생성실패");
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+
+		if (E_FAIL == pLayer->Add_GameObject(szObjTag, pGameObject))
+			MSG_BOX("레이어 불러오기실패");
+
+		m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
+
+		return pGameObject;
+
+	}
+
+	else
+	{
+		delete[] szObjTag;
+		szObjTag = nullptr;
+	}
+
+
+
+	return S_OK;
+}
+
 inline void CItemMgr::Free(void)
 {
 	// ����

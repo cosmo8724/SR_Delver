@@ -242,6 +242,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h" />
+    <ClInclude Include="..\Header\MyButton.h" />
     <ClInclude Include="..\Header\Necklace.h" />
     <ClInclude Include="..\Header\NPCMgr.h" />
     <ClInclude Include="..\Header\ObjectTool.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="..\Header\Ring.h" />
     <ClInclude Include="..\Header\RockFall.h" />
     <ClInclude Include="..\Header\Shield.h" />
+    <ClInclude Include="..\Header\Shop.h" />
     <ClInclude Include="..\Header\ShortTorch.h" />
     <ClInclude Include="..\Header\SkeletonGhost.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
@@ -382,6 +384,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Code\MiniMap.cpp" />
+    <ClCompile Include="..\Code\MyButton.cpp" />
     <ClCompile Include="..\Code\Necklace.cpp" />
     <ClCompile Include="..\Code\NPCMgr.cpp" />
     <ClCompile Include="..\Code\ObjectTool.cpp">
@@ -403,6 +406,7 @@
     <ClCompile Include="..\Code\Ring.cpp" />
     <ClCompile Include="..\Code\RockFall.cpp" />
     <ClCompile Include="..\Code\Shield.cpp" />
+    <ClCompile Include="..\Code\Shop.cpp" />
     <ClCompile Include="..\Code\ShortTorch.cpp" />
     <ClCompile Include="..\Code\SkeletonGhost.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />

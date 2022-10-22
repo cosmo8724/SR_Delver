@@ -179,6 +179,7 @@ namespace Engine
 		_float		fSpeed = 0.f;
 		_int		iHunger = 0;
 		_int		iAtk = 0;
+
 	}ITEMINFO;
 }
 

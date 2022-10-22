@@ -29,6 +29,8 @@ private:
 
 public:
 	void		Set_Item(CItem* pItem, ITEMTYPE eType);
+	void		Set_Open(_bool bOpen) { m_bOpen = bOpen; }
+
 
 private:
 	_matrix				m_matView, m_matWorld, m_matProj;
@@ -47,6 +49,7 @@ private:
 	_float			m_fTileSize;
 	_bool			m_bShow = false;
 
+	_bool			m_bOpen = false;
 
 };
 
