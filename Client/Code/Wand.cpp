@@ -219,7 +219,8 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 
 		m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
 
-		//_vec3 vTrans = vPos + 0.25f * vRight + 0.8f * vLook;
+		
+		// Light
 		_vec3 vPos, vRight, vLook, vUp;
 		m_pCenter->Get_Info(INFO_POS, &vPos);
 		m_pCenter->Get_Info(INFO_RIGHT, &vRight);
@@ -227,6 +228,7 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 		m_pCenter->Get_Info(INFO_UP, &vUp);
 		_vec3 vTrans = vPos + 0.25f * vRight + 0.7f * vLook + 0.2f * vUp;
 		CLightMgr::GetInstance()->Update_Pos(LIGHT_WAND, vTrans);
+
 		break;
 	}
 

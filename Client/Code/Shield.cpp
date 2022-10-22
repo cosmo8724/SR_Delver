@@ -8,6 +8,8 @@ CShield::CShield(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	D3DXMatrixIdentity(&m_matWorld);
 	m_ObjTag = L"Shield";
 	m_vPos = vPos;
+	m_eItemType = ITEM_SHIELD;
+
 }
 
 CShield::~CShield()
@@ -21,7 +23,6 @@ HRESULT CShield::Ready_Object(void)
 
 	m_eState = STATE_GROUND;
 	m_tInfo.iDef = 5;
-	m_eItemType = ITEM_SHIELD;
 	return S_OK;
 }
 
@@ -50,14 +51,12 @@ _int CShield::Update_Object(const _float & fTimeDelta)
 		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
 		break;
 	case STATE_EQUIP:
-		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
-
-
 		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
 		{
 			Charge(fTimeDelta);
 			Attack(fTimeDelta);
 		}
+		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
 
 		if (!m_bAttack)
 		{
@@ -196,6 +195,5 @@ void CShield::Attack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_pColliderCom->Set_Free(true);
 	}
-	/*else
-	Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);*/
+
 }

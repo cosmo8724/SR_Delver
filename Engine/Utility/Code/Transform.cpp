@@ -308,7 +308,7 @@ void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorl
 
 	_matrix matRev;
 	_float fRad = 0.f;
-	if (!m_bStop && m_vOldPos.y == vPos.y && m_vOldPos != vPos)
+	if (m_vOldPos.y == vPos.y && m_vOldPos != vPos)
 	{
 		m_fAngle += m_fAngleSpeed;
 		if (m_fAngle > 5.f || m_fAngle < -5.f)
@@ -322,7 +322,6 @@ void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorl
 	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
 
 
-	// ������
 	_matrix matBill, matView;
 	D3DXMatrixIdentity(&matBill);
 	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
