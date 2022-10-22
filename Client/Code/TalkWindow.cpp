@@ -90,6 +90,7 @@ void CTalkWindow::Render_Obejct(void)
 		m_bText = false;
 		m_iTextCount = 0;
 		m_vecDialogue.clear();
+		m_bFinished = true;
 	}
 }
 

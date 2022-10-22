@@ -14,6 +14,8 @@
 #include "SpiderBackGround.h"
 #include "PlayerInfo.h"
 #include "HungerUI.h"
+#include "Shop.h"
+#include "MyButton.h"
 
 // Font
 #include "HPGauge.h"
@@ -80,7 +82,12 @@ HRESULT CUIMgr::Ready_Proto()
 	// UI_CrossHair
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_CrossHair_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/CrossHair/CrossHair.png", TEX_NORMAL, 1)), E_FAIL);
 
-	
+	// UI_Shop
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_ShopWindow_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Shop/ShopWindow%d.png", TEX_NORMAL, 4)), E_FAIL);
+
+	// UI_Button
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_Button_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Button/Button%d.png", TEX_NORMAL, 2)), E_FAIL);
+
 	return S_OK;
 }
 
@@ -160,7 +167,25 @@ HRESULT CUIMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_PlayerInfo", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);
 
-	return E_NOTIMPL;
+	// Shop
+	pGameObject = CShop::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Shop", pGameObject), E_FAIL);
+	m_vecUI.push_back(pGameObject);
+
+	// Buttons
+	pGameObject = CMyButton::Create(m_pGraphicDev, _vec2( WINCX * 0.5f + 240.f  , WINCY *0.5f + 30.f), L"±¸¸Å");
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Button_Buy", pGameObject), E_FAIL);
+	m_vecUI.push_back(pGameObject);
+
+	pGameObject = CMyButton::Create(m_pGraphicDev, _vec2(WINCX * 0.5f + 240.f, WINCY *0.5f + 70.f), L"´Ý±â");
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Button_Close", pGameObject), E_FAIL);
+	m_vecUI.push_back(pGameObject);
+
+
+	return S_OK;
 }
 
 inline void CUIMgr::Free(void)

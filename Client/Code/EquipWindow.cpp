@@ -50,10 +50,9 @@ HRESULT CEquipWindow::Ready_Object(void)
 
 _int CEquipWindow::Update_Object(const _float & fTimeDelta)
 {
-	if (Engine::Get_DIKeyState(DIK_TAB) & 0x80)
-		m_bShow = true;
-	else
-		m_bShow = false;
+	if (m_bOpen || Engine::Get_DIKeyState(DIK_TAB) & 0x80)
+		Engine::Add_RenderGroup(RENDER_UI, this);
+
 
 	m_pTransCom->Set_Scale(m_fScaleX, m_fScaleY, 1.f);
 	m_pTransCom->Set_Pos(m_fPosX - WINCX * 0.5f, -m_fPosY + WINCY * 0.5f, 0.f);
@@ -62,16 +61,14 @@ _int CEquipWindow::Update_Object(const _float & fTimeDelta)
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_UI, this);
-
+	
 	return 0;
 
 }
 
 void CEquipWindow::LateUpdate_Object(void)
 {
-	if (!m_bShow)
-		return;
+
 
 	//POINT		ptMouse;
 	//GetCursorPos(&ptMouse);
@@ -94,8 +91,7 @@ void CEquipWindow::LateUpdate_Object(void)
 
 void CEquipWindow::Render_Obejct(void)
 {
-	if (!m_bShow)
-		return;
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
 	_matrix		ViewMatrix;

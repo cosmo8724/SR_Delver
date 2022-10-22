@@ -90,7 +90,6 @@ void CShield::LateUpdate_Object(void)
 
 void CShield::Render_Obejct(void)
 {		
-	cout << m_eState << endl;
 
 	if (m_eState == STATE_INV)
 		return;

@@ -75,6 +75,10 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
+
+
+		m_pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+
 		bOnce = true;
 	}
 	// *Create Minimap Icon
@@ -104,10 +108,11 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
-	if (!(GetKeyState(VK_TAB) & 0x80))		// Except Open Inventory
+	if (!(Get_DIKeyState(DIK_TAB) & 0x80|| m_pInv->Is_Open()))
 	{
 		Mouse_Move();
 	}
+
 
 	// test area //////////////////
 

@@ -193,7 +193,7 @@ void CPotion::RandomItem(const _float& fTimeDelta)
 	{
 	case POTION_0: // yellow
 	{
-		//pPlayer->Set_HpFull();
+		pPlayer->Set_HpFull();
 		CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 		pCam->Wave_Camera(10.f, _vec3(0.f, 0.f, 1.f), 30.f);
 		m_bFinished = true;

@@ -44,6 +44,7 @@ public:
 		m_fWaveAngle = fAngle;
 		m_vAxis = vAxis;
 	}
+	void		Set_Free(_bool bFree) { m_bFree = bFree; }
 
 private:
 	void		Key_Input(const _float& fTimeDelta);
@@ -52,6 +53,7 @@ private:
 	void		Mouse_Fix(void);
 	void		Shake_Camera(const _float& fTimeDelta);
 	void		Wave_Camera(const _float& fTimeDelta);
+
 
 private:
 	_float			m_fDistance = 10.f;
@@ -83,6 +85,8 @@ private:
 	_float		m_fWaveTime = 0.f;
 	_float		m_fWaveTimeNow = 0.f;
 	_vec3		m_vAxis;
+
+	_bool		m_bFree = false;
 
 
 	// Releated to Motion
