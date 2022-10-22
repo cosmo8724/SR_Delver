@@ -199,7 +199,25 @@ void CEquipWindow::Set_Item(CItem * pItem, ITEMTYPE eType)
 		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		pPlayer->Set_Info(pItem->Get_ItemInfo(), 1);
 	}
-	break;			
+	break;	
+	case ITEM_LANTERN:
+	{
+		if (m_Window[0][1] != nullptr)
+		{
+			CInventory* pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+			pInv->Set_Inventory(m_Window[0][1]);
+
+			CItem* pItem = static_cast<CInvImg*>(m_Window[0][1])->Get_TargetObj();
+			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+			pPlayer->Set_Info(pItem->Get_ItemInfo(), -1);
+		}
+		m_Window[0][1] = pItem; // InvImg
+		static_cast<CInvImg*>(pItem)->Set_InvPos(m_PosArr[0][1].x, m_PosArr[0][1].y);
+		CItem* pItem = static_cast<CInvImg*>(m_Window[0][1])->Get_TargetObj();
+		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		pPlayer->Set_Info(pItem->Get_ItemInfo(), 1);
+	}
+	break;
 	case ITEM_HELMAT:
 	{
 		if (m_Window[0][0] != nullptr)

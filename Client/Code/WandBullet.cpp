@@ -37,11 +37,11 @@ HRESULT CWandBullet::Ready_Object(void)
 	m_pTransCom->Set_Scale(fSize, fSize, fSize);
 
 	// 충돌처리
-	_vec3 vPos, vScale;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	vScale = m_pTransCom->Get_Scale();
-	m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
-	m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
+	//_vec3 vPos, vScale;
+	//m_pTransCom->Get_Info(INFO_POS, &vPos);
+	//vScale = m_pTransCom->Get_Scale();
+	//m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
+	//m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
 
 
 	return S_OK;

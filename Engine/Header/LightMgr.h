@@ -15,12 +15,11 @@ public:
 	HRESULT	Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,
 		const D3DLIGHT9* pLightInfo, const _uint& iIndex);
 
-	void	Update_Light(const _uint& iIndex, const D3DLIGHT9* pLightInfo);
-
-	void	Update_Pos(const _uint& iIndex, _vec3 vPos);
+	void	Update_Light(const _uint& iIndex, const D3DLIGHT9* pLightInfo) { m_LightList[iIndex]->Update_Info(pLightInfo); }
+	void	Update_Pos(const _uint& iIndex, _vec3 vPos) { m_LightList[iIndex]->Set_Pos(vPos); }
 
 private:
-	list<CLight*>				m_LightList;
+	vector<CLight*>				m_LightList;
 
 private:
 	virtual void	Free(void);

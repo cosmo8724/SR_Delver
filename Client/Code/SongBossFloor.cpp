@@ -40,12 +40,12 @@ HRESULT CSongBossFloor::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -83,10 +83,10 @@ _int CSongBossFloor::Update_Object(const _float & fTimeDelta)
 
 void CSongBossFloor::MusicNoteCreatePos()
 {
-	// ÇÃ·¹ÀÌ¾î ÁÖº¯À¸·Î »ý±â´Â À½Ç¥
+	// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Öºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayer);
-	pPlayer->Get_Info(INFO_POS, &m_vPlayerPos); // ÇÃ·¹ÀÌ¾îÀÇ ÁÂÇ¥¸¦ ¹Þ¾Æ¿Í¼­
+	pPlayer->Get_Info(INFO_POS, &m_vPlayerPos); // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½Þ¾Æ¿Í¼ï¿½
 
 	if (!m_bReady)
 	{
@@ -111,10 +111,10 @@ void CSongBossFloor::MusicNoteCreatePos()
 void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 {
 	m_fTransparencyTimeAcc += fTimeDelta;
-	// Åõ¸íµµ Á¶Àý
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (0.1f < m_fTransparencyTimeAcc)
 	{
-		m_iTransparency += 10; // Åõ¸íµµ°¡ ÁøÇØÁö´Â ¼ýÀÚ > 10
+		m_iTransparency += 10; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ > 10
 		m_fTransparencyTimeAcc = 0.f;
 		
 //#ifdef SH_Debug
@@ -128,7 +128,7 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 		}
 	}
 
-	// Ã³À½¿¡´Â Ãæµ¹Ã³¸®¸¦ ÇÏÁö ¾Ê¾Ò´Ù°¡, ¹ø°³°¡ ³»¸®Ä¡´Â ¼ø°£ Ãæµ¹Ã³¸®
+	// Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò´Ù°ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹Ã³ï¿½ï¿½
 	if (m_bStartLightning)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.5f,

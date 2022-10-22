@@ -62,25 +62,6 @@ HRESULT CPlayer::Ready_Object(void)
 	m_tInfo.iGold = 0;
 
 
-
-
-
-
-	D3DLIGHT9	tLightInfo;
-	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
-
-	tLightInfo.Type = D3DLIGHT_POINT;
-	tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo.Position = _vec3(5.f, 3.f, 9.f);
-	tLightInfo.Range = 1000.f;
-	
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 1), E_FAIL);
-
-
-
-
 	return S_OK;
 }
 
@@ -128,7 +109,10 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	// test area //////////////////
 
-
+	if (Key_Down(DIK_U))
+	{
+		OnHit(1);
+	}
 
 	///////////////////////////
 
@@ -141,6 +125,10 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	Hunger(fTimeDelta);
 
 	Engine::CGameObject::Update_Object(fTimeDelta);
+	
+	
+	//CLightMgr::GetInstance()->Update_Pos(1, m_pTransCom->Get_Pos());
+
 
 	Add_RenderGroup(RENDER_NONALPHA, this);
 
@@ -179,7 +167,6 @@ void CPlayer::LateUpdate_Object(void)
 	m_pTransCom->Get_Info(INFO_POS, &vPlayerPos);
 	vPlayerPos.y = m_pColliderCom->Get_MinPoint().y;
 
-	CLightMgr::GetInstance()->Update_Pos(1, vPlayerPos+vLook);
 
 
 	if (m_eState == PLAYER_ON_BLOCK)
@@ -196,11 +183,11 @@ void CPlayer::LateUpdate_Object(void)
 	}
 
 	// camera change Test
-	wstring pObjTag = (m_pRight != nullptr ? m_pRight->Get_ObjTag() : L"");
-	if (L"Arrow" == pObjTag && Get_DIMouseState(DIM_RB) & 0x80)
-		m_bSnipper = true; 
-	else
-		m_bSnipper = false;
+	//wstring pObjTag = (m_pRight != nullptr ? m_pRight->Get_ObjTag() : L"");
+	//if (L"Arrow" == pObjTag && Get_DIMouseState(DIM_RB) & 0x80)
+	//	m_bSnipper = true; 
+	//else
+	//	m_bSnipper = false;
 }
 
 void CPlayer::Render_Obejct(void)
@@ -322,7 +309,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 			pMap->Set_OpenMap();
 	}
 
-	if (Engine::Key_Down(DIK_X))
+	if (Engine::Key_Down(DIK_P))
 	{
 		CPlayerInfo* pPlayerInfo = dynamic_cast<CPlayerInfo*>(Engine::Get_GameObject(L"Layer_UI", L"UI_PlayerInfo"));
 		
@@ -450,10 +437,11 @@ void CPlayer::Jump(const _float & fTimeDelta)
 
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
-	if (Engine::Key_Down(DIK_E))
+	CMimic*	pMimic = dynamic_cast<CMimic*>(pOtherObj);
+	if (pMimic)
 	{
-		CMimic* pMimic = dynamic_cast<CMimic*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Mimic"));
-		pOtherObj->InteractEvent();
+		if (Engine::Key_Down(DIK_E))
+			pMimic->InteractEvent();
 	}
 
 	CMonster* pMonster = dynamic_cast<CMonster*>(pOtherObj);
@@ -579,8 +567,10 @@ void CPlayer::OnHit(_int _HpMinus)
 		//	2.f,
 		//	{ 1.f, 0.f, 0.f, 0.01f });
 		//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_7);
+		
 
-		if(0 < _HpMinus)
+
+			if(0 < _HpMinus)
 			m_bKnockBack = true;
 		
 		m_tInfo.iHp -= _HpMinus;
@@ -592,6 +582,17 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 {
 	if (!m_bKnockBack)
 		return;
+
+	// Light
+	D3DLIGHT9		tLightInfo;
+	m_pGraphicDev->GetLight(LIGHT_PLAYER, &tLightInfo);
+	tLightInfo.Diffuse = { 1.f, 0.f, 0.f ,1.f };
+	tLightInfo.Ambient = { 1.f, 0.f, 0.f ,1.f };
+	m_pGraphicDev->SetLight(LIGHT_PLAYER, &tLightInfo);
+	m_pGraphicDev->LightEnable(LIGHT_PLAYER, TRUE);
+	if (0.5f < m_fJTimeDelta)
+		m_pGraphicDev->LightEnable(LIGHT_PLAYER, FALSE);
+
 
 	_vec3 vPos, vLook;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
@@ -611,6 +612,7 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 			m_pTransCom->Set_Y(m_pCurrentBlock->Get_Height() + (m_pTransCom->Get_Pos().y - m_pColliderCom->Get_MinPoint().y));
 			//m_pTransCom->Set_Pos(vPos.x, fHeight, vPos.z);
 			m_fJSpeed = m_fJSpeed0;
+
 		}
 		else
 		{

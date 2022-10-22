@@ -174,6 +174,10 @@ void CBlock::Render_Obejct(void)
 	}
 	else
 	{
+		m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_AMBIENT, 0x00202020);
+
+
 		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
@@ -189,6 +193,22 @@ void CBlock::Render_Obejct(void)
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 		m_pTextureCom->Set_Texture(m_iTexture);
+
+
+		// 재질 /////////////
+		D3DMATERIAL9		tMtrl;
+		ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+		tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
+		tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		tMtrl.Ambient = D3DXCOLOR(1.f,1.f,1.f, 1.f); // 환경반사
+
+														  // 수행 x
+		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+		tMtrl.Power = 0.f;
+
+		m_pGraphicDev->SetMaterial(&tMtrl);
+		// ~재질 /////////////
 
 		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 		m_pBufferCom->Render_Buffer();

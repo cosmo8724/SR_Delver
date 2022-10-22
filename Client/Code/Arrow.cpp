@@ -16,8 +16,6 @@ CArrow::CArrow(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_vPos = vPos;
 	m_ObjTag = L"Arrow";
 	m_eItemType = ITEM_WEAPON;
-
-	
 	m_eWeaponType = WT_AD;
 }
 
@@ -29,7 +27,7 @@ HRESULT CArrow::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	m_pTransCom->Set_Pos(3.f, 0.5f, 12.f);
+	m_pTransCom->Set_Pos(10.f, 2.f, 12.f);
 	m_eState = STATE_GROUND;
 
 	//_vec3 vScale;
@@ -78,20 +76,21 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
 		break;
 	case STATE_EQUIP:
+		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
+
 		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
 		{
 			Charge(fTimeDelta);
 			Attack(fTimeDelta);
 		}
 
-		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
-		//m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
-		
-		m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
+		if (!m_bAttack)
+		{
+			m_pColliderCom->Set_Free(true);
+			m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
+		}
 		break;
 	}
-
-	Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_fTimeDelta = fTimeDelta;
 
@@ -104,10 +103,13 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 
 void CArrow::LateUpdate_Object(void)
 {
+	if (STATE_INV != m_eState)
+		Add_RenderGroup(RENDER_ALPHA, this);
+
 	CGameObject::LateUpdate_Object();
 
-	if (STATE_INV == m_eState)
-		return;
+	//if (STATE_INV == m_eState)
+	//	return;
 
 }
 
@@ -121,6 +123,8 @@ void CArrow::Render_Obejct(void)
 
 	_vec3 vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
 	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
@@ -199,13 +203,7 @@ void CArrow::CollisionEvent(CGameObject * pObj)
 		m_vPos = { -1000.f, -1000.f, -1000.f };
 
 		m_pColliderCom->Set_Free(true);
-		//_vec3 vScale;
-		//_matrix matWorld;
-		//m_pTransCom->Get_WorldMatrix(&matWorld);
 
-		//vScale = m_pTransCom->Get_Scale();
-		//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
-		//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
 	}
 
 }
@@ -218,6 +216,8 @@ void CArrow::Charge(const _float & fTimeDelta)
 	{
 		m_fFrame += frameEnd * fTimeDelta;
 		m_fPlusSpeed += 0.3f;
+		m_pTransCom->Set_Stop(true);
+
 
 		if (!m_bParticleCall)
 		{
@@ -236,6 +236,8 @@ void CArrow::Charge(const _float & fTimeDelta)
 			m_fChargeTime = 0.f;
 			m_bCharge = false;
 			m_bAttack = true;
+			m_pTransCom->Set_Stop(false);
+
 		}
 
 	}
@@ -249,6 +251,8 @@ void CArrow::Charge(const _float & fTimeDelta)
 		{
 			m_bClick = false;		
 			m_bCharge = true;
+			m_pTransCom->Set_Stop(true);
+
 		}
 	}
 	else
@@ -262,6 +266,8 @@ void CArrow::Charge(const _float & fTimeDelta)
 				m_bClick = false;
 				m_bAttack = true;
 				m_fChargeTime = 0.f;
+				m_pTransCom->Set_Stop(true);
+
 			}
 		}
 		else if (true == m_bCharge)  
@@ -271,6 +277,8 @@ void CArrow::Charge(const _float & fTimeDelta)
 			m_fChargeTime = 0.f;
 			m_bAttack = true;
 			m_bParticleCall = false;
+			m_pTransCom->Set_Stop(false);
+
 		}
 	}
 }
@@ -283,5 +291,7 @@ void CArrow::Attack(const _float & fTimeDelta)
 		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
 		m_bAttack = false;
 		m_fPlusSpeed = 0.f;
+		m_pTransCom->Set_Stop(false);
+
 	}
 }

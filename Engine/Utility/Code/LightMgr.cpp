@@ -26,30 +26,9 @@ HRESULT Engine::CLightMgr::Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev, const D3DL
 }
 
 
-void	CLightMgr::Update_Light(const _uint& iIndex, const D3DLIGHT9* pLightInfo)
-{
-	for (auto& light : m_LightList)
-	{
-		if (iIndex == light->Get_Index())
-		{
-			light->Update_Info(pLightInfo);
-		}
-	}
-}
-
-void	CLightMgr::Update_Pos(const _uint& iIndex, _vec3 vPos)
-{
-	for (auto& light : m_LightList)
-	{
-		if (iIndex == light->Get_Index())
-		{
-			light->Set_Pos(vPos);
-		}
-	}
-}
-
 void Engine::CLightMgr::Free(void)
 {
 	for_each(m_LightList.begin(), m_LightList.end(), CDeleteObj());
 	m_LightList.clear();
+	m_LightList.swap(vector<CLight*>());
 }
