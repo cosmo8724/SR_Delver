@@ -368,7 +368,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	// Player
-	pGameObject = CPlayer::Create(m_pGraphicDev);
+	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(5.f, 2.f, 5.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
@@ -380,14 +380,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Dagger", ITEM_WEAPON, _vec3({ 40.f, 1.f, 40.f }));
 	//CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Wand", ITEM_WEAPON, _vec3({ 35.f, 1.f, 35.f }));
 	//CItemMgr::GetInstance()->Add_GameObject(pLayer, L"Key", ITEM_KEY, _vec3({ 5.f, 1.f, 10.f }));
-	CItemMgr::GetInstance()->Add_GameObject(pLayer);
+	CItemMgr::GetInstance()->Add_GameObject(pLayer, LOADING_STAGE);
 
 
 	// Particle
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer);
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"C:\\Cosmo\\Jusin\\Monsters.dat");
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);

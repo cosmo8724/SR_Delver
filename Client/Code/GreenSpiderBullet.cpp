@@ -168,7 +168,7 @@ _int CGreenSpiderBullet::Target(const _float & fTimeDelta)
 {
 	if (!m_bReady)
 	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"GreenSpider", L"Proto_TransformCom", ID_DYNAMIC));
+		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"GreenSpider_0", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pFist, -1);
 
 		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));

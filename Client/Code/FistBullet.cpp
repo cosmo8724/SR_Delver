@@ -162,11 +162,11 @@ _int CFistBullet::Target(const _float & fTimeDelta)
 {
 	if (!m_bReady)
 	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Fist", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK_RETURN(pFist, -1);
+		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Fist_0", L"Proto_TransformCom", ID_DYNAMIC));
+		NULL_CHECK_RETURN(pFist, 0);
 
 		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-		NULL_CHECK_RETURN(pPlayer, -1);
+		NULL_CHECK_RETURN(pPlayer, 0);
 
 		pFist->Get_Info(INFO_POS, &vPos);
 		m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
