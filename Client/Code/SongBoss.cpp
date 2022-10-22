@@ -7,8 +7,8 @@
 #include "MiniMap.h"
 #include "SongBossFloor.h"
 #include "ParticleMgr.h"
+#include "StaticCamera.h"
 
-// �浹
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
@@ -46,14 +46,16 @@ HRESULT CSongBoss::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iHp = 30;
+	m_tInfo.iHp = 20;
 	m_tInfo.iAttack = 5;
+	m_tInfo.iExp = 10;
 
 	m_fHeight = m_vPos.y;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	m_pTransCom->Set_Scale(2.5f, 2.5f, 2.5f);
 
-	m_eCurState = IDLE;
-	m_eSkill = SKILL_BULLET;
+	m_eCurState = MOVE;
+	m_eSkill = SKILL_END;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
@@ -73,14 +75,14 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	//m_pTransCom->Set_Y(m_fHeight);
-	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7f); // TODO ������ HIT, DIE�� �ӵ� ���� �ؾ� �� ����
+	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7);
 	Motion_Change(fTimeDelta);
 
 	if (0 >= m_tInfo.iHp)
 	{
 		Dead();
 		m_fRenderOFFTimeAcc += fTimeDelta;
-		if (2.f < m_fRenderOFFTimeAcc)
+		if (2.5f < m_fRenderOFFTimeAcc)
 		{
 			m_bRenderOFF = true;
 			m_fRenderOFFTimeAcc = 0.f;
@@ -105,7 +107,35 @@ void CSongBoss::LateUpdate_Object(void)
 void CSongBoss::Render_Obejct(void)
 {
 	if (!m_bRenderOFF)
-		CMonster::Render_Obejct();
+	{
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+		if(m_bMoveAni)
+			m_pAnimtorCom->Set_Texture();
+		else
+			m_pAnimtorCom->Set_FrameTexture();
+		
+		m_pBufferCom->Render_Buffer();
+
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+#ifdef _DEBUG
+		// Collider
+		m_pGraphicDev->SetTransform(D3DTS_WORLD,
+			&(m_pColliderCom->Get_WorldMatrix()));
+		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+		m_pColliderCom->Render_Buffer();
+		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
+	}
 }
 
 HRESULT CSongBoss::Add_Component(void)
@@ -144,16 +174,84 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 	if (m_bSKill)
 		return;
 
-	//// �ڵ� - �̿ϼ�
+	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pPlayerTransformCom);
+
+	_vec3		vPlayerPos, vPos;
+	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
+
+	if (20.f > fDist) // 플레이어가 거리 안 으로 들어오고
+	{
+		m_fMoveTimeAcc += fTimeDelta;
+		if (!m_bMoveAni && 3.f < m_fMoveTimeAcc)
+		{
+			CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+			NULL_CHECK(pStaticCamera);
+			pStaticCamera->Shake_Camera(2.f, 3.f);
+			m_bMoveAni = true;		
+		}
+		
+		if (m_bMoveAni && m_eCurState == MOVE)
+		{
+			if (m_pAnimtorCom->Get_Currentframe() >= 14.f && m_pAnimtorCom->Get_Currentframe() < 15.f)
+				m_eCurState = IDLE;
+		}
+
+		m_fSkillTimeAcc += fTimeDelta;
+		if (10.f < m_fSkillTimeAcc)
+		{
+			m_bSKill = true;
+			m_fSkillTimeAcc = 0.f;
+		}
+	}
+
+	// 스킬을 다 쓰지 않았다면
+	if (m_bSKill && 2 < m_bSkillBullet && !m_bSkillStun && !m_bSkillFloor)
+	{
+		m_bSKill = false;
+
+		if (10 > m_tInfo.iHp)
+		{
+			m_bSkillFloor = true;
+			m_iFloorCreate = 0;
+			m_iLightningCreate = 0;
+			m_bFloorOneCheck = true;
+			m_eSkill = SKILL_FLOOR;
+		}
+		else
+		{
+			int iSkill = rand() % 2;
+
+			if (iSkill == 0)
+			{
+				m_bSkillBullet = 0;
+				m_eSkill = SKILL_BULLET;
+			}
+			else
+			{
+				m_bSkillStun = true;
+				m_iStunCount = 0;
+				m_iStunCreate = 0;
+				m_eSkill = SKILL_STUN;
+			}
+		}
+	}
+
+
+
+	//// 자동
 	//if (2 < m_bSkillBullet && !m_bSkillStun && !m_bSkillFloor)
 	//{
 	//	m_fSkillTimeAcc += fTimeDelta;
 	//	if (2.f < m_fSkillTimeAcc)
 	//	{
-	//		int m_eSkill = rand() % 3;
+	//		int Skill = rand() % 3;
 	//		m_fSkillTimeAcc = 0.f;
 
-	//		switch (m_eSkill)
+	//		switch (Skill)
 	//		{
 	//		case CSongBoss::SKILL_BULLET:
 	//		{
@@ -187,30 +285,30 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 	//	}
 	//}
 
-	// ����
-	if (Key_Down(DIK_7))
-	{
-		m_bSkillBullet = 0;
-		m_bBullet = true;
-		m_eSkill = SKILL_BULLET;
-	}
-	if (Key_Down(DIK_8))
-	{
-		m_bSkillStun = true;
-		m_bStun = true;
-		m_iStunCount = 0;
-		m_iStunCreate = 0;
-		m_eSkill = SKILL_STUN;
-	}
-	if (Key_Down(DIK_9))
-	{
-		m_bSkillFloor = true;
-		m_bFloor = true;
-		m_iFloorCreate = 0;
-		m_iLightningCreate = 0;
-		m_bFloorOneCheck = true;
-		m_eSkill = SKILL_FLOOR;
-	}
+	//// 수동
+	//if (Key_Down(DIK_7))
+	//{
+	//	m_bSkillBullet = 0;
+	//	m_bBullet = true;
+	//	m_eSkill = SKILL_BULLET;
+	//}
+	//if (Key_Down(DIK_8))
+	//{
+	//	m_bSkillStun = true;
+	//	m_bStun = true;
+	//	m_iStunCount = 0;
+	//	m_iStunCreate = 0;
+	//	m_eSkill = SKILL_STUN;
+	//}
+	//if (Key_Down(DIK_9))
+	//{
+	//	m_bSkillFloor = true;
+	//	m_bFloor = true;
+	//	m_iFloorCreate = 0;
+	//	m_iLightningCreate = 0;
+	//	m_bFloorOneCheck = true;
+	//	m_eSkill = SKILL_FLOOR;
+	//}
 
 	switch (m_eSkill)
 	{
@@ -224,6 +322,7 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 		SKillFloor_Update(fTimeDelta);
 		break;
 	case CSongBoss::SKILL_END:
+		return;
 		break;
 	}
 }
@@ -233,12 +332,8 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	if (2 < m_bSkillBullet)
 	{
 		m_eCurState = IDLE;
-		m_bSKill = false;
 		return;
 	}
-
-	if (!m_bBullet)
-		return;
 
 	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayerTransformCom);
@@ -253,8 +348,7 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 	D3DXVec3Normalize(&vLook, &vLook);
 	m_pTransCom->Set_Look(vLook);
 
-	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
-
+	//_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
 	// Look Vector Set
 	// Current : Look Vector is not working. (Billboard)
@@ -267,40 +361,34 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 	m_pTransCom->Set_Look(vLook);
 
+	m_fAttackTimeAcc += fTimeDelta;
+	m_fIdleTimeAcc += m_fAttackTimeAcc;
 
-
-	if (fDist < 10.f)
+	if (3.f < m_fAttackTimeAcc) // 공격 시간
 	{
-		m_fAttackTimeAcc += fTimeDelta;
-		m_fIdleTimeAcc += m_fAttackTimeAcc;
+		CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.f }, 3.f);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
 
-		if (3.f < m_fAttackTimeAcc)
-		{
-			CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 0.0f }, 3.f);
-			CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
-			CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_8);
-
-
-			m_eCurState = ATTACK;
-			CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);
-			m_bSkillBullet++;
-			m_fAttackTimeAcc = 0;
-		}
-		else if (5.5f < m_fIdleTimeAcc)
-		{
-			m_eCurState = IDLE;
-			m_fIdleTimeAcc = 0.f;
-		}
+		m_eCurState = ATTACK;
+		CBulletMgr::GetInstance()->Fire(BULLET_SONGBOSS);
+		m_bSkillBullet++;
+		m_fAttackTimeAcc = 0;
+	}
+	else if (5.5f < m_fIdleTimeAcc) // 가만히 시간
+	{
+		m_eCurState = IDLE;
+		m_fIdleTimeAcc = 0.f;
 	}
 }
 
 void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 {
 	if (!m_bSkillStun)
+	{
 		return;
-
-	if (!m_bStun)
-		return;
+	}
 
 	m_eCurState = ATTACK;
 
@@ -325,9 +413,7 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 				pPlayer->Set_Stun();
 			}
 			m_fStunTimeAcc = 0.f;
-			m_bStun = false;
 			m_bSkillStun = false;
-			m_bSKill = false;
 		}
 	}
 }
@@ -337,10 +423,6 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 	if (!m_bSkillFloor)
 		return;
 
-	if (!m_bFloor)
-		return;
-
-	// �÷��̾ �������� 5���� ��ǥ�� ����� ���ؾ� �Ѵ�
 	m_eCurState = ATTACK;
 
 	if (m_iFloorCreate != 5) // MusicNote Create > 5
@@ -367,6 +449,10 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 			NULL_CHECK(pSongBossFloor);
 			if (pSongBossFloor->Get_StartLightning())
 			{
+				//CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+				//NULL_CHECK(pStaticCamera);
+				//pStaticCamera->Shake_Camera(1.f, 0.5f);
+
 				CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 				++m_iLightningCreate;
 			}
@@ -374,7 +460,6 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 
 		if (m_iLightningCreate >= 5)
 		{
-			m_bFloor = false;
 			m_bSkillFloor = false;
 		}
 	}
@@ -388,13 +473,21 @@ void CSongBoss::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		//CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 1.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 
 	m_fHitTimeAcc += fTimeDelta;
-	if (0.7f < m_fHitTimeAcc) // 0.7 > Monster Hit Time
+	if (1.f < m_fHitTimeAcc) // 0.7 > Monster Hit Time
 	{
+		m_eCurState = IDLE;
+
 		// MinusHp
 		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		m_tInfo.iHp -= pPlayer->Get_PlayerAttack();

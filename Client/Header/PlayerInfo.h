@@ -45,4 +45,5 @@ private:
 	_tchar				m_szHunger[128];
 	_tchar				m_szAtk[128];
 	_tchar				m_szDef[128];
+	_tchar				m_szGold[128];
 };

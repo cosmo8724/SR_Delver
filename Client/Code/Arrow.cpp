@@ -26,7 +26,8 @@ CArrow::~CArrow()
 HRESULT CArrow::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	m_pTransCom->Set_Pos(10.f, 2.f, 12.f);
 	m_eState = STATE_GROUND;
 
 	//_vec3 vScale;

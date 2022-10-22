@@ -76,6 +76,7 @@ HRESULT CBulletMgr::Ready_Proto(LPDIRECT3DDEVICE9 pGraphicDev)
 	// Wand_Cube
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GreenBullet_CubeTexture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/SkyBox/GreenBullet.dds", TEX_CUBE)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RedBullet_CubeTexture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/SkyBox/RadBullet.dds", TEX_CUBE)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PinkBullet_CubeTexture", CTexture::Create(pGraphicDev, L"../Bin/Resource/Texture/SkyBox/PinkBullet.dds", TEX_CUBE)), E_FAIL);
 
 	return S_OK;
 }

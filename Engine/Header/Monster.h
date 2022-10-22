@@ -15,7 +15,9 @@ public:
 	virtual ~CMonster();
 
 public:
+	_int				Get_MonsterHp() { return m_tInfo.iHp; }
 	_int				Get_MonsterAttack() { return m_tInfo.iAttack; }
+	_int				Get_MonsterExp() { return m_tInfo.iExp; }
 
 protected:
 	virtual HRESULT		Ready_Object(void) { return S_OK; };
@@ -24,7 +26,7 @@ protected:
 	virtual void		Render_Obejct(void);
 
 protected:
-	void				Set_KnockBack() { m_bKnockBack = true; }
+	void				Set_KnockBack(_float fHeight) { m_bKnockBack = true; m_fHeight = fHeight; }
 
 protected:
 	virtual HRESULT		Add_Component(void) PURE;
@@ -34,7 +36,7 @@ protected:
 	virtual void		Dead() {};
 
 	virtual void		Billboard();
-	virtual void		KnockBack(const _float& fTimeDeleta, _float fHeight = 1.f, _float fKnockBackSpeed = 20.f);
+	virtual void		KnockBack(const _float& fTimeDeleta, _float fKnockBackSpeed = 20.f);
 
 public:
 	virtual void		Free(void);
@@ -49,12 +51,12 @@ protected:
 	wstring				m_ObjTag;
 	wstring				m_textureTag;
 
-	_float				m_fHeight = 1.f;
+	_float				m_fHeight = 0.f;
 
 	// Hit
 	_bool				m_bHit = false;
 	_float				m_fHitTimeAcc = 0.f;
-	
+
 	// Dead
 	_bool				m_bOneCheck = false;
 	_bool				m_bRenderOFF = false;
@@ -73,9 +75,9 @@ protected:
 
 private:
 	_bool				m_bKnockBack = false;
-	_float				m_fBSpeed = 0.2f;
-	_float				m_fBSpeed0 = 0.2f;
-	_float				m_fBAccel = 0.01f;
+	_float				m_fBSpeed = 0.1f;
+	_float				m_fBSpeed0 = 0.1f;
+	_float				m_fBAccel = 0.007f;
 	_float				m_fBTimeDelta = 0.f;
 };
 

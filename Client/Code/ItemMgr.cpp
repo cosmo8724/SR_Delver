@@ -17,6 +17,7 @@
 #include "Pants.h"
 #include "Ring.h"
 #include "Food.h"
+#include "Gold.h"
 #include "Lantern.h"
 
 IMPLEMENT_SINGLETON(CItemMgr)
@@ -50,6 +51,8 @@ HRESULT CItemMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Potion_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Potion/Potion%d.png", TEX_NORMAL, 5)), E_FAIL);
 	// Food
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Food_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Food/Food%d.png", TEX_NORMAL, 5)), E_FAIL);
+	// Gold
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Gold_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Gold/Gold_%d.png", TEX_NORMAL, 4)), E_FAIL);
 
 	// Key
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Key_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/key.png", TEX_NORMAL)), E_FAIL);
@@ -191,7 +194,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	CGameObject* pGameObject = nullptr;
 	
 	//Arrow
-	pGameObject= CArrow::Create(m_pGraphicDev, _vec3({ 30.f, 2.f, 30.f }));
+	pGameObject= CArrow::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 10.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Arrow", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
@@ -203,19 +206,19 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	//Wand
-	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 3.f }));
+	pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 3.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wand", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 	// GreenWand
-	pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 4.f }));
+	pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 4.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenWand", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
-	//// RadWand
-	pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ 23.f, 2.f, 5.f }));
+	// RadWand
+	pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 5.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RadWand", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
@@ -313,7 +316,6 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food5", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
 
-
 	pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 20.f }), POTION_0);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_0", pGameObject), E_FAIL);
@@ -323,7 +325,6 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
 	m_vecItemPool[ITEM_POTION].push_back(pGameObject);
-
 
 	pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -358,6 +359,11 @@ CGameObject* CItemMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, 
 	else if (ITEM_FOOD == pObj->Get_ItemType())
 	{
 		iTex = static_cast<CFood*>(pObj)->Get_TexturId();
+		static_cast<CInvImg*>(pGameObject)->Set_Frame(iTex);
+	}
+	else if (ITEM_GOLD == pObj->Get_ItemType())
+	{
+		iTex = static_cast<CGold*>(pObj)->Get_TexturId();
 		static_cast<CInvImg*>(pGameObject)->Set_Frame(iTex);
 	}
 	else if (ITEM_ARMOR == pObj->Get_ItemType())
@@ -405,6 +411,9 @@ CGameObject* CItemMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, 
 
 HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objTag, ITEMTYPE eType, _vec3 vPos)
 {
+	_int iRandomNum = rand() % 10;
+	if (iRandomNum % 2)
+		return S_OK;
 
 	wstring tag = objTag;
 	tag += L"%d";
@@ -413,8 +422,7 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 	wsprintf(szObjTag, objTag);
 	_tcscat_s(szObjTag, MAX_PATH, L"%d");
 	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
-
-
+	
 	wstring objName = objTag;
 	if (objName == L"Arrow")
 	{
@@ -442,6 +450,46 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
 
 		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+	}
+	else if (objName == L"Food")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		_int iTex = rand() % FOOD_END;
+
+		CGameObject* pGameObject = CFood::Create(m_pGraphicDev, vPos, iTex);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+	}
+	else if (objName == L"Key")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CKey::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[ITEM_KEY].push_back(pGameObject);
+	}
+	else if (objName == L"Gold")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		_int iTex = rand() % GOLD_END;
+
+		CGameObject* pGameObject = CGold::Create(m_pGraphicDev, vPos, iTex);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
 	}
 
 	else

@@ -91,6 +91,7 @@ void CShield::LateUpdate_Object(void)
 void CShield::Render_Obejct(void)
 {		
 
+
 	if (m_eState == STATE_INV)
 		return;
 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								
@@ -151,18 +152,18 @@ HRESULT CShield::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ÅØ½ºÃÄ ÄÄ°´Ã¼ ÄÄÆ÷³ÍÆ®
+	// ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½Ä°ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_Shield_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_Shield_Texture", pComponent });
 	m_textureTag = L"Proto_Shield_Texture";
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -177,7 +178,7 @@ HRESULT CShield::Add_Component(void)
 
 void CShield::Charge(const _float & fTimeDelta)
 {
-	if (Engine::Get_DIKeyState(DIK_X) & 0x80)
+	if (Engine::Key_Down(DIK_P))
 	{
 		if (!m_bAttack)
 			m_bAttack = true;

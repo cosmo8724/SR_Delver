@@ -42,6 +42,7 @@ HRESULT CBrownBat::Ready_Object(void)
 
 	m_tInfo.iHp = 2;
 	m_tInfo.iAttack = 1;
+	m_tInfo.iExp = 2;
 
 	m_fHeight = m_vPos.y; // 3.f
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
@@ -73,7 +74,7 @@ _int CBrownBat::Update_Object(const _float & fTimeDelta)
 	{
 		Dead();
 		m_fRenderOFFTimeAcc += fTimeDelta;
-		if (1.5f < m_fRenderOFFTimeAcc)
+		if (2.f < m_fRenderOFFTimeAcc)
 		{
 			m_bRenderOFF = true;
 			m_fRenderOFFTimeAcc = 0.f;
@@ -143,10 +144,10 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
-	if (fDist < 10.f)
+	if (fDist < 7.f)
 	{
 		m_fAttackTimeAcc += fTimeDelta;
-		if (1.f < m_fAttackTimeAcc)
+		if (0.7f < m_fAttackTimeAcc)
 		{
 			if (0 < m_fAttack_Speed)
 				m_eCurState = IDLE;
@@ -157,22 +158,17 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 			m_fAttackTimeAcc = 0.f;
 		}
 
-		if (1.f <= vPlayerPos.y) // Player.y가 1.f 이상이면 Height 조정
-			m_pTransCom->Set_Y(m_fHeight);
+		if (-60.f <= vPlayerPos.y) // Player.y가 1.f 이상이면 Height 조정
+			m_pTransCom->Set_Y(m_vPos.y);
 
-		m_pTransCom->Chase_Target(&_vec3(vPlayerPos.x, vPlayerPos.y + 1.f, vPlayerPos.z), m_fAttack_Speed, fTimeDelta);
+		m_pTransCom->Chase_Target(&_vec3(vPlayerPos.x, vPlayerPos.y + 0.5f, vPlayerPos.z), m_fAttack_Speed, fTimeDelta);
 	}
 	else
 	{
 		m_eCurState = IDLE;
 
-		// 플레이어를 따라다니지 않을 때 좌우 이동
-		_vec3 vRight, vUp, vLook;
-		vLook = vPlayerPos - vPos;
-		D3DXVec3Normalize(&vLook, &vLook);
-		vUp = _vec3(0.f, 1.f, 0.f);
-
-		D3DXVec3Cross(&vRight, &vUp, &vLook);
+		_vec3		vRight;
+		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
 
 		m_fTimeAcc += fTimeDelta;
 		if (1.f < m_fTimeAcc)
@@ -183,6 +179,24 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 
 		D3DXVec3Normalize(&vRight, &vRight);
 		m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
+
+		//// 플레이어를 따라다니지 않을 때 좌우 이동
+		//_vec3 vRight, vUp, vLook;
+		//vLook = vPlayerPos - vPos;
+		//D3DXVec3Normalize(&vLook, &vLook);
+		//vUp = _vec3(0.f, 1.f, 0.f);
+
+		//D3DXVec3Cross(&vRight, &vUp, &vLook);
+
+		//m_fTimeAcc += fTimeDelta;
+		//if (1.f < m_fTimeAcc)
+		//{
+		//	m_fIdle_Speed *= -1;
+		//	m_fTimeAcc = 0.f;
+		//}
+
+		//D3DXVec3Normalize(&vRight, &vRight);
+		//m_pTransCom->Move_Pos(&(vRight * m_fIdle_Speed * fTimeDelta));
 	}
 }
 
@@ -194,7 +208,13 @@ void CBrownBat::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::KnockBack(fTimeDelta, m_fHeight, 20.f);
+		CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 
@@ -216,9 +236,9 @@ void CBrownBat::Dead()
 {
 	if (m_bDead)
 		return;
-
+	
 	m_eCurState = DIE;
-	m_pTransCom->Set_Y(1.f);
+	m_pTransCom->Set_Y(m_vPos.y - 3.f);
 
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,

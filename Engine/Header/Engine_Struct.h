@@ -146,6 +146,7 @@ namespace Engine
 	{
 		_int		iHp;
 		_int		iAttack;
+		_int		iExp;
 
 	}MONTSERINFO;
 
@@ -160,6 +161,7 @@ namespace Engine
 		_int		iAtk;
 		_int		iDef;
 		_float		fSpeed;
+		_int		iGold;
 
 		_bool		bStun;
 		_bool		bSlow;

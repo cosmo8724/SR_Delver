@@ -40,6 +40,10 @@ private:
 
 	SKILL				m_eSkill;
 
+	_bool				m_bMoveAni = false;
+	_bool				m_bAni = false;
+
+	// rand
 	_int				m_bSkillBullet = 3;
 	_bool				m_bSKill = false;
 	_bool				m_bSkillStun = false;
@@ -66,6 +70,7 @@ private:
 	_float				m_fTimeAcc;
 	_float				m_fIdleTimeAcc;
 	_float				m_fAttackTimeAcc;
+	_float				m_fMoveTimeAcc;
 
 public:
 	static CSongBoss*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

@@ -24,7 +24,7 @@ HRESULT CSongBossFloorLightning::Ready_Object(_int iBulletCount)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Scale(2.f, 10.f, 10.f);
+	m_pTransCom->Set_Scale(2.f, 20.f, 10.f);
 
 	m_iBulletCount = iBulletCount;
 	return S_OK;
@@ -79,8 +79,8 @@ _int CSongBossFloorLightning::Update_Object(const _float & fTimeDelta)
 			pFloor->Get_Info(INFO_POS, &vFloorPos);
 		}
 
-		_float fNotePos = 2.f;
-		_float fNotePosY = 0.01f;
+		_float fNotePos = 3.f;
+		_float fNotePosY = -65.8f;
 
 		if (m_iBulletCount == 0)
 			m_pTransCom->Set_Pos(vFloorPos.x, fNotePosY, vFloorPos.z + fNotePos);

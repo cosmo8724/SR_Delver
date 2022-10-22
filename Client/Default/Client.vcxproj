@@ -203,6 +203,7 @@
     <ClInclude Include="..\Header\FontLogo.h" />
     <ClInclude Include="..\Header\FontStart.h" />
     <ClInclude Include="..\Header\Food.h" />
+    <ClInclude Include="..\Header\Gold.h" />
     <ClInclude Include="..\Header\GrandFather.h" />
     <ClInclude Include="..\Header\Grass.h" />
     <ClInclude Include="..\Header\GreenSlime.h" />
@@ -344,6 +345,7 @@
     <ClCompile Include="..\Code\FontLogo.cpp" />
     <ClCompile Include="..\Code\FontStart.cpp" />
     <ClCompile Include="..\Code\Food.cpp" />
+    <ClCompile Include="..\Code\Gold.cpp" />
     <ClCompile Include="..\Code\GrandFather.cpp" />
     <ClCompile Include="..\Code\Grass.cpp" />
     <ClCompile Include="..\Code\GreenSlime.cpp" />

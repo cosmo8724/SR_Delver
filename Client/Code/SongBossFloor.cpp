@@ -27,7 +27,7 @@ HRESULT CSongBossFloor::Ready_Object(_int iBulletCount)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_tInfo.iAttack = 5;
-	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_pTransCom->Set_Scale(1.f, 1.f, 1.f);
 	m_pTransCom->Rotation(ROT_X, 45.555f);
 
 	m_iBulletCount = iBulletCount;
@@ -40,12 +40,12 @@ HRESULT CSongBossFloor::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
@@ -83,15 +83,15 @@ _int CSongBossFloor::Update_Object(const _float & fTimeDelta)
 
 void CSongBossFloor::MusicNoteCreatePos()
 {
-	// ÇÃ·¹ÀÌ¾î ÁÖº¯À¸·Î »ý±â´Â À½Ç¥
+	// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Öºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayer);
-	pPlayer->Get_Info(INFO_POS, &m_vPlayerPos); // ÇÃ·¹ÀÌ¾îÀÇ ÁÂÇ¥¸¦ ¹Þ¾Æ¿Í¼­
+	pPlayer->Get_Info(INFO_POS, &m_vPlayerPos); // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½Þ¾Æ¿Í¼ï¿½
 
 	if (!m_bReady)
 	{
-		_float fNotePos = 2.f;
-		_float fNotePosY = 0.01f;
+		_float fNotePos = 3.f;
+		_float fNotePosY = -65.8f;
 
 		if (m_iBulletCount == 0)
 			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z + fNotePos);
@@ -111,27 +111,26 @@ void CSongBossFloor::MusicNoteCreatePos()
 void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 {
 	m_fTransparencyTimeAcc += fTimeDelta;
-	// Åõ¸íµµ Á¶Àý
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (0.1f < m_fTransparencyTimeAcc)
 	{
-		m_iTransparency += 10; // Åõ¸íµµ°¡ ÁøÇØÁö´Â ¼ýÀÚ > 10
+		m_iTransparency += 10; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ > 10
 		m_fTransparencyTimeAcc = 0.f;
 		
-#ifdef SH_Debug
+//#ifdef SH_Debug
 		//cout << m_iTransparency << endl;
-#endif
+//#endif
 		
-		if (m_iTransparency >= 250)
+		if (m_iTransparency >= 240)
 		{
 			m_bStartLightning = true;
 			m_iTransparency = 40;
 		}
 	}
 
-	// Ã³À½¿¡´Â Ãæµ¹Ã³¸®¸¦ ÇÏÁö ¾Ê¾Ò´Ù°¡, ¹ø°³°¡ ³»¸®Ä¡´Â ¼ø°£ Ãæµ¹Ã³¸®
 	if (m_bStartLightning)
 	{
-		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.2f,
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.5f,
 			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 1.f, 0.f, 1.f });
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_9);
 

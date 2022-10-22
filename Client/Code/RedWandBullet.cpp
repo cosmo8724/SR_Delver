@@ -133,7 +133,7 @@ _int CRedWandBullet::Update_Object(const _float & fTimeDelta)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 2, 0.1f,
 			_vec3({ 1.f, 1.f, 1.f }), 1.f, D3DXCOLOR{ 1.f, 0.f, 0.f, 1.f }, 1.f);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_12);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_13);
 		m_fParticleTime = 0.f;
 	}
 
@@ -154,7 +154,7 @@ void CRedWandBullet::LateUpdate_Object(void)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 10, 0.3f, { 1.f, 1.f, 1.f },
 			1.f, { 1.f, 0.f, 0.f, 1.f });
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_12);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_13);
 		Reset();
 	}
 
@@ -251,6 +251,11 @@ void CRedWandBullet::Reset()
 	m_fFrame = 0.f;
 	m_bReady = false;
 	m_fScaleDelta = 0.5f;
+
+	m_bCollision = false;
+	m_fDestroyTime = 0.f;
+	m_fScaleDelta = 0.5f;
+
 	m_pColliderCom->Set_Free(true);
 	m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_REDWAND);

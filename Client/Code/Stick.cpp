@@ -42,6 +42,7 @@ HRESULT CStick::Ready_Object()
 
 	m_tInfo.iHp = 5;
 	m_tInfo.iAttack = 2;
+	m_tInfo.iExp = 3;
 
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 	//m_pTransCom->Set_Scale(0.7f, 0.7f, 0.7f);
@@ -72,7 +73,7 @@ _int CStick::Update_Object(const _float & fTimeDelta)
 	{
 		Dead();
 		m_fRenderOFFTimeAcc += fTimeDelta;
-		if (1.5f < m_fRenderOFFTimeAcc)
+		if (1.f < m_fRenderOFFTimeAcc)
 		{
 			m_bRenderOFF = true;
 			m_fRenderOFFTimeAcc = 0.f;
@@ -149,22 +150,31 @@ void CStick::Target_Follow(const _float & fTimeDelta)
 		// 다시 분노 후 일정시간 후 플레이어 근처로 빠르게 이동 랜덤 위치로 이동을 반복
 
 		m_fMoveTimeAcc += fTimeDelta;
-		if (3.f < m_fMoveTimeAcc)
+		if (1.5f < m_fMoveTimeAcc)
 		{
 			m_eCurState = IDLE;
-			m_pTransCom->Set_Y(m_fHeight);
+			m_pTransCom->Set_Y(m_vPos.y);
 			m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
 
 			if (fDist < 5.f)
 			{
 				m_eCurState = ATTACK;
+
+				m_fParticleTimeAcc += fTimeDelta;
+				if (m_bParticle && 0.1f < m_fParticleTimeAcc)
+				{
+					m_bParticle = false;
+					m_fParticleTimeAcc = 0.f;
+				}
+
 				if (!m_bParticle)
 				{
-					CParticleMgr::GetInstance()->Set_Info(this, 10, 1.f, { 1.f, 1.f, 1.f },
+					CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 1.f, 1.f },
 						1.f, { 1.f,1.f,1.f, 0.1f });
 					CParticleMgr::GetInstance()->Call_Particle(PTYPE_TRACER, TEXTURE_7);
 					m_bParticle = true;
 				}
+
 				if (m_pAnimtorCom->Get_Currentframe() >= 5.f)
 				{
 					m_bParticle = false;
@@ -185,7 +195,13 @@ void CStick::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 

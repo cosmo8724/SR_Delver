@@ -54,9 +54,9 @@ HRESULT CBlueBat::Ready_Object(void)
 
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 2;
+	m_tInfo.iExp = 3;
 
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	//m_pTransCom->Set_Pos(15.f, 1.f, 5.f);
 
 	m_eCurState = IDLE;
 
@@ -158,7 +158,7 @@ void CBlueBat::Target_Follow(const _float & fTimeDelta)
 		m_eCurState = IDLE;
 
 		m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
-		m_pTransCom->Set_Y(m_fHeight);
+		m_pTransCom->Set_Y(m_vPos.y);
 	}
 	else if (fDist < 4.f && fDist > 1.f) // Jump
 	{
@@ -190,11 +190,11 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 		_vec3 vPos;
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-		if (m_fJumpTimeAcc > 0.2f && m_fHeight >= vPos.y)
+		if (m_fJumpTimeAcc > 0.2f && m_vPos.y >= vPos.y)
 		{
 			m_bJump = false;
 			m_fJumpTimeAcc = 0.f;
-			m_pTransCom->Set_Y(m_fHeight);
+			m_pTransCom->Set_Y(m_vPos.y);
 			m_fJSpeed = m_fJSpeed0;
 		}
 		else
@@ -205,11 +205,12 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 			m_pTransCom->Plus_PosY(m_fJSpeed);
 			m_fJumpTimeAcc += 0.01f;
 
-			if (m_pAnimtorCom->Get_Currentframe() >= 7.f && m_pAnimtorCom->Get_Currentframe() < 8.f) // CameraShake
+			if (m_pAnimtorCom->Get_Currentframe() >= 5.f && m_pAnimtorCom->Get_Currentframe() < 8.f) // CameraShake
 			{
 				CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 				NULL_CHECK(pStaticCamera);
-				pStaticCamera->Set_ShakeY();
+				pStaticCamera->Shake_Camera(1.f, 2.f);
+				//pStaticCamera->Set_ShakeY();
 			}
 		}
 	}
@@ -232,7 +233,13 @@ void CBlueBat::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack();
+		CMonster::Set_KnockBack(m_vPos.y);
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
+
 		m_bOneCheck = true;
 	}
 
