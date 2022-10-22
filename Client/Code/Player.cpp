@@ -447,7 +447,6 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	if (pMonster == pOtherObj)
 		OnHit(pMonster->Get_MonsterAttack());
 
-
 	CBullet* pBullet = dynamic_cast<CBullet*>(pOtherObj);
 	if (pBullet == pOtherObj)
 		OnHit(pBullet->Get_BulletAttack());
@@ -685,24 +684,17 @@ void CPlayer::Hunger(const _float & fTimeDelta)
 
 void CPlayer::Set_Level(const _int& iMonsterHp, const _int& iMonsterExp)
 {
-	cout << "Level()" << iMonsterHp << endl;
-	if (0 >= iMonsterHp || 1 >= iMonsterHp)
+	if (1 >= iMonsterHp)
 	{
-		cout << "in" << endl;
-
 		if (m_tInfo.iExpMax > m_tInfo.iExp)
-		{
-			cout << "up" << endl;
 			m_tInfo.iExp += iMonsterExp;
-		}
 		else
 		{
 			m_tInfo.iLevel += 1;
-			cout << m_tInfo.iLevel << endl;
+			m_tInfo.iExp = 0;
+			m_tInfo.iExpMax += 10;
 		}
 	}
-
-
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

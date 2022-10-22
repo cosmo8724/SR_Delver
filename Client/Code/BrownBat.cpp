@@ -240,6 +240,9 @@ void CBrownBat::Dead()
 	m_eCurState = DIE;
 	m_pTransCom->Set_Y(m_vPos.y - 3.f);
 
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
+
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
 		0.1f,

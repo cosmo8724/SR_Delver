@@ -41,7 +41,6 @@ HRESULT CRedWandBullet::Ready_Object(void)
 	m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
 	m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
 
-
 	return S_OK;
 }
 

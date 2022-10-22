@@ -38,7 +38,7 @@ HRESULT CGreenSlime::Ready_Object(void)
 
 	m_tInfo.iHp = 3;
 	m_tInfo.iAttack = 1;
-	m_tInfo.iExp = 5;
+	m_tInfo.iExp = 2;
 
 	m_fHeight = m_vPos.y;
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
@@ -244,6 +244,9 @@ void CGreenSlime::Dead()
 		return;
 
 	m_eCurState = DIE;
+
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
 
 	CParticleMgr::GetInstance()->Set_Info(this,
 		50,
