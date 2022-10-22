@@ -413,6 +413,32 @@ void CInventory::Set_ItemEquip()
 						}
 					}
 					break;
+					case ITEM_SHIELD:
+					{
+						CItem*		pLeft = pPlayer->Get_Left();
+						if (nullptr != pLeft)
+							pLeft->Set_State(STATE_INV);
+
+						pPlayer->Set_Left(pItem);
+
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_SHIELD);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
+					case ITEM_LANTERN:
+					{
+						CItem*		pLeft = pPlayer->Get_Left();
+						if (nullptr != pLeft)
+							pLeft->Set_State(STATE_INV);
+
+						pPlayer->Set_Left(pItem);
+
+						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+						pWindow->Set_Item(m_Inventory[i][j], ITEM_LANTERN);
+						m_Inventory[i][j] = nullptr;
+					}
+					break;
 					case ITEM_POTION:
 					{
 						CPotion* pPotion = static_cast<CPotion*>(pItem);
@@ -446,18 +472,6 @@ void CInventory::Set_ItemEquip()
 						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 						pWindow->Set_Item(m_Inventory[i][j], ITEM_ARMOR);
 						m_Inventory[i][j] = nullptr;
-					}
-					break;
-					case ITEM_SHIELD:
-					{
-						CItem*		pLeft = pPlayer->Get_Left();
-						if (nullptr != pLeft)
-							pLeft->Set_State(STATE_INV);
-
-						pPlayer->Set_Left(pItem);
-
-						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
-						pWindow->Set_Item(m_Inventory[i][j], ITEM_SHIELD);
 					}
 					break;
 					case ITEM_HELMAT:
@@ -509,51 +523,31 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 		m_bShow = true;
 		m_fClickTime += fTimeDelta;
 
-		//sh
-		POINT		ptMouse;
-		GetCursorPos(&ptMouse);
-		ScreenToClient(g_hWnd, &ptMouse);
-
-		RECT rc = { _long(m_InvPosArr[0][0].x - 32), _long(m_InvPosArr[0][0].y - 32)
-			,_long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].x + 32), _long(m_InvPosArr[m_iMaxRow - 1][m_iMaxCol - 1].y + 32) };
-
-		if (!PtInRect(&rc, ptMouse))
-			return;
-
-		for (int i = 0; i < m_iMaxRow; ++i)
+		if (m_fClickTime < 0.6f)
 		{
-			for (int j = 0; j < m_iMaxCol; ++j)
+			if (Engine::Mouse_Down(DIM_LB))
+				++m_iClickedCnt;
+			if (2 == m_iClickedCnt)
 			{
-					if (m_fClickTime < 0.6f)
-					{
-						if (Engine::Mouse_Down(DIM_LB))
-							++m_iClickedCnt;
-						if (2 == m_iClickedCnt)
-						{
-							Set_ItemEquip();
-							m_fClickTime = 0.f;
-							m_iClickedCnt = 0;
-						}
-					}
-					else if (m_fClickTime > 0.6f)
-					{
-						//if (2 == m_iClickedCnt)		// double click
-						//{
-						//	Set_ItemEquip();
-						//}
-						if (1 == m_iClickedCnt)	// one click
-						{
-							Pick();
-						}
-						m_fClickTime = 0.f;
-						m_iClickedCnt = 0;
-					}
-				}
-
+				Set_ItemEquip();
+				m_fClickTime = 0.f;
+				m_iClickedCnt = 0;
+			}
+		}
+		else if (m_fClickTime > 0.6f)
+		{
+			//if (2 == m_iClickedCnt)		// double click
+			//{
+			//	Set_ItemEquip();
+			//}
+			if (1 == m_iClickedCnt)	// one click
+			{
+				Pick();
+			}
+			m_fClickTime = 0.f;
+			m_iClickedCnt = 0;
 		}
 	}
-
-
 	else
 	{
 		if (m_ppPickedItem != nullptr)
@@ -563,5 +557,4 @@ void CInventory::Mouse_Input(const _float& fTimeDelta)
 		}
 		m_bShow = false;
 	}
-
 }

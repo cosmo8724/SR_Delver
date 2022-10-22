@@ -219,8 +219,6 @@ void CDagger::Charge(const _float & fTimeDelta)
 
 	}
 
-
-
 }
 
 void CDagger::Attack(const _float & fTimeDelta)
@@ -238,15 +236,14 @@ void CDagger::Attack(const _float & fTimeDelta)
 
 	if (-10.f > m_pTransCom->Get_AttackAngle() && !m_bParticle)
 	{
-		
+
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { -1.f, 1.f, 0.f },
 			0.1f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_10);
-
+		Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);
 		m_bParticle = true;
 	}
-
 
 	if (m_pTransCom->Item_Attack(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer()))
 	{
@@ -255,9 +252,10 @@ void CDagger::Attack(const _float & fTimeDelta)
 		m_bAttackPt = false;
 		m_pTransCom->Prepare_Attack();
 		m_bParticle = false;
+		Engine::StopSound(SOUND_EFFECT);
+
 	}
-	else
-		Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);
+
 
 
 }

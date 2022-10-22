@@ -8,6 +8,8 @@ CShield::CShield(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	D3DXMatrixIdentity(&m_matWorld);
 	m_ObjTag = L"Shield";
 	m_vPos = vPos;
+	m_eItemType = ITEM_SHIELD;
+
 }
 
 CShield::~CShield()
@@ -21,7 +23,6 @@ HRESULT CShield::Ready_Object(void)
 
 	m_eState = STATE_GROUND;
 	m_tInfo.iDef = 5;
-	m_eItemType = ITEM_SHIELD;
 	return S_OK;
 }
 
@@ -52,12 +53,12 @@ _int CShield::Update_Object(const _float & fTimeDelta)
 	case STATE_EQUIP:
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
 
-
 		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
 		{
 			Charge(fTimeDelta);
 			Attack(fTimeDelta);
 		}
+
 
 		if (!m_bAttack)
 		{
@@ -70,7 +71,6 @@ _int CShield::Update_Object(const _float & fTimeDelta)
 
 
 	m_fTimeDelta = fTimeDelta;
-
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
 
@@ -83,15 +83,18 @@ void CShield::LateUpdate_Object(void)
 	if (STATE_INV != m_eState)
 		Add_RenderGroup(RENDER_ALPHA, this);
 
+	// 0(ground) 1(inv) 2(equip) 3(quick)
+
 	CGameObject::LateUpdate_Object();
 }
 
 void CShield::Render_Obejct(void)
-{
-	//if (m_eState == STATE_INV)
-	//	return;
+{		
+	cout << m_eState << endl;
 
-
+	if (m_eState == STATE_INV)
+		return;
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
 	_vec3 vPos;
@@ -196,6 +199,5 @@ void CShield::Attack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_pColliderCom->Set_Free(true);
 	}
-	/*else
-	Engine::Play_Sound(L"pu_gen_v2.mp3", SOUND_EFFECT, 1.f);*/
+
 }

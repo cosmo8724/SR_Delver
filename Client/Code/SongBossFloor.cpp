@@ -118,7 +118,7 @@ void CSongBossFloor::StartLightning(const _float& fTimeDelta)
 		m_fTransparencyTimeAcc = 0.f;
 		
 #ifdef SH_Debug
-		cout << m_iTransparency << endl;
+		//cout << m_iTransparency << endl;
 #endif
 		
 		if (m_iTransparency >= 250)

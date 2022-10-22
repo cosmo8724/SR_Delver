@@ -10,6 +10,6 @@ _int CEquipment::Update_Object(const _float & fTimeDelta)
 
 void CEquipment::LateUpdate_Object(void)
 {
-	if (CCullingMgr::GetInstance()->Is_Inside(this))
-		Add_RenderGroup(RENDER_ALPHA, this);
+	//if (CCullingMgr::GetInstance()->Is_Inside(this))
+	//	Add_RenderGroup(RENDER_ALPHA, this);
 }

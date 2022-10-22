@@ -10,6 +10,7 @@ CTransform::CTransform()
 	, m_fAngleSpeed(1.f)
 	, m_fAttackSpeed(3.f)
 	, m_fDefenseAngle(-80.f)
+	, m_fShieldvLook(0.9f)
 {
 	ZeroMemory(m_vInfo, sizeof(m_vInfo));
 	D3DXMatrixIdentity(&m_matWorld);
@@ -23,7 +24,7 @@ Engine::CTransform::CTransform(const CTransform& rhs)
 	, m_fAngleSpeed(rhs.m_fAngleSpeed)
 	, m_fAttackSpeed(rhs.m_fAttackSpeed)
 	, m_fDefenseAngle(rhs.m_fDefenseAngle)
-
+	, m_fShieldvLook(rhs.m_fShieldvLook)
 {
 	for (_uint i = 0; i < INFO_END; ++i)
 		memcpy(m_vInfo[i], rhs.m_vInfo[i], sizeof(_vec3));
@@ -199,7 +200,12 @@ void CTransform::Item_Motion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 	_matrix matRev;
 	_float fRad = 0.f;
-	if (m_vOldPos.y == vPos.y && m_vOldPos != vPos)
+	if (m_bStop)
+	{
+		m_fAngle = 5.f;
+	}
+
+	if (!m_bStop && m_vOldPos.y == vPos.y && m_vOldPos != vPos)
 	{
 		m_fAngle += m_fAngleSpeed;
 		if (m_fAngle > 5.f || m_fAngle < -5.f)
@@ -279,7 +285,7 @@ _bool CTransform::Item_Attack(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 
 void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorld)
 {
-	_matrix matParent = _matWorld; // �θ������ �÷��̾��� �������
+	_matrix matParent = _matWorld; 
 
 	_vec3 vRight, vUp, vLook, vPos;
 
@@ -302,6 +308,7 @@ void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorl
 	D3DXMatrixTranslation(&matTrans, vTrans.x, vTrans.y, vTrans.z);
 
 	_matrix matRev;
+	D3DXMatrixIdentity(&matRev);
 	_float fRad = 0.f;
 	if (m_vOldPos.y == vPos.y && m_vOldPos != vPos)
 	{
@@ -317,7 +324,6 @@ void CTransform::Item_LeftMotion(LPDIRECT3DDEVICE9 pGraphicDev, _matrix _matWorl
 	D3DXMatrixTranslation(&matPos, vPos.x, vPos.y, vPos.z);
 
 
-	// ������
 	_matrix matBill, matView;
 	D3DXMatrixIdentity(&matBill);
 	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
