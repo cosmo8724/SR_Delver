@@ -2,6 +2,7 @@
 #include "InvImg.h"
 #include "Export_Function.h"
 #include "Potion.h"
+#include "Inventory.h"
 
 CInvImg::CInvImg(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
@@ -32,7 +33,7 @@ HRESULT CInvImg::Ready_Object(void)
 
 	//CLayer* pLayer = Engine::Get_Layer(L"Layer_UI");
 	//if (nullptr == pLayer)
-	//	MSG_BOX("CInvImg - Layer_UI »ý¼º ½ÇÆÐ");
+	//	MSG_BOX("CInvImg - Layer_UI ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 	//wchar_t	num[10];
 	//_itow_s(CDynamicObjMgr::GetInstance()->invImgTagCnt, num, 10);
 	//wstring str = L"InvImg";
@@ -45,7 +46,7 @@ HRESULT CInvImg::Ready_Object(void)
 	//str = str + num;
 	//CDynamicObjMgr::GetInstance()->InvImgObjTag.push_back(str);
 	//if (E_FAIL == pLayer->Add_GameObject(CDynamicObjMgr::GetInstance()->InvImgObjTag[iIndex].c_str(), this))
-	//	MSG_BOX("CInvImg - Add_GameObject ½ÇÆÐ");
+	//	MSG_BOX("CInvImg - Add_GameObject ï¿½ï¿½ï¿½ï¿½");
 
 	D3DXMatrixOrthoLH(&m_matProj, WINCX, WINCY, 0.f, 1.f);
 
@@ -60,10 +61,18 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 	if (m_bDead)
 		return 0;
 
+	if (!m_bReady)
+	{
+		m_pInv = dynamic_cast<CInventory*>(Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+		if (nullptr != m_pInv)
+			m_bReady = true;
+		else
+			return 0;
+	}
+
 	if (m_eState == STATE_INV)
 	{
-		if ((Engine::Get_DIKeyState(DIK_TAB) & 0X80))
-		{
+		if ( m_pInv->Is_Open() || (Engine::Get_DIKeyState(DIK_TAB) & 0X80))
 			m_bOn = true;
 			//Engine::Play_Sound(L"ui_dialogue_open.mp3", SOUND_UI, 1.f);
 		}
@@ -127,10 +136,10 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 	_float m_fScaleX = 32.f;
 	_float m_fScaleY = 32.f;
 
-	// ½ºÄÉÀÏ °ª
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	D3DXMatrixScaling(&m_matView, m_fScaleX, m_fScaleY, 1.f);
 
-	// Æ÷Áö¼Ç
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	_vec3 vPos;
 
 	if(!m_bPicked)
@@ -234,17 +243,17 @@ HRESULT CInvImg::Add_Component(void)
 
 	CComponent*	pComponent = nullptr;
 
-	// ¹öÆÛ ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Clone_Proto(L"Proto_RcTexCom"));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	// ¿ùµåÇà·Ä ÄÄÆ÷³ÍÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
-	// ÅØ½ºÃÄ ÄÄ°´Ã¼ ÄÄÆ÷³ÍÆ®
+	// ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½Ä°ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	//_int iIndex = CDynamicObjMgr::GetInstance()->InvImgTexComTag.size();
 	//CDynamicObjMgr::GetInstance()->InvImgTexComTag.push_back(m_TexTag);
 

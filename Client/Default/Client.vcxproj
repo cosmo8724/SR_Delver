@@ -220,6 +220,7 @@
     <ClInclude Include="..\Header\Icon.h" />
     <ClInclude Include="..\Header\ImGuiMgr.h" />
     <ClInclude Include="..\Header\InfoTool.h" />
+    <ClInclude Include="..\Header\Intro.h" />
     <ClInclude Include="..\Header\Inventory.h" />
     <ClInclude Include="..\Header\InvImg.h" />
     <ClInclude Include="..\Header\ItemMgr.h" />
@@ -231,6 +232,8 @@
     <ClInclude Include="..\Header\LeafBullet.h" />
     <ClInclude Include="..\Header\LeftHand.h" />
     <ClInclude Include="..\Header\Loading.h" />
+    <ClInclude Include="..\Header\Loading_BG.h" />
+    <ClInclude Include="..\Header\Loading_Scene.h" />
     <ClInclude Include="..\Header\Logo.h" />
     <ClInclude Include="..\Header\LongTorch.h" />
     <ClInclude Include="..\Header\MainApp.h" />
@@ -242,6 +245,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h" />
+    <ClInclude Include="..\Header\MyButton.h" />
     <ClInclude Include="..\Header\Necklace.h" />
     <ClInclude Include="..\Header\NPCMgr.h" />
     <ClInclude Include="..\Header\ObjectTool.h" />
@@ -260,6 +264,7 @@
     <ClInclude Include="..\Header\Ring.h" />
     <ClInclude Include="..\Header\RockFall.h" />
     <ClInclude Include="..\Header\Shield.h" />
+    <ClInclude Include="..\Header\Shop.h" />
     <ClInclude Include="..\Header\ShortTorch.h" />
     <ClInclude Include="..\Header\SkeletonGhost.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
@@ -360,6 +365,7 @@
     <ClCompile Include="..\Code\Icon.cpp" />
     <ClCompile Include="..\Code\ImGuiMgr.cpp" />
     <ClCompile Include="..\Code\InfoTool.cpp" />
+    <ClCompile Include="..\Code\Intro.cpp" />
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\InvImg.cpp" />
     <ClCompile Include="..\Code\ItemMgr.cpp" />
@@ -371,6 +377,8 @@
     <ClCompile Include="..\Code\LeafBullet.cpp" />
     <ClCompile Include="..\Code\LeftHand.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />
+    <ClCompile Include="..\Code\Loading_BG.cpp" />
+    <ClCompile Include="..\Code\Loading_Scene.cpp" />
     <ClCompile Include="..\Code\Logo.cpp" />
     <ClCompile Include="..\Code\LongTorch.cpp" />
     <ClCompile Include="..\Code\MainApp.cpp" />
@@ -382,6 +390,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Code\MiniMap.cpp" />
+    <ClCompile Include="..\Code\MyButton.cpp" />
     <ClCompile Include="..\Code\Necklace.cpp" />
     <ClCompile Include="..\Code\NPCMgr.cpp" />
     <ClCompile Include="..\Code\ObjectTool.cpp">
@@ -403,6 +412,7 @@
     <ClCompile Include="..\Code\Ring.cpp" />
     <ClCompile Include="..\Code\RockFall.cpp" />
     <ClCompile Include="..\Code\Shield.cpp" />
+    <ClCompile Include="..\Code\Shop.cpp" />
     <ClCompile Include="..\Code\ShortTorch.cpp" />
     <ClCompile Include="..\Code\SkeletonGhost.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />

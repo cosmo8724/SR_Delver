@@ -12,6 +12,7 @@ class CBlueBat : public CMonster
 private:
 	explicit CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	explicit CBlueBat(const CMonster& rhs);
 	virtual ~CBlueBat();
 
 public:
@@ -51,7 +52,8 @@ private:
 	_float				m_fJumpTime = 0.f;
 
 public:
-	static CBlueBat*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CBlueBat*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CBlueBat*	Create(CMonster* pMonster);
 	virtual void		Free(void);
 };
 

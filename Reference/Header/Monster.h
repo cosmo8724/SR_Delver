@@ -12,6 +12,7 @@ class ENGINE_DLL CMonster : public CGameObject
 {
 public:
 	explicit CMonster(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CMonster(const CMonster& rhs);
 	virtual ~CMonster();
 
 public:
@@ -20,7 +21,7 @@ public:
 	_int				Get_MonsterExp() { return m_tInfo.iExp; }
 
 protected:
-	virtual HRESULT		Ready_Object(void) { return S_OK; };
+	virtual HRESULT		Ready_Object(void);
 	virtual _int		Update_Object(const _float& fTimeDelta);
 	virtual void		LateUpdate_Object(void) {};
 	virtual void		Render_Obejct(void);
@@ -29,7 +30,7 @@ protected:
 	void				Set_KnockBack(_float fHeight) { m_bKnockBack = true; m_fHeight = fHeight; }
 
 protected:
-	virtual HRESULT		Add_Component(void) PURE;
+	virtual HRESULT		Add_Component(void);
 
 	virtual void		Target_Follow(const _float& fTimeDelta) {};
 	virtual void		OnHit(const _float& fTimeDelta) {};
@@ -40,8 +41,13 @@ protected:
 
 public:
 	virtual void		Free(void);
+	static CMonster*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+
+public:
+	MONSTERTYPE			m_eType = MOB_END;
 
 protected:
+	_bool				m_bClone = false;
 	_vec3				m_vPos;
 	_float				m_fIdle_Speed;
 	_float				m_fAttack_Speed;

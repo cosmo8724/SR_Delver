@@ -5,6 +5,10 @@
 
 #include "TalkWindow.h"
 #include "MiniMap.h"
+#include "Shop.h"
+#include "Inventory.h"
+#include "EquipWindow.h"
+#include "StaticCamera.h"
 
 CWinkMan::CWinkMan(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CNPC(pGraphicDev)
@@ -29,7 +33,7 @@ HRESULT CWinkMan::Ready_Object(void)
 	str = L" 이봐!!";
 	m_vecDialogue.push_back(str);
 
-	str = L" 내가 나 처럼 멋있는 것을 \n 많이 가지고 있는데 \n 한 번 볼래?";
+	str = L" 내가 나 처럼 멋있는 것을 \n 많이 가지고 있는데 \n 한 번 보라구~";
 	m_vecDialogue.push_back(str);
 
 	return S_OK;
@@ -123,7 +127,6 @@ void CWinkMan::OnText(const _float& fTimeDelta)
 			pTalkWindow->Set_OnText();
 			pTalkWindow->Set_TextCount();
 			pTalkWindow->Set_Text(&m_vecDialogue);
-
 			m_fLBClick = 0.f;
 		}
 	}
@@ -136,6 +139,25 @@ void CWinkMan::OnText(const _float& fTimeDelta)
 		}
 		m_bDetected = false;
 	}
+
+	if (pTalkWindow->Is_Finished())
+	{
+		if (Key_Down(DIK_T))
+		{
+			CShop* pShop = static_cast<CShop*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Shop"));
+			pShop->Set_Open(true);
+
+			CInventory* pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+			pInv->Set_Open(true);
+
+			CEquipWindow* pEquip = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+			pEquip->Set_Open(true);
+
+			CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+			pCam->Set_Free(true);
+		}
+	}
+
 }
 
 CWinkMan * CWinkMan::Create(LPDIRECT3DDEVICE9 pGraphicDev)

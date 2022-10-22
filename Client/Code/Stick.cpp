@@ -17,6 +17,7 @@ CStick::CStick(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fMoveTimeAcc(0.f)
 
 {
+	m_eType = MOB_STICK;
 	m_ObjTag = L"Stick";
 }
 
@@ -28,7 +29,14 @@ CStick::CStick(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fMoveTimeAcc(0.f)
 
 {
+	m_eType = MOB_STICK;
 	m_vPos = vPos;
+	m_ObjTag = L"Stick";
+}
+
+CStick::CStick(const CMonster& rhs)
+	: CMonster(rhs)
+{
 	m_ObjTag = L"Stick";
 }
 
@@ -44,9 +52,11 @@ HRESULT CStick::Ready_Object()
 	m_tInfo.iAttack = 2;
 	m_tInfo.iExp = 3;
 
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	//m_pTransCom->Set_Scale(0.7f, 0.7f, 0.7f);
-
+	if (!m_bClone)
+	{
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+		//m_pTransCom->Set_Scale(0.7f, 0.7f, 0.7f);
+	}
 	m_eCurState = IDLE;
 
 	m_fIdle_Speed = 1.f;
@@ -57,7 +67,7 @@ HRESULT CStick::Ready_Object()
 
 _int CStick::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bCreateIcon)
+	if (!m_bCreateIcon && !g_bIsTool)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
@@ -68,6 +78,9 @@ _int CStick::Update_Object(const _float & fTimeDelta)
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 1.5f);
 	Motion_Change();
+
+	if (g_bIsTool)
+		return 0;
 
 	if (0 >= m_tInfo.iHp)
 	{
@@ -108,10 +121,12 @@ HRESULT CStick::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
-
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
 	// m_pAnimtorCom
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
@@ -119,7 +134,7 @@ HRESULT CStick::Add_Component(void)
 
 	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_StickIDLE_Texture");
@@ -291,6 +306,19 @@ void CStick::Motion_Change()
 CStick * CStick::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CStick *	pInstance = new CStick(pGraphicDev, vPos);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CStick * CStick::Create(CMonster * pMonster)
+{
+	CStick *	pInstance = new CStick(*pMonster);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{

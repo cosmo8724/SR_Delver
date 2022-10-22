@@ -8,6 +8,7 @@ class CMimic : public CMonster
 private:
 	explicit CMimic(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CMimic(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	explicit CMimic(const CMonster& rhs);
 	virtual ~CMimic();
 
 public:
@@ -36,6 +37,7 @@ private:
 	_float				m_fTimeAcc;
 
 public:
-	static CMimic*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CMimic*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CMimic*		Create(CMonster* pMonster);
 	virtual void		Free(void);
 };

@@ -9,9 +9,29 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 }
 
+CMonster::CMonster(const CMonster & rhs)
+	: CGameObject(rhs)
+	, m_eType(rhs.m_eType)
+	, m_vPos(rhs.m_vPos)
+	, m_tInfo(rhs.m_tInfo)
+	, m_fIdle_Speed(rhs.m_fIdle_Speed)
+	, m_fAttack_Speed(rhs.m_fAttack_Speed)
+	, m_bClone(true)
+{
+	m_pTransCom = dynamic_cast<CTransform*>(rhs.m_pTransCom->Clone());
+	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", m_pTransCom });
+}
+
 
 CMonster::~CMonster()
 {
+}
+
+HRESULT CMonster::Ready_Object(void)
+{
+	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	return S_OK;
 }
 
 _int CMonster::Update_Object(const _float& fTimeDelta)
@@ -50,6 +70,17 @@ void CMonster::Render_Obejct()
 	m_pColliderCom->Render_Buffer();
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 #endif
+}
+
+HRESULT	CMonster::Add_Component()
+{
+	CComponent*		pComponent = nullptr;
+
+	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+
+	return S_OK;
 }
 
 void CMonster::Billboard()
@@ -113,4 +144,17 @@ void CMonster::KnockBack(const _float & fTimeDeleta, _float	fKnockBackSpeed)
 void CMonster::Free(void)
 {
 	CGameObject::Free();
+}
+
+CMonster* CMonster::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+{
+	CMonster *	pInstance = new CMonster(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
 }

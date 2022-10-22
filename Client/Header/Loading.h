@@ -8,16 +8,18 @@ private:
 	virtual ~CLoading();
 
 public:
-	CRITICAL_SECTION		Get_Crt()		{ return m_Crt;	}
+	CRITICAL_SECTION	Get_Crt()		{ return m_Crt;	}
 	_bool					Get_Finish()	{ return m_bFinish; }
-	LOADINGID				Get_LoadingID() { return m_eID; }
-	const _tchar*			Get_String(void) { return m_szLoading; }
+	LOADINGID			Get_LoadingID() { return m_eID; }
+	const _tchar*		Get_String(void) { return m_szLoading; }
+	void					Set_String(const _tchar* szText) { lstrcpy(m_szLoading, szText); }
 
 public:
 	HRESULT		Ready_Loading(LOADINGID eID);
 
 	_uint		Loading_ForMapTool();
 	_uint		Loading_ForStage(void);
+	_uint		Loading_ForIntro();
 	_uint		Loading_ForBoss(void);
 	_uint		Loading_ForTool_Scene();
 

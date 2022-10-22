@@ -11,6 +11,7 @@ private:
 	explicit CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	explicit CPinkSlime(const CPinkSlime& rhs);
+	explicit CPinkSlime(const CMonster& rhs);
 	virtual ~CPinkSlime();
 
 public:
@@ -78,8 +79,9 @@ public:
 	//static _uint		m_iSepatationNum;
 
 public:
-	static CPinkSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, SEPARATION dID);
+	static CPinkSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f }, SEPARATION dID = SEPARATION_ONE);
 	static CPinkSlime*	Create(const CPinkSlime& rhs, SEPARATION dID);
+	static CPinkSlime* Create(CMonster* pMonster);
 	virtual void		Free(void);
 };
 

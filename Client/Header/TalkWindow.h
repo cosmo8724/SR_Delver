@@ -14,11 +14,13 @@ public:
 	virtual void		Render_Obejct(void)						override;
 
 public:
-	void				Set_OnText() { m_bText = true; }
+	void				Set_OnText() { m_bText = true; m_bFinished = false; }
 	void				Set_OFFText() { m_bText = false; }
 	void				Set_TextCount() { m_iTextCount++; }
 	void				Set_Text(vector<wstring> *_sText) { m_vecDialogue = *_sText; }
 	void				Reset_TextCount() { m_iTextCount = 0; }
+	_int				Get_TextCount() { return m_iTextCount; }
+	_bool				Is_Finished() { return m_bFinished; }
 
 private:
 	virtual HRESULT		Add_Component(void);
@@ -35,4 +37,5 @@ private:
 	vector<wstring>		m_vecDialogue;
 	_uint				m_iTextCount;
 	_bool				m_bText = false;
+	_bool				m_bFinished = false;
 };

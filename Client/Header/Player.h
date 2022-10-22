@@ -10,7 +10,7 @@ namespace Engine
 	class CItem;
 }
 class CBlock;
-
+class CInventory;
 class CPlayer : public CGameObject
 {
 private:
@@ -137,6 +137,7 @@ private:
 	_float				m_fDeathTime = 0.f;
 	_bool				m_bDeadMotion = false;
 
+	CInventory*			m_pInv = nullptr;
 
 	// Collision Group for Player
 	vector<CGameObject*>	 m_CollisionGroup;

@@ -35,6 +35,8 @@ public:
 		(*m_ppPickedItem) = nullptr;
 		m_ppPickedItem = nullptr;
 	}
+	void	Set_Open(_bool bOpen) { m_bOpen = bOpen; }
+	_bool	Is_Open() { return m_bOpen; }
 
 private:
 	void		Mouse_Input(const _float& fTimeDelta);
@@ -63,6 +65,8 @@ private:
 	_bool			m_bShow = false;
 	_matrix			m_matProj;
 	CItem*			m_pEquipped = nullptr;
+
+	_bool			m_bOpen = false;
 
 
 };

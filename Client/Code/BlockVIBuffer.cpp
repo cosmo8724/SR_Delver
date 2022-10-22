@@ -276,4 +276,6 @@ void CBlockVIBuffer::Free()
 		delete[] ppBPT;
 		ppBPT = nullptr;
 	}
+
+	Safe_Release(m_pGraphicDev);
 }

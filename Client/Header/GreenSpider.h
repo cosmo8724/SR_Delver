@@ -12,6 +12,7 @@ class CGreenSpider : public CMonster
 private:
 	explicit CGreenSpider(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CGreenSpider(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	explicit CGreenSpider(const CMonster& rhs);
 	virtual ~CGreenSpider();
 
 public:
@@ -40,7 +41,8 @@ private:
 	_float				m_fAttackTimeAcc;
 
 public:
-	static CGreenSpider*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CGreenSpider*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CGreenSpider*		Create(CMonster* pMonster);
 	virtual void		Free(void);
 };
 

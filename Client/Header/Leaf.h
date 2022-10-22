@@ -8,6 +8,7 @@ class CLeaf : public CMonster
 private:
 	explicit CLeaf(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CLeaf(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	explicit CLeaf(const CMonster& rhs);
 	virtual ~CLeaf();
 
 public:
@@ -39,6 +40,7 @@ private:
 	_float				m_fBulletTimeAcc;
 
 public:
-	static CLeaf*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CLeaf*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CLeaf*		Create(CMonster* pMonster);
 	virtual void		Free(void);
 };

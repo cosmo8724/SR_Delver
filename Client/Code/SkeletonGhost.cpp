@@ -17,6 +17,7 @@ CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_fAttackTimeAcc(0.f)
 	, m_fHpMinusTimeAcc(0.f)
 {
+	m_eType = MOB_SKELETONGHOST;
 	m_ObjTag = L"SkeletonGhost";
 }
 
@@ -29,7 +30,15 @@ CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fAttackTimeAcc(0.f)
 	, m_fHpMinusTimeAcc(0.f)
 {
+	m_eType = MOB_SKELETONGHOST;
 	m_vPos = vPos;
+	m_ObjTag = L"SkeletonGhost";
+}
+
+CSkeletonGhost::CSkeletonGhost(const CMonster& rhs)
+	: CMonster(rhs)
+	, m_eCurState(IDLE)
+{
 	m_ObjTag = L"SkeletonGhost";
 }
 
@@ -46,7 +55,8 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 	m_tInfo.iExp = 5;
 
 	m_fHeight = m_vPos.y; // 3.f;
-	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	if (!m_bClone)
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eCurState = IDLE;
 
@@ -58,7 +68,7 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 
 _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bCreateIcon)
+	if (!m_bCreateIcon && !g_bIsTool)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
@@ -66,9 +76,14 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
 	m_bRender = true; // TODO : false
+	
+	if (g_bIsTool)
+		return 0;
+
 	if (0 >= m_tInfo.iHp)
 	{
 		Dead();
@@ -133,10 +148,12 @@ HRESULT CSkeletonGhost::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
-
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
 	// m_pAnimtorCom
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
@@ -144,7 +161,7 @@ HRESULT CSkeletonGhost::Add_Component(void)
 
 	// Collider Component
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Clone_Proto(L"Proto_ColliderCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
 	m_pAnimtorCom->Add_Component(L"Proto_SkeletonGhostIDLE_Texture");
@@ -375,6 +392,19 @@ void CSkeletonGhost::Motion_Change()
 CSkeletonGhost * CSkeletonGhost::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CSkeletonGhost *	pInstance = new CSkeletonGhost(pGraphicDev, vPos);
+
+	if (FAILED(pInstance->Ready_Object()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CSkeletonGhost * CSkeletonGhost::Create(CMonster * pMonster)
+{
+	CSkeletonGhost *	pInstance = new CSkeletonGhost(*pMonster);
 
 	if (FAILED(pInstance->Ready_Object()))
 	{
