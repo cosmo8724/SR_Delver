@@ -339,6 +339,7 @@ void CBulletMgr::Fire(BULLETID _eID)
 	if (!m_IdxQue[_eID].empty())
 	{
 		iIdx = m_IdxQue[_eID].front();
+		m_IdxQue[_eID].pop();
 		
 		CCollider* pColliderCom =	static_cast<CCollider*>((m_vecObjPool[_eID][iIdx])->Get_Component(L"Proto_ColliderCom", ID_STATIC));
 		{
@@ -349,7 +350,6 @@ void CBulletMgr::Fire(BULLETID _eID)
 		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Fire(true);
 		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Index(iIdx);
 
-		m_IdxQue[_eID].pop();
 	}
 	//m_CurIdx[_eID] = (m_CurIdx[_eID] + 1) % m_MaxIdx[_eID];
 }

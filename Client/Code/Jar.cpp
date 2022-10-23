@@ -4,6 +4,7 @@
 #include "Export_Function.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
+#include "Player.h"
 
 CJar::CJar(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CEcoObject(pGraphicDev)
@@ -38,6 +39,19 @@ HRESULT CJar::Ready_Object(void)
 
 _int CJar::Update_Object(const _float & fTimeDelta)
 {
+	if (!m_bReady)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		if (nullptr != pPlayer)
+		{
+			pPlayer->Add_CollisionGroup(this);
+			m_bReady = true;
+		}
+		else
+			return 0;
+		
+	}
+
 	if (m_bDead)
 		return OBJ_DEAD;
 

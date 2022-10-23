@@ -39,7 +39,7 @@ HRESULT CArrowBullet::Ready_Object(void)
 
 	float fSize = 1.f;
 	m_pTransCom->Set_Scale(fSize, fSize, fSize);
-
+	m_pColliderCom->Set_Free(true);
 	//// 충돌처리
 	//_vec3 vPos, vScale;
 	//m_pTransCom->Get_Info(INFO_POS, &vPos);
@@ -170,7 +170,7 @@ void CArrowBullet::LateUpdate_Object(void)
 		return;
 
 	// 아무데도 충돌안해도 일정 시간 후 리셋함
-	if (2.f < m_fLifeTime)
+	if (1.f < m_fLifeTime)
 	{
 		Reset();
 	}
@@ -280,5 +280,5 @@ HRESULT CArrowBullet::Add_Component(void)
 
 void CArrowBullet::CollisionEvent(CGameObject * pObj)
 {
-	//Reset();
+	Reset();
 }
