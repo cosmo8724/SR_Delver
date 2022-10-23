@@ -72,7 +72,7 @@ _int CSongBossBullet::Update_Object(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 30, 0.5f,
-			_vec3({ 1.f, 1.f, 1.f }), 3.f, D3DXCOLOR{ 0.1f, 0.1f, 0.1f, 1.f },
+			_vec3({ 1.f, 1.f, 1.f }), 3.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f },
 			1.f, false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_8);
 
@@ -91,7 +91,14 @@ void CSongBossBullet::LateUpdate_Object(void)
 		return;
 
 	if (3.f < m_fLifeTime)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 30, 0.5f,
+			_vec3({ 1.f, 1.f, 1.f }), 3.f, D3DXCOLOR{ 1.f, 1.f, 1.f, 1.f },
+			1.f, false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_8);
+
 		Reset();
+	}
 
 	CGameObject::LateUpdate_Object();
 }

@@ -187,6 +187,9 @@ void CGreenWand::Attack(const _float & fTimeDelta)
 {
 	if (true == m_bAttack)
 	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::Play_Sound(L"I_GreenWand.mp3", SOUND_EFFECT, 1.f);
+
 		CBulletMgr::GetInstance()->Pre_Setting(BULLET_GREENWAND, 0.f);
 		CBulletMgr::GetInstance()->Fire(BULLET_GREENWAND);
 

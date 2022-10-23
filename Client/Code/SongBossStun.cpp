@@ -187,6 +187,9 @@ void CSongBossStun::CollisionEvent(CGameObject * pObj)
 {
 	if (!m_bOneCheck)
 	{
+		Engine::StopSound(SOUND_SONGBOSS);
+		Engine::Play_Sound(L"M_SongBoss_Stun_1.mp3", SOUND_SONGBOSS, 1.f);
+
 		// 음표를 부시면 카운트 증가
 		CSongBoss* pSongBoss = dynamic_cast<CSongBoss*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss"));
 		pSongBoss->Set_StunCount();

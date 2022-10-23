@@ -176,6 +176,9 @@ void CWand::Attack(const _float & fTimeDelta)
 {
 	if (true == m_bAttack)
 	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::Play_Sound(L"I_Wand.mp3", SOUND_EFFECT, 1.f);
+
 		CBulletMgr::GetInstance()->Pre_Setting(BULLET_WAND, m_fPlusSpeed);
 		CBulletMgr::GetInstance()->Fire(BULLET_WAND);
 		//CParticleMgr::GetInstance()->Set_Info(this);

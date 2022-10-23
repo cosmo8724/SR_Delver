@@ -415,9 +415,9 @@ CGameObject* CItemMgr::Add_GameObject(const _tchar * pLayerTag, wstring texTag, 
 
 HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objTag, ITEMTYPE eType, _vec3 vPos)
 {
-	_int iRandomNum = rand() % 10;
-	if (iRandomNum % 2)
-		return S_OK;
+	//_int iRandomNum = rand() % 10; // TODO : rand
+	//if (iRandomNum % 2)
+	//	return S_OK;
 
 	wstring tag = objTag;
 	tag += L"%d";

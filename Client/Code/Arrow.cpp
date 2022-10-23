@@ -293,6 +293,9 @@ void CArrow::Charge(const _float & fTimeDelta)
 		}
 		else if (true == m_bCharge)  
 		{
+			Engine::StopSound(SOUND_EFFECT);
+			Engine::Play_Sound(L"I_Arrow1.mp3", SOUND_EFFECT, 1.f);
+
 			m_fFrame = 0.f;
 			m_bCharge = false;
 			m_fChargeTime = 0.f;
@@ -308,11 +311,13 @@ void CArrow::Attack(const _float & fTimeDelta)
 {
 	if (true == m_bAttack)
 	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::Play_Sound(L"I_Arrow.mp3", SOUND_EFFECT, 1.f);
+
 		CBulletMgr::GetInstance()->Pre_Setting(BULLET_ARROW, m_fPlusSpeed);
 		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
 		m_bAttack = false;
 		m_fPlusSpeed = 0.f;
 		m_pTransCom->Set_Stop(false);
-		Engine::Play_Sound(L"bow.mp3", SOUND_EFFECT, 1.f);
 	}
 }

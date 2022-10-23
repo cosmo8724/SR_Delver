@@ -105,11 +105,11 @@ HRESULT CStage::Ready_Scene(void)
 
 _int CStage::Update_Scene(const _float & fTimeDelta)
 {
-	static _bool bCampfire = false;
-	if (!bCampfire)
+	static _bool Stage = false;
+	if (!Stage)
 	{
-		Engine::PlayBGM(L"campfire-guitar.mp3", 1.f);
-		bCampfire = true;
+		Engine::PlayBGM(L"BGM_Stage.mp3", 1.f);
+		Stage = true;
 	}
 
 	return Engine::CScene::Update_Scene(fTimeDelta);

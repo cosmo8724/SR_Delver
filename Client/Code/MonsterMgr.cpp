@@ -122,20 +122,20 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime", pGameObject), E_FAIL);
 		m_vecMonster.push_back(pGameObject);
 
-		pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(18.f, 2.f, 12.f));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime1", pGameObject), E_FAIL);
-		m_vecMonster.push_back(pGameObject);
+		//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(18.f, 2.f, 12.f));
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime1", pGameObject), E_FAIL);
+		//m_vecMonster.push_back(pGameObject);
 
-		pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(12.f, 2.f, 11.f));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime2", pGameObject), E_FAIL);
-		m_vecMonster.push_back(pGameObject);
+		//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(12.f, 2.f, 11.f));
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime2", pGameObject), E_FAIL);
+		//m_vecMonster.push_back(pGameObject);
 
-		pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(7.f, 2.f, 10.f));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime3", pGameObject), E_FAIL);
-		m_vecMonster.push_back(pGameObject);
+		//pGameObject = CGreenSlime::Create(m_pGraphicDev, _vec3(7.f, 2.f, 10.f));
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenSlime3", pGameObject), E_FAIL);
+		//m_vecMonster.push_back(pGameObject);
 
 		// 200 ���� ������ �Ŷ�	
 		/*for (int i = 0; i < 200; i++)
