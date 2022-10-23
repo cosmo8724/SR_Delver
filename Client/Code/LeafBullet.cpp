@@ -230,6 +230,7 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 	if (!m_bReady) // 처음 들어 왔을 때 한 번만 받는다
 	{
 		m_vTrans = vPos;
+		m_vDir = vDir;
 		m_bReady = true;
 	}
 
@@ -238,15 +239,15 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
 
 	// 이
-	D3DXMatrixTranslation(&matTrans, vDistance.x * 0.7f, vDistance.y * 0.7f, vDistance.z * 0.7f);
+	D3DXMatrixTranslation(&matTrans, 2.f, 2.f, 2.f);
 
 	// 공
-	m_fAngle += 0.1f;
+	m_fAngle += 0.2f;
 	if (m_fAngle > 360.f)
 		m_fAngle -= 360.f;
 		//m_fAngle = 0.1f;
 	//m_fAngle = m_fAngle % 360.f;
-	D3DXMatrixRotationAxis(&matRev, &vDir, m_fAngle);
+	D3DXMatrixRotationAxis(&matRev, &m_vDir, m_fAngle);
 	
 	//matWorld = matTrans * matRev;
 
@@ -266,10 +267,10 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 
 	if (m_bReady)
 	{
-		m_vTrans += vDir * 0.1f;
+		m_vTrans += m_vDir * 0.2f;
 		D3DXMatrixTranslation(&mat2, m_vTrans.x, m_vTrans.y, m_vTrans.z);
 	}
-	m_matWorld = mat1 * mat2;
+	m_matWorld = mat2 * mat1;
 
 	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 	return 0;
