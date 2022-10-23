@@ -165,7 +165,12 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 		if (0.7f < m_fAttackTimeAcc)
 		{
 			if (0 < m_fAttack_Speed)
+			{
+				Engine::StopSound(SOUND_BROWNDBAT);
+				Engine::Play_Sound(L"M_BrownBat_Idle.mp3", SOUND_BROWNDBAT, 1.f);
+
 				m_eCurState = IDLE;
+			}
 			else if (0 > m_fAttack_Speed)
 				m_eCurState = ATTACK;
 
@@ -188,9 +193,6 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 		m_fTimeAcc += fTimeDelta;
 		if (1.f < m_fTimeAcc)
 		{
-			Engine::StopSound(SOUND_BROWNDBAT);
-			Engine::Play_Sound(L"M_BrownBat_Idle.mp3", SOUND_BROWNDBAT, 1.f);
-
 			m_fIdle_Speed *= -1;
 			m_fTimeAcc = 0.f;
 		}

@@ -35,7 +35,7 @@ CBulletMgr::CBulletMgr()
 	m_MaxIdx[BULLET_ARROW] = 10;
 	m_MaxIdx[BULLET_M_LEAF] = 5;
 	m_MaxIdx[BULLET_M_SPIDER] = 5;
-	m_MaxIdx[BULLET_GREENWAND] = 20;
+	m_MaxIdx[BULLET_GREENWAND] = 50;
 	m_MaxIdx[BULLET_REDWAND] = 20;
 
 	for (int bulletId = 0; bulletId < BULLET_END; ++bulletId)

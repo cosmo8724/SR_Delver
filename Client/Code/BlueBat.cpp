@@ -169,9 +169,6 @@ void CBlueBat::Target_Follow(const _float & fTimeDelta)
 
 	if (fDist < 7.f && fDist > 4.f) // Follow
 	{
-		Engine::StopSound(SOUND_BLUEBAT);
-		Engine::Play_Sound(L"M_BlueBat_Alert.mp3", SOUND_BLUEBAT, 1.f);
-
 		m_eCurState = IDLE;
 
 		m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
@@ -224,6 +221,9 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 
 			if (m_pAnimtorCom->Get_Currentframe() >= 5.f && m_pAnimtorCom->Get_Currentframe() < 8.f) // CameraShake
 			{
+				Engine::StopSound(SOUND_BLUEBAT);
+				Engine::Play_Sound(L"M_BlueBat_Attack.mp3", SOUND_BLUEBAT, 1.f);
+
 				CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 				NULL_CHECK(pStaticCamera);
 				pStaticCamera->Shake_Camera(1.f, 2.f);
@@ -252,7 +252,7 @@ void CBlueBat::OnHit(const _float & fTimeDelta)
 		m_eCurState = HIT;
 		CMonster::Set_KnockBack(m_vPos.y);
 
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.3f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
@@ -316,8 +316,6 @@ void CBlueBat::Motion_Change(const _float& fTimeDelta)
 			break;
 
 		case ATTACK:
-			Engine::StopSound(SOUND_BLUEBAT);
-			Engine::Play_Sound(L"M_BlueBat_Attack.mp3", SOUND_BLUEBAT, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_BlueBatATTACK_Texture");
 			break;
 

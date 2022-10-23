@@ -162,7 +162,7 @@ void CSongBossBullet::Billboard()
 _int CSongBossBullet::Target(const _float & fTimeDelta)
 {
 	_vec3	vParentPos, vPlayerPos;
-	CTransform*		pParent = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"SongBoss_0", L"Proto_TransformCom", ID_DYNAMIC));
+	CTransform*		pParent = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"SongBoss", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pParent, -1);
 
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));

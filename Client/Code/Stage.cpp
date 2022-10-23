@@ -261,12 +261,12 @@ void CStage::LateUpdate_Scene(void)
 			Engine::CollisionAABB(monster, bullet);
 	}
 
-	pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_REDWAND);
-	for (auto& bullet : *pPlayerBullets)
-	{
-		for (auto& monster : *pMonster)
-			Engine::CollisionAABB(monster, bullet);
-	}
+	//pPlayerBullets = CBulletMgr::GetInstance()->Get_Bullets(BULLET_REDWAND);
+	//for (auto& bullet : *pPlayerBullets)
+	//{
+	//	for (auto& monster : *pMonster)
+	//		Engine::CollisionAABB(monster, bullet);
+	//}
 
 
 	// Player의 CollisionGroup
@@ -387,7 +387,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"C:\\Cosmo\\Jusin\\Monsters.dat");
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer/*, L"C:\\Cosmo\\Jusin\\Monsters.dat"*/);
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
@@ -651,15 +651,15 @@ HRESULT CStage::Ready_Light(void)
 	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
 	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
-	tLightInfo0.Diffuse = D3DXCOLOR(0.1f, 0.1f,0.1f,0.1f);
+	tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Direction  = _vec3(0.f, -1.f, 0.f);
+	tLightInfo0.Direction  = _vec3(0.f, -1.f, 1.f);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
 
 
-	// Player
+	//// Player
 	D3DLIGHT9		tLightInfo1;
 	ZeroMemory(&tLightInfo1, sizeof(D3DLIGHT9));
 	tLightInfo1.Type		= D3DLIGHT_POINT;
@@ -673,7 +673,7 @@ HRESULT CStage::Ready_Light(void)
 	m_pGraphicDev->LightEnable(LIGHT_PLAYER, FALSE);
 
 
-	// Lantern
+	//// Lantern
 	D3DLIGHT9		tLightInfo2;
 	ZeroMemory(&tLightInfo2, sizeof(D3DLIGHT9));
 	tLightInfo2.Type = D3DLIGHT_POINT;
@@ -687,7 +687,7 @@ HRESULT CStage::Ready_Light(void)
 	m_pGraphicDev->LightEnable(LIGHT_LANTERN, FALSE);
 
 
-	// Wand
+	//// Wand
 	D3DLIGHT9		tLightInfo3;
 	ZeroMemory(&tLightInfo3, sizeof(D3DLIGHT9));
 	tLightInfo3.Type = D3DLIGHT_POINT;
@@ -699,17 +699,7 @@ HRESULT CStage::Ready_Light(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo3, LIGHT_WAND), E_FAIL);
 	m_pGraphicDev->LightEnable(LIGHT_WAND, FALSE);
 
-	//D3DLIGHT9	tLightInfo2;
-	//ZeroMemory(&tLightInfo2, sizeof(D3DLIGHT9));
 
-	//tLightInfo2.Type = D3DLIGHT_POINT;
-	//tLightInfo2.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tLightInfo2.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tLightInfo2.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tLightInfo2.Position = _vec3(10.f, 3.f, 9.f);
-	//tLightInfo2.Range = 3.f;
 
-	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo2, 1), E_FAIL);
-	//
 	return S_OK;
 }

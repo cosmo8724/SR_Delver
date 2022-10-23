@@ -164,6 +164,7 @@ void CFist::Target_Follow(const _float & fTimeDelta)
 	{
 		Engine::StopSound(SOUND_FIST);
 		Engine::Play_Sound(L"M_Fist_Alert.mp3", SOUND_FIST, 1.f);
+
 		m_eCurState = IDLE;
 		m_pTransCom->Set_Y(m_vPos.y);
 		m_pTransCom->Chase_Target(&vPlayerPos, -m_fAttack_Speed, fTimeDelta);
@@ -173,9 +174,6 @@ void CFist::Target_Follow(const _float & fTimeDelta)
 	// 일정 거리 안 으로 들어 왔을 때 공격 시작
 	if (fDist < 10.f)
 	{
-		Engine::StopSound(SOUND_FIST);
-		Engine::Play_Sound(L"M_Fist_Idle.mp3", SOUND_FIST, 1.f);
-
 		m_fAttackTimeAcc += fTimeDelta;
 		m_fIdleTimeAcc += m_fAttackTimeAcc;
 

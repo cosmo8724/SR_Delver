@@ -137,7 +137,7 @@ void CSongBossStun::LateUpdate_Object(void)
 
 	if (4.f < m_fLifeTime) // 시간초 이내 음표 4개를 부시지 못 하면의 처리
 	{
-		CSongBoss* pSongBoss = dynamic_cast<CSongBoss*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_0"));
+		CSongBoss* pSongBoss = dynamic_cast<CSongBoss*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss"));
 		if (pSongBoss->Get_StunCount() != 4)
 		{
 			m_bRenderOFF = true; // 부서지지 못 한 음표 삭제
