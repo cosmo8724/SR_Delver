@@ -18,7 +18,7 @@ CWand::CWand(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"Wand";
 	m_eItemType = ITEM_WEAPON;
 	m_eWeaponType = WT_AD;
-
+	m_str = L"<PinkWand>\nType:Weapon\nPinkWand magic";
 }
 
 CWand::~CWand()

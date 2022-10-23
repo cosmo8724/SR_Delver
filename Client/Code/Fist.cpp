@@ -276,23 +276,23 @@ void CFist::Motion_Change()
 			m_pAnimtorCom->Change_Animation(L"Proto_FistIDLE_Texture");
 			break;
 
-		case ATTACK:
-			Engine::StopSound(SOUND_FIST);
-			Engine::Play_Sound(L"M_Fist_Attack.mp3", SOUND_FIST, 1.f);
-			m_pAnimtorCom->Change_Animation(L"Proto_FistATTACK_Texture");
-			break;
+		//case ATTACK:
+		//	Engine::StopSound(SOUND_FIST);
+		//	Engine::Play_Sound(L"M_Fist_Attack.mp3", SOUND_FIST, 1.f);
+		//	m_pAnimtorCom->Change_Animation(L"Proto_FistATTACK_Texture");
+		//	break;
 
-		case HIT:
-			Engine::StopSound(SOUND_FIST);
-			Engine::Play_Sound(L"M_Fist_Hit.mp3", SOUND_FIST, 1.f);
-			m_pAnimtorCom->Change_Animation(L"Proto_FistHIT_Texture");
-			break;
+		//case HIT:
+		//	Engine::StopSound(SOUND_FIST);
+		//	Engine::Play_Sound(L"M_Fist_Hit.mp3", SOUND_FIST, 1.f);
+		//	m_pAnimtorCom->Change_Animation(L"Proto_FistHIT_Texture");
+		//	break;
 
-		case DIE:
-			Engine::StopSound(SOUND_FIST);
-			Engine::Play_Sound(L"M_Fist_Die.mp3", SOUND_FIST, 1.f);
-			m_pAnimtorCom->Change_Animation(L"Proto_FistDIE_Texture");
-			break;
+		//case DIE:
+		//	Engine::StopSound(SOUND_FIST);
+		//	Engine::Play_Sound(L"M_Fist_Die.mp3", SOUND_FIST, 1.f);
+		//	m_pAnimtorCom->Change_Animation(L"Proto_FistDIE_Texture");
+		//	break;
 		}
 		m_ePreState = m_eCurState;
 	}

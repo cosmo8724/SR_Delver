@@ -147,7 +147,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	return 0;
 }
@@ -695,6 +695,9 @@ void CPlayer::Stun(const _float & fTimeDelta)
 
 	if (!m_bStunParticle)
 	{
+		Engine::StopSound(SOUND_PLAYER);
+		Engine::Play_Sound(L"P_Stun.mp3", SOUND_PLAYER, 1.f);
+
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.3f, 1.0f }, 
 												2.f, {1.f, 1.f, 1.f, 1.f}, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);

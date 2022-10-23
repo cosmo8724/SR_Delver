@@ -338,6 +338,11 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold_0", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
+
+		pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 6.f }), 3);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold_1", pGameObject), E_FAIL);
+		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
 	}
 
 

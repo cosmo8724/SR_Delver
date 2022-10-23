@@ -19,7 +19,7 @@ CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	D3DXMatrixIdentity(&m_matWorld);
 	m_ObjTag = L"Potion";
 	m_eItemType = ITEM_POTION;
-
+	m_str = L"<Potion>\nType:Potion\nI don't tell you what it is";
 }
 
 CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)

@@ -9,6 +9,7 @@ CLantern::CLantern(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	D3DXMatrixIdentity(&m_matWorld);
 	m_ObjTag = L"Lantern";
 	m_vPos = vPos;
+	m_str = L"<Lantern>\nType:Equipment\nIt will light up your vision";
 }
 
 CLantern::~CLantern()

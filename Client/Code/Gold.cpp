@@ -19,7 +19,7 @@ CGold::CGold(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	D3DXMatrixIdentity(&m_matWorld);
 	m_ObjTag = L"Gold";
 	m_eItemType = ITEM_GOLD;
-
+	m_str = L"<Gold>\nType:Item\nMy money is precious!!! ";
 }
 
 CGold::CGold(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)

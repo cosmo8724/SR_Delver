@@ -15,6 +15,7 @@ CDoor::CDoor(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	m_eType = ECO_DOOR;
 	m_vPos = vPos;
+	m_str = L"<Door>\nType:Door\nOpen the door";
 }
 
 CDoor::CDoor(const CEcoObject & rhs)
@@ -247,7 +248,12 @@ void CDoor::CollisionEvent(CGameObject * pObj)
 
 void CDoor::InteractEvent()
 {
-	if(!m_bMove)
+	if (!m_bMove)
+	{
+		Engine::StopSound(SOUND_BLUEBAT);
+		Engine::Play_Sound(L"E_Door.mp3", SOUND_BLUEBAT, 1.f);
+
 		m_bMove = true;
+	}
 
 }
