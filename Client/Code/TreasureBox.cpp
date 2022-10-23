@@ -158,6 +158,9 @@ void CTreasureBox::InteractEvent()
 {
 	if (m_iTexture == 0)
 	{
+		Engine::StopSound(SOUND_TREASUREBOX);
+		Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
+
 		m_iTexture = 1;
 
 		CItemMgr::GetInstance()->Add_RandomObject(

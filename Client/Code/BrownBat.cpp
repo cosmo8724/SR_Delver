@@ -166,7 +166,12 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 		if (0.7f < m_fAttackTimeAcc)
 		{
 			if (0 < m_fAttack_Speed)
+			{
+				Engine::StopSound(SOUND_BROWNDBAT);
+				Engine::Play_Sound(L"M_BrownBat_Idle.mp3", SOUND_BROWNDBAT, 1.f);
+
 				m_eCurState = IDLE;
+			}
 			else if (0 > m_fAttack_Speed)
 				m_eCurState = ATTACK;
 
@@ -189,9 +194,6 @@ void CBrownBat::Target_Follow(const _float & fTimeDelta)
 		m_fTimeAcc += fTimeDelta;
 		if (1.f < m_fTimeAcc)
 		{
-			Engine::StopSound(SOUND_BROWNDBAT);
-			Engine::Play_Sound(L"M_BrownBat_Idle.mp3", SOUND_BROWNDBAT, 1.f);
-
 			m_fIdle_Speed *= -1;
 			m_fTimeAcc = 0.f;
 		}
@@ -270,7 +272,13 @@ void CBrownBat::Dead()
 		{ 1.f, 0.f, 0.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	_int iTex = rand() % 3;
+	if (iTex == 0)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	else if (iTex == 1)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
+	else if (iTex == 2)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;

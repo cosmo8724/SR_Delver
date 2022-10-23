@@ -186,6 +186,9 @@ void CRedWand::Attack(const _float & fTimeDelta)
 {
 	if (true == m_bAttack)
 	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::Play_Sound(L"I_RedWand.mp3", SOUND_EFFECT, 1.f);
+
 		CBulletMgr::GetInstance()->Pre_Setting(BULLET_REDWAND, 0.f);
 		CBulletMgr::GetInstance()->Fire(BULLET_REDWAND);
 

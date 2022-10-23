@@ -233,12 +233,14 @@ void CArrow::Charge(const _float & fTimeDelta)
 {
 	_int frameEnd = m_pTextureCom->Get_FrameEnd();
 
+	//Engine::StopSound(SOUND_EFFECT);
+	//Engine::Play_Sound(L"I_Arrow1.mp3", SOUND_EFFECT, 1.f);
+
 	if (m_bCharge)
 	{
 		m_fFrame += frameEnd * fTimeDelta;
 		m_fPlusSpeed += 0.3f;
 		m_pTransCom->Set_Stop(true);
-
 
 		if (!m_bParticleCall)
 		{
@@ -308,11 +310,13 @@ void CArrow::Attack(const _float & fTimeDelta)
 {
 	if (true == m_bAttack)
 	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::Play_Sound(L"I_Arrow.mp3", SOUND_EFFECT, 1.f);
+
 		CBulletMgr::GetInstance()->Pre_Setting(BULLET_ARROW, m_fPlusSpeed);
 		CBulletMgr::GetInstance()->Fire(BULLET_ARROW);
 		m_bAttack = false;
 		m_fPlusSpeed = 0.f;
 		m_pTransCom->Set_Stop(false);
-		Engine::Play_Sound(L"bow.mp3", SOUND_EFFECT, 1.f);
 	}
 }

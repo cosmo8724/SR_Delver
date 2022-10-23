@@ -203,19 +203,35 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 
 	if (20.f > fDist) // 플레이어가 거리 안 으로 들어오고
 	{
+		static _bool SongBoss = false;
+		if (!SongBoss)
+		{
+			Engine::StopAllSound();
+			Engine::PlayBGM(L"BGM_SongBoss.mp3", 0.7f);
+			SongBoss = true;
+		}
+
+
 		m_fMoveTimeAcc += fTimeDelta;
 		if (!m_bMoveAni && 3.f < m_fMoveTimeAcc)
 		{
+			Engine::StopSound(SOUND_SONGBOSS);
+			Engine::Play_Sound(L"M_SongBoss_Move.mp3", SOUND_SONGBOSS, 1.f);
+
 			CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 			NULL_CHECK(pStaticCamera);
-			pStaticCamera->Shake_Camera(2.f, 3.f);
+			pStaticCamera->Shake_Camera(5.f, 3.f);
 			m_bMoveAni = true;		
 		}
 		
 		if (m_bMoveAni && m_eCurState == MOVE)
 		{
 			if (m_pAnimtorCom->Get_Currentframe() >= 14.f && m_pAnimtorCom->Get_Currentframe() < 15.f)
+			{
+				//Engine::StopSound(SOUND_SONGBOSS);
+				//Engine::Play_Sound(L"M_SongBoss_Idle.mp3", SOUND_SONGBOSS, 1.f);
 				m_eCurState = IDLE;
+			}
 		}
 
 		m_fSkillTimeAcc += fTimeDelta;
@@ -384,6 +400,9 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 
 	if (3.f < m_fAttackTimeAcc) // 공격 시간
 	{
+		Engine::StopSound(SOUND_SONGBOSS);
+		Engine::Play_Sound(L"M_SongBoss_Bullet.mp3", SOUND_SONGBOSS, 1.f);
+
 		CParticleMgr::GetInstance()->Set_Info(this, 6, 1.f, { 0.f, 0.f, 1.f }, 3.f);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
 		CParticleMgr::GetInstance()->Add_Info_Circling(false, 0.f, 2.f, 5.f);
@@ -414,6 +433,9 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 	{
 		if (m_pAnimtorCom->Get_Currentframe() >= 9.f)
 		{
+			Engine::StopSound(SOUND_SONGBOSS);
+			Engine::Play_Sound(L"M_SongBoss_Stun_0.mp3", SOUND_SONGBOSS, 1.f);
+
 			CBulletMgr::GetInstance()->Fire(STUN_SONGBOSS);
 			++m_iStunCreate;
 		}
@@ -427,6 +449,9 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 		{						   // �÷��̾��� ���Ͻð��� ����ϸ鼭 ���� �����ؾ� �Ѵ�
 			if (m_iStunCount != 4) // Player Stun
 			{
+				Engine::StopSound(SOUND_SONGBOSS);
+				Engine::Play_Sound(L"M_SongBoss_Stun_2.mp3", SOUND_SONGBOSS, 1.f);
+
 				CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 				pPlayer->Set_Stun();
 			}
@@ -447,6 +472,9 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 	{
 		if (m_pAnimtorCom->Get_Currentframe() >= 9.f)
 		{
+			Engine::StopSound(SOUND_SONGBOSS);
+			Engine::Play_Sound(L"M_SongBoss_Floor_0.mp3", SOUND_SONGBOSS, 1.f);
+
 			CBulletMgr::GetInstance()->Fire(FLOOR_SONGBOSS);
 			++m_iFloorCreate;
 		}
@@ -467,6 +495,9 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 			NULL_CHECK(pSongBossFloor);
 			if (pSongBossFloor->Get_StartLightning())
 			{
+				Engine::StopSound(SOUND_SONGBOSS);
+				Engine::Play_Sound(L"M_SongBoss_Floor_1.mp3", SOUND_SONGBOSS, 1.f);
+
 				//CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 				//NULL_CHECK(pStaticCamera);
 				//pStaticCamera->Shake_Camera(1.f, 0.5f);
@@ -493,7 +524,7 @@ void CSongBoss::OnHit(const _float & fTimeDelta)
 		m_eCurState = HIT;
 		//CMonster::Set_KnockBack(m_vPos.y);
 
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 1.f, 0.f },
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, 3.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_14);
@@ -522,6 +553,9 @@ void CSongBoss::Dead()
 	if (m_bDead)
 		return;
 
+	Engine::StopAllSound();
+	Engine::PlayBGM(L"BGM_Cave.mp3", 1.f);
+
 	m_eCurState = DIE;
 
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
@@ -535,7 +569,13 @@ void CSongBoss::Dead()
 		{ 1.f, 0.f, 0.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	_int iTex = rand() % 3;
+	if (iTex == 0)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	else if (iTex == 1)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
+	else if (iTex == 2)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;
@@ -567,10 +607,14 @@ void CSongBoss::Motion_Change(const _float & fTimeDelta)
 			break;
 		
 		case HIT:
+			Engine::StopSound(SOUND_SONGBOSS);
+			Engine::Play_Sound(L"M_SongBoos_Hit.mp3", SOUND_SONGBOSS, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_SongBossHIT_Texture");
 			break;
 
 		case DIE:
+			Engine::StopSound(SOUND_SONGBOSS);
+			Engine::Play_Sound(L"M_SongBoss_Die.mp3", SOUND_SONGBOSS, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_SongBossDIE_Texture");
 			break;
 		}

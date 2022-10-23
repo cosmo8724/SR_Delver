@@ -75,6 +75,18 @@ _int CWater::Update_Object(const _float & fTimeDelta)
 		break;
 	}
 
+	// sound
+	_vec3		vWater1, vWater2, vPos;
+	vWater1 = { 28, 2, 17 };
+	vWater2 = { 28, -78, 26 };
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+	_float fDist = D3DXVec3Length(&(vWater1 - vPos));
+
+	if (fDist < 10.f)
+		Engine::Play_Sound(L"E_Water.mp3", SOUND_WATER, 1.f);
+	else
+		Engine::StopSound(SOUND_WATER);
 
 	Add_RenderGroup(RENDER_NONALPHA, this);
 
@@ -188,6 +200,10 @@ void CWater::Render_Obejct(void)
 HRESULT CWater::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
+
+	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Clone_Proto(L"Proto_TransformCom"));
+	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
 
 	switch (m_eType)
 	{

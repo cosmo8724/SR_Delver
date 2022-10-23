@@ -335,9 +335,6 @@ void CPinkSlime::SKill_Update(const _float & fTimeDelta)
 
 void CPinkSlime::Jump(const _float & fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_G))
-		m_bJump = true;
-
 	if (m_bJump)
 	{
 		_vec3 vPos;
@@ -345,16 +342,7 @@ void CPinkSlime::Jump(const _float & fTimeDelta)
 
 		if (m_fJumpTimeAcc > 0.3f && m_fHeight >= vPos.y)
 		{
-			_float fSize = 0.f;
-			if (m_eSeparation == SEPARATION_ONE)
-				fSize = 2.f;
-			else if (m_eSeparation == SEPARATION_TWO || m_eSeparation == SEPARATION_THREE)
-				fSize = 1.f;
-			else if (m_eSeparation == SEPARATION_FOUR || m_eSeparation == SEPARATION_FIVE)
-				fSize = 1.f;
-
-
-			CParticleMgr::GetInstance()->Set_Info(this, 25, 1.f, { fSize, fSize, fSize },
+			CParticleMgr::GetInstance()->Set_Info(this, 25, 1.f, { 1.f, 1.f, 1.f },
 				1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 			CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_12);
 
@@ -387,7 +375,7 @@ void CPinkSlime::OnHit(const _float & fTimeDelta)
 		m_eCurState = HIT;
 		CMonster::KnockBack(fTimeDelta, m_fHeight);
 
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 1.f, -0.5f, 0.f },
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.7f, { 1.f, 1.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
@@ -427,7 +415,13 @@ void CPinkSlime::Dead()
 		{ 1.f, 0.2f, 0.8f, 1.f }); // pink
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	_int iTex = rand() % 3;
+	if (iTex == 0)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	else if (iTex == 1)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
+	else if (iTex == 2)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;
@@ -452,7 +446,7 @@ void CPinkSlime::Motion_Change()
 
 		case ATTACK:
 			Engine::StopSound(SOUND_PINKSLIME);
-			Engine::Play_Sound(L"M_PinkSlime_Attack.mp3", SOUND_PINKSLIME, 1.f);
+			Engine::Play_Sound(L"M_PinkSlime_Jump.mp3", SOUND_PINKSLIME, 1.f);
 			m_pAnimtorCom->Change_Animation(L"Proto_PinkSlimeATTACK_Texture");
 			break;
 

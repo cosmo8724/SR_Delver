@@ -88,7 +88,6 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	//if (m_fFrame >= m_pTextureCom->Get_FrameEnd())
 	//	m_fFrame = 0;
 
-
 	if (0 >= m_tInfo.iHp)
 	{
 		Dead();
@@ -276,19 +275,12 @@ void CGreenSlime::Dead()
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
 	_int iTex = rand() % 3;
-
 	if (iTex == 0)
-	{
 		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
-	}
 	else if (iTex == 1)
-	{
 		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
-	}
 	else if (iTex == 2)
-	{
 		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
-	}
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;

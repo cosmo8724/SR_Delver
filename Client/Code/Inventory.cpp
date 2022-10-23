@@ -390,6 +390,9 @@ void CInventory::Set_ItemEquip()
 					{
 					case ITEM_WEAPON:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Weapon.mp3", SOUND_ITEM, 1.f);
+
 						CItem*		pRight = pPlayer->Get_Right();
 						if (pRight == pItem)
 							return;
@@ -412,6 +415,9 @@ void CInventory::Set_ItemEquip()
 					break;
 					case ITEM_SHIELD:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Equipment.mp3", SOUND_ITEM, 1.f);
+
 						CItem*		pLeft = pPlayer->Get_Left();
 						if (nullptr != pLeft)
 							pLeft->Set_State(STATE_INV);
@@ -425,6 +431,9 @@ void CInventory::Set_ItemEquip()
 					break;
 					case ITEM_LANTERN:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Equipment.mp3", SOUND_ITEM, 1.f);
+
 						CItem*		pLeft = pPlayer->Get_Left();
 						if (nullptr != pLeft)
 							pLeft->Set_State(STATE_INV);
@@ -453,6 +462,9 @@ void CInventory::Set_ItemEquip()
 					break;
 					case ITEM_KEY:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Equipment.mp3", SOUND_ITEM, 1.f);
+
 						m_Inventory[i][j]->Set_Dead(true);
 						m_Inventory[i][j] = nullptr;
 					}
@@ -465,6 +477,9 @@ void CInventory::Set_ItemEquip()
 					break;
 					case ITEM_ARMOR:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Equipment.mp3", SOUND_ITEM, 1.f);
+
 						//m_Inventory[i][j]->Set_Dead(true);
 						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 						pWindow->Set_Item(m_Inventory[i][j], ITEM_ARMOR);
@@ -473,6 +488,9 @@ void CInventory::Set_ItemEquip()
 					break;
 					case ITEM_HELMAT:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Equipment.mp3", SOUND_ITEM, 1.f);
+
 						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 						pWindow->Set_Item(m_Inventory[i][j], ITEM_HELMAT);
 						m_Inventory[i][j] = nullptr;
@@ -487,6 +505,9 @@ void CInventory::Set_ItemEquip()
 					//break;
 					case ITEM_NECKLACE:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Equipment.mp3", SOUND_ITEM, 1.f);
+
 						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 						pWindow->Set_Item(m_Inventory[i][j], ITEM_NECKLACE);
 						m_Inventory[i][j] = nullptr;
@@ -494,6 +515,9 @@ void CInventory::Set_ItemEquip()
 					break;
 					case ITEM_PANTS:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Equipment.mp3", SOUND_ITEM, 1.f);
+
 						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 						pWindow->Set_Item(m_Inventory[i][j], ITEM_PANTS);
 						m_Inventory[i][j] = nullptr;
@@ -501,6 +525,9 @@ void CInventory::Set_ItemEquip()
 					break;
 					case ITEM_RING:
 					{
+						Engine::StopSound(SOUND_ITEM);
+						Engine::Play_Sound(L"I_Equipment.mp3", SOUND_ITEM, 1.f);
+
 						CEquipWindow* pWindow = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 						pWindow->Set_Item(m_Inventory[i][j], ITEM_RING);
 						m_Inventory[i][j] = nullptr;

@@ -184,7 +184,7 @@ void CBlock::Render_Obejct(void)
 	}
 	else
 	{
-		m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 		m_pGraphicDev->SetRenderState(D3DRS_AMBIENT, 0x00202020);
 
 

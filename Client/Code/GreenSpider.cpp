@@ -166,8 +166,8 @@ void CGreenSpider::Target_Follow(const _float & fTimeDelta)
 	// 플레이어가 일정 거리 안 으로 들어왔을 경우 뒤로 물러남
 	if (fDist < 5.f)
 	{
-		Engine::StopSound(SOUND_GREENSPIDER);
-		Engine::Play_Sound(L"M_GreenSpider_Walk.mp3", SOUND_GREENSPIDER, 1.f);
+		//Engine::StopSound(SOUND_GREENSPIDER);
+		//Engine::Play_Sound(L"M_GreenSpider_Walk.mp3", SOUND_GREENSPIDER, 1.f);
 
 		m_eCurState = IDLE;
 		m_pTransCom->Set_Y(m_vPos.y);
@@ -248,7 +248,13 @@ void CGreenSpider::Dead()
 		{ 1.f, 0.f, 0.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	_int iTex = rand() % 3;
+	if (iTex == 0)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+	else if (iTex == 1)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
+	else if (iTex == 2)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;
@@ -271,23 +277,23 @@ void CGreenSpider::Motion_Change()
 			m_pAnimtorCom->Change_Animation(L"Proto_GreenSpiderIDLE_Texture");
 			break;
 
-		//case ATTACK:
-		//	Engine::StopSound(SOUND_GREENSPIDER);
-		//	Engine::Play_Sound(L"M_GreenSpider_Attack.mp3", SOUND_GREENSPIDER, 1.f);
-		//	m_pAnimtorCom->Change_Animation(L"Proto_GreenSpiderATTACK_Texture");
-		//	break;
+		case ATTACK:
+			Engine::StopSound(SOUND_GREENSPIDER);
+			Engine::Play_Sound(L"M_GreenSpider_Attack.mp3", SOUND_GREENSPIDER, 1.f);
+			m_pAnimtorCom->Change_Animation(L"Proto_GreenSpiderATTACK_Texture");
+			break;
 
-		//case HIT:
-		//	Engine::StopSound(SOUND_GREENSPIDER);
-		//	Engine::Play_Sound(L"M_GreenSpider_Hit.mp3", SOUND_GREENSPIDER, 1.f);
-		//	m_pAnimtorCom->Change_Animation(L"Proto_GreenSpiderHIT_Texture");
-		//	break;
+		case HIT:
+			Engine::StopSound(SOUND_GREENSPIDER);
+			Engine::Play_Sound(L"M_GreenSpider_Hit.mp3", SOUND_GREENSPIDER, 1.f);
+			m_pAnimtorCom->Change_Animation(L"Proto_GreenSpiderHIT_Texture");
+			break;
 
-		//case DIE:
-		//	Engine::StopSound(SOUND_GREENSPIDER);
-		//	Engine::Play_Sound(L"M_GreenSpider_Die.mp3", SOUND_GREENSPIDER, 1.f);
-		//	m_pAnimtorCom->Change_Animation(L"Proto_GreenSpiderDIE_Texture");
-		//	break;
+		case DIE:
+			Engine::StopSound(SOUND_GREENSPIDER);
+			Engine::Play_Sound(L"M_GreenSpider_Die.mp3", SOUND_GREENSPIDER, 1.f);
+			m_pAnimtorCom->Change_Animation(L"Proto_GreenSpiderDIE_Texture");
+			break;
 		}
 		m_ePreState = m_eCurState;
 	}

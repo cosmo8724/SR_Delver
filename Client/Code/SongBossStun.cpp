@@ -137,7 +137,7 @@ void CSongBossStun::LateUpdate_Object(void)
 
 	if (4.f < m_fLifeTime) // 시간초 이내 음표 4개를 부시지 못 하면의 처리
 	{
-		CSongBoss* pSongBoss = dynamic_cast<CSongBoss*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_0"));
+		CSongBoss* pSongBoss = dynamic_cast<CSongBoss*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss"));
 		if (pSongBoss->Get_StunCount() != 4)
 		{
 			m_bRenderOFF = true; // 부서지지 못 한 음표 삭제
@@ -187,6 +187,9 @@ void CSongBossStun::CollisionEvent(CGameObject * pObj)
 {
 	if (!m_bOneCheck)
 	{
+		Engine::StopSound(SOUND_SONGBOSS);
+		Engine::Play_Sound(L"M_SongBoss_Stun_1.mp3", SOUND_SONGBOSS, 1.f);
+
 		// 음표를 부시면 카운트 증가
 		CSongBoss* pSongBoss = dynamic_cast<CSongBoss*>(Engine::Get_GameObject(L"Layer_GameLogic", L"SongBoss_0"));
 		pSongBoss->Set_StunCount();

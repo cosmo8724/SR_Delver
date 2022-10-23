@@ -61,6 +61,9 @@ _int CFood::Update_Object(const _float & fTimeDelta)
 	{
 		if (m_bEat)
 		{
+			Engine::StopSound(SOUND_ITEM);
+			Engine::Play_Sound(L"I_Food.mp3", SOUND_ITEM, 1.f);
+
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 			pPlayer->Set_HungerPlus();
 			m_bEat = false;
