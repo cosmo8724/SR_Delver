@@ -86,26 +86,38 @@ HRESULT CGreenWand::Add_Component(void)
 
 void CGreenWand::CollisionEvent(CGameObject * pObj)
 {
+	//if (STATE_GROUND == m_eState)
+	//{
+	//	CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
+	//	if (pMonster)
+	//		return;
+
+	//	m_eState = STATE_INV;
+	//	m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
+	//	m_vPos = { -1000.f, -1000.f, -1000.f };
+
+	//	m_pColliderCom->Set_Free(true);
+	//	//_vec3 vScale;
+	//	//_matrix matWorld;
+	//	//m_pTransCom->Get_WorldMatrix(&matWorld);
+
+	//	//vScale = m_pTransCom->Get_Scale();
+	//	//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
+	//	//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
+	//}
+
+}
+
+void CGreenWand::InteractEvent()
+{
 	if (STATE_GROUND == m_eState)
 	{
-		CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
-		if (pMonster)
-			return;
-
 		m_eState = STATE_INV;
 		m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
 		m_vPos = { -1000.f, -1000.f, -1000.f };
 
 		m_pColliderCom->Set_Free(true);
-		//_vec3 vScale;
-		//_matrix matWorld;
-		//m_pTransCom->Get_WorldMatrix(&matWorld);
-
-		//vScale = m_pTransCom->Get_Scale();
-		//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
-		//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
 	}
-
 }
 
 void CGreenWand::Charge(const _float & fTimeDelta)

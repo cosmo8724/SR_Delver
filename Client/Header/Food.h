@@ -17,6 +17,7 @@ public:
 
 private:
 	virtual void		CollisionEvent(CGameObject *pObj)		override;
+	virtual void		InteractEvent()							override;
 	virtual HRESULT		Add_Component(void);
 
 public:

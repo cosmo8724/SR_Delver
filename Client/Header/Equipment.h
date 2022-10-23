@@ -13,6 +13,8 @@ public:
 	virtual void	LateUpdate_Object(void);
 	virtual	void	Render_Obejct(void) {}
 
+	virtual void	CollisionEvent(CGameObject * pOtherObj);
+	virtual void	InteractEvent();
 protected:
 	virtual void		Free(void) {}
 

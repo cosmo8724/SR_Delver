@@ -25,6 +25,8 @@ public:
 	static CPotion*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType);
 	virtual void		Free(void);
 	virtual void		CollisionEvent(CGameObject *pObj);
+	virtual void		InteractEvent();
+
 
 public:
 	_int		Get_TexturId() { return m_iTextureIdx; }

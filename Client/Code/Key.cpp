@@ -141,11 +141,16 @@ void CKey::Free(void)
 
 void CKey::CollisionEvent(CGameObject * pObj)
 {
+
+}
+
+void CKey::InteractEvent()
+{
 	if (STATE_GROUND == m_eState)
 	{
-		CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
-		if (pMonster)
-			return;
+		//CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
+		//if (pMonster)
+		//	return;
 
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);

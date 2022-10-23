@@ -13,3 +13,17 @@ void CEquipment::LateUpdate_Object(void)
 	//if (CCullingMgr::GetInstance()->Is_Inside(this))
 	//	Add_RenderGroup(RENDER_ALPHA, this);
 }
+
+void CEquipment::CollisionEvent(CGameObject * pOtherObj)
+{
+
+}
+
+void CEquipment::InteractEvent()
+{
+	if (STATE_GROUND == m_eState)
+	{
+		m_eState = STATE_INV;
+		m_pColliderCom->Set_Free(true);
+	}
+}

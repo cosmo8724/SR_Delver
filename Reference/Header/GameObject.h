@@ -46,6 +46,7 @@ protected:
 
 	CCollider*	m_pColliderCom;
 	_bool		m_bDead = false;
+	_bool		m_bText = false;
 };
 
 END

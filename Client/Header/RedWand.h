@@ -30,6 +30,7 @@ private:
 
 public:
 	virtual void	CollisionEvent(CGameObject* pObj);
+	virtual void	InteractEvent();
 	virtual void	Charge(const _float& fTimeDelta);
 	virtual void	Attack(const _float& fTimeDelta);
 

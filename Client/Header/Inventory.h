@@ -37,6 +37,20 @@ public:
 	}
 	void	Set_Open(_bool bOpen) { m_bOpen = bOpen; }
 	_bool	Is_Open() { return m_bOpen; }
+	_bool	Is_Full() {
+		for (int i = 0; i < m_iMaxRow; ++i)
+		{
+			for (int j = 0; j < m_iMaxCol; ++j)
+			{
+				if (nullptr == m_Inventory[i][j])
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+
+	}
 
 private:
 	void		Mouse_Input(const _float& fTimeDelta);

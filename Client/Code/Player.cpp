@@ -206,6 +206,11 @@ void CPlayer::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
+	if(m_bText)
+		Render_Font(L"Font_Jinji", m_str.c_str(), &_vec2(WINCX*0.5f, WINCY*0.5f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+
+
+
 #ifdef _DEBUG
 	// Collider
 	m_pGraphicDev->SetTransform(D3DTS_WORLD,
@@ -500,9 +505,22 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State() && pItem->Get_ItemType() != ITEM_GOLD)
 	{
-		CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
-		pInv->Set_Inventory(pItem);
+		m_bText = true;
+		m_str = L"E : Get";
+		if (Key_Down(DIK_E))
+		{
+			CInventory*		pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+			if (!pInv->Is_Full())
+			{
+				pOtherObj->InteractEvent();
+				pInv->Set_Inventory(pItem);
+
+			}
+		}
+
 	}
+	else
+		m_bText = false;
 
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
 	if (pBlock)
@@ -748,6 +766,7 @@ CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 
 void CPlayer::Free(void)
 {
+	m_CollisionGroup.clear();
 	m_CollisionGroup.swap(vector<CGameObject*>());
 	CGameObject::Free();
 }

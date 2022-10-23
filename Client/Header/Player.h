@@ -77,6 +77,8 @@ public:
 	{
 		return &m_CollisionGroup;
 	}
+	_float			Get_MinAngle() { return m_fDotAngle; }
+	void			Set_Interact(CGameObject* pObj) { m_pInteractObj = pObj; }
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -140,7 +142,13 @@ private:
 	CInventory*			m_pInv = nullptr;
 
 	// Collision Group for Player
-	vector<CGameObject*>	 m_CollisionGroup;
+	vector<CGameObject*>	m_CollisionGroup;
+
+	// Interaction
+	CGameObject*			m_pInteractObj = nullptr;
+	_float					m_fDotAngle = 360.f;
+	_bool					m_bText = false;
+	wstring					m_str;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

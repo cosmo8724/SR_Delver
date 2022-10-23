@@ -332,6 +332,8 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
+
+
 	}
 
 

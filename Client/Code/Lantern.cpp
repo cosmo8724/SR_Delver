@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Header\Lantern.h"
 #include "Export_Function.h"
+#include "Player.h"
 
 CLantern::CLantern(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	:CEquipment(pGraphicDev)
@@ -32,6 +33,8 @@ _int CLantern::Update_Object(const _float & fTimeDelta)
 	{
 		m_pCenter = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(m_pCenter, -1);
+		m_pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		NULL_CHECK_RETURN(m_pPlayer, -1);
 		m_bReady = true;
 	}
 
@@ -45,7 +48,26 @@ _int CLantern::Update_Object(const _float & fTimeDelta)
 	case STATE_GROUND:
 		m_pTransCom->Set_Scale(0.6f, 0.6f, 0.6f);
 		m_pTransCom->Revolution(pPlayerInfo, matView, 0.f, m_fTimeDelta, STATE_GROUND);
-		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
+
+		//interact
+		//_vec3 vLook	= m_pCenter->Get_Look();
+		//_vec3 vDir	= m_pCenter->Get_Pos() - m_pTransCom->Get_Pos();
+		//D3DXVec3Normalize(&vLook, &vLook);
+		//D3DXVec3Normalize(&vDir, &vDir);
+
+		//_float fAngle = D3DXToDegree(D3DXVec3Dot(&vLook, &vDir));
+		//if (20 > fAngle)
+		//{
+		//	if (m_pPlayer->Get_MinAngle() > fAngle)
+		//	{
+		//		m_bText = true;
+		//	}
+		//}
+		//else
+		//	m_bText = false;
+
+
+
 		break;
 	case STATE_EQUIP:
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
@@ -65,6 +87,8 @@ _int CLantern::Update_Object(const _float & fTimeDelta)
 	m_fTimeDelta = fTimeDelta;
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
+
+	
 
 	return iResult;
 }
@@ -95,6 +119,10 @@ void CLantern::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
+	/*if(m_bText)
+		Render_Font(L"Font_Jinji", L"불을 밝혀주는 도구", &_vec2( - 17.f, m_fPosY - 7.f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));*/
+
+
 #ifdef _DEBUG
 	// Collider
 	m_pGraphicDev->SetTransform(D3DTS_WORLD,
@@ -124,15 +152,22 @@ void CLantern::Free(void)
 
 void CLantern::CollisionEvent(CGameObject * pObj)
 {
+
+}
+
+void CLantern::InteractEvent()
+{
 	if (STATE_GROUND == m_eState)
 	{
-		CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
-		if (pMonster)
-			return;
+		//CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
+		//if (pMonster)
+		//	return;
 
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
 	}
+
+
 }
 
 HRESULT CLantern::Add_Component(void)
