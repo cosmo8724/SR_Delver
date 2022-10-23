@@ -15,6 +15,10 @@ public:
 	HRESULT	Ready_Light(const D3DLIGHT9* pLightInfo, const _uint& iIndex);
 	_uint	Get_Index() { return m_iIndex; }
 	void	Set_Pos(_vec3 vPos) { m_tLightInfo.Position = vPos; m_pGraphicDev->SetLight(m_iIndex, &m_tLightInfo);}
+	void	Set_Coloor(D3DXCOLOR tColor) { 
+		m_tLightInfo.Diffuse = tColor;
+		m_tLightInfo.Ambient = tColor;
+		m_pGraphicDev->SetLight(m_iIndex, &m_tLightInfo); }
 
 	void	Update_Info(const D3DLIGHT9* pLightInfo)
 	{

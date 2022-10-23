@@ -128,6 +128,8 @@ void CGreenWand::Charge(const _float & fTimeDelta)
 	{
 		m_fFrame += frameEnd * fTimeDelta;
 		m_fPlusSpeed += 0.3f;
+		m_pTransCom->Set_Stop(true);
+
 
 		if (!m_bParticleCall)
 		{
@@ -144,6 +146,7 @@ void CGreenWand::Charge(const _float & fTimeDelta)
 			m_fChargeTime = 0.f;
 			m_bCharge = false;
 			m_bAttack = true;
+			m_pTransCom->Set_Stop(false);
 		}
 
 	}
@@ -157,6 +160,11 @@ void CGreenWand::Charge(const _float & fTimeDelta)
 		{
 			m_bClick = false;		
 			m_bCharge = true;
+			m_pTransCom->Set_Stop(true);
+
+			D3DXCOLOR tColor = { 0.0f, 1.0f, 1.f, 1.f };
+			CLightMgr::GetInstance()->Update_Color(LIGHT_WAND, tColor);
+			m_pGraphicDev->LightEnable(LIGHT_WAND, TRUE);
 		}
 	}
 	else
@@ -170,6 +178,8 @@ void CGreenWand::Charge(const _float & fTimeDelta)
 				m_bClick = false;
 				m_bAttack = true;
 				m_fChargeTime = 0.f;
+				m_pTransCom->Set_Stop(true);
+
 			}
 		}
 		else if (true == m_bCharge)  
@@ -179,6 +189,8 @@ void CGreenWand::Charge(const _float & fTimeDelta)
 			m_fChargeTime = 0.f;
 			m_bAttack = true;
 			m_bParticleCall = false;
+			m_pTransCom->Set_Stop(false);
+
 		}
 	}
 }
@@ -201,6 +213,10 @@ void CGreenWand::Attack(const _float & fTimeDelta)
 
 		m_bAttack = false;
 		m_fPlusSpeed = 0.f;
+
+		m_pGraphicDev->LightEnable(LIGHT_WAND, FALSE);
+		m_pTransCom->Set_Stop(false);
+
 	}
 }
 
@@ -250,6 +266,16 @@ _int CGreenWand::Update_Object(const _float & fTimeDelta)
 		//m_pTransCom->Revolution(pPlayerInfo, matView, 45.f, m_fTimeDelta, STATE_EQUIP);
 
 		m_pTransCom->Item_Motion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
+		
+		// Light
+		_vec3 vPos, vRight, vLook, vUp;
+		m_pCenter->Get_Info(INFO_POS, &vPos);
+		m_pCenter->Get_Info(INFO_RIGHT, &vRight);
+		m_pCenter->Get_Info(INFO_LOOK, &vLook);
+		m_pCenter->Get_Info(INFO_UP, &vUp);
+		_vec3 vTrans = vPos + 0.25f * vRight + 0.7f * vLook + 0.2f * vUp;
+		CLightMgr::GetInstance()->Update_Pos(LIGHT_WAND, vTrans);
+		
 		break;
 	}
 

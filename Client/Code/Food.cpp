@@ -100,6 +100,8 @@ void CFood::Render_Obejct(void)
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -110,6 +112,9 @@ void CFood::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 
 #ifdef _DEBUG
 	// Collider

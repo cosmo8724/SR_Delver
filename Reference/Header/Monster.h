@@ -85,6 +85,8 @@ private:
 	_float				m_fBSpeed0 = 0.1f;
 	_float				m_fBAccel = 0.007f;
 	_float				m_fBTimeDelta = 0.f;
+
+
 };
 
 END
