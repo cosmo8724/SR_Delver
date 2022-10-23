@@ -55,11 +55,13 @@ HRESULT CLeaf::Ready_Object(void)
 	m_tInfo.iAttack = 1;
 	m_tInfo.iExp = 4;
 
+	if (m_bClone)
+		m_vPos = m_pTransCom->Get_Pos();
+
 	m_OriginalPos = { m_vPos.x, m_vPos.y, m_vPos.z };
-	if (!m_bClone)
-	{
-		m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
-	}
+
+	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
+
 	m_eCurState = IDLE;
 
 	m_fIdle_Speed = 1.f;

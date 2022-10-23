@@ -52,12 +52,12 @@ HRESULT CBrownBat::Ready_Object(void)
 	m_tInfo.iAttack = 1;
 	m_tInfo.iExp = 2;
 
-	if (!m_bClone)
-	{
-		m_fHeight = m_vPos.y; // 3.f
-		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-		//m_pTransCom->Set_Pos(15.f, m_fHeight, 15.f);
-	}
+	if (m_bClone)
+		m_vPos = m_pTransCom->Get_Pos();
+
+	m_fHeight = m_vPos.y; // 3.f
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	//m_pTransCom->Set_Pos(15.f, m_fHeight, 15.f);
 	m_eCurState = IDLE;
 
 	m_fIdle_Speed = 5.f;

@@ -69,40 +69,42 @@ HRESULT CStage::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
-	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	if (!g_bIsTool)
 	{
-		if (i == BLOCK_CAVE)
+		for (_int i = 0; i < BLOCKTYPE_END; ++i)
 		{
-			for (_int j = 0; j < CAVETEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_COLD)
-		{
-			for (_int j = 0; j < COLDTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_DUNGEON)
-		{
-			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_ROOM)
-		{
-			for (_int j = 0; j < ROOMTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_SEWER)
-		{
-			for (_int j = 0; j < SEWERTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_TEMPLE)
-		{
-			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			if (i == BLOCK_CAVE)
+			{
+				for (_int j = 0; j < CAVETEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_COLD)
+			{
+				for (_int j = 0; j < COLDTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_DUNGEON)
+			{
+				for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_ROOM)
+			{
+				for (_int j = 0; j < ROOMTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_SEWER)
+			{
+				for (_int j = 0; j < SEWERTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_TEMPLE)
+			{
+				for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
 		}
 	}
-			
 	return S_OK;
 }
 
@@ -395,37 +397,40 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
-	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	if (!g_bIsTool)
 	{
-		if (i == BLOCK_CAVE)
+		for (_int i = 0; i < BLOCKTYPE_END; ++i)
 		{
-			for (_int j = 0; j < CAVETEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_COLD)
-		{
-			for (_int j = 0; j < COLDTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_DUNGEON)
-		{
-			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_ROOM)
-		{
-			for (_int j = 0; j < ROOMTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_SEWER)
-		{
-			for (_int j = 0; j < SEWERTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_TEMPLE)
-		{
-			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			if (i == BLOCK_CAVE)
+			{
+				for (_int j = 0; j < CAVETEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_COLD)
+			{
+				for (_int j = 0; j < COLDTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_DUNGEON)
+			{
+				for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_ROOM)
+			{
+				for (_int j = 0; j < ROOMTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_SEWER)
+			{
+				for (_int j = 0; j < SEWERTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_TEMPLE)
+			{
+				for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
 		}
 	}
 }
@@ -499,7 +504,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"C:\\Cosmo\\Jusin\\Monsters.dat");
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
@@ -509,7 +514,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
-	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 106.f, -38.f, 78.f }));
+	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 20.f, 5.f, 20.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RockFall", pGameObject), E_FAIL);
 
@@ -544,7 +549,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks
 	{
-		string	strPath = "..\\..\\Data\\Map_Test7.dat";
+		string	strPath = "..\\..\\Data\\Map_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -605,7 +610,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		string	strPath = "..\\..\\Data\\EcoObject_Intro.dat";
+		string	strPath = "..\\..\\Data\\EcoObject_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -699,6 +704,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 			case ECO_ROCKFALL:
 				pCloneObject = CRockFall::Create(pEcoObject);
+				break;
+
+			case ECO_TREASUREBOX:
+				pCloneObject = CTreasureBox::Create(pEcoObject);
 				break;
 			}
 			pLayer->Add_GameObject(vecObjTags.back(), pCloneObject);

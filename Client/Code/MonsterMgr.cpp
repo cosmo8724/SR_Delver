@@ -265,6 +265,7 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 			ReadFile(hFile, &pTransCom->m_vAngle, sizeof(_vec3), &dwByte, nullptr);
 			ReadFile(hFile, &pTransCom->m_vScale, sizeof(_vec3), &dwByte, nullptr);
 			ReadFile(hFile, &pTransCom->m_matWorld, sizeof(_matrix), &dwByte, nullptr);
+			ReadFile(hFile, &pMonster->m_vPos, sizeof(_vec3), &dwByte, nullptr);
 			ReadFile(hFile, &pMonster->m_eType, sizeof(MONSTERTYPE), &dwByte, nullptr);
 
 			if (0 == dwByte)
@@ -328,6 +329,7 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 			}
 
 			pLayer->Add_GameObject(m_vecObjTags.back(), pCloneObject);
+			m_vecMonster.push_back(pCloneObject);
 		}
 		CloseHandle(hFile);
 

@@ -55,8 +55,10 @@ HRESULT CGreenSpider::Ready_Object()
 	m_tInfo.iAttack = 1;
 	m_tInfo.iExp = 4;
 
-	if (!m_bClone)
-		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	if (m_bClone)
+		m_vPos = m_pTransCom->Get_Pos();
+
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eCurState = IDLE;
 
