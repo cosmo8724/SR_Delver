@@ -18,7 +18,7 @@ public:
 	virtual HRESULT		Ready_Object(void) { return S_OK; };
 	virtual _int		Update_Object(const _float& fTimeDelta) { return 0; };
 	virtual void		LateUpdate_Object(void) {};
-	virtual void		Render_Obejct(void) {};
+	virtual void		Render_Obejct(void);
 
 protected:
 	virtual HRESULT		Add_Component(void) PURE;

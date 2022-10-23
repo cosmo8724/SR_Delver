@@ -156,6 +156,8 @@ void CDoor::Render_Obejct(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -171,6 +173,7 @@ void CDoor::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	CEcoObject::Render_Obejct();	// collider Ãâ·Â
 }

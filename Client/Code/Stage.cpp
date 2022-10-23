@@ -42,6 +42,8 @@
 #include "Cat.h"
 #include "TreasureBox.h"
 
+#include "KnifeTrap.h"
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -538,6 +540,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CDoor::Create(m_pGraphicDev, _vec3({ 22.f, 2.f, 5.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Door", pGameObject), E_FAIL);
+
+	pGameObject = CKnifeTrap::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 5.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"KnifeTrap", pGameObject), E_FAIL);
 
 	//pGameObject = CLongTorch::Create(m_pGraphicDev, _vec3({ 6.f, 0.9f, 5.f }));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
