@@ -21,6 +21,7 @@
 #include "Bullet.h"
 #include "Mimic.h"
 #include "TreasureBox.h"
+#include "Door.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -144,7 +145,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	return 0;
 }
@@ -471,6 +472,9 @@ void CPlayer::Jump(const _float & fTimeDelta)
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
 	CMimic*	pMimic = dynamic_cast<CMimic*>(pOtherObj);
+
+	bool bText = false;
+
 	if (pMimic)
 	{
 		if (Engine::Key_Down(DIK_E))
@@ -492,6 +496,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	if (pBullet == pOtherObj)
 		OnHit(pBullet->Get_BulletAttack());
 
+
 	CEcoObject* pEco = dynamic_cast<CEcoObject*>(pOtherObj);
 	if (nullptr != pEco)
 	{
@@ -499,13 +504,22 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		{
 			OnHit(static_cast<CRockFall*>(pEco)->Get_Attack());
 		}
-	}
+		else if (ECO_DOOR == pEco->Get_Type())
+		{
 
+			m_str = static_cast<CDoor*>(pEco)->Get_String();
+			if (Engine::Key_Down(DIK_E))
+			{
+				pOtherObj->InteractEvent();
+			}
+			bText = true;
+		}
+	}
 
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State() && pItem->Get_ItemType() != ITEM_GOLD)
 	{
-		m_bText = true;
+
 		m_str = L"E : Get";
 		if (Key_Down(DIK_E))
 		{
@@ -517,11 +531,14 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 
 			}
 		}
-
+		bText = true;
 	}
-	else
-		m_bText = false;
 
+	
+	m_bText = bText;
+
+
+	
 	CBlock*	pBlock = dynamic_cast<CBlock*>(pOtherObj);
 	if (pBlock)
 	{
@@ -573,6 +590,8 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 			}
 		}*/
 	}
+
+
 }
 
 void CPlayer::Respawn()

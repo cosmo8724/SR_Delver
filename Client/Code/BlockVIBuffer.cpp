@@ -230,7 +230,7 @@ void CBlockVIBuffer::Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eTyp
 	pGraphicDev->SetMaterial(&tMtrl);
 	// *Set Material
 	
-	pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	pGraphicDev->SetTexture(0, pBPT->m_pTexture);
 	pGraphicDev->SetStreamSource(0, pBPT->m_pVB, 0, m_dwVtxSize);
 	pGraphicDev->SetFVF(m_dwFVF);

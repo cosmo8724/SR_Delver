@@ -430,6 +430,9 @@
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\TreasureBox">
       <UniqueIdentifier>{499376c3-fa91-4027-b8b3-4afe6a1b96b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\Door">
+      <UniqueIdentifier>{a272b666-e124-4214-a776-04e4044031ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -840,6 +843,9 @@
     <ClInclude Include="..\Header\TreasureBox.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\TreasureBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Door.h">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\Door</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1231,6 +1237,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\TreasureBox.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\TreasureBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Door.cpp">
+      <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\Door</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
