@@ -78,6 +78,7 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_eCurState = IDLE;
+	m_ePreState = MOTION_END;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
