@@ -142,6 +142,9 @@ void CWand::Charge(const _float & fTimeDelta)
 			m_bClick = false;		
 			m_bCharge = true;
 			m_pTransCom->Set_Stop(true);
+
+			D3DXCOLOR tColor = { 0.5f, 0.f, 0.5f, 1.f };
+			CLightMgr::GetInstance()->Update_Color(LIGHT_WAND, tColor);
 			m_pGraphicDev->LightEnable(LIGHT_WAND, TRUE);
 
 		}

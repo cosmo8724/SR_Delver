@@ -109,6 +109,8 @@ void CLantern::Render_Obejct(void)
 	_vec3 vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -119,6 +121,9 @@ void CLantern::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 
 	/*if(m_bText)
 		Render_Font(L"Font_Jinji", L"불을 밝혀주는 도구", &_vec2( - 17.f, m_fPosY - 7.f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));*/

@@ -23,6 +23,7 @@
 #include "TreasureBox.h"
 #include "Gold.h"
 #include "Door.h"
+#include "KnifeTrap.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -490,6 +491,10 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 		if (ECO_ROCKFALL == pEco->Get_Type())
 		{
 			OnHit(static_cast<CRockFall*>(pEco)->Get_Attack());
+		}
+		else if (ECO_KNIFETRAP == pEco->Get_Type())
+		{
+			OnHit(static_cast<CKnifeTrap*>(pEco)->Get_Attack());
 		}
 		else if (ECO_DOOR == pEco->Get_Type())
 		{

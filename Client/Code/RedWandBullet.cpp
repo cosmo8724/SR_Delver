@@ -110,6 +110,12 @@ _int CRedWandBullet::Update_Object(const _float & fTimeDelta)
 		pPlayer->Get_Info(INFO_LOOK, &m_vDirection);
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 
+
+		// Light
+		D3DXCOLOR tColor = { 1.f, 0.f, 0.f, 1.f };
+		CLightMgr::GetInstance()->Update_Color(LIGHT_PLAYERBULLET, tColor);
+		m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, TRUE);
+
 		m_bReady = true;
 	}
 
@@ -131,6 +137,9 @@ _int CRedWandBullet::Update_Object(const _float & fTimeDelta)
 
 	m_fSpeed = 10.f;
 	m_pTransCom->Move_Pos(&(m_fSpeed * fTimeDelta * m_vDirection));
+	CLightMgr::GetInstance()->Update_Pos(LIGHT_PLAYERBULLET, m_pTransCom->Get_Pos());
+
+
 	if (0.1f < m_fParticleTime)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 2, 0.1f,
@@ -189,6 +198,11 @@ void CRedWandBullet::Render_Obejct(void)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+
+
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -209,12 +223,14 @@ void CRedWandBullet::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	m_pBufferCom->Render_Buffer();
 
-	//m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 
 #ifdef _DEBUG
 	// Collider
@@ -260,6 +276,11 @@ void CRedWandBullet::Reset()
 
 	m_pColliderCom->Set_Free(true);
 	m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
+	
+	m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, FALSE);
+
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_REDWAND);
+
+
 }
 
