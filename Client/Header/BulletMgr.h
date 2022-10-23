@@ -26,6 +26,7 @@ public:
 	bool			Is_Fired(CGameObject* pObj);
 
 	void			Pre_Setting(BULLETID eID,  _float fSet);
+	void			Set_Obj(BULLETID eID, CGameObject* pObj = nullptr);
 
 	//void			FireTest(BULLETID _eID);
 
@@ -39,6 +40,8 @@ private:
 	//int							m_CurIdx[BULLET_END];
 	int							m_MaxIdx[BULLET_END];
 	queue<int>					m_IdxQue[BULLET_END];	// 사용가능한 모든 인덱스들을 삽입하고, 사용시 pop, 복구 시 다시 집어넣는다.
+
+	CGameObject*				m_pObj = nullptr;
 
 //	_float						m_fBulletAngle;
 //

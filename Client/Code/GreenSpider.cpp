@@ -183,6 +183,7 @@ void CGreenSpider::Target_Follow(const _float & fTimeDelta)
 		if (5.f < m_fAttackTimeAcc)
 		{
 			m_eCurState = ATTACK;
+			CBulletMgr::GetInstance()->Set_Obj(BULLET_M_SPIDER, this);
 			CBulletMgr::GetInstance()->Fire(BULLET_M_SPIDER);
 			m_fAttackTimeAcc = 0;
 		}

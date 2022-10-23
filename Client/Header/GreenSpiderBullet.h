@@ -32,6 +32,9 @@ private:
 	void					Billboard();
 	_int					Target(const _float& fTimeDelta);
 
+public:
+	void				Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
+
 private:
 	CRcTex*					m_pBufferCom = nullptr;
 	CAnimator*				m_pAnimtorCom = nullptr;
@@ -42,6 +45,9 @@ private:
 	_vec3					vPos, m_vPlayerPos = { 0.f,0.f,0.f };
 
 	_float					m_fParticleTime = 0.f;
+
+	CGameObject*			m_pTarget = nullptr;
+
 
 };
 

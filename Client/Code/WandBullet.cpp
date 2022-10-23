@@ -35,6 +35,7 @@ HRESULT CWandBullet::Ready_Object(void)
 
 	float fSize = 0.05f;
 	m_pTransCom->Set_Scale(fSize, fSize, fSize);
+	m_pColliderCom->Set_Free(true);
 
 	// 충돌처리
 	//_vec3 vPos, vScale;
