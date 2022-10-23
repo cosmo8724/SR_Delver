@@ -510,7 +510,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer/*, L"..\\..\\Data\\Monsters_Stage.dat"*/); // ttt
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
