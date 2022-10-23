@@ -61,6 +61,7 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eCurState = IDLE;
+	m_ePreState = MOTION_END;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;

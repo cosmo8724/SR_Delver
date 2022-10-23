@@ -72,8 +72,8 @@ void CManagement::Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev)
 	if (nullptr == m_pScene)
 		return;
 
-	Engine::Render_GameObject(pGraphicDev);
 	m_pScene->Render_Scene();
+	Engine::Render_GameObject(pGraphicDev);
 }
 
 void Engine::CManagement::Free(void)

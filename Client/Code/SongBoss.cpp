@@ -67,6 +67,7 @@ HRESULT CSongBoss::Ready_Object(void)
 	//m_pTransCom->Set_Scale(2.5f, 2.5f, 2.5f);
 
 	m_eCurState = MOVE;
+	m_ePreState = MOTION_END;
 	m_eSkill = SKILL_END;
 
 	m_fIdle_Speed = 1.f;

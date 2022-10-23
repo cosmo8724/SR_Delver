@@ -59,6 +59,7 @@ HRESULT CStick::Ready_Object()
 	//m_pTransCom->Set_Scale(0.7f, 0.7f, 0.7f);
 
 	m_eCurState = IDLE;
+	m_ePreState = MOTION_END;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 5.f;

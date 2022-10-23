@@ -58,6 +58,7 @@ HRESULT CGreenSlime::Ready_Object(void)
 	//m_pTransCom->Set_Pos(15.f, 1.f, 15.f);
 
 	m_eCurState = IDLE;
+	m_ePreState = MOTION_END;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
