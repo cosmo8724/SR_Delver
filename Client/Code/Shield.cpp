@@ -185,7 +185,7 @@ HRESULT CShield::Add_Component(void)
 
 void CShield::Charge(const _float & fTimeDelta)
 {
-	if (Engine::Key_Down(DIK_P))
+	if (Engine::Key_Down(DIK_X))
 	{
 		if (!m_bAttack)
 			m_bAttack = true;
