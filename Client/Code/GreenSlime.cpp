@@ -84,7 +84,6 @@ _int CGreenSlime::Update_Object(const _float & fTimeDelta)
 	//if (m_fFrame >= m_pTextureCom->Get_FrameEnd())
 	//	m_fFrame = 0;
 
-
 	if (0 >= m_tInfo.iHp)
 	{
 		Dead();

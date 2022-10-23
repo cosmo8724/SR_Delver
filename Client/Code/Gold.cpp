@@ -162,6 +162,9 @@ void CGold::InteractEvent()
 {
 	if (STATE_GROUND == m_eState)
 	{
+		Engine::StopSound(SOUND_ITEM);
+		Engine::Play_Sound(L"I_Gold.mp3", SOUND_ITEM, 1.f);
+
 		/*
 		GOLD_0 : 2
 		GOLD_1 : 4

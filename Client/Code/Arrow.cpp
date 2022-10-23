@@ -233,12 +233,14 @@ void CArrow::Charge(const _float & fTimeDelta)
 {
 	_int frameEnd = m_pTextureCom->Get_FrameEnd();
 
+	//Engine::StopSound(SOUND_EFFECT);
+	//Engine::Play_Sound(L"I_Arrow1.mp3", SOUND_EFFECT, 1.f);
+
 	if (m_bCharge)
 	{
 		m_fFrame += frameEnd * fTimeDelta;
 		m_fPlusSpeed += 0.3f;
 		m_pTransCom->Set_Stop(true);
-
 
 		if (!m_bParticleCall)
 		{
@@ -293,9 +295,6 @@ void CArrow::Charge(const _float & fTimeDelta)
 		}
 		else if (true == m_bCharge)  
 		{
-			Engine::StopSound(SOUND_EFFECT);
-			Engine::Play_Sound(L"I_Arrow1.mp3", SOUND_EFFECT, 1.f);
-
 			m_fFrame = 0.f;
 			m_bCharge = false;
 			m_fChargeTime = 0.f;

@@ -609,9 +609,6 @@
     <ClInclude Include="..\Header\MapUI.h">
       <Filter>02. GameObject\01. For_Stage\99. UI\07. Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\SongBossBullet.h">
-      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\SongBoss.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\98. SongBoss</Filter>
     </ClInclude>
@@ -839,6 +836,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\TreasureBox.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Harmless\TreasureBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SongBossBullet.h">
+      <Filter>02. GameObject\01. For_Stage\07. Bullet\01. Monster\01. SongBoss\00. Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

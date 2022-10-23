@@ -67,6 +67,9 @@ _int CPotion::Update_Object(const _float & fTimeDelta)
 
 	if (STATE_EQUIP == m_eState)
 	{
+		Engine::StopSound(SOUND_ITEM);
+		Engine::Play_Sound(L"I_Drink.mp3", SOUND_ITEM, 1.f);
+
 		RandomItem(fTimeDelta);
 	}
 	else if (STATE_GROUND == m_eState)
@@ -103,7 +106,6 @@ void CPotion::LateUpdate_Object(void)
 
 void CPotion::Render_Obejct(void)
 {
-
 	if (m_eState != STATE_GROUND)
 		return;
 

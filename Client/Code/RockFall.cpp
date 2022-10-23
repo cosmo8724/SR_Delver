@@ -168,6 +168,21 @@ void CRockFall::Activate()
 		// sh
 		if (!m_bParticle)
 		{
+			// sound
+			CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+			NULL_CHECK(pPlayerTransformCom);
+
+			_vec3		vPlayerPos, vPos;
+			pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+			m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+			_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
+
+			if (fDist < 10.f)
+				Engine::Play_Sound(L"E_RockFall.mp3", SOUND_ROCKFALL, 1.f);
+			else
+				Engine::StopSound(SOUND_ROCKFALL);
+
 			CParticleMgr::GetInstance()->Set_Info(this,
 				30,
 				1.f,

@@ -51,9 +51,13 @@ _int CShop::Update_Object(const _float & fTimeDelta)
 	Engine::CGameObject::Update_Object(fTimeDelta);
 
 
-	if(m_bOpen)
-		Engine::Add_RenderGroup(RENDER_UI, this);
+	if (m_bOpen)
+	{
+		Engine::StopSound(SOUND_UI);
+		Engine::Play_Sound(L"UI_Shop.mp3", SOUND_UI, 1.f);
 
+		Engine::Add_RenderGroup(RENDER_UI, this);
+	}
 
 	if (m_bOpen)
 	{

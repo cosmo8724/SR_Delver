@@ -41,6 +41,21 @@ _int CBonFire::Update_Object(const _float & fTimeDelta)
 	_int iFrameEnd = m_pTextureCom->Get_FrameEnd();
 	if (iFrameEnd <= m_fFrame)
 		m_fFrame = 0.f;
+	
+	// sound
+	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pPlayerTransformCom);
+
+	_vec3		vPlayerPos, vPos;
+	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+	m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
+
+	if (fDist < 10.f)
+		Engine::Play_Sound(L"E_Torch.mp3", SOUND_BONFIRE, 1.f);
+	else
+		Engine::StopSound(SOUND_BONFIRE);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 

@@ -21,6 +21,7 @@
 #include "Bullet.h"
 #include "Mimic.h"
 #include "TreasureBox.h"
+#include "Gold.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -256,21 +257,15 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		return;
 
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
-
+	
 	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	
 	{
 		m_vDirection.y = 0.f;
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 
-		//bW = true;
-		//if (bS || bA || bD)
-		//	Engine::StopSound(SOUND_PLAYER);
-		//else
-		//	Engine::Play_Sound(L"steps.mp3", SOUND_PLAYER, 1.f);
+		Engine::Play_Sound(L"P_Move1.mp3", SOUND_PLAYER, 0.3f);
 	}
-	//else
-	//	bW = false;
 
 	if (Engine::Get_DIKeyState(DIK_S) & 0x80)
 	{
@@ -279,14 +274,8 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_vDirection *= -1.f;
 		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 
-		//bS = true;
-		//if (bW || bA || bD)
-		//	Engine::StopSound(SOUND_PLAYER);
-		//else
-		//	Engine::Play_Sound(L"steps.mp3", SOUND_PLAYER, 1.f);
+		Engine::Play_Sound(L"P_Move2.mp3", SOUND_PLAYER, 0.3f);
 	}
-	//else
-	//	bS = false;
 
 	if (Engine::Get_DIKeyState(DIK_A) & 0x80)
 	{
@@ -296,14 +285,8 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_vDirection *= -1.f;
 		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 
-		//bA = true;
-		//if (bW || bS || bD)
-		//	Engine::StopSound(SOUND_PLAYER);
-		//else
-		//	Engine::Play_Sound(L"steps.mp3", SOUND_PLAYER, 1.f);
+		Engine::Play_Sound(L"P_Move1.mp3", SOUND_PLAYER, 0.3f);
 	}
-	//else
-	//	bA = false;
 
 	if (Engine::Get_DIKeyState(DIK_D) & 0x80)
 	{
@@ -312,17 +295,14 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 		m_pTransCom->Move_Pos(&(m_vDirection * m_tInfo.fSpeed * fTimeDelta));
 
-		//bD = true;
-		//if (bW || bS || bA)
-		//	Engine::StopSound(SOUND_PLAYER);
-		//else
-		//	Engine::Play_Sound(L"steps.mp3", SOUND_PLAYER, 1.f);
+		Engine::Play_Sound(L"P_Move2.mp3", SOUND_PLAYER, 0.3f);
 	}
-	//else
-	//	bD = false;
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) & 0x80)
 	{
+		Engine::StopSound(SOUND_PLAYER);
+		Engine::Play_Sound(L"P_Jump.mp3", SOUND_PLAYER, 0.3f);
+
 		if (!m_bJump)
 		{
 			if (m_pCalculatorCom == nullptr || m_eState == PLAYER_ON_BLOCK)
@@ -471,11 +451,18 @@ void CPlayer::Jump(const _float & fTimeDelta)
 void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 {
 	CMimic*	pMimic = dynamic_cast<CMimic*>(pOtherObj);
+	CGold*	pGold = dynamic_cast<CGold*>(pOtherObj);
 	if (pMimic)
 	{
 		if (Engine::Key_Down(DIK_E))
 			pMimic->InteractEvent();
 	}
+	if (pGold)
+	{
+		if (Engine::Key_Down(DIK_E))
+			pGold->InteractEvent();
+	}
+
 
 	CTreasureBox*	pTreasureBox = dynamic_cast<CTreasureBox*>(pOtherObj);
 	if (pTreasureBox)
@@ -602,6 +589,9 @@ void CPlayer::Set_Info(ITEMINFO tInfo, _int iSign)
 
 void CPlayer::OnHit(_int _HpMinus)
 {
+	Engine::StopSound(SOUND_PLAYER);
+	Engine::Play_Sound(L"P_Hit.mp3", SOUND_PLAYER, 1.f);
+
 	if (0 >= m_tInfo.iHp)
 	{
 		//m_bKnockBack = true;

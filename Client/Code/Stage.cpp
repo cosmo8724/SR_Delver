@@ -397,7 +397,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
-	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 106.f, -38.f, 78.f }));
+	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 30.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RockFall", pGameObject), E_FAIL);
 

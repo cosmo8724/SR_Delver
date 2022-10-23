@@ -30,9 +30,9 @@ HRESULT CNecklace::Ready_Object(void)
 
 _int CNecklace::Update_Object(const _float & fTimeDelta)
 {
-	if(m_eState == STATE_INV)
+	if (m_eState == STATE_INV)
 		return 0;
-
+	
 	if (m_bDead)
 		return OBJ_DEAD;
 
