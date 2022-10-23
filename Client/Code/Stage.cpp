@@ -33,6 +33,7 @@
 #include "EcoMush.h"
 #include "EcoWeb.h"
 #include "Statue.h"
+#include "Door.h"
 
 #include "Water.h"
 
@@ -418,6 +419,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TreasureBox", pGameObject), E_FAIL);
 
+
+	pGameObject = CDoor::Create(m_pGraphicDev, _vec3({ 22.f, 2.f, 5.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Door", pGameObject), E_FAIL);
+
 	//pGameObject = CLongTorch::Create(m_pGraphicDev, _vec3({ 6.f, 0.9f, 5.f }));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch2", pGameObject), E_FAIL);
@@ -660,10 +666,10 @@ HRESULT CStage::Ready_Light(void)
 	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
 	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
-	tLightInfo0.Diffuse = D3DXCOLOR(0.1f, 0.1f,0.1f,0.1f);
+	tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Direction  = _vec3(0.f, -1.f, 0.f);
+	tLightInfo0.Direction = _vec3(0.f, 1.f, 0.f);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
 
