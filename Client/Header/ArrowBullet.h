@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CRcTex;
+class CTransform;
 END
 
 // 포물선 형태로 날아갈 Bullet
@@ -36,6 +37,7 @@ private:
 	_float		m_fSpeed;
 	_bool		m_bReady = false;
 	_vec3		m_vDirection = { 0.f,0.f,0.f };
+	CTransform* m_pPlayerCom = nullptr;
 
 	//추가 변수
 	_float		m_fMinSpeed;
