@@ -64,8 +64,10 @@ HRESULT CBlueBat::Ready_Object(void)
 	m_tInfo.iAttack = 2;
 	m_tInfo.iExp = 3;
 
-	if (!m_bClone)
-		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	if (m_bClone)
+		m_vPos = m_pTransCom->Get_Pos();
+
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eCurState = IDLE;
 

@@ -45,10 +45,10 @@ public:
 
 public:
 	MONSTERTYPE			m_eType = MOB_END;
+	_vec3				m_vPos;
 
 protected:
 	_bool				m_bClone = false;
-	_vec3				m_vPos;
 	_float				m_fIdle_Speed;
 	_float				m_fAttack_Speed;
 

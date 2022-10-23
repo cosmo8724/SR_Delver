@@ -343,6 +343,7 @@ HRESULT CInfoTool::InfoTool_Window(const _float & fTimeDelta)
 					WriteFile(hFile, &pTransCom->m_vAngle, sizeof(_vec3), &dwByte, nullptr);
 					WriteFile(hFile, &pTransCom->m_vScale, sizeof(_vec3), &dwByte, nullptr);
 					WriteFile(hFile, &pTransCom->m_matWorld, sizeof(_matrix), &dwByte, nullptr);
+					WriteFile(hFile, &pMonster->m_vPos, sizeof(_vec3), &dwByte, nullptr);
 					WriteFile(hFile, &pMonster->m_eType, sizeof(MONSTERTYPE), &dwByte, nullptr);
 				}
 			}
@@ -415,6 +416,7 @@ HRESULT CInfoTool::InfoTool_Window(const _float & fTimeDelta)
 				ReadFile(hFile, &pTransCom->m_vAngle, sizeof(_vec3), &dwByte, nullptr);
 				ReadFile(hFile, &pTransCom->m_vScale, sizeof(_vec3), &dwByte, nullptr);
 				ReadFile(hFile, &pTransCom->m_matWorld, sizeof(_matrix), &dwByte, nullptr);
+				ReadFile(hFile, &pMonster->m_vPos, sizeof(_vec3), &dwByte, nullptr);
 				ReadFile(hFile, &pMonster->m_eType, sizeof(MONSTERTYPE), &dwByte, nullptr);
 
 				if (0 == dwByte)

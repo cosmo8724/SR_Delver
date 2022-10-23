@@ -87,6 +87,9 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	m_fJSpeed0 = 0.2f;
 	m_fAccel = 0.01f;
 
+	if (m_bClone)
+		m_vPos = m_pTransCom->Get_Pos();
+
 	m_eSeparation = dID;
 	if (m_eSeparation == SEPARATION_ONE)
 	{
@@ -113,11 +116,9 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 		m_fHeight = m_vPos.y;
 	}
 
-	if (!m_bClone)
-	{
-		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-		m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
-	}
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	m_pTransCom->Set_Scale(m_fScale, m_fScale, m_fScale);
+
 	return S_OK;
 }
 
