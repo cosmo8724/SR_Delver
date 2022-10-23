@@ -32,7 +32,7 @@ HRESULT CSongBossFloor::Ready_Object(_int iBulletCount)
 
 	m_iBulletCount = iBulletCount;
 	m_iTransparency = 40;
-
+	m_pColliderCom->Set_Free(true);
 	return S_OK;
 }
 

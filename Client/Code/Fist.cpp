@@ -185,6 +185,7 @@ void CFist::Target_Follow(const _float & fTimeDelta)
 		if (3.f < m_fAttackTimeAcc)
 		{
 			m_eCurState = ATTACK;
+			CBulletMgr::GetInstance()->Set_Obj(BULLET_M_FIST, this);
 			CBulletMgr::GetInstance()->Fire(BULLET_M_FIST);
 			m_fAttackTimeAcc = 0;
 		}

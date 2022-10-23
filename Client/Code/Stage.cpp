@@ -37,6 +37,8 @@
 
 #include "Water.h"
 
+#include "Fist.h"
+
 #include "Cat.h"
 #include "TreasureBox.h"
 
@@ -120,6 +122,126 @@ _int CStage::Update_Scene(const _float & fTimeDelta)
 
 void CStage::LateUpdate_Scene(void)
 {
+	// Player
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	
+	// Player's CollisionGroup
+	vector<CGameObject*>*	pCollisionGroup = pPlayer->Get_CollisionGroup();
+
+	// Monster
+	vector<CGameObject*>*	pMonsterGroup = CMonsterMgr::GetInstance()->Get_Monster();
+
+	// Item
+	vector<CGameObject*>*	pItemGroup = nullptr;
+	vector<CGameObject*>*	pWeaponGroup = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
+
+	// Bullets
+	vector<CGameObject*>*	pPlayerBulletGroup[4];
+	pPlayerBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
+	pPlayerBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW);
+	pPlayerBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_GREENWAND);
+	pPlayerBulletGroup[3] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_REDWAND);
+
+	vector<CGameObject*>*	pMonsterBulletGroup[3];
+	pMonsterBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_FIST);
+	pMonsterBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_LEAF);
+	pMonsterBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_SPIDER);
+
+	vector<CGameObject*>*	pBossBulletGroup[4];
+	pBossBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
+	pBossBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+	pBossBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(FLOOR_SONGBOSS);
+	pBossBulletGroup[3] = CBulletMgr::GetInstance()->Get_Bullets(LIGHTNING_SONGBOSS);
+	// ~Bullets
+
+	// Blocks : m_vecBlocks;
+
+
+
+	for (auto& obj : *pCollisionGroup)
+	{
+		Engine::CollisionAABB(pPlayer, obj);		// Player
+
+		for (auto& weapon : *pWeaponGroup)			// weapon
+		{
+			Engine::CollisionAABB(obj, weapon);
+		}
+
+		for (int i = 0; i < 4; ++i)					// playerBullet	
+		{
+			for (auto& bullet : *pPlayerBulletGroup[i])
+			{
+				Engine::CollisionAABB(obj, bullet);
+			}
+		}
+	}
+
+
+	for (int i = 0; i < ITEM_IMG; ++i)
+	{
+		vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items((ITEMTYPE)i);
+		for (auto& item : *pItems)
+		{
+			Engine::CollisionAABB(pPlayer, item);
+		}
+	}
+
+
+	for (auto& monster : *pMonsterGroup)
+	{
+		Engine::CollisionAABB(pPlayer, monster);	// monster <-> player
+		
+		for (auto& weapon : *pWeaponGroup)			// monster <-> weapon
+		{
+			Engine::CollisionAABB(monster, weapon);
+		}
+
+		for (int i = 0; i < 4; ++i)					// monster <-> playerBullet
+		{
+			for (auto& bullet : *pPlayerBulletGroup[i])
+			{
+				Engine::CollisionAABB(monster, bullet);
+			}
+		}
+	}
+
+
+	for (auto& block : vecBlocks)
+	{
+		Engine::CollisionAABB(block, pPlayer);		// block <-> player
+
+		//for (int i = 0; i < 4; ++i)					// block <-> playerBullet	
+		//{
+		//	for (auto& bullet : *pPlayerBulletGroup[i])
+		//	{
+		//		Engine::CollisionAABB(block, bullet);
+		//	}
+		//}
+
+		//for (int i = 0; i < 3; ++i)					// block <-> monsterBullet
+		//{
+		//	for (auto& bullet : *pMonsterBulletGroup[i])
+		//	{
+		//		Engine::CollisionAABB(block, bullet);
+		//	}
+		//}
+
+	}
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (auto& bullet : *pMonsterBulletGroup[i])
+		{
+			Engine::CollisionAABB(pPlayer, bullet);
+		}
+	}
+
+
+
+
+
+
+	/*  // CollisionTest
 	CBlock* pBlock = nullptr;
 	CLayer*	pLayer = m_mapLayer[L"Layer_GameLogic"];
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
@@ -131,17 +253,6 @@ void CStage::LateUpdate_Scene(void)
 
 		if (pBlock)
 		{
-			//for (auto& bullet : *pPlayerBullets)
-			//{
-			//	if (CBulletMgr::GetInstance()->Is_Fired(bullet))
-			//	{
-			//		//CCollisionMgr::GetInstance()->CollisionAABB(pSour, bullet);
-
-			//		CCollisionMgr::GetInstance()->CollisionAABB(pBlock, bullet);
-			//	}
-			//}
-			//CCollisionMgr::GetInstance()->CollisionSphere(pPlayer, pBlock);
-			//CCollisionMgr::GetInstance()->CollisionAABB(pPlayer, pBlock);
 			Engine::CollisionTest(pBlock, pPlayer);
 		}
 	}
@@ -278,7 +389,7 @@ void CStage::LateUpdate_Scene(void)
 	{
 		Engine::CollisionAABB(obj, pPlayer);
 	}
-
+	*/
 
 	
 	Engine::CScene::LateUpdate_Scene();
@@ -434,6 +545,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Cat", pGameObject), E_FAIL);
 
 
+
+
 	// Blocks
 	{
 		string	strPath = "..\\..\\Data\\Map_Stage.dat";
@@ -484,6 +597,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				vecObjTags.push_back(pName);
 				pTemp = CBlock::Create(*pBlock);
 				pLayer->Add_GameObject(vecObjTags.back(), pTemp);
+
+				vecBlocks.push_back(pTemp);
+
+
 			}
 		}
 		CloseHandle(hFile);
@@ -652,6 +769,8 @@ void CStage::Free(void)
 	for (size_t i = 0; i < vecObjTags.size(); i++)
 		Safe_Delete_Array(vecObjTags[i]);
 	vecObjTags.clear();
+
+	vecBlocks.clear();
 
 	CCollisionMgr::DestroyInstance();
 	CBulletMgr::DestroyInstance();

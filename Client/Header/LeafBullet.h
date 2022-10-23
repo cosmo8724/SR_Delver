@@ -23,6 +23,8 @@ public:
 	static CLeafBullet*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual void			Free(void) override;
 	virtual void			Reset() override;
+public:
+	void				Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
 
 private:
 	void					Billboard();
@@ -46,6 +48,8 @@ private:
 	_matrix					m_matWorld;
 	_vec3					m_vTrans;
 	_vec3					m_vDir;
+
+	CGameObject*			m_pTarget  =  nullptr;
 };
 
 END
