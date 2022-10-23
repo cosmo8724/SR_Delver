@@ -41,6 +41,8 @@ private:
 private:
 	vector<TCHAR*>	vecObjTags;
 
+	vector<CGameObject*> vecBlocks;
+
 private:
 };
 

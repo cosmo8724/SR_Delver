@@ -24,6 +24,9 @@ public:
 	virtual void			Free(void) override;
 	virtual void			Reset() override;
 
+public:
+	void				Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
+
 private:
 	void					Billboard();
 	_int					Target(const _float& fTimeDelta);
@@ -41,6 +44,7 @@ private:
 	_vec3					vPos, m_vPlayerPos = { 0.f,0.f,0.f };
 
 	_float					m_fParticleTime = 0.f;
+	CGameObject*			m_pTarget = nullptr;
 
 };
 

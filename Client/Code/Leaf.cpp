@@ -55,12 +55,15 @@ HRESULT CLeaf::Ready_Object(void)
 	m_tInfo.iAttack = 1;
 	m_tInfo.iExp = 4;
 
+	if (m_bClone)
+		m_vPos = m_pTransCom->Get_Pos();
+
 	m_OriginalPos = { m_vPos.x, m_vPos.y, m_vPos.z };
-	if (!m_bClone)
-	{
-		m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
-	}
+
+	m_pTransCom->Set_Pos(m_OriginalPos.x, m_OriginalPos.y, m_OriginalPos.z);
+
 	m_eCurState = IDLE;
+	m_ePreState = MOTION_END;
 
 	m_fIdle_Speed = 1.f;
 	m_fAttack_Speed = 2.f;
@@ -125,10 +128,12 @@ HRESULT CLeaf::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_RcTexCom", pComponent });
 
-	pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
-	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
-
+	if (!m_bClone)
+	{
+		pComponent = m_pTransCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_TransformCom"));
+		NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
+		m_mapComponent[ID_DYNAMIC].insert({ L"Proto_TransformCom", pComponent });
+	}
 	// m_pAnimtorCom
 	pComponent = m_pAnimtorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_AnimatorCom"));
 	NULL_CHECK_RETURN(m_pAnimtorCom, E_FAIL);
@@ -174,6 +179,7 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 			m_fBulletTimeAcc += fTimeDelta;
 			if (0.2f < m_fBulletTimeAcc)
 			{
+				CBulletMgr::GetInstance()->Set_Obj(BULLET_M_LEAF, this);
 				CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
 				m_fBulletTimeAcc = 0.f;
 			}

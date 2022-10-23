@@ -24,5 +24,8 @@ public:
 	virtual void		Free(void);
 	virtual void		CollisionEvent(CGameObject *pObj);
 
+private:
+	_bool	m_bReady = false;
+
 };
 

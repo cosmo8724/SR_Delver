@@ -33,13 +33,15 @@ HRESULT CGreenWandBullet::Ready_Object(void)
 
 	float fSize = 0.05f;
 	m_pTransCom->Set_Scale(fSize, fSize, fSize);
+	m_pColliderCom->Set_Free(true);
+
 
 	// 충돌처리
-	_vec3 vPos, vScale;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	vScale = m_pTransCom->Get_Scale();
-	m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
-	m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
+	//_vec3 vPos, vScale;
+	//m_pTransCom->Get_Info(INFO_POS, &vPos);
+	//vScale = m_pTransCom->Get_Scale();
+	//m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
+	//m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
 
 
 	return S_OK;
@@ -242,7 +244,7 @@ void CGreenWandBullet::Free(void)
 void CGreenWandBullet::Reset()
 {
 	m_bFire = false;
-	m_bDead = false;
+	m_bDead = false; 
 	m_fLifeTime = 0.f;
 	m_fFrame = 0.f;
 	m_bReady = false;

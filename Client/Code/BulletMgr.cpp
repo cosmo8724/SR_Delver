@@ -339,6 +339,7 @@ void CBulletMgr::Fire(BULLETID _eID)
 	if (!m_IdxQue[_eID].empty())
 	{
 		iIdx = m_IdxQue[_eID].front();
+		m_IdxQue[_eID].pop();
 		
 		CCollider* pColliderCom =	static_cast<CCollider*>((m_vecObjPool[_eID][iIdx])->Get_Component(L"Proto_ColliderCom", ID_STATIC));
 		{
@@ -349,7 +350,6 @@ void CBulletMgr::Fire(BULLETID _eID)
 		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Fire(true);
 		static_cast<CBullet*>(m_vecObjPool[_eID][iIdx])->Set_Index(iIdx);
 
-		m_IdxQue[_eID].pop();
 	}
 	//m_CurIdx[_eID] = (m_CurIdx[_eID] + 1) % m_MaxIdx[_eID];
 }
@@ -380,6 +380,37 @@ void CBulletMgr::Pre_Setting(BULLETID eID, _float fSet)
 			static_cast<CGreenWandBullet*>(m_vecObjPool[eID][iIdx])->Set_Angle(fSet);
 		}
 		break;
+	}
+}
+
+void CBulletMgr::Set_Obj(BULLETID eID, CGameObject * pObj)
+{
+	_int iIdx = -1;
+
+	switch (eID)
+	{
+	case BULLET_M_FIST:
+		if (!m_IdxQue[eID].empty())
+		{
+			iIdx = m_IdxQue[eID].front();
+			static_cast<CFistBullet*>(m_vecObjPool[eID][iIdx])->Set_Target(pObj);
+		}
+		break;
+	case BULLET_M_SPIDER:
+		if (!m_IdxQue[eID].empty())
+		{
+			iIdx = m_IdxQue[eID].front();
+			static_cast<CGreenSpiderBullet*>(m_vecObjPool[eID][iIdx])->Set_Target(pObj);
+		}
+		break;
+	case BULLET_M_LEAF:
+		if (!m_IdxQue[eID].empty())
+		{
+			iIdx = m_IdxQue[eID].front();
+			static_cast<CLeafBullet*>(m_vecObjPool[eID][iIdx])->Set_Target(pObj);
+		}
+		break;
+
 	}
 }
 

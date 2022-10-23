@@ -50,9 +50,12 @@ HRESULT CMimic::Ready_Object(void)
 	m_tInfo.iExp = 5;
 
 	if (m_bClone)
-		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+		m_vPos = m_pTransCom->Get_Pos();
+
+	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_eCurState = IDLE;
+	m_ePreState = MOTION_END;
 
 	m_fAttack_Speed = 2.f;
 

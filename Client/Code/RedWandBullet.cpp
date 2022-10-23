@@ -33,13 +33,16 @@ HRESULT CRedWandBullet::Ready_Object(void)
 
 	float fSize = 0.05f;
 	m_pTransCom->Set_Scale(fSize, fSize, fSize);
+	m_pColliderCom->Set_Free(true);
+
 
 	// 충돌처리
-	_vec3 vPos, vScale;
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	vScale = m_pTransCom->Get_Scale();
-	m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
-	m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
+	//_vec3 vPos, vScale;
+	//m_pTransCom->Get_Info(INFO_POS, &vPos);
+	//vScale = m_pTransCom->Get_Scale();
+	//m_bdBox.vMin = { vPos.x - vScale.x, vPos.y - vScale.y, vPos.z - vScale.z };
+	//m_bdBox.vMax = { vPos.x + vScale.x, vPos.y + vScale.y, vPos.z + vScale.z };
+
 
 	return S_OK;
 }
@@ -78,7 +81,7 @@ void CRedWandBullet::CollisionEvent(CGameObject * pObj)
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_13);
 
 	m_bCollision = true;
-	//Reset();
+	Reset();
 }
 
 _int CRedWandBullet::Update_Object(const _float & fTimeDelta)

@@ -39,7 +39,7 @@ HRESULT CArrowBullet::Ready_Object(void)
 
 	float fSize = 1.f;
 	m_pTransCom->Set_Scale(fSize, fSize, fSize);
-
+	m_pColliderCom->Set_Free(true);
 	//// 충돌처리
 	//_vec3 vPos, vScale;
 	//m_pTransCom->Get_Info(INFO_POS, &vPos);
@@ -62,6 +62,9 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 	{
 		CPlayer* pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		CGameObject* pItem = pPlayer->Get_Right();
+
+		m_pPlayerCom = static_cast<CTransform*>(pPlayer->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+		NULL_CHECK_RETURN(m_pPlayerCom, 0);
 
 		CTransform*		pWeapon = static_cast<CTransform*>(pItem->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 			//dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -104,13 +107,29 @@ _int CArrowBullet::Update_Object(const _float & fTimeDelta)
 
 	_vec3 vMove;
 	vMove.x = m_fSpeed * fTimeDelta * m_vDirection.x;
-
-	if (m_vDirection.y < 0.f)
-		m_vDirection.y = 0.1f;
-	m_fSpeedY = m_fSpeedY - 1.5f;
-	vMove.y = m_fSpeedY *fTimeDelta * m_vDirection.y;
-
 	vMove.z = m_fSpeed * fTimeDelta * m_vDirection.z;
+
+	_float fSpeedY = 0.f;
+
+	//if (m_fSpeedY == m_fMaxSpeed)
+	//{
+	//	_float fY = fabsf(m_pPlayerCom->Get_Look().y - m_vDirection.y);
+	//	vMove.y = fY;
+
+	//}
+	//else
+	{
+		m_fSpeedY = m_fSpeedY - 1.5f;
+		fSpeedY = fabsf(m_vDirection.y) * m_fSpeedY;
+		vMove.y = fSpeedY *fTimeDelta;
+	}
+
+
+	
+
+
+
+
 	
 	m_pTransCom->Move_Pos(&vMove);
 
@@ -151,7 +170,7 @@ void CArrowBullet::LateUpdate_Object(void)
 		return;
 
 	// 아무데도 충돌안해도 일정 시간 후 리셋함
-	if (2.f < m_fLifeTime)
+	if (1.f < m_fLifeTime)
 	{
 		Reset();
 	}
@@ -261,5 +280,5 @@ HRESULT CArrowBullet::Add_Component(void)
 
 void CArrowBullet::CollisionEvent(CGameObject * pObj)
 {
-	//Reset();
+	Reset();
 }

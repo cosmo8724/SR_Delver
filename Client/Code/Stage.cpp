@@ -33,8 +33,11 @@
 #include "EcoMush.h"
 #include "EcoWeb.h"
 #include "Statue.h"
+#include "Door.h"
 
 #include "Water.h"
+
+#include "Fist.h"
 
 #include "Cat.h"
 #include "TreasureBox.h"
@@ -66,40 +69,42 @@ HRESULT CStage::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
-	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	if (!g_bIsTool)
 	{
-		if (i == BLOCK_CAVE)
+		for (_int i = 0; i < BLOCKTYPE_END; ++i)
 		{
-			for (_int j = 0; j < CAVETEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_COLD)
-		{
-			for (_int j = 0; j < COLDTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_DUNGEON)
-		{
-			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_ROOM)
-		{
-			for (_int j = 0; j < ROOMTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_SEWER)
-		{
-			for (_int j = 0; j < SEWERTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_TEMPLE)
-		{
-			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			if (i == BLOCK_CAVE)
+			{
+				for (_int j = 0; j < CAVETEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_COLD)
+			{
+				for (_int j = 0; j < COLDTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_DUNGEON)
+			{
+				for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_ROOM)
+			{
+				for (_int j = 0; j < ROOMTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_SEWER)
+			{
+				for (_int j = 0; j < SEWERTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_TEMPLE)
+			{
+				for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Ready_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
 		}
 	}
-			
 	return S_OK;
 }
 
@@ -117,6 +122,126 @@ _int CStage::Update_Scene(const _float & fTimeDelta)
 
 void CStage::LateUpdate_Scene(void)
 {
+	// Player
+	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+	
+	// Player's CollisionGroup
+	vector<CGameObject*>*	pCollisionGroup = pPlayer->Get_CollisionGroup();
+
+	// Monster
+	vector<CGameObject*>*	pMonsterGroup = CMonsterMgr::GetInstance()->Get_Monster();
+
+	// Item
+	vector<CGameObject*>*	pItemGroup = nullptr;
+	vector<CGameObject*>*	pWeaponGroup = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
+
+	// Bullets
+	vector<CGameObject*>*	pPlayerBulletGroup[4];
+	pPlayerBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_WAND);
+	pPlayerBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_ARROW);
+	pPlayerBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_GREENWAND);
+	pPlayerBulletGroup[3] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_REDWAND);
+
+	vector<CGameObject*>*	pMonsterBulletGroup[3];
+	pMonsterBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_FIST);
+	pMonsterBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_LEAF);
+	pMonsterBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_SPIDER);
+
+	vector<CGameObject*>*	pBossBulletGroup[4];
+	pBossBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
+	pBossBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+	pBossBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(FLOOR_SONGBOSS);
+	pBossBulletGroup[3] = CBulletMgr::GetInstance()->Get_Bullets(LIGHTNING_SONGBOSS);
+	// ~Bullets
+
+	// Blocks : m_vecBlocks;
+
+
+
+	for (auto& obj : *pCollisionGroup)
+	{
+		Engine::CollisionAABB(pPlayer, obj);		// Player
+
+		for (auto& weapon : *pWeaponGroup)			// weapon
+		{
+			Engine::CollisionAABB(obj, weapon);
+		}
+
+		for (int i = 0; i < 4; ++i)					// playerBullet	
+		{
+			for (auto& bullet : *pPlayerBulletGroup[i])
+			{
+				Engine::CollisionAABB(obj, bullet);
+			}
+		}
+	}
+
+
+	for (int i = 0; i < ITEM_IMG; ++i)
+	{
+		vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items((ITEMTYPE)i);
+		for (auto& item : *pItems)
+		{
+			Engine::CollisionAABB(pPlayer, item);
+		}
+	}
+
+
+	for (auto& monster : *pMonsterGroup)
+	{
+		Engine::CollisionAABB(pPlayer, monster);	// monster <-> player
+		
+		for (auto& weapon : *pWeaponGroup)			// monster <-> weapon
+		{
+			Engine::CollisionAABB(monster, weapon);
+		}
+
+		for (int i = 0; i < 4; ++i)					// monster <-> playerBullet
+		{
+			for (auto& bullet : *pPlayerBulletGroup[i])
+			{
+				Engine::CollisionAABB(monster, bullet);
+			}
+		}
+	}
+
+
+	for (auto& block : vecBlocks)
+	{
+		Engine::CollisionAABB(block, pPlayer);		// block <-> player
+
+		//for (int i = 0; i < 4; ++i)					// block <-> playerBullet	
+		//{
+		//	for (auto& bullet : *pPlayerBulletGroup[i])
+		//	{
+		//		Engine::CollisionAABB(block, bullet);
+		//	}
+		//}
+
+		//for (int i = 0; i < 3; ++i)					// block <-> monsterBullet
+		//{
+		//	for (auto& bullet : *pMonsterBulletGroup[i])
+		//	{
+		//		Engine::CollisionAABB(block, bullet);
+		//	}
+		//}
+
+	}
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (auto& bullet : *pMonsterBulletGroup[i])
+		{
+			Engine::CollisionAABB(pPlayer, bullet);
+		}
+	}
+
+
+
+
+
+
+	/*  // CollisionTest
 	CBlock* pBlock = nullptr;
 	CLayer*	pLayer = m_mapLayer[L"Layer_GameLogic"];
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
@@ -128,17 +253,6 @@ void CStage::LateUpdate_Scene(void)
 
 		if (pBlock)
 		{
-			//for (auto& bullet : *pPlayerBullets)
-			//{
-			//	if (CBulletMgr::GetInstance()->Is_Fired(bullet))
-			//	{
-			//		//CCollisionMgr::GetInstance()->CollisionAABB(pSour, bullet);
-
-			//		CCollisionMgr::GetInstance()->CollisionAABB(pBlock, bullet);
-			//	}
-			//}
-			//CCollisionMgr::GetInstance()->CollisionSphere(pPlayer, pBlock);
-			//CCollisionMgr::GetInstance()->CollisionAABB(pPlayer, pBlock);
 			Engine::CollisionTest(pBlock, pPlayer);
 		}
 	}
@@ -275,7 +389,7 @@ void CStage::LateUpdate_Scene(void)
 	{
 		Engine::CollisionAABB(obj, pPlayer);
 	}
-
+	*/
 
 	
 	Engine::CScene::LateUpdate_Scene();
@@ -283,37 +397,40 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
-	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	if (!g_bIsTool)
 	{
-		if (i == BLOCK_CAVE)
+		for (_int i = 0; i < BLOCKTYPE_END; ++i)
 		{
-			for (_int j = 0; j < CAVETEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_COLD)
-		{
-			for (_int j = 0; j < COLDTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_DUNGEON)
-		{
-			for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_ROOM)
-		{
-			for (_int j = 0; j < ROOMTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_SEWER)
-		{
-			for (_int j = 0; j < SEWERTEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-		}
-		else if (i == BLOCK_TEMPLE)
-		{
-			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
-				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			if (i == BLOCK_CAVE)
+			{
+				for (_int j = 0; j < CAVETEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_COLD)
+			{
+				for (_int j = 0; j < COLDTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_DUNGEON)
+			{
+				for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_ROOM)
+			{
+				for (_int j = 0; j < ROOMTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_SEWER)
+			{
+				for (_int j = 0; j < SEWERTEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
+			else if (i == BLOCK_TEMPLE)
+			{
+				for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+			}
 		}
 	}
 }
@@ -387,7 +504,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer/*, L"C:\\Cosmo\\Jusin\\Monsters.dat"*/);
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
@@ -397,7 +514,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
-	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 30.f }));
+	pGameObject = CRockFall::Create(m_pGraphicDev, _vec3({ 20.f, 5.f, 20.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RockFall", pGameObject), E_FAIL);
 
@@ -413,6 +530,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TreasureBox", pGameObject), E_FAIL);
 
+
+	pGameObject = CDoor::Create(m_pGraphicDev, _vec3({ 22.f, 2.f, 5.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Door", pGameObject), E_FAIL);
+
 	//pGameObject = CLongTorch::Create(m_pGraphicDev, _vec3({ 6.f, 0.9f, 5.f }));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch2", pGameObject), E_FAIL);
@@ -423,9 +545,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Cat", pGameObject), E_FAIL);
 
 
+
+
 	// Blocks
 	{
-		string	strPath = "..\\..\\Data\\Map_Test7.dat";
+		string	strPath = "..\\..\\Data\\Map_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -473,6 +597,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				vecObjTags.push_back(pName);
 				pTemp = CBlock::Create(*pBlock);
 				pLayer->Add_GameObject(vecObjTags.back(), pTemp);
+
+				vecBlocks.push_back(pTemp);
+
+
 			}
 		}
 		CloseHandle(hFile);
@@ -482,7 +610,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		string	strPath = "..\\..\\Data\\EcoObject_Intro.dat";
+		string	strPath = "..\\..\\Data\\EcoObject_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -577,6 +705,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			case ECO_ROCKFALL:
 				pCloneObject = CRockFall::Create(pEcoObject);
 				break;
+
+			case ECO_TREASUREBOX:
+				pCloneObject = CTreasureBox::Create(pEcoObject);
+				break;
 			}
 			pLayer->Add_GameObject(vecObjTags.back(), pCloneObject);
 		}
@@ -638,6 +770,8 @@ void CStage::Free(void)
 		Safe_Delete_Array(vecObjTags[i]);
 	vecObjTags.clear();
 
+	vecBlocks.clear();
+
 	CCollisionMgr::DestroyInstance();
 	CBulletMgr::DestroyInstance();
 
@@ -654,7 +788,7 @@ HRESULT CStage::Ready_Light(void)
 	tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Direction  = _vec3(0.f, -1.f, 1.f);
+	tLightInfo0.Direction = _vec3(0.f, 1.f, 0.f);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
 
