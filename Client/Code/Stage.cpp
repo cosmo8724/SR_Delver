@@ -228,9 +228,17 @@ void CStage::LateUpdate_Scene(void)
 
 	}
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
 		for (auto& bullet : *pMonsterBulletGroup[i])
+		{
+			Engine::CollisionAABB(pPlayer, bullet);
+		}
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (auto& bullet : *pBossBulletGroup[i])
 		{
 			Engine::CollisionAABB(pPlayer, bullet);
 		}
