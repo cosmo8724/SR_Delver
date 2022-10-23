@@ -99,6 +99,7 @@ void CShield::Render_Obejct(void)
 
 	_vec3 vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
@@ -110,6 +111,8 @@ void CShield::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 
 #ifdef _DEBUG
 	// Collider
