@@ -165,11 +165,16 @@ void CFood::Free(void)
 
 void CFood::CollisionEvent(CGameObject * pObj)
 {
+
+}
+
+void CFood::InteractEvent()
+{
 	if (STATE_GROUND == m_eState)
 	{
-		CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
-		if (pMonster)
-			return;
+		//CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
+		//if (pMonster)
+		//	return;
 
 		m_bEat = true;
 		m_eState = STATE_INV;

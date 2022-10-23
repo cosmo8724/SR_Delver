@@ -1,6 +1,7 @@
 #pragma once
 #include "Equipment.h"
 
+class CPlayer;
 class CLantern : public CEquipment
 {
 private:
@@ -17,6 +18,7 @@ public:
 	static CLantern*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void) override;
 	virtual void		CollisionEvent(CGameObject* pObj);
+	virtual	void		InteractEvent();
 
 private:
 	HRESULT		Add_Component(void);
@@ -27,5 +29,6 @@ private:
 	_bool			m_bReady = false;
 	CTransform*		m_pCenter = nullptr;
 	_float			m_fFrame = 0.f;
+	CPlayer*		m_pPlayer = nullptr;
 };
 

@@ -21,6 +21,8 @@ public:
 	static CKey*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);
 	virtual void		CollisionEvent(CGameObject *pObj);
+	virtual void		InteractEvent() override;
+
 
 private:
 	_vec3				m_vPos;

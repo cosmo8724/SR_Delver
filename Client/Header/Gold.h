@@ -18,6 +18,8 @@ public:
 private:
 	virtual void		CollisionEvent(CGameObject *pObj)		override;
 	virtual HRESULT		Add_Component(void);
+	virtual void		InteractEvent() override;
+
 
 public:
 	static CGold*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType);

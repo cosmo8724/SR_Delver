@@ -18,6 +18,7 @@ public:
 	static CDagger*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void	Free(void) override;
 	virtual void	CollisionEvent(CGameObject* pObj);
+	virtual void	InteractEvent();
 
 private:
 	HRESULT		Add_Component(void);

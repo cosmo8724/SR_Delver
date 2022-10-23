@@ -177,16 +177,29 @@ void CPotion::Free(void)
 void CPotion::CollisionEvent(CGameObject * pObj)
 {
 
+	//if (STATE_GROUND == m_eState)
+	//{
+	//	CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
+	//	if (pMonster)
+	//		return;
+
+	//	m_eState = STATE_INV;
+	//	m_pColliderCom->Set_Free(true);
+	//}
+
+}
+
+void CPotion::InteractEvent()
+{
 	if (STATE_GROUND == m_eState)
 	{
-		CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
-		if (pMonster)
-			return;
+		//CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
+		//if (pMonster)
+		//	return;
 
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
 	}
-
 }
 
 void CPotion::RandomItem(const _float& fTimeDelta)

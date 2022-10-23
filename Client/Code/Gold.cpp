@@ -155,6 +155,11 @@ void CGold::Free(void)
 
 void CGold::CollisionEvent(CGameObject * pObj)
 {
+
+}
+
+void CGold::InteractEvent()
+{
 	if (STATE_GROUND == m_eState)
 	{
 		/*
@@ -163,9 +168,9 @@ void CGold::CollisionEvent(CGameObject * pObj)
 		GOLD_2 : 6
 		GOLD_3 : 8
 		*/
-		CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
-		if (pMonster)
-			return;
+		//CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
+		//if (pMonster)
+		//	return;
 
 		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		m_iTextureIdx = (m_iTextureIdx + 1) * 2;
