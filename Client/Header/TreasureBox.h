@@ -21,9 +21,9 @@ private:
 public:
 	static CTreasureBox*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 	static CTreasureBox*		Create(CEcoObject* pEcoObject);
-	virtual void					Free(void);
-	virtual void					CollisionEvent(CGameObject *pObj);
-	virtual	void					InteractEvent() 	override;
+	virtual void				Free(void);
+	virtual void				CollisionEvent(CGameObject *pObj);
+	virtual	void				InteractEvent() 	override;
 
 private:
 	_bool		m_bReady = false;
