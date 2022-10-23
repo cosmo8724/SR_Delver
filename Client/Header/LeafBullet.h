@@ -45,6 +45,7 @@ private:
 	_float					m_fAngle = 0.f;
 	_matrix					m_matWorld;
 	_vec3					m_vTrans;
+	_vec3					m_vDir;
 };
 
 END
