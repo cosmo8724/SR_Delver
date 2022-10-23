@@ -147,6 +147,9 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 
 
 
+
+
+
 		// 200 ���� ������ �Ŷ�	
 		/*for (int i = 0; i < 200; i++)
 		{
