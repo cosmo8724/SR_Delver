@@ -247,7 +247,7 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 		m_fAngle -= 360.f;
 		//m_fAngle = 0.1f;
 	//m_fAngle = m_fAngle % 360.f;
-	D3DXMatrixRotationAxis(&matRev, &m_vDir, m_fAngle);
+	D3DXMatrixRotationAxis(&matRev, &vDir, m_fAngle);
 	
 	//matWorld = matTrans * matRev;
 
@@ -267,10 +267,10 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 
 	if (m_bReady)
 	{
-		m_vTrans += m_vDir * 0.2f;
+		m_vTrans += vDir * 0.2f;
 		D3DXMatrixTranslation(&mat2, m_vTrans.x, m_vTrans.y, m_vTrans.z);
 	}
-	m_matWorld = mat2 * mat1;
+	m_matWorld = mat1 * mat2;
 
 	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 	return 0;
