@@ -18,6 +18,7 @@ CKey::CKey(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	D3DXMatrixIdentity(&m_matWorld);
 	m_ObjTag = L"Key";
 	m_eItemType = ITEM_KEY;
+	m_str = L"<Key>\nType:Item\nKeep it well";
 }
 
 CKey::~CKey()

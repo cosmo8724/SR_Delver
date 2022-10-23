@@ -179,7 +179,7 @@ void CRockFall::Activate()
 			_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
 			if (fDist < 10.f)
-				Engine::Play_Sound(L"E_RockFall.mp3", SOUND_ROCKFALL, 1.f);
+				Engine::Play_Sound(L"E_RockFall.mp3", SOUND_ROCKFALL, 0.5f);
 			else
 				Engine::StopSound(SOUND_ROCKFALL);
 

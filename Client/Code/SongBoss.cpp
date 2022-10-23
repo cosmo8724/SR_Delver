@@ -64,7 +64,7 @@ HRESULT CSongBoss::Ready_Object(void)
 	m_fHeight = m_vPos.y;
 	
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	//m_pTransCom->Set_Scale(2.5f, 2.5f, 2.5f);
+	m_pTransCom->Set_Scale(2.5f, 2.5f, 2.5f);
 
 	m_eCurState = MOVE;
 	m_ePreState = MOTION_END;
@@ -87,7 +87,6 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	//m_pTransCom->Set_Y(m_fHeight);
 	m_pAnimtorCom->Play_Animation(fTimeDelta * 0.7);
 	Motion_Change(fTimeDelta);
 
@@ -201,13 +200,13 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 
 	_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
-	if (20.f > fDist) // 플레이어가 거리 안 으로 들어오고
+	if (20.f > fDist)
 	{
 		static _bool SongBoss = false;
 		if (!SongBoss)
 		{
 			Engine::StopAllSound();
-			Engine::PlayBGM(L"BGM_SongBoss.mp3", 0.7f);
+			Engine::PlayBGM(L"BGM_SongBoss.mp3", 0.3f);
 			SongBoss = true;
 		}
 
@@ -228,8 +227,8 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 		{
 			if (m_pAnimtorCom->Get_Currentframe() >= 14.f && m_pAnimtorCom->Get_Currentframe() < 15.f)
 			{
-				//Engine::StopSound(SOUND_SONGBOSS);
-				//Engine::Play_Sound(L"M_SongBoss_Idle.mp3", SOUND_SONGBOSS, 1.f);
+				Engine::StopSound(SOUND_HHH);
+				Engine::Play_Sound(L"M_SongBoss_Idle.mp3", SOUND_HHH, 0.7f);
 				m_eCurState = IDLE;
 			}
 		}
@@ -472,6 +471,9 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 	{
 		if (m_pAnimtorCom->Get_Currentframe() >= 9.f)
 		{
+			Engine::StopSound(SOUND_HHH);
+			Engine::Play_Sound(L"M_SongBoss_Idle.mp3", SOUND_HHH, 0.7f);
+
 			Engine::StopSound(SOUND_SONGBOSS);
 			Engine::Play_Sound(L"M_SongBoss_Floor_0.mp3", SOUND_SONGBOSS, 1.f);
 
@@ -498,9 +500,9 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 				Engine::StopSound(SOUND_SONGBOSS);
 				Engine::Play_Sound(L"M_SongBoss_Floor_1.mp3", SOUND_SONGBOSS, 1.f);
 
-				//CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
-				//NULL_CHECK(pStaticCamera);
-				//pStaticCamera->Shake_Camera(1.f, 0.5f);
+				CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+				NULL_CHECK(pStaticCamera);
+				pStaticCamera->Shake_Camera(1.f, 1.f);
 
 				CBulletMgr::GetInstance()->Fire(LIGHTNING_SONGBOSS);
 				++m_iLightningCreate;

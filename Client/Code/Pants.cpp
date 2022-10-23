@@ -10,6 +10,7 @@ CPants::CPants(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int texId)
 	m_vPos = vPos;
 	m_ObjTag = L"Pants";
 	m_iTextureType = texId;
+	m_str = L"<Helmat>\nType:Equipment\npants to protect my legs";
 }
 
 CPants::~CPants()

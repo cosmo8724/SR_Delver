@@ -10,6 +10,7 @@ CNecklace::CNecklace(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int texId)
 	m_vPos = vPos;
 	m_ObjTag = L"Necklace";
 	m_iTextureType = texId;
+	m_str = L"<Necklace>\nType:Equipment\nMake your neck flashy";
 }
 
 CNecklace::~CNecklace()

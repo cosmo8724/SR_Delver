@@ -10,6 +10,7 @@ CHelmat::CHelmat(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int texId)
 	m_vPos = vPos;
 	m_ObjTag = L"Helmat";
 	m_iTextureType = texId;
+	m_str = L"<Helmat>\nType:Equipment\nHelmet to protect my head";
 }
 
 CHelmat::~CHelmat()

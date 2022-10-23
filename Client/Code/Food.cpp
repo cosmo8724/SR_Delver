@@ -19,7 +19,7 @@ CFood::CFood(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	D3DXMatrixIdentity(&m_matWorld);
 	m_ObjTag = L"Food";
 	m_eItemType = ITEM_FOOD;
-
+	m_str = L"<Food>\nType:Item\nMake a hamburger with this";
 }
 
 CFood::CFood(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)

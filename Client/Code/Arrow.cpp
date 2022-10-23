@@ -17,6 +17,7 @@ CArrow::CArrow(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"Arrow";
 	m_eItemType = ITEM_WEAPON;
 	m_eWeaponType = WT_AD;
+	m_str = L"<Arrow>\nType:Weapon\nFly well";
 }
 
 CArrow::~CArrow()

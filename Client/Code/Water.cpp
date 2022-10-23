@@ -76,17 +76,35 @@ _int CWater::Update_Object(const _float & fTimeDelta)
 	}
 
 	// sound
-	_vec3		vWater1, vWater2, vPos;
+	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pPlayerTransformCom);
+
+	_vec3		vPlayerPos, vWater1, vWater2, vWater3, vWater4, vWater5, vWater6, vWater7, vWater8;
+	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 	vWater1 = { 28, 2, 17 };
 	vWater2 = { 28, -78, 26 };
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-	_float fDist = D3DXVec3Length(&(vWater1 - vPos));
 
-	if (fDist < 10.f)
-		Engine::Play_Sound(L"E_Water.mp3", SOUND_WATER, 1.f);
+
+	_float fDist1 = D3DXVec3Length(&(vPlayerPos - vWater1));
+	_float fDist2 = D3DXVec3Length(&(vPlayerPos - vWater2));
+
+
+
+	if (fDist1 < 5.f || fDist2 < 5.f)
+		Engine::Play_Sound(L"E_Water.mp3", SOUND_WATER, 0.5f);
+	else if (fDist1 < 8.f || fDist2 < 8.f)
+		Engine::Play_Sound(L"E_Water.mp3", SOUND_WATER, 0.4f);
+	else if (fDist1 < 11.f || fDist2 < 11.f)
+		Engine::Play_Sound(L"E_Water.mp3", SOUND_WATER, 0.3f);
+	else if (fDist1 < 14.f || fDist2 < 14.f)
+		Engine::Play_Sound(L"E_Water.mp3", SOUND_WATER, 0.2f);
+	else if (fDist1 < 17.f || fDist2 < 17.f)
+		Engine::Play_Sound(L"E_Water.mp3", SOUND_WATER, 0.1f);
 	else
 		Engine::StopSound(SOUND_WATER);
+
+
 
 	Add_RenderGroup(RENDER_NONALPHA, this);
 
@@ -95,6 +113,54 @@ _int CWater::Update_Object(const _float & fTimeDelta)
 
 void CWater::LateUpdate_Object(void)
 {
+	// sound
+	CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pPlayerTransformCom);
+
+	_vec3		vPlayerPos, vWater1, vWater2, vWater3, vWater4, vWater5, vWater6, vWater7, vWater8;
+	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+
+	vWater3 = { 80, -97, 11 };
+	vWater4 = { 80, -97, 24 };
+	vWater5 = { 99, -98, 30 };
+	vWater7 = { 100, -98, 50 };
+	vWater8 = { 100, -98, 85 };
+
+	_float fDist3 = D3DXVec3Length(&(vPlayerPos - vWater3));
+	_float fDist4 = D3DXVec3Length(&(vPlayerPos - vWater4));
+	_float fDist5 = D3DXVec3Length(&(vPlayerPos - vWater5));
+	_float fDist6 = D3DXVec3Length(&(vPlayerPos - vWater6));
+	_float fDist7 = D3DXVec3Length(&(vPlayerPos - vWater7));
+	_float fDist8 = D3DXVec3Length(&(vPlayerPos - vWater8));
+
+	if (fDist3 < 5.f || fDist4 < 5.f || fDist5 < 5.f || fDist6 < 5.f || fDist7 < 5.f || fDist8 < 5.f)
+	{
+		cout << "sound 0.8f" << endl;
+		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.8f);
+	}
+	else if (fDist3 < 8.f || fDist4 < 8.f || fDist5 < 8.f || fDist6 < 8.f || fDist7 < 8.f || fDist8 < 8.f)
+	{
+		cout << "sound 0.7f" << endl;
+		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.7f);
+	}
+	else if (fDist3 < 11.f || fDist4 < 11.f || fDist5 < 11.f || fDist6 < 11.f || fDist7 < 11.f || fDist8 < 11.f)
+	{
+		cout << "sound 0.6f" << endl;
+		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.6f);
+	}
+	else if (fDist3 < 14.f || fDist4 < 14.f || fDist5 < 14.f || fDist6 < 14.f || fDist7 < 14.f || fDist8 < 14.f)
+	{
+		cout << "sound 0.5f" << endl;
+		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.5f);
+	}
+	else if (fDist3 < 17.f || fDist4 < 17.f || fDist5 < 17.f || fDist6 < 17.f || fDist7 < 17.f || fDist8 < 17.f)
+	{
+		cout << "sound 0.4f" << endl;
+		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.4f);
+	}
+	else
+		Engine::StopSound(SOUND_SEA);
+
 	Engine::CGameObject::LateUpdate_Object();
 
 }

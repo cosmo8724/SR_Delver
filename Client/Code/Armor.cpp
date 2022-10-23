@@ -10,6 +10,7 @@ CArmor::CArmor(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int texId)
 	m_vPos = vPos;
 	m_ObjTag = L"Armor";
 	m_iTextureType = texId;
+	m_str = L"<Armor>\nType:Equipment\narmor to protect my body";
 }
 
 CArmor::~CArmor()

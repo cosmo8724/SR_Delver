@@ -9,7 +9,7 @@ CShield::CShield(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"Shield";
 	m_vPos = vPos;
 	m_eItemType = ITEM_SHIELD;
-
+	m_str = L"<Shield>\nType:Equipment\nMy shield";
 }
 
 CShield::~CShield()

@@ -17,6 +17,7 @@ CRedWand::CRedWand(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"RadWand";
 	m_eItemType = ITEM_WEAPON;
 	m_eWeaponType = WT_AD;
+	m_str = L"<RadWand>\nType:Weapon\nRadWand magic";
 }
 
 CRedWand::~CRedWand()

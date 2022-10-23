@@ -10,6 +10,7 @@ CLeftHand::CLeftHand(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int texId)
 	m_vPos = vPos;
 	m_ObjTag = L"LeftHand";
 	m_iTextureType = texId;
+	m_str = L"<LeftHand>\nType:???\n???";
 }
 
 CLeftHand::~CLeftHand()

@@ -17,7 +17,7 @@ CGreenWand::CGreenWand(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"GreenWand";
 	m_eItemType = ITEM_WEAPON;
 	m_eWeaponType = WT_AD;
-
+	m_str = L"<GreenWand>\nType:Weapon\nGreen magic";
 }
 
 CGreenWand::~CGreenWand()

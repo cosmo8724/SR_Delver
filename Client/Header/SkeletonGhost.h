@@ -46,6 +46,11 @@ private:
 	_vec3				m_vTrans;
 	_float				m_fAngle = 0.f;
 
+	// È¸Àü
+	_bool					m_bReady;
+	_vec3					m_vDir;
+
+
 	// Timer
 	_float				m_fTimeAcc;
 	_float				m_fAttackTimeAcc;
