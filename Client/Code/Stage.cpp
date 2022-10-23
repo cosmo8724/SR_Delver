@@ -42,6 +42,8 @@
 #include "Cat.h"
 #include "TreasureBox.h"
 
+#include "KnifeTrap.h"
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -243,10 +245,6 @@ void CStage::LateUpdate_Scene(void)
 			Engine::CollisionAABB(pPlayer, bullet);
 		}
 	}
-
-
-
-
 
 
 	/*  // CollisionTest
@@ -543,6 +541,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Door", pGameObject), E_FAIL);
 
+	pGameObject = CKnifeTrap::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 5.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"KnifeTrap", pGameObject), E_FAIL);
+
 	//pGameObject = CLongTorch::Create(m_pGraphicDev, _vec3({ 6.f, 0.9f, 5.f }));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch2", pGameObject), E_FAIL);
@@ -833,15 +835,26 @@ HRESULT CStage::Ready_Light(void)
 	D3DLIGHT9		tLightInfo3;
 	ZeroMemory(&tLightInfo3, sizeof(D3DLIGHT9));
 	tLightInfo3.Type = D3DLIGHT_POINT;
-	tLightInfo3.Diffuse = D3DXCOLOR(0.5f, 0.f, 0.5f, 1.f);
+	tLightInfo3.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f , 1.f);
 	tLightInfo3.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo3.Ambient = D3DXCOLOR(0.5f, 0.f, 0.5f, 1.f);
+	tLightInfo3.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo3.Position = _vec3(7.f, 2.f, 5.f);
 	tLightInfo3.Range = 0.5f;
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo3, LIGHT_WAND), E_FAIL);
 	m_pGraphicDev->LightEnable(LIGHT_WAND, FALSE);
 
 
+	// WandBullet
+	D3DLIGHT9		tLightInfo4;
+	ZeroMemory(&tLightInfo4, sizeof(D3DLIGHT9));
+	tLightInfo4.Type = D3DLIGHT_POINT;
+	tLightInfo4.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo4.Range = 1.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo4, LIGHT_PLAYERBULLET), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, FALSE);
 
 	return S_OK;
 }

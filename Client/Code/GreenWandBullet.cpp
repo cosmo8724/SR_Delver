@@ -113,6 +113,13 @@ _int CGreenWandBullet::Update_Object(const _float & fTimeDelta)
 			pPlayer->Get_Info(INFO_LOOK, &m_vDirection);
 			D3DXMatrixRotationAxis(&matRight, &vRight, D3DXToRadian(-10.f));
 			D3DXVec3TransformNormal(&m_vDirection, &vLook, &matRight);
+
+
+			// Light
+			D3DXCOLOR tColor = { 0.f, 1.f, 1.f, 1.f };
+			CLightMgr::GetInstance()->Update_Color(LIGHT_PLAYERBULLET, tColor);
+			m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, TRUE);
+
 		}
 		else if (m_fBulletAngle == 20)
 		{
@@ -131,6 +138,9 @@ _int CGreenWandBullet::Update_Object(const _float & fTimeDelta)
 			D3DXVec3TransformNormal(&m_vDirection, &vLook, &matRot);
 		}
 
+
+
+
 		m_bReady = true;
 	}
 
@@ -142,6 +152,10 @@ _int CGreenWandBullet::Update_Object(const _float & fTimeDelta)
 
 	m_fSpeed = 10.f;
 	m_pTransCom->Move_Pos(&(m_fSpeed * fTimeDelta * m_vDirection));
+
+	if(m_fBulletAngle == 0)
+	CLightMgr::GetInstance()->Update_Pos(LIGHT_PLAYERBULLET, m_pTransCom->Get_Pos());
+
 	if (0.1f < m_fParticleTime)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.1f,
@@ -250,6 +264,9 @@ void CGreenWandBullet::Reset()
 	m_bReady = false;
 	m_pColliderCom->Set_Free(true);
 	m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
+
+	m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, FALSE);
+
 	CBulletMgr::GetInstance()->Collect_Obj(m_iIndex, BULLET_GREENWAND);
 }
 
