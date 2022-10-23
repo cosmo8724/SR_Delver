@@ -48,7 +48,7 @@ _int CDoor::Update_Object(const _float & fTimeDelta)
 	if (!g_bIsTool && !m_bReady)
 	{
 		CPlayer* pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-		NULL_CHECK(pPlayer);
+		NULL_CHECK_RETURN(pPlayer,0);
 
 		pPlayer->Add_CollisionGroup(this);
 		m_bReady = true;

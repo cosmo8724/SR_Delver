@@ -245,10 +245,6 @@ void CStage::LateUpdate_Scene(void)
 	}
 
 
-
-
-
-
 	/*  // CollisionTest
 	CBlock* pBlock = nullptr;
 	CLayer*	pLayer = m_mapLayer[L"Layer_GameLogic"];
@@ -833,15 +829,26 @@ HRESULT CStage::Ready_Light(void)
 	D3DLIGHT9		tLightInfo3;
 	ZeroMemory(&tLightInfo3, sizeof(D3DLIGHT9));
 	tLightInfo3.Type = D3DLIGHT_POINT;
-	tLightInfo3.Diffuse = D3DXCOLOR(0.5f, 0.f, 0.5f, 1.f);
+	tLightInfo3.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f , 1.f);
 	tLightInfo3.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo3.Ambient = D3DXCOLOR(0.5f, 0.f, 0.5f, 1.f);
+	tLightInfo3.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo3.Position = _vec3(7.f, 2.f, 5.f);
 	tLightInfo3.Range = 0.5f;
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo3, LIGHT_WAND), E_FAIL);
 	m_pGraphicDev->LightEnable(LIGHT_WAND, FALSE);
 
 
+	// WandBullet
+	D3DLIGHT9		tLightInfo4;
+	ZeroMemory(&tLightInfo4, sizeof(D3DLIGHT9));
+	tLightInfo4.Type = D3DLIGHT_POINT;
+	tLightInfo4.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo4.Range = 1.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo4, LIGHT_PLAYERBULLET), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, FALSE);
 
 	return S_OK;
 }
