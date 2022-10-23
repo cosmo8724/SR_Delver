@@ -32,6 +32,7 @@ public:
 	ITEMTYPE	Get_ItemType() { return m_eItemType; }
 	ITEMSTATE	Get_State() { return m_eState; }
 	ITEMINFO	Get_ItemInfo() { return m_tInfo; }
+	wstring		Get_String() { return m_str; }
 
 	void		Billboard();
 
@@ -61,6 +62,8 @@ protected:
 
 	_matrix			m_matOldBill;
 	_matrix			m_matWorld;
+
+	wstring			m_str = L"";
 
 };
 

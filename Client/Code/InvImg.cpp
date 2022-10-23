@@ -70,11 +70,27 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 			return 0;
 	}
 
+	POINT	ptMouse{};
+
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	
+	m_Rect = { _long(m_fPosX - m_fScaleX), _long(m_fPosY - m_fScaleY), _long(m_fPosX + m_fScaleX), _long(m_fPosY + m_fScaleY) };
+
 	if (m_eState == STATE_INV)
 	{
-		if ( m_pInv->Is_Open() || (Engine::Get_DIKeyState(DIK_TAB) & 0X80))
+		if (m_pInv->Is_Open() || (Engine::Get_DIKeyState(DIK_TAB) & 0X80))
+		{
 			m_bOn = true;
+			if (PtInRect(&m_Rect, ptMouse))
+			{
+				m_bText = true;
+				m_Point = ptMouse;
+			}
+			else
+				m_bText = false;
 			//Engine::Play_Sound(L"ui_dialogue_open.mp3", SOUND_UI, 1.f);
+		}
 		else
 		{
 			m_bOn = false;
@@ -94,30 +110,6 @@ _int CInvImg::Update_Object(const _float & fTimeDelta)
 		vPos = { m_fPosX, m_fPosY, 0.f };
 	else
 	{
-		POINT	ptMouse{};
-
-		GetCursorPos(&ptMouse);
-		ScreenToClient(g_hWnd, &ptMouse);
-
-		//// viewport -> projection 
-		//D3DVIEWPORT9		ViewPort;
-		//ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
-		//m_pGraphicDev->GetViewport(&ViewPort);
-
-		//_vec3	vPoint;
-		//vPoint.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
-		//vPoint.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
-		//vPoint.z = 0.f;
-
-		//// projection -> view space
-		//_matrix matProj;
-		//D3DXMatrixOrthoLH(&matProj, WINCX, WINCY, 0.f, 1.f);
-		//D3DXMatrixInverse(&matProj, nullptr, &matProj);
-		//D3DXVec3TransformCoord(&vPoint, &vPoint, &matProj);
-
-		//ptMouse.x = _long(vPoint.x);
-		//ptMouse.y = _long(vPoint.y);
-
 		vPos = { (_float)ptMouse.x,(_float)ptMouse.y, 0.f };
 	}
 	m_pTransCom->Set_Pos(vPos.x - WINCX * 0.5f, -vPos.y + WINCY * 0.5f, 0.f);
@@ -235,6 +227,9 @@ void CInvImg::Render_Obejct(void)
 		Render_Font(L"Font_Jinji", index, &_vec2(m_fPosX, m_fPosY), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 
 	}
+		
+	if(m_bText)
+		Render_Font(L"Font_Jinji", m_pObj->Get_String().c_str(), &_vec2(m_Point.x+ 20.f, m_Point.y+20.f),  D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
 
 HRESULT CInvImg::Add_Component(void)
