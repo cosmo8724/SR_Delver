@@ -50,6 +50,7 @@ private:
 	_bool				m_bReady = false;
 	CInventory*			m_pInv = nullptr;
 
-
+	RECT				m_Rect;
+	POINT				m_Point;
 };
 

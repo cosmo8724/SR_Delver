@@ -16,6 +16,7 @@ CDagger::CDagger(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"Dagger";
 	m_eItemType = ITEM_WEAPON;
 	m_eWeaponType = WT_MELEE;
+	m_str = L"<Dagger>\nType:Weapon\nEasy to Chop chop";
 }
 
 CDagger::~CDagger()
