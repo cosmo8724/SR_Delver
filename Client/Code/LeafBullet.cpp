@@ -27,7 +27,7 @@ HRESULT CLeafBullet::Ready_Object(void)
 	m_tInfo.iAttack = 1;
 	m_fSpeed = 20.f;
 	//m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
-
+	m_pColliderCom->Set_Free(true);
 	return S_OK;
 }
 
@@ -212,7 +212,7 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 	// Bullet의 부모가 될 Leaf의 Transform
 	// Leaf가 Player를 바라보는 방향을 위해 Leaf, Player
 	_vec3	vPos, vPlayerPos;
-	CTransform*		pLeaf = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Leaf_0", L"Proto_TransformCom", ID_DYNAMIC));
+	CTransform*		pLeaf = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pLeaf, -1);
 
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));

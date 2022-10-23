@@ -27,7 +27,7 @@ HRESULT CSongBossStun::Ready_Object(_int iBulletCount)
 
 	m_pTransCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_fShakeSpeed = 2.f;
-
+	m_pColliderCom->Set_Free(true);
 	m_iBulletCount = iBulletCount;
 	return S_OK;
 }

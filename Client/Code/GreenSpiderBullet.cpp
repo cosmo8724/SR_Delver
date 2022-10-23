@@ -32,7 +32,7 @@ HRESULT CGreenSpiderBullet::Ready_Object(void)
 	m_fSpeed = 10.f;
 
 	m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
-
+	m_pColliderCom->Set_Free(true);
 	return S_OK;
 }
 
@@ -168,7 +168,7 @@ _int CGreenSpiderBullet::Target(const _float & fTimeDelta)
 {
 	if (!m_bReady)
 	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"GreenSpider_0", L"Proto_TransformCom", ID_DYNAMIC));
+		CTransform*		pFist = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pFist, -1);
 
 		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));

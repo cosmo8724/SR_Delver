@@ -29,6 +29,7 @@ HRESULT CFistBullet::Ready_Object(void)
 	m_fSpeed = 10.f;
 
 	m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_pColliderCom->Set_Free(true);
 
 	return S_OK;
 }
@@ -162,7 +163,7 @@ _int CFistBullet::Target(const _float & fTimeDelta)
 {
 	if (!m_bReady)
 	{
-		CTransform*		pFist = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Fist_0", L"Proto_TransformCom", ID_DYNAMIC));
+		CTransform*		pFist = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK_RETURN(pFist, 0);
 
 		CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));

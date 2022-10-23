@@ -383,6 +383,37 @@ void CBulletMgr::Pre_Setting(BULLETID eID, _float fSet)
 	}
 }
 
+void CBulletMgr::Set_Obj(BULLETID eID, CGameObject * pObj)
+{
+	_int iIdx = -1;
+
+	switch (eID)
+	{
+	case BULLET_M_FIST:
+		if (!m_IdxQue[eID].empty())
+		{
+			iIdx = m_IdxQue[eID].front();
+			static_cast<CFistBullet*>(m_vecObjPool[eID][iIdx])->Set_Target(pObj);
+		}
+		break;
+	case BULLET_M_SPIDER:
+		if (!m_IdxQue[eID].empty())
+		{
+			iIdx = m_IdxQue[eID].front();
+			static_cast<CGreenSpiderBullet*>(m_vecObjPool[eID][iIdx])->Set_Target(pObj);
+		}
+		break;
+	case BULLET_M_LEAF:
+		if (!m_IdxQue[eID].empty())
+		{
+			iIdx = m_IdxQue[eID].front();
+			static_cast<CLeafBullet*>(m_vecObjPool[eID][iIdx])->Set_Target(pObj);
+		}
+		break;
+
+	}
+}
+
 void CBulletMgr::Free()
 {
 	for (int i = 0; i < BULLET_END; ++i)

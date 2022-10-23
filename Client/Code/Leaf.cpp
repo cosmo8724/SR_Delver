@@ -174,6 +174,7 @@ void CLeaf::SKillTeleporting(const _float & fTimeDelta)
 			m_fBulletTimeAcc += fTimeDelta;
 			if (0.2f < m_fBulletTimeAcc)
 			{
+				CBulletMgr::GetInstance()->Set_Obj(BULLET_M_LEAF, this);
 				CBulletMgr::GetInstance()->Fire(BULLET_M_LEAF);
 				m_fBulletTimeAcc = 0.f;
 			}
