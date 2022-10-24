@@ -45,6 +45,7 @@ HRESULT CParticleMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle13_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle13/particle13.png", TEX_NORMAL, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle14_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle14/particle14_%d.png", TEX_NORMAL, 5)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle15_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle15/particle15_%d.png", TEX_NORMAL, 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle16_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle16/particle16_%d.png", TEX_NORMAL, 1)), E_FAIL);
 
 
 	return S_OK;
