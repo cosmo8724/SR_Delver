@@ -59,12 +59,6 @@ _int CBonFire::Update_Object(const _float & fTimeDelta)
 		else
 			Engine::StopSound(SOUND_BONFIRE);
 	}
-
-		if (fDist < 10.f)
-			Engine::Play_Sound(L"E_Torch.mp3", SOUND_BONFIRE, 1.f);
-		else
-			Engine::StopSound(SOUND_BONFIRE);
-	}
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return OBJ_NOEVENT;
