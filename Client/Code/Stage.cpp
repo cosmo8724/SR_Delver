@@ -768,7 +768,7 @@ HRESULT CStage::Ready_Light(void)
 	D3DLIGHT9        tLightInfo0;
 	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
-	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
+	tLightInfo0.Type = D3DLIGHT_POINT;
 	tLightInfo0.Diffuse = D3DXCOLOR(0.1f, 0.1f,0.1f, 1.f);
 	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
@@ -776,6 +776,8 @@ HRESULT CStage::Ready_Light(void)
 	tLightInfo0.Range = 3000.f;
 
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_STAGE, FALSE);
+
 
 	//// Player
 	D3DLIGHT9		tLightInfo1;

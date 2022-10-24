@@ -66,9 +66,7 @@ _int CLantern::Update_Object(const _float & fTimeDelta)
 		//}
 		//else
 		//	m_bText = false;
-
-
-
+		m_pGraphicDev->LightEnable(LIGHT_LANTERN, FALSE);
 		break;
 	case STATE_EQUIP:
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
@@ -110,6 +108,8 @@ void CLantern::Render_Obejct(void)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);

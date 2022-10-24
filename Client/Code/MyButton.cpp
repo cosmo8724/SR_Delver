@@ -115,6 +115,7 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 				m_pInv->Set_Open(false);
 				CEquipWindow* pEquip = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 				pEquip->Set_Open(false);
+
 			}
 		}
 	
