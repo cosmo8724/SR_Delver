@@ -54,5 +54,6 @@
 extern HINSTANCE	g_hInst;
 extern HWND			g_hWnd;
 extern bool			g_bIsTool;
+extern bool			g_bIsRenderInstancing;
 
 using namespace std;

@@ -48,6 +48,13 @@ CBlueBat::CBlueBat(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 
 CBlueBat::CBlueBat(const CMonster& rhs)
 	: CMonster(rhs)
+	, m_fJSpeed(0.2f)
+	, m_fJSpeed0(0.2f)
+	, m_fAccel(0.015f)
+	, m_fTimeAcc(0.f)
+	, m_fJumpTimeAcc(0.f)
+	, m_fIdleTimeAcc(0.f)
+	, m_fSkillTimeAcc(0.f)
 {
 	m_ObjTag = L"BlueBat";
 }
@@ -207,7 +214,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 		_vec3 vPos;
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-		if (m_fJumpTimeAcc > 0.2f && m_vPos.y >= vPos.y)
+		if (m_fJumpTimeAcc > 0.2f && m_vPos.y > vPos.y)
 		{
 			m_bJump = false;
 			m_fJumpTimeAcc = 0.f;

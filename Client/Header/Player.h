@@ -90,6 +90,7 @@ private:
 
 	CBlock*				m_pCurrentBlock = nullptr;
 	_bool				m_bBlockChanged = true;
+	_bool				m_bOnce = false;
 
 	PLAYER_STATE		m_eState = PLAYER_GROUND;
 
