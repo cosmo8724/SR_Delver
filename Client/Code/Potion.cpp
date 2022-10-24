@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "CullingMgr.h"
 #include "StaticCamera.h"
+#include "ParticleMgr.h"
 
 CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CItem(pGraphicDev)

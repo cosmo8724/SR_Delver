@@ -225,6 +225,20 @@ void CPlayer::Render_Obejct(void)
 
 }
 
+void CPlayer::Set_HpPlus(_int iHp)
+{
+	if (m_tInfo.iHpMax > m_tInfo.iHp) m_tInfo.iHp += iHp;
+
+
+
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 3.f, { 1.f, 1.f, 2.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_MOOD, TEXTURE_10);
+
+
+}
+
 HRESULT CPlayer::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
@@ -752,6 +766,7 @@ void CPlayer::Hunger(const _float & fTimeDelta)
 		m_fHungerTimeAcc = 0.f;
 	}
 }
+
 
 void CPlayer::Set_Level(const _int& iMonsterHp, const _int& iMonsterExp)
 {

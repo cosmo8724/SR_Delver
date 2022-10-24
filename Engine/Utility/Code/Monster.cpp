@@ -57,6 +57,16 @@ void CMonster::Render_Obejct()
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
+	D3DMATERIAL9		tMtrl;
+	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+	tMtrl.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
+	tMtrl.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tMtrl.Ambient	= D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f); // 환경반사
+
+	m_pGraphicDev->SetMaterial(&tMtrl);
+
+
 	m_pAnimtorCom->Set_Texture();
 	//m_pTextureCom->Set_Texture((_ulong)m_fFrame);	// 텍스처 정보 세팅을 우선적으로 한다.
 	m_pBufferCom->Render_Buffer();

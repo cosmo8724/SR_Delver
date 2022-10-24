@@ -49,6 +49,8 @@ private:
 
 	_bool				m_bFinished = false;
 
+	_float				m_fParticle = 0.f;
+
 	_bool Test = false;
 };
 

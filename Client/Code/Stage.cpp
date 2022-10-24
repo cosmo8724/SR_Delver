@@ -795,7 +795,7 @@ HRESULT CStage::Ready_Light(void)
 	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
 	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
-	tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo0.Diffuse = D3DXCOLOR(0.1f, 0.1f,0.1f, 1.f);
 	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Direction = _vec3(0.f, 1.f, 0.f);
