@@ -20,6 +20,7 @@ CGold::CGold(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"Gold";
 	m_eItemType = ITEM_GOLD;
 	m_str = L"<Gold>\nType:Item\nMy money is precious!!! ";
+
 }
 
 CGold::CGold(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _eType)
@@ -43,6 +44,16 @@ HRESULT CGold::Ready_Object(void)
 
 	m_eState = STATE_GROUND;
 	m_eItemType = ITEM_GOLD;
+	
+	m_vPopAngle =
+	{	
+		// high - low,  + low
+		((rand() % 10000) * 0.0001f* (1.f + 1.f)) - 1.f,
+		((rand() % 10000) * 0.0001f* (1.f - 0.f)) + 0.f,
+		((rand() % 10000) * 0.0001f* (1.f + 1.f)) - 1.f
+	};
+	D3DXVec3Normalize(&m_vPopAngle, &m_vPopAngle);
+
 	return S_OK;
 }
 
@@ -56,11 +67,26 @@ _int CGold::Update_Object(const _float & fTimeDelta)
 
 	int iResult = CItem::Update_Object(fTimeDelta);
 
-	if (STATE_GROUND == m_eState)
+	switch (m_eState)
 	{
+	case STATE_GROUND:
+		m_pColliderCom->Set_Free(false);
 		m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 		m_pTransCom->Set_Y(m_vPos.y - 0.5f);
+		break;
+	case STATE_POP:
+		m_pColliderCom->Set_Free(true);
+		m_vPopAngle.y -= fTimeDelta;
+		if (m_pTransCom->Get_Pos().y >= m_vPos.y)
+		{
+			m_pTransCom->Move_Pos(&_vec3(m_vPopAngle.x * 0.04f, m_vPopAngle.y * 0.3f ,m_vPopAngle.z * 0.04f));
+		}
+		else
+			m_eState = STATE_GROUND;
+
+		break;
 	}
+
 
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
@@ -70,7 +96,7 @@ _int CGold::Update_Object(const _float & fTimeDelta)
 
 void CGold::LateUpdate_Object(void)
 {
-	if (m_eState != STATE_GROUND)
+	if (m_eState == STATE_INV)
 		return;
 
 	if (CCullingMgr::GetInstance()->Is_Inside(this))
@@ -82,7 +108,7 @@ void CGold::LateUpdate_Object(void)
 
 void CGold::Render_Obejct(void)
 {
-	if (m_eState != STATE_GROUND)
+	if (m_eState == STATE_INV )
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());

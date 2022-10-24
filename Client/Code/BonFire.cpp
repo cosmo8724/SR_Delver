@@ -45,10 +45,10 @@ _int CBonFire::Update_Object(const _float & fTimeDelta)
 	// sound
 	if (!g_bIsTool)
 	{
-		CTransform*        pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+		CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 		NULL_CHECK(pPlayerTransformCom);
 
-		_vec3        vPlayerPos, vPos;
+		_vec3		vPlayerPos, vPos;
 		pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 		m_pTransCom->Get_Info(INFO_POS, &vPos);
 
@@ -60,6 +60,11 @@ _int CBonFire::Update_Object(const _float & fTimeDelta)
 			Engine::StopSound(SOUND_BONFIRE);
 	}
 
+		if (fDist < 10.f)
+			Engine::Play_Sound(L"E_Torch.mp3", SOUND_BONFIRE, 1.f);
+		else
+			Engine::StopSound(SOUND_BONFIRE);
+	}
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return OBJ_NOEVENT;
@@ -81,7 +86,7 @@ void CBonFire::Render_Obejct(void)
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
-	// ¾ËÆÄ°ª º¯È­
+	// ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½È­
 	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(m_iTransparency, 0, 0, 0));
 	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
@@ -95,17 +100,15 @@ void CBonFire::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-
 	m_pTextureCom->Set_Texture((_ulong)m_fFrame);
 	m_pBufferCom->Render_Buffer();
 
-	// ¾ËÆÄ°ª º¯È­ ÇØÁ¦
+	// ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
 	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-
-	CEcoObject::Render_Obejct();	// collider Ãâ·Â
+	CEcoObject::Render_Obejct();	// collider ï¿½ï¿½ï¿½
 }
 
 HRESULT CBonFire::Add_Component(void)

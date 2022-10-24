@@ -19,6 +19,7 @@ CKey::CKey(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_ObjTag = L"Key";
 	m_eItemType = ITEM_KEY;
 	m_str = L"<Key>\nType:Item\nKeep it well";
+	m_fHeight = 0.8f;
 }
 
 CKey::~CKey()
@@ -29,7 +30,8 @@ HRESULT CKey::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	m_eState = STATE_GROUND;
+	m_eState = STATE_POP;
+	m_pColliderCom->Set_Free(true);
 	m_eItemType = ITEM_KEY;
 	return S_OK;
 
@@ -45,10 +47,26 @@ _int CKey::Update_Object(const _float & fTimeDelta)
 
 	int iResult = CItem::Update_Object(fTimeDelta);
 
-	if (STATE_GROUND == m_eState)
+	switch (m_eState)
 	{
+	case STATE_GROUND:
+		m_pColliderCom->Set_Free(false);
 		m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
+		break;
+	case STATE_POP:
+		_float fSpeed = fTimeDelta;
+		m_fHeightNow += fSpeed;
+		if (m_fHeightNow < m_fHeight)
+		{
+
+			m_pTransCom->Move_Pos(&_vec3{ 0.f, fSpeed, 0.f });
+		}
+		else
+			m_eState = STATE_GROUND;
+
+		break;
 	}
+
 
 	m_pColliderCom->Calculate_WorldMatrix(*m_pTransCom->Get_WorldMatrixPointer());
 
@@ -141,7 +159,7 @@ void CKey::Free(void)
 
 void CKey::CollisionEvent(CGameObject * pObj)
 {
-
+	int i = 0;
 }
 
 void CKey::InteractEvent()

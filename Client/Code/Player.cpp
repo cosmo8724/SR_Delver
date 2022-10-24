@@ -225,6 +225,20 @@ void CPlayer::Render_Obejct(void)
 
 }
 
+void CPlayer::Set_HpPlus(_int iHp)
+{
+	if (m_tInfo.iHpMax > m_tInfo.iHp) m_tInfo.iHp += iHp;
+
+
+
+		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.5f, { 1.f, 1.f, 2.f },
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_MOOD, TEXTURE_16);
+
+
+}
+
 HRESULT CPlayer::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
@@ -472,6 +486,11 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CTreasureBox*	pTreasureBox = dynamic_cast<CTreasureBox*>(pOtherObj);
 	if (pTreasureBox)
 	{
+		if (pTreasureBox->Get_CurrentTexture() == 0)
+		{
+			m_str = L"E : Open";
+			bText = true;
+		}
 		if (Engine::Key_Down(DIK_E))
 			pTreasureBox->InteractEvent();
 	}
@@ -511,7 +530,6 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State() && pItem->Get_ItemType() != ITEM_GOLD)
 	{
-
 		m_str = L"E : Get";
 		if (Key_Down(DIK_E))
 		{
@@ -752,6 +770,7 @@ void CPlayer::Hunger(const _float & fTimeDelta)
 		m_fHungerTimeAcc = 0.f;
 	}
 }
+
 
 void CPlayer::Set_Level(const _int& iMonsterHp, const _int& iMonsterExp)
 {

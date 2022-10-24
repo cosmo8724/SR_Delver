@@ -51,7 +51,7 @@ void CUserParticle::Set_Texture(PTEXTUREID eTex)
 
 	auto iter = find_if(m_mapComponent[ID_STATIC].begin(), m_mapComponent[ID_STATIC].end(), CTag_Finder(str.c_str()));
 
-	if (iter != m_mapComponent[ID_STATIC].end())	// �̹� �����ϴ� �ؽ��ĸ��̶�� �ʿ� ���� �ʰ� ����.
+	if (iter != m_mapComponent[ID_STATIC].end())	
 		m_pTextureCom = static_cast<CTexture*>(iter->second);
 	else
 	{
@@ -186,7 +186,6 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 
 		GetRandomVector(&attribute->vVelocity, &min, &max);
 
-		//��ü�� ����� ���� ����ȭ
 		D3DXVec3Normalize(&attribute->vVelocity, &attribute->vVelocity);
 
 		attribute->vVelocity *= m_fVelocityMulti;
@@ -197,15 +196,12 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	{
 		attribute->bIsAlive = true;
 
-		// �������� ��ġ������ ���� ������ x, z��ǥ�� ��´�.
 		GetRandomVector(&attribute->vPosition,
 			&m_bdBox.vMin,
 			&m_bdBox.vMax);
 
-		// ���� (y-��ǥ)�� �׻� �������� �ֻ���� �ȴ�.
 		attribute->vPosition.y = m_bdBox.vMax.y;
 
-		// �����̴� �Ʒ������� �������� �ణ ������ ���Ѵ�.
 		attribute->vVelocity.x = GetRandomFloat(0.0f, m_Attribute.vVelocity.x) * (-3.0f);
 		attribute->vVelocity.y = GetRandomFloat(0.0f, m_Attribute.vVelocity.y) * (-10.0f);
 		attribute->vVelocity.z = m_Attribute.vVelocity.z;
@@ -278,6 +274,14 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	case PTYPE_MOOD:
 	{
 		attribute->bIsAlive = true;
+
+		attribute->vVelocity =
+		{
+			GetRandomFloat(-m_Attribute.vVelocity.x, m_Attribute.vVelocity.x),
+			GetRandomFloat(-m_Attribute.vVelocity.y, m_Attribute.vVelocity.y),
+			GetRandomFloat(1.f, m_Attribute.vVelocity.z)
+		};
+
 	}
 	break;
 
@@ -297,7 +301,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->tColor = m_Attribute.tColor;
 	}
 	attribute->fAge = 0.f;
-	attribute->fLifeTime = m_Attribute.fLifeTime; // 2�� ������ ������ ������.
+	attribute->fLifeTime = m_Attribute.fLifeTime; 
 }
 
 void CUserParticle::update(_float fTimeDelta)
@@ -309,12 +313,11 @@ void CUserParticle::update(_float fTimeDelta)
 		m_fSize -= 0.005f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// ������ ��ƼŬ�� ����
 			if (iter->bIsAlive)
 			{
 				iter->vPosition += iter->vVelocity * fTimeDelta;
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // ���δ�.
+				if (iter->fAge > iter->fLifeTime) 
 					iter->bIsAlive = false;
 			}
 		}
@@ -327,10 +330,8 @@ void CUserParticle::update(_float fTimeDelta)
 		{
 			iter->vPosition += iter->vVelocity * fTimeDelta;
 
-			// ����Ʈ�� ��踦 ����°�?
 			if (m_bdBox.isPointInside(iter->vPosition) == false)
 			{
-				// ��踦 ��� ��ƼŬ�� ��Ȱ���Ѵ�.
 				resetParticle(&(*iter));
 			}
 		}
@@ -390,7 +391,7 @@ void CUserParticle::update(_float fTimeDelta)
 					+ m_Attribute.vVelocity.z * vLook;
 
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // ���δ�.
+				if (iter->fAge > iter->fLifeTime) 
 					iter->bIsAlive = false;
 			}
 
@@ -398,7 +399,7 @@ void CUserParticle::update(_float fTimeDelta)
 
 	}
 	break;
-	case PTYPE_REMAIN: // �ܻ� ��ƼŬ
+	case PTYPE_REMAIN: 
 
 	{
 		CTransform* pCom = static_cast<CTransform*>(m_pTarget->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
@@ -406,7 +407,7 @@ void CUserParticle::update(_float fTimeDelta)
 		_float index = 1.f;
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{
-			// ������ ��ƼŬ�� ����
+			
 			if (iter->bIsAlive)
 			{
 				_vec3 vDir = pCom->Get_Pos() - iter->vPosition;
@@ -417,7 +418,7 @@ void CUserParticle::update(_float fTimeDelta)
 
 				iter->vPosition += (fSpeed* fTimeDelta* vDir);
 				iter->fAge += fTimeDelta;
-				if (iter->fAge > iter->fLifeTime) // ���δ�.
+				if (iter->fAge > iter->fLifeTime)
 				{
 					iter->bIsAlive = false;
 				}
@@ -503,7 +504,37 @@ void CUserParticle::update(_float fTimeDelta)
 	break;
 	case PTYPE_MOOD:
 	{
-		
+		_matrix matView;
+		m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+		D3DXMatrixInverse(&matView, 0, &matView);
+
+		_vec3 vRight, vUp, vLook, vPos;
+		memcpy(&vRight, &matView._11, sizeof(_vec3));
+		memcpy(&vUp, &matView._21, sizeof(_vec3));
+		memcpy(&vLook, &matView._31, sizeof(_vec3));
+		memcpy(&vPos, &matView._41, sizeof(_vec3));
+
+		//m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
+		//m_pTransCom->Get_Info(INFO_UP, &vUp);
+		//m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+		//m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
+		{
+			if (iter->bIsAlive)
+			{
+				iter->vPosition = vPos + iter->vVelocity.x * vRight
+					+ iter->vVelocity.y * vUp
+					+ iter->vVelocity.z * vLook;
+
+				iter->tColor.a -= 0.01f;
+
+				iter->fAge += fTimeDelta;
+				if (iter->fAge > iter->fLifeTime)
+					iter->bIsAlive = false;
+			}
+
+		}
 	}
 	break;
 

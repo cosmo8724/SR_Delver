@@ -3,6 +3,7 @@
 #include "Export_Function.h"
 #include "ItemMgr.h"
 #include "Player.h"
+#include "ParticleMgr.h"
 
 CTreasureBox::CTreasureBox(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CEcoObject(pGraphicDev)
@@ -166,7 +167,30 @@ void CTreasureBox::InteractEvent()
 
 		m_iTexture = 1;
 
-		CItemMgr::GetInstance()->Add_RandomObject(
-			L"Layer_GameLogic", L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
+		//CItemMgr::GetInstance()->Add_RandomObject(
+		//	L"Layer_GameLogic", L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
+
+		m_pColliderCom->Set_Free(true);
+
+
+		CParticleMgr::GetInstance()->Set_Info(this,
+			50,
+			0.1f,
+			{ 0.5f, 0.5f, 0.5f },
+			1.f,
+			{ 1.f, 1.f, 1.f, 1.f }, 1.f ,false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+
+
+		CItemMgr::GetInstance()->Add_GameObject_Box(L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
+
+
+		_int iRand = rand() % 5 + 3;
+		for (int i = 0; i < iRand; ++i)
+		{
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+		}
+
+	
 	}
 }

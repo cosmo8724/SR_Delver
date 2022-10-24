@@ -323,7 +323,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_0", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f }), POTION_1);
+		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 20.f }), POTION_1);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
@@ -615,6 +615,55 @@ CItem * CItemMgr::Add_GameObject_Shop(const _tchar * pLayerTag, const _tchar * o
 
 	return S_OK;
 }
+
+HRESULT		CItemMgr::Add_GameObject_Box(const _tchar* objTag, ITEMTYPE eType, _vec3 vPos)
+{
+	wstring tag = objTag;
+	tag += L"%d";
+
+	TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
+	wsprintf(szObjTag, objTag);
+	_tcscat_s(szObjTag, MAX_PATH, L"%d");
+	wsprintf(szObjTag, tag.c_str(), m_vecItemObjTags[eType].size());
+
+
+	wstring objName = objTag;
+	if (objName == L"Key")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CKey::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+
+		m_vecItemPool[ITEM_KEY].push_back(pGameObject);
+	}
+	else if (objName == L"Gold")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		_int iTex = rand() % GOLD_END;
+
+		CGameObject* pGameObject = CGold::Create(m_pGraphicDev, vPos, iTex);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		static_cast<CItem*>(pGameObject)->Set_State(STATE_POP);
+		
+		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
+	}
+	else
+	{
+		delete[] szObjTag;
+		szObjTag = nullptr;
+	}
+}
+
 
 inline void CItemMgr::Free(void)
 {
