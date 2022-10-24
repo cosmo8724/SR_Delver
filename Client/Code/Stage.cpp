@@ -690,6 +690,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pCloneObject = CRockFall::Create(pEcoObject);
 				break;
 
+			case ECO_KNIFETRAP:
+				pCloneObject = CKnifeTrap::Create(pEcoObject);
+				break;
+
+			case ECO_DOOR:
+				pCloneObject = CDoor::Create(pEcoObject);
+				break;
+
 			case ECO_TREASUREBOX:
 				pCloneObject = CTreasureBox::Create(pEcoObject);
 				break;
@@ -768,13 +776,13 @@ HRESULT CStage::Ready_Light(void)
 	D3DLIGHT9        tLightInfo0;
 	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
-	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
-	tLightInfo0.Diffuse = D3DXCOLOR(0.1f, 0.1f,0.1f, 1.f);
-	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
-	tLightInfo0.Range = 3000.f;
-
+	tLightInfo0.Type		= D3DLIGHT_POINT;
+	tLightInfo0.Diffuse		= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo0.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo0.Ambient		= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo0.Position	= _vec3(48.f, 1.f, 55.f);
+	//tLightInfo0.Attenuation0 = 1.f;
+	tLightInfo0.Range		= 73.f;
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
 
 	//// Player
@@ -785,10 +793,10 @@ HRESULT CStage::Ready_Light(void)
 	tLightInfo1.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo1.Ambient		= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo1.Position	= _vec3(7.f, 2.f, 5.f);
-	tLightInfo1.Attenuation0 = 0.00001f;
+	tLightInfo1.Attenuation0 = 0.001f;
 	tLightInfo1.Range = 300.f;
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo1, LIGHT_PLAYER), E_FAIL);
-	m_pGraphicDev->LightEnable(LIGHT_PLAYER, FALSE);
+	m_pGraphicDev->LightEnable(LIGHT_LANTERN, FALSE);
 
 
 	//// Lantern
