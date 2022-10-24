@@ -75,11 +75,11 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 	if (!m_bCreateIcon && !g_bIsTool)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
-		pMiniMap->Add_Icon(m_pGraphicDev, this);
+		pMiniMap->Add_Icon(m_pGraphicDev, this);		
 		m_bCreateIcon = true;
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this); // TODO : Delete
 
 	//// Do you have a rental? Ok->true
 	//CLantern* pLentern = dynamic_cast<CLantern*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Lantern"));
@@ -364,9 +364,9 @@ void CSkeletonGhost::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack(m_vPos.y + 2.2f);
+		CMonster::Set_KnockBack(m_vPos.y + 0.2f);
 
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 4.f, 0.f },
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, m_vPos.y + 0.5f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
@@ -395,7 +395,7 @@ void CSkeletonGhost::Dead()
 		return;
 
 	m_eCurState = DIE;
-	m_pTransCom->Set_Y(m_vPos.y);
+	m_pTransCom->Set_Y(m_vPos.y - 3.f);
 
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
