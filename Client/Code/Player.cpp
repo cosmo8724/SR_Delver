@@ -629,7 +629,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{	
 		if(0 < _HpMinus)
 		m_bKnockBack = true;
-		
+		cout << "아야 " << endl;
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
 	}

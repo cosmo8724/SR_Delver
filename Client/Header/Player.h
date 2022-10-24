@@ -27,36 +27,8 @@ public:
 	void				Set_HpFull() { m_tInfo.iHp = m_tInfo.iHpMax; }
 	void				Set_HpPlus(_int iHp = 1) { if (m_tInfo.iHpMax > m_tInfo.iHp) m_tInfo.iHp += iHp; }
 	void				Set_HpMinus(_int iHp = 1) { if (0 < m_tInfo.iHp) m_tInfo.iHp -= iHp; }
-	_int				Set_Hp(_int iHp)
-	{
-		if (m_tInfo.iHpMax > m_tInfo.iHp && 0 < m_tInfo.iHp)
-		{
-			cout << "Set" << endl;
-			m_tInfo.iHp += iHp;
-		}
-		else
-		{
-			cout << "------return 0 " << endl;
-			return 0;
-		}
+	_int				Set_HpMinusReturn(_int iHp = 1) { if (0 > m_tInfo.iHp) return 0; m_tInfo.iHp -= iHp; }
 
-
-	}
-
-	_int				Set_HpPlusRetuen(_int iHp = 1)
-						{
-							if (m_tInfo.iHpMax > m_tInfo.iHp)
-								m_tInfo.iHp += iHp;
-							else
-								return 0; // false
-						}
-	//_int				Set_HpintMinusRetuen(_int iHp = 1)
-	//					{
-	//						if (0 < m_tInfo.iHp)
-	//							m_tInfo.iHp -= iHp;
-	//						else
-	//							return 0; // false
-	//					}
 	void				Set_HungerPlus() { if (5 > m_tInfo.iHunger) m_tInfo.iHunger++; }
 	void				Set_HungerMinus() { if (0 < m_tInfo.iHunger) m_tInfo.iHunger--; }
 	void				Set_GoldPlus(_int iGold) { m_tInfo.iGold += iGold; }

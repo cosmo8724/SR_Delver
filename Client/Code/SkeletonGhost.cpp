@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
+#include "Lantern.h"
 
 CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -78,11 +79,14 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 		m_bCreateIcon = true;
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	
+	// Do you have a rental? Ok->true
+	CLantern* pLentern = dynamic_cast<CLantern*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Lantern"));
+	if(STATE_EQUIP == pLentern->Get_State())
+		Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
-	m_bRender = true; // TODO : false
 	
 	if (g_bIsTool)
 		return 0;
@@ -115,8 +119,8 @@ void CSkeletonGhost::LateUpdate_Object(void)
 
 void CSkeletonGhost::Render_Obejct(void)
 {
-	if (!m_bRender)
-		return;
+	//if (!m_bRender)
+	//	return;
 
 	if (!m_bRenderOFF)
 		CMonster::Render_Obejct();
@@ -200,7 +204,7 @@ void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 			m_eCurState = ATTACK;
 
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-			pPlayer->Set_HpMinus();
+			pPlayer->OnHit(m_tInfo.iAttack);
 
 			m_fHpMinusTimeAcc = 0.f;
 		}
@@ -292,14 +296,14 @@ void CSkeletonGhost::Circle()
 	//m_pTransCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z);
 
 	_vec3 vDir, vDistance;
-	vDir = { 1.f, 1.f, 1.f };
-	D3DXVec3Normalize(&vDir, &vDir);
+	vDir = { 0.f, 1.f, 0.f };
+	//D3DXVec3Normalize(&vDir, &vDir);
 	//D3DXVec3Normalize(&vDistance, &vDistance);
 
 	_matrix matTrans, matRev;
 
 	// ��
-	D3DXMatrixTranslation(&matTrans, vDir.x * 5.f, vDir.y * -2.5f, vDir.z);
+	D3DXMatrixTranslation(&matTrans, 3.f, 2.f, 0.f);
 
 	// ��
 	m_fAngle += 0.03f;
@@ -359,7 +363,7 @@ void CSkeletonGhost::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack(m_vPos.y);
+		CMonster::Set_KnockBack(m_vPos.y + 2.2f);
 
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 4.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
@@ -390,7 +394,7 @@ void CSkeletonGhost::Dead()
 		return;
 
 	m_eCurState = DIE;
-	m_pTransCom->Set_Y(m_vPos.y - 3.f);
+	m_pTransCom->Set_Y(m_vPos.y);
 
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);

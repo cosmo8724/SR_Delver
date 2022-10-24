@@ -13,9 +13,6 @@ private:
 	virtual ~CSkeletonGhost();
 
 public:
-	void				Set_Render() { m_bRender = true; }; // TODO : If the player is holding the light, true
-
-public:
 	virtual HRESULT		Ready_Object(void)						override;
 	virtual _int		Update_Object(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_Object(void)					override;
@@ -39,17 +36,11 @@ private:
 
 	_float				m_fHeight;
 
-	_bool				m_bRender = false;		
 	_bool				m_bCircle = false;
 
 	_matrix				m_matWorld;
 	_vec3				m_vTrans;
 	_float				m_fAngle = 0.f;
-
-	// È¸Àü
-	_bool					m_bReady;
-	_vec3					m_vDir;
-
 
 	// Timer
 	_float				m_fTimeAcc;
