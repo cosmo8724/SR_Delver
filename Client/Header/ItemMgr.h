@@ -39,6 +39,8 @@ public:
 	// 아이템 동적 할당용 (상점)
 	CItem*		Add_GameObject_Shop(const _tchar* pLayerTag, const _tchar* objTag, ITEMTYPE eType, _vec3 vPos);
 
+	// 아이템 동적 할당용 (오브젝트 파괴 시 생성)
+	HRESULT			Add_GameObject_Box(const _tchar* objTag, ITEMTYPE eType, _vec3 vPos);
 
 public:
 	inline virtual void Free(void);

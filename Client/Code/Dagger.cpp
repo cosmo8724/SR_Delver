@@ -188,7 +188,6 @@ void CDagger::InteractEvent()
 {
 	if (STATE_GROUND == m_eState)
 	{
-
 		m_eState = STATE_INV;
 		m_pColliderCom->Set_Free(true);
 	}

@@ -504,11 +504,20 @@ void CUserParticle::update(_float fTimeDelta)
 	break;
 	case PTYPE_MOOD:
 	{
+		_matrix matView;
+		m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+		D3DXMatrixInverse(&matView, 0, &matView);
+
 		_vec3 vRight, vUp, vLook, vPos;
-		m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
-		m_pTransCom->Get_Info(INFO_UP, &vUp);
-		m_pTransCom->Get_Info(INFO_LOOK, &vLook);
-		m_pTransCom->Get_Info(INFO_POS, &vPos);
+		memcpy(&vRight, &matView._11, sizeof(_vec3));
+		memcpy(&vUp, &matView._21, sizeof(_vec3));
+		memcpy(&vLook, &matView._31, sizeof(_vec3));
+		memcpy(&vPos, &matView._41, sizeof(_vec3));
+
+		//m_pTransCom->Get_Info(INFO_RIGHT, &vRight);
+		//m_pTransCom->Get_Info(INFO_UP, &vUp);
+		//m_pTransCom->Get_Info(INFO_LOOK, &vLook);
+		//m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 		for (auto iter = m_particles.begin(); iter != m_particles.end(); ++iter)
 		{

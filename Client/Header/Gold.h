@@ -33,5 +33,7 @@ private:
 	_vec3				m_vPos;
 	_int				m_iTextureIdx = 0;
 	_int				m_iGold = 0;
+
+	_vec3				m_vPopAngle;
 };
 
