@@ -214,16 +214,16 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 		// GreenWand
-		pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 4.f }));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenWand", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+		//pGameObject = CGreenWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 4.f }));
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GreenWand", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 		// RadWand
-		pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 5.f }));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RadWand", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+		//pGameObject = CRedWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 5.f }));
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"RadWand", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 		//Key
 		//pGameObject = CKey::Create(m_pGraphicDev, _vec3({ 5.f, 1.f, 10.f }));
@@ -232,117 +232,117 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		//m_vecItemPool[ITEM_KEY].push_back(pGameObject);
 
 		// Armor
-		pGameObject = CArmor::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 3.f }), 0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Armor", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
+		//pGameObject = CArmor::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 3.f }), 0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Armor", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
 
-		pGameObject = CArmor::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 4.f }), 1);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Armor2", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
+		//pGameObject = CArmor::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 4.f }), 1);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Armor2", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
 
 		// Shield
-		pGameObject = CShield::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 10.f }));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shield", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
+		//pGameObject = CShield::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 10.f }));
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shield", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
 
 		// Helmat
-		pGameObject = CHelmat::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 5.f }), 0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmat", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_HELMAT].push_back(pGameObject);
+		//pGameObject = CHelmat::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 5.f }), 0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmat", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_HELMAT].push_back(pGameObject);
 
-		pGameObject = CHelmat::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 6.f }), 1);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmat2", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_HELMAT].push_back(pGameObject);
+		//pGameObject = CHelmat::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 6.f }), 1);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmat2", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_HELMAT].push_back(pGameObject);
 
 		// Necklace
-		pGameObject = CNecklace::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 7.f }), 0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Necklace", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_NECKLACE].push_back(pGameObject);
+		//pGameObject = CNecklace::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 7.f }), 0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Necklace", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_NECKLACE].push_back(pGameObject);
 
-		pGameObject = CNecklace::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 8.f }), 1);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Necklace2", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_NECKLACE].push_back(pGameObject);
+		//pGameObject = CNecklace::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 8.f }), 1);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Necklace2", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_NECKLACE].push_back(pGameObject);
 
 		// Pants
-		pGameObject = CPants::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 9.f }), 0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pants", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_PANTS].push_back(pGameObject);
+		//pGameObject = CPants::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 9.f }), 0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pants", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_PANTS].push_back(pGameObject);
 
-		pGameObject = CPants::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 10.f }), 1);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pants2", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_PANTS].push_back(pGameObject);
+		//pGameObject = CPants::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 10.f }), 1);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pants2", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_PANTS].push_back(pGameObject);
 
 		// Ring
-		pGameObject = CRing::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 11.f }), 0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Ring", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_RING].push_back(pGameObject);
+		//pGameObject = CRing::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 11.f }), 0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Ring", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_RING].push_back(pGameObject);
 
-		pGameObject = CRing::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 12.f }), 1);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Ring2", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_RING].push_back(pGameObject);
+		//pGameObject = CRing::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 12.f }), 1);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Ring2", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_RING].push_back(pGameObject);
 
 		// Food
-		pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 5.f }), 0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+		//pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 5.f }), 0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
 
 		pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 6.f }), 1);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food2", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
 
-		pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 7.f }), 2);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food3", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+		//pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 7.f }), 2);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food3", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
 
-		pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 8.f }), 3);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food4", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+		//pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 8.f }), 3);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food4", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
 
-		pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 9.f }), 4);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food5", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
+		//pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 9.f }), 4);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food5", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
 
-		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 20.f }), POTION_0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_0", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+		//pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 20.f }), POTION_0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_0", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 22.f, 2.f, -22.f }), POTION_0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+		//pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 22.f, 2.f, -22.f }), POTION_0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-		pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
+		//pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
 
-		// Godl
-		pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 5.f }), 2);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold_0", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
+		// Gold
+		//pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 5.f }), 2);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold_0", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
 
-		pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 6.f }), 3);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold_1", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
+		//pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 6.f }), 3);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gold_1", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
 	}
 
 
