@@ -175,8 +175,10 @@ void CWater::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 
-	//D3DMATERIAL9		tMtrl;
-	//ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+	//D3DMATERIAL9		
+	;
+	//ZeroMemory(&
+	, sizeof(D3DMATERIAL9));
 
 	//tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	//tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);

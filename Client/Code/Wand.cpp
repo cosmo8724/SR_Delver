@@ -298,18 +298,18 @@ void CWand::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 
-	D3DMATERIAL9		tMtrl;
-	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+	//D3DMATERIAL9		tMtrl;
+	//ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
 
-	tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
-	tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f); // 환경반사
-	
-	// 수행 x
-	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
-	tMtrl.Power = 0.f;
+	//tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
+	//tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f); // 환경반사
+	//
+	//// 수행 x
+	//tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+	//tMtrl.Power = 0.f;
 
-	m_pGraphicDev->SetMaterial(&tMtrl);
+	//m_pGraphicDev->SetMaterial(&tMtrl);
 
 	m_pTextureCom->Set_Texture(_ulong(m_fFrame));
 

@@ -25,6 +25,10 @@
 #include "Door.h"
 #include "KnifeTrap.h"
 
+
+D3DXVECTOR3 g_vPlayerPos;
+float		g_fAmbient = 1.f;
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_vDirection(0.f, 0.f, 0.f)
@@ -168,7 +172,10 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+
+	g_vPlayerPos = vPos;
+
 
 	return 0;
 }
@@ -551,7 +558,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State() && pItem->Get_ItemType() != ITEM_GOLD)
 	{
-		cout << "test" << endl;
+		//cout << "test" << endl;
 		m_str = L"E : Get";
 		if (Key_Down(DIK_E))
 		{
@@ -669,7 +676,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{	
 		if(0 < _HpMinus)
 		m_bKnockBack = true;
-		cout << "아야 " << endl;
+		//cout << "아야 " << endl;
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
 	}

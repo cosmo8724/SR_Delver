@@ -249,18 +249,18 @@ void CBlock::Render_Obejct(void)
 
 
 		// 재질 /////////////
-		D3DMATERIAL9		tMtrl;
-		ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+		//D3DMATERIAL9		tMtrl;
+		//ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
 
-		tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
-		tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-		tMtrl.Ambient = D3DXCOLOR(1.f,1.f,1.f, 1.f); // 환경반사
+		//tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
+		//tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		//tMtrl.Ambient = D3DXCOLOR(1.f,1.f,1.f, 1.f); // 환경반사
 
-														  // 수행 x
-		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
-		tMtrl.Power = 0.f;
+		//												  // 수행 x
+		//tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+		//tMtrl.Power = 0.f;
 
-		m_pGraphicDev->SetMaterial(&tMtrl);
+		//m_pGraphicDev->SetMaterial(&tMtrl);
 		// ~재질 /////////////
 
 		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
