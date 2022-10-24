@@ -79,11 +79,13 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 		m_bCreateIcon = true;
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
-	
-	// Do you have a rental? Ok->true
-	CLantern* pLentern = dynamic_cast<CLantern*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Lantern"));
-	if(STATE_EQUIP == pLentern->Get_State())
-		Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
+	Engine::Add_RenderGroup(RENDER_ALPHA, this); // TODO : Delete
+
+	//// Do you have a rental? Ok->true
+	//CLantern* pLentern = dynamic_cast<CLantern*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Lantern"));
+	//if(STATE_EQUIP == pLentern->Get_State())
+	//	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
