@@ -150,8 +150,8 @@ void CStage::LateUpdate_Scene(void)
 	pMonsterBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_SPIDER);
 
 	vector<CGameObject*>*	pBossBulletGroup[4];
-	pBossBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
-	pBossBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+	pBossBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+	pBossBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
 	pBossBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(FLOOR_SONGBOSS);
 	pBossBulletGroup[3] = CBulletMgr::GetInstance()->Get_Bullets(LIGHTNING_SONGBOSS);
 	// ~Bullets
@@ -238,11 +238,20 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
+	// boss bullet 
 	for (int i = 0; i < 3; ++i)
 	{
 		for (auto& bullet : *pBossBulletGroup[i])
 		{
-			Engine::CollisionAABB(pPlayer, bullet);
+			if (i == 0)
+			{
+				for (auto& weapon : *pWeaponGroup)
+				{
+					Engine::CollisionAABB(weapon, bullet);
+				}
+			}
+			else
+				Engine::CollisionAABB(pPlayer, bullet);
 		}
 	}
 
@@ -510,7 +519,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer/*, L"..\\..\\Data\\Monsters_Stage.dat"*/);
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer);

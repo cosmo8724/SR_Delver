@@ -615,9 +615,16 @@ void CSongBoss::Motion_Change(const _float & fTimeDelta)
 			break;
 
 		case DIE:
+		{
+			CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+			NULL_CHECK(pStaticCamera);
+			pStaticCamera->Shake_Camera(1.f, 2.f);
+
 			Engine::StopSound(SOUND_SONGBOSS);
 			Engine::Play_Sound(L"M_SongBoss_Die.mp3", SOUND_SONGBOSS, 1.f);
+
 			m_pAnimtorCom->Change_Animation(L"Proto_SongBossDIE_Texture");
+		}
 			break;
 		}
 		m_ePreState = m_eCurState;

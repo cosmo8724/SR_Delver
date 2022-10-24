@@ -230,13 +230,25 @@ void CPotion::RandomItem(const _float& fTimeDelta)
 		{
 			if (m_iDot > m_tInfo.iHpHeal)
 			{
+				cout << "++max" << endl;
 				m_bFinished = true;
 				return;
 			}
 
-			pPlayer->Set_HpPlus(+1);
-			m_iDot++;
-			m_fDotTime = 0.f;
+			static _int aa = 0;
+			_int iResult = pPlayer->Set_Hp(1);
+			if (iResult)
+			{
+				aa++;
+				cout << "++" << aa << endl;
+				m_iDot++;
+				m_fDotTime = 0.f;
+			}
+			else
+			{
+				cout << "++out" << endl;
+				return;
+			}
 		}
 	}
 	break;
@@ -248,13 +260,24 @@ void CPotion::RandomItem(const _float& fTimeDelta)
 
 			if (m_iDot > m_tInfo.iHpHeal)
 			{
+				cout << "--max" << endl;
 				m_bFinished = true;
 				return;
 			}
 
-			pPlayer->Set_HpPlus(-1);
-			m_iDot++;
-			m_fDotTime = 0.f;
+			static _int aaa = 0;
+			_int iResult = pPlayer->Set_Hp(-1);
+			if (iResult)
+			{
+				cout << "--" << aaa << endl;
+				m_iDot++;
+				m_fDotTime = 0.f;
+			}
+			else
+			{
+				cout << "--out" << endl;
+				return;
+			}
 		}
 	}
 	break;

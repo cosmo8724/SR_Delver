@@ -133,33 +133,33 @@ void CWater::LateUpdate_Object(void)
 	_float fDist7 = D3DXVec3Length(&(vPlayerPos - vWater7));
 	_float fDist8 = D3DXVec3Length(&(vPlayerPos - vWater8));
 
-	if (fDist3 < 5.f || fDist4 < 5.f || fDist5 < 5.f || fDist6 < 5.f || fDist7 < 5.f || fDist8 < 5.f)
-	{
-		cout << "sound 0.8f" << endl;
-		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.8f);
-	}
-	else if (fDist3 < 8.f || fDist4 < 8.f || fDist5 < 8.f || fDist6 < 8.f || fDist7 < 8.f || fDist8 < 8.f)
-	{
-		cout << "sound 0.7f" << endl;
-		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.7f);
-	}
-	else if (fDist3 < 11.f || fDist4 < 11.f || fDist5 < 11.f || fDist6 < 11.f || fDist7 < 11.f || fDist8 < 11.f)
-	{
-		cout << "sound 0.6f" << endl;
-		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.6f);
-	}
-	else if (fDist3 < 14.f || fDist4 < 14.f || fDist5 < 14.f || fDist6 < 14.f || fDist7 < 14.f || fDist8 < 14.f)
-	{
-		cout << "sound 0.5f" << endl;
-		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.5f);
-	}
-	else if (fDist3 < 17.f || fDist4 < 17.f || fDist5 < 17.f || fDist6 < 17.f || fDist7 < 17.f || fDist8 < 17.f)
-	{
-		cout << "sound 0.4f" << endl;
-		Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.4f);
-	}
-	else
-		Engine::StopSound(SOUND_SEA);
+	//if (fDist3 < 5.f || fDist4 < 5.f || fDist5 < 5.f || fDist6 < 5.f || fDist7 < 5.f || fDist8 < 5.f)
+	//{
+	//	cout << "sound 0.8f" << endl;
+	//	Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.8f);
+	//}
+	//else if (fDist3 < 8.f || fDist4 < 8.f || fDist5 < 8.f || fDist6 < 8.f || fDist7 < 8.f || fDist8 < 8.f)
+	//{
+	//	cout << "sound 0.7f" << endl;
+	//	Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.7f);
+	//}
+	//else if (fDist3 < 11.f || fDist4 < 11.f || fDist5 < 11.f || fDist6 < 11.f || fDist7 < 11.f || fDist8 < 11.f)
+	//{
+	//	cout << "sound 0.6f" << endl;
+	//	Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.6f);
+	//}
+	//else if (fDist3 < 14.f || fDist4 < 14.f || fDist5 < 14.f || fDist6 < 14.f || fDist7 < 14.f || fDist8 < 14.f)
+	//{
+	//	cout << "sound 0.5f" << endl;
+	//	Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.5f);
+	//}
+	//else if (fDist3 < 17.f || fDist4 < 17.f || fDist5 < 17.f || fDist6 < 17.f || fDist7 < 17.f || fDist8 < 17.f)
+	//{
+	//	cout << "sound 0.4f" << endl;
+	//	Engine::Play_Sound(L"E_SEA.mp3", SOUND_SEA, 0.4f);
+	//}
+	//else
+	//	Engine::StopSound(SOUND_SEA);
 
 	Engine::CGameObject::LateUpdate_Object();
 

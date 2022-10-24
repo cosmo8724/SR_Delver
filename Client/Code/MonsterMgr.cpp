@@ -205,8 +205,8 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 		m_vecMonster.push_back(pGameObject);
 
 		// Leaf
-		pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(50.f, -30.f, 62.f));
-		//pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(5.f, 2.f, 6.f));
+		//pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(50.f, -30.f, 62.f));
+		pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(15.f, 2.f, 15.f));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
 		m_vecMonster.push_back(pGameObject);
@@ -215,6 +215,11 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 		pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(1.f, -63.f, -33.f));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
+		m_vecMonster.push_back(pGameObject);
+
+		pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(20.f, 2.f, 15.f));
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost1", pGameObject), E_FAIL);
 		m_vecMonster.push_back(pGameObject);
 
 		// GreenSpider

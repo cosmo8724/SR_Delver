@@ -6,7 +6,7 @@ namespace Engine
 	class CTransform;
 	class CRcTex;
 	class CTexture;
-	class CCalculator;	
+	class CCalculator;
 	class CItem;
 }
 class CBlock;
@@ -24,13 +24,43 @@ public:
 	virtual void		Render_Obejct(void) override;
 
 public:
-	void				Set_HpFull()				{ m_tInfo.iHp = m_tInfo.iHpMax; }
-	void				Set_HpPlus(_int iHp = 1)	{ if (m_tInfo.iHpMax > m_tInfo.iHp) m_tInfo.iHp += iHp; }
-	void				Set_HpMinus(_int iHp = 1)	{ if (0 < m_tInfo.iHp) m_tInfo.iHp -= iHp; }
-	void				Set_HungerPlus()			{ if (5 > m_tInfo.iHunger) m_tInfo.iHunger++; }
-	void				Set_HungerMinus()			{ if (0 < m_tInfo.iHunger) m_tInfo.iHunger--; }
-	void				Set_GoldPlus(_int iGold)	{ m_tInfo.iGold += iGold; }
-	void				Set_GoldMinus(_int iGold)	{ m_tInfo.iGold -= iGold; }
+	void				Set_HpFull() { m_tInfo.iHp = m_tInfo.iHpMax; }
+	void				Set_HpPlus(_int iHp = 1) { if (m_tInfo.iHpMax > m_tInfo.iHp) m_tInfo.iHp += iHp; }
+	void				Set_HpMinus(_int iHp = 1) { if (0 < m_tInfo.iHp) m_tInfo.iHp -= iHp; }
+	_int				Set_Hp(_int iHp)
+	{
+		if (m_tInfo.iHpMax > m_tInfo.iHp && 0 < m_tInfo.iHp)
+		{
+			cout << "Set" << endl;
+			m_tInfo.iHp += iHp;
+		}
+		else
+		{
+			cout << "------return 0 " << endl;
+			return 0;
+		}
+
+
+	}
+
+	_int				Set_HpPlusRetuen(_int iHp = 1)
+						{
+							if (m_tInfo.iHpMax > m_tInfo.iHp)
+								m_tInfo.iHp += iHp;
+							else
+								return 0; // false
+						}
+	//_int				Set_HpintMinusRetuen(_int iHp = 1)
+	//					{
+	//						if (0 < m_tInfo.iHp)
+	//							m_tInfo.iHp -= iHp;
+	//						else
+	//							return 0; // false
+	//					}
+	void				Set_HungerPlus() { if (5 > m_tInfo.iHunger) m_tInfo.iHunger++; }
+	void				Set_HungerMinus() { if (0 < m_tInfo.iHunger) m_tInfo.iHunger--; }
+	void				Set_GoldPlus(_int iGold) { m_tInfo.iGold += iGold; }
+	void				Set_GoldMinus(_int iGold) { m_tInfo.iGold -= iGold; }
 
 	void				Set_Stun() { m_tInfo.bStun = true; }
 	void				Set_Slow() { m_tInfo.bSlow = true; }
@@ -97,9 +127,9 @@ private:
 
 	// Related to Jump
 	_bool				m_bJump = false;
-	_float				m_fJSpeed; 		
-	_float				m_fJSpeed0; 	
-	_float				m_fAccel;		
+	_float				m_fJSpeed;
+	_float				m_fJSpeed0;
+	_float				m_fAccel;
 	_float				m_fJTimeDelta = 0.f;
 
 	// Hit
@@ -117,15 +147,15 @@ private:
 
 	// Hunger
 	_float				m_fHungerTimeAcc = 0.f;
-	_bool				m_bHungerOneCheck = false;	
+	_bool				m_bHungerOneCheck = false;
 
 	// click Test?
 	_float				m_fLBClick = 0.f;
 	_float				m_fTimeDelta = 0.f;
 
 	// Releated to Item
-	CItem*				m_pRight	= nullptr;	
-	CItem*				m_pLeft		= nullptr;	
+	CItem*				m_pRight = nullptr;
+	CItem*				m_pLeft = nullptr;
 
 	_bool				m_bSnipper = false;
 
