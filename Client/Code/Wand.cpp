@@ -144,7 +144,7 @@ void CWand::Charge(const _float & fTimeDelta)
 			m_pTransCom->Set_Stop(true);
 
 			D3DXCOLOR tColor = { 0.5f, 0.f, 0.5f, 1.f };
-			CLightMgr::GetInstance()->Update_Color(LIGHT_WAND, tColor);
+			Update_Color(LIGHT_WAND, tColor);
 			m_pGraphicDev->LightEnable(LIGHT_WAND, TRUE);
 
 		}
@@ -249,7 +249,7 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 		m_pCenter->Get_Info(INFO_LOOK, &vLook);
 		m_pCenter->Get_Info(INFO_UP, &vUp);
 		_vec3 vTrans = vPos + 0.25f * vRight + 0.7f * vLook + 0.2f * vUp;
-		CLightMgr::GetInstance()->Update_Pos(LIGHT_WAND, vTrans);
+		Update_Pos(LIGHT_WAND, vTrans);
 
 		break;
 	}

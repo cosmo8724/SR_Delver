@@ -64,13 +64,13 @@ _int CLantern::Update_Object(const _float & fTimeDelta)
 		BOOL bOn = false;
 		_vec3 vPos;
 		m_pCenter->Get_Info(INFO_POS, &vPos);
-		CLightMgr::GetInstance()->Update_Pos(2, vPos);
+		Update_Pos(LIGHT_LANTERN, vPos);
 
-		m_pGraphicDev->LightEnable(2, TRUE);
+		m_pGraphicDev->LightEnable(LIGHT_LANTERN, TRUE);
 	}
 		break;
 	case STATE_INV:
-		m_pGraphicDev->LightEnable(2, FALSE);
+		m_pGraphicDev->LightEnable(LIGHT_LANTERN, FALSE);
 		break;
 	}
 

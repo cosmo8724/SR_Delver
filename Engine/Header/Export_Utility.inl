@@ -74,6 +74,22 @@ HRESULT	Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev, const D3DLIGHT9* pLightInfo, 
 	return CLightMgr::GetInstance()->Ready_Light(pGraphicDev, pLightInfo, iIndex);
 }
 
+void	Update_Light(const _uint& iIndex, const D3DLIGHT9* pLightInfo) 
+{
+	
+}
+void	Update_Pos(const _uint& iIndex, _vec3 vPos)
+{ 
+	CLightMgr::GetInstance()->Update_Pos(iIndex, vPos);
+}
+void	Update_Color(const _uint& iIndex, D3DXCOLOR tColor) 
+{ 
+	CLightMgr::GetInstance()->Update_Color(iIndex, tColor);
+}
+
+
+
+
 void	CollisionAABB(CGameObject* _pDest, CGameObject* _pSour)
 {
 	CCollisionMgr::GetInstance()->CollisionAABB(_pDest, _pSour);

@@ -775,7 +775,9 @@ HRESULT CStage::Ready_Light(void)
 	tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
 	tLightInfo0.Range = 3000.f;
 
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
+	// intro 에서 이미 생성함.
+	// FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
+	Engine::Update_Light(LIGHT_STAGE, &tLightInfo0);
 	m_pGraphicDev->LightEnable(LIGHT_STAGE, FALSE);
 
 

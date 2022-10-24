@@ -100,6 +100,28 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
+	//BOOL bOn = false;
+	//m_pGraphicDev->GetLightEnable(LIGHT_LANTERN, &bOn);
+	//if (m_pLeft != nullptr && m_pLeft->Get_ItemType() == ITEM_LANTERN && FALSE == bOn)
+	//{
+	//	m_pGraphicDev->LightEnable(LIGHT_LANTERN, TRUE);
+	//	_vec3 vPos;
+	//	m_pTransCom->Get_Info(INFO_POS, &vPos);
+	//	Update_Pos(LIGHT_LANTERN, vPos);
+	//}
+	//else if (TRUE == bOn)
+	//{
+	//	if(m_pLeft == nullptr || m_pLeft->Get_ItemType() != ITEM_LANTERN)
+	//		m_pGraphicDev->LightEnable(LIGHT_LANTERN, FALSE);
+
+	//}
+
+
+
+
+
+
+
 	if (!((Get_DIKeyState(DIK_TAB) & 0x80) || m_pInv->Is_Open()))
 	{
 		Mouse_Move();
