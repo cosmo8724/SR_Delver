@@ -6,7 +6,7 @@ namespace Engine
 	class CTransform;
 	class CRcTex;
 	class CTexture;
-	class CCalculator;	
+	class CCalculator;
 	class CItem;
 }
 class CBlock;
@@ -25,7 +25,7 @@ public:
 
 public:
 	void				Set_HpFull()				{ m_tInfo.iHp = m_tInfo.iHpMax; }
-	void				Set_HpPlus(_int iHp = 1)	{ if (m_tInfo.iHpMax > m_tInfo.iHp) m_tInfo.iHp += iHp; }
+	void				Set_HpPlus(_int iHp = 1); 
 	void				Set_HpMinus(_int iHp = 1)	{ if (0 < m_tInfo.iHp) m_tInfo.iHp -= iHp; }
 	void				Set_HungerPlus()			{ if (5 > m_tInfo.iHunger) m_tInfo.iHunger++; }
 	void				Set_HungerMinus()			{ if (0 < m_tInfo.iHunger) m_tInfo.iHunger--; }
@@ -80,6 +80,8 @@ public:
 	_float			Get_MinAngle() { return m_fDotAngle; }
 	void			Set_Interact(CGameObject* pObj) { m_pInteractObj = pObj; }
 
+
+
 private:
 	CRcTex*				m_pBufferCom = nullptr;
 	CTransform*			m_pTransCom = nullptr;
@@ -98,9 +100,9 @@ private:
 
 	// Related to Jump
 	_bool				m_bJump = false;
-	_float				m_fJSpeed; 		
-	_float				m_fJSpeed0; 	
-	_float				m_fAccel;		
+	_float				m_fJSpeed;
+	_float				m_fJSpeed0;
+	_float				m_fAccel;
 	_float				m_fJTimeDelta = 0.f;
 
 	// Hit
@@ -118,15 +120,15 @@ private:
 
 	// Hunger
 	_float				m_fHungerTimeAcc = 0.f;
-	_bool				m_bHungerOneCheck = false;	
+	_bool				m_bHungerOneCheck = false;
 
 	// click Test?
 	_float				m_fLBClick = 0.f;
 	_float				m_fTimeDelta = 0.f;
 
 	// Releated to Item
-	CItem*				m_pRight	= nullptr;	
-	CItem*				m_pLeft		= nullptr;	
+	CItem*				m_pRight = nullptr;
+	CItem*				m_pLeft = nullptr;
 
 	_bool				m_bSnipper = false;
 
@@ -147,6 +149,9 @@ private:
 	_float					m_fDotAngle = 360.f;
 	_bool					m_bText = false;
 	wstring					m_str;
+
+	// Heal Potion
+	_float					m_fHealTime = 0.f;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

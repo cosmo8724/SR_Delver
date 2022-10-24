@@ -27,5 +27,7 @@ public:
 private:
 	_vec3				m_vPos;
 	_matrix				m_matWorld;
+	_float				m_fHeight;
+	_float				m_fHeightNow = 0.f;
 };
 

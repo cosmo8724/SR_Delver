@@ -11,7 +11,6 @@ private:
 	virtual ~CUserParticle();
 
 public:
-	// �ʼ��� �����Ǿ�� �ϴ� �׸��
 	inline void		Set_ParticleCnt(_int _iCnt) { m_maxParticles = _iCnt; }
 	inline void		Set_Settings()
 	{
@@ -40,12 +39,12 @@ public:
 public:
 	void			Set_Index(_int iIdx) { m_iIndex = iIdx; }
 	void			Set_Use(_bool bUse) { m_bUse = bUse; }
-	void			Set_Particle(PTYPE _eType);	// ��ƼŬ�� Ÿ�Կ� ���� �ʿ��� ��� ����
+	void			Set_Particle(PTYPE _eType);	
 	void			Set_Texture(PTEXTUREID eTex);
 	void			Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
 	void			Set_Information(_bool _bUse, _int _iIdx, CGameObject* _pObj, ATTRIBUTE _att, PINFO _pInfo
 		, _float _fFrameSpeed, _bool _bFrameRepeat, _bool _bRand);
-	void			ReUse();	// ��ƼŬ�� ������ Ǯ�� ���ư��� ���½�����.
+	void			ReUse();	
 	void			Add_Info_Spot(_bool bMove, _bool bRand)
 	{
 		m_bFrameMove = bMove;
@@ -87,12 +86,10 @@ private:
 	PTYPE		m_eType = PTYPE_END;
 	_float		m_fVelocityMulti = 1.f;
 
-	// Ǯ ������
 	_int		m_iIndex = -1;
 	_bool		m_bUse = false;
 	_bool		m_bReady = false;
 
-	// �߰��� ����
 	CGameObject*	m_pTarget = nullptr;
 
 	_int			m_iReturn;
@@ -109,5 +106,8 @@ private:
 
 	_bool			m_bFrameRand = false;
 	_bool			m_bFrameSet = false;
+
+	_bool			m_bSet = false;
+	_vec3			m_vAxis;
 };
 
