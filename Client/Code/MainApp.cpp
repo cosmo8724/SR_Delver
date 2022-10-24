@@ -75,6 +75,8 @@ void CMainApp::LateUpdate_MainApp(void)
 	m_pManagementClass->LateUpdate_Scene();
 
 	Engine::LateUpdate_InputDev();
+
+	g_bIsRenderInstancing = false;
 }
 
 void CMainApp::Render_MainApp(void)
@@ -91,6 +93,8 @@ void CMainApp::Render_MainApp(void)
 
 
 	Engine::Render_End();
+
+	g_bIsRenderInstancing = false;
 }
 
 HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)

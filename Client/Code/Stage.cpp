@@ -403,42 +403,7 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
-	if (!g_bIsTool)
-	{
-		for (_int i = 0; i < BLOCKTYPE_END; ++i)
-		{
-			if (i == BLOCK_CAVE)
-			{
-				for (_int j = 0; j < CAVETEX_CNT; ++j)
-					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-			}
-			else if (i == BLOCK_COLD)
-			{
-				for (_int j = 0; j < COLDTEX_CNT; ++j)
-					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-			}
-			else if (i == BLOCK_DUNGEON)
-			{
-				for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
-					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-			}
-			else if (i == BLOCK_ROOM)
-			{
-				for (_int j = 0; j < ROOMTEX_CNT; ++j)
-					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-			}
-			else if (i == BLOCK_SEWER)
-			{
-				for (_int j = 0; j < SEWERTEX_CNT; ++j)
-					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-			}
-			else if (i == BLOCK_TEMPLE)
-			{
-				for (_int j = 0; j < TEMPLETEX_CNT; ++j)
-					CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
-			}
-		}
-	}
+	
 }
 
 HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)

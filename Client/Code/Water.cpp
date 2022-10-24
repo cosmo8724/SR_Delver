@@ -106,7 +106,7 @@ _int CWater::Update_Object(const _float & fTimeDelta)
 
 
 
-	Add_RenderGroup(RENDER_NONALPHA, this);
+	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return 0;
 }

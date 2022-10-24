@@ -65,13 +65,12 @@ HRESULT CPlayer::Ready_Object(_vec3 vPos)
 _int CPlayer::Update_Object(const _float & fTimeDelta)
 {
 	// Create Minimap Icon
-	static _bool	bOnce = false;
-	if (!bOnce)
+	if (!m_bOnce)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
 
-		bOnce = true;
+		m_bOnce = true;
 	}
 	// *Create Minimap Icon
 
@@ -783,6 +782,7 @@ CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 
 void CPlayer::Free(void)
 {
+	m_bOnce = false;
 	m_CollisionGroup.clear();
 	m_CollisionGroup.swap(vector<CGameObject*>());
 	CGameObject::Free();
