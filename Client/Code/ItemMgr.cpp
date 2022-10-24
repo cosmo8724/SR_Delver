@@ -348,10 +348,10 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_5", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-		//pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
-		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern", pGameObject), E_FAIL);
-		//m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
+		pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern", pGameObject), E_FAIL);
+		m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
 
 		// Gold
 		//pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 5.f }), 2);

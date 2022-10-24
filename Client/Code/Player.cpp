@@ -529,6 +529,7 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State() && pItem->Get_ItemType() != ITEM_GOLD)
 	{
+		cout << "test" << endl;
 		m_str = L"E : Get";
 		if (Key_Down(DIK_E))
 		{
