@@ -281,20 +281,17 @@ void CStaticCamera::Player_Dead(const _float & fTimeDelta)
 
 	if (m_fDeadTime < 5.f)
 	{
-		_matrix matView;
-		m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-		D3DXMatrixInverse(&matView, 0, &matView);
+		_matrix viewInv;
+		D3DXMatrixInverse(&viewInv, 0, &m_matView);
 
-		_vec3 vRight, vUp, vLook;
-		D3DXVec3Normalize(&vRight, &_vec3(matView._11, matView._12, matView._13));
-		D3DXVec3Normalize(&vUp, &_vec3(matView._21, matView._22, matView._23));
-		D3DXVec3Normalize(&vLook, &_vec3(matView._31, matView._32, matView._33));
+		_vec3 vLook;
+		D3DXVec3Normalize(&vLook, &_vec3(m_matView._31, m_matView._32, m_matView._33));
 
 		_vec3 vAxis = vLook;
 
-		m_fDeadAngle += 0.5f;
-		if (m_fDeadAngle > 90.f)
-			m_fDeadAngle = 90.f;
+		m_fDeadAngle += 1.f;
+		if (m_fDeadAngle > 89.f)
+			m_fDeadAngle = 89.f;
 
 		_matrix matRot;
 		D3DXMatrixRotationAxis(&matRot, &vAxis, D3DXToRadian(m_fDeadAngle));

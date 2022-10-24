@@ -83,19 +83,12 @@ void CEcoObject::Billboard()
 	D3DXMatrixIdentity(&matBill);
 
 	m_pTransCom->Get_WorldMatrix(&matWorld);
-	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-	CCamera*	pCam = static_cast<CCamera*>(Get_GameObject(L"Layer_Environment", L"ObjectCamera"));
-	_matrix matOldView;
-	pCam->Get_ViewMatrix(matOldView);
 
 	if (matView._21 > 0.f)
 	{
-		D3DXMatrixIdentity(&matBill);
-		matBill._11 = matOldView._11;
-		matBill._13 = matOldView._13;
-		matBill._31 = matOldView._31;
-		matBill._33 = matOldView._33;
+		matBill = m_matOldBill;
 	}
 	else
 	{
@@ -105,7 +98,7 @@ void CEcoObject::Billboard()
 		matBill._31 = matView._31;
 		matBill._33 = matView._33;
 
-		//m_matOldBill = matBill;
+		m_matOldBill = matBill;
 	}
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
