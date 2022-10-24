@@ -791,17 +791,17 @@ void CStage::Free(void)
 HRESULT CStage::Ready_Light(void)
 {
 	// Default
-	D3DLIGHT9		tLightInfo0;
+	D3DLIGHT9        tLightInfo0;
 	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
-	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
+	tLightInfo0.Type = D3DLIGHT_POINT;
 	tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Direction = _vec3(0.f, 1.f, 0.f);
+	tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
+	tLightInfo0.Range = 3000.f;
 
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
-
 
 	//// Player
 	D3DLIGHT9		tLightInfo1;
