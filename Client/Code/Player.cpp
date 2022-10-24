@@ -84,7 +84,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	if (!m_bDeadMotion && m_bDead)
 	{
 		CCameraMgr::GetInstance()->Action_PlayerDie();
-		CCameraMgr::GetInstance()->Set_Camera(this, 0.3f, 1.f);
+		//CCameraMgr::GetInstance()->Set_Camera(this, 0.3f, 1.f);
 		m_bDeadMotion = true;
 	}
 

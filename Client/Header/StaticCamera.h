@@ -44,6 +44,7 @@ public:
 		m_fWaveAngle = fAngle;
 		m_vAxis = vAxis;
 	}
+	void		Set_PlayerDead(_bool bPlayerDead) { m_bPlayerDead = bPlayerDead; }
 	void		Set_Free(_bool bFree) { m_bFree = bFree; }
 
 private:
@@ -53,6 +54,7 @@ private:
 	void		Mouse_Fix(void);
 	void		Shake_Camera(const _float& fTimeDelta);
 	void		Wave_Camera(const _float& fTimeDelta);
+	void		Player_Dead(const _float& fTimeDelta);
 
 
 private:
@@ -86,7 +88,14 @@ private:
 	_float		m_fWaveTimeNow = 0.f;
 	_vec3		m_vAxis;
 
+	// Player Dead Motion
+	_bool		m_bPlayerDead = false;
+	_float		m_fDeadAngle = 0.f;
+	_float		m_fDeadTime = 0.f;
+	
+	
 	_bool		m_bFree = false;
+
 
 
 	// Releated to Motion

@@ -60,6 +60,7 @@ Engine::_int CStaticCamera::Update_Object(const _float& fTimeDelta)
 	ShakeY(fTimeDelta);
 	Shake_Camera(fTimeDelta);
 	Wave_Camera(fTimeDelta);
+	Player_Dead(fTimeDelta);
 	Target_Renewal();
 
 	_int iExit = CCamera::Update_Object(fTimeDelta);
@@ -267,6 +268,47 @@ void CStaticCamera::Wave_Camera(const _float & fTimeDelta)
 		m_fWaveAngleNow = 0.f;
 		m_fWaveTimeNow = 0.f;
 		m_vUp = { 0.f,1.f,0.f };
+	}
+
+}
+
+void CStaticCamera::Player_Dead(const _float & fTimeDelta)
+{
+	if (!m_bPlayerDead)
+		return;
+
+	m_fDeadTime += fTimeDelta;
+
+	if (m_fDeadTime < 5.f)
+	{
+		_matrix matView;
+		m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+		D3DXMatrixInverse(&matView, 0, &matView);
+
+		_vec3 vRight, vUp, vLook;
+		D3DXVec3Normalize(&vRight, &_vec3(matView._11, matView._12, matView._13));
+		D3DXVec3Normalize(&vUp, &_vec3(matView._21, matView._22, matView._23));
+		D3DXVec3Normalize(&vLook, &_vec3(matView._31, matView._32, matView._33));
+
+		_vec3 vAxis = vLook;
+
+		m_fDeadAngle += 0.5f;
+		if (m_fDeadAngle > 90.f)
+			m_fDeadAngle = 90.f;
+
+		_matrix matRot;
+		D3DXMatrixRotationAxis(&matRot, &vAxis, D3DXToRadian(m_fDeadAngle));
+
+		_vec3 Up = { 0.f, 1.f, 0.f };
+		D3DXVec3TransformCoord(&m_vUp, &Up, &matRot);
+	}
+	else
+	{
+		m_bPlayerDead = false;
+		m_fDeadAngle = 0.f;
+		m_fDeadTime = 0.f;
+		m_vUp = { 0.f,1.f,0.f };
+
 	}
 
 }

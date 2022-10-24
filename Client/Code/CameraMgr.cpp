@@ -82,12 +82,16 @@ void CCameraMgr::Action_Camera(_float fAngle)
 void CCameraMgr::Action_PlayerDie()
 {
 	// release previous camera
-	m_vecCamera[m_CurId]->Set_Switch(false);
-	m_vecCamera[m_CurId]->Reset();
+	if (m_CurId != CAM_STATIC)
+	{
+		m_vecCamera[m_CurId]->Set_Switch(false);
+		m_vecCamera[m_CurId]->Reset();
 
-	m_CurId = CAM_OBJECT;
-	m_vecCamera[m_CurId]->Set_Switch(true);
-	static_cast<CObjectCamera*>(m_vecCamera[m_CurId])->Set_DeadMotionTrue();
+		m_CurId = CAM_STATIC;
+		m_vecCamera[m_CurId]->Set_Switch(true);
+	}
+
+	static_cast<CStaticCamera*>(m_vecCamera[m_CurId])->Set_PlayerDead(true);
 
 }
 
