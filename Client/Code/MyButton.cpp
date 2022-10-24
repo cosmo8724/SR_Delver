@@ -8,6 +8,8 @@
 #include "Lantern.h"
 #include "Potion.h"
 #include "EquipWindow.h"
+#include "StaticCamera.h"
+#include "TalkWindow.h"
 CMyButton::CMyButton(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, wstring str)
 	: CUI(pGraphicDev)
 {
@@ -115,6 +117,12 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 				m_pInv->Set_Open(false);
 				CEquipWindow* pEquip = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 				pEquip->Set_Open(false);
+				CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+				pCam->Set_Free(false);
+
+				CTalkWindow* pTalkWindow = dynamic_cast<CTalkWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_TalkWindow"));
+				pTalkWindow->Set_OFFText();
+				pTalkWindow->Reset_TextCount();
 			}
 		}
 	
