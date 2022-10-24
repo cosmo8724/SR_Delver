@@ -235,7 +235,7 @@ void CPotion::RandomItem(const _float& fTimeDelta)
 				return;
 			}
 
-			pPlayer->Set_HpPlus(+1);
+			pPlayer->Set_HpPlus();
 			m_iDot++;
 			m_fDotTime = 0.f;
 		}
@@ -252,8 +252,8 @@ void CPotion::RandomItem(const _float& fTimeDelta)
 				m_bFinished = true;
 				return;
 			}
-
-			pPlayer->Set_HpPlus(-1);
+			
+			pPlayer->Set_HpMinus();
 			m_iDot++;
 			m_fDotTime = 0.f;
 		}

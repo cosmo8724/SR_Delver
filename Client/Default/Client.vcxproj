@@ -227,6 +227,7 @@
     <ClInclude Include="..\Header\ItemMgr.h" />
     <ClInclude Include="..\Header\Jam.h" />
     <ClInclude Include="..\Header\Jar.h" />
+    <ClInclude Include="..\Header\Jellyfish.h" />
     <ClInclude Include="..\Header\Key.h" />
     <ClInclude Include="..\Header\KnifeTrap.h" />
     <ClInclude Include="..\Header\Lantern.h" />
@@ -375,6 +376,7 @@
     <ClCompile Include="..\Code\ItemMgr.cpp" />
     <ClCompile Include="..\Code\Jam.cpp" />
     <ClCompile Include="..\Code\Jar.cpp" />
+    <ClCompile Include="..\Code\Jellyfish.cpp" />
     <ClCompile Include="..\Code\Key.cpp" />
     <ClCompile Include="..\Code\KnifeTrap.cpp" />
     <ClCompile Include="..\Code\Lantern.cpp" />

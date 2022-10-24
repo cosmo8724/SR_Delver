@@ -25,7 +25,7 @@ HRESULT CSongBossBullet::Ready_Object(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_tInfo.iAttack = 3;
-	m_fSpeed = 20.f;
+	m_fSpeed = 40.f;
 
 	m_pTransCom->Set_Scale(1.f, 1.f, 1.f);
 	m_pColliderCom->Set_Free(true);

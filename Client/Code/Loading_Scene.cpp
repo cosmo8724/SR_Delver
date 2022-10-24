@@ -67,7 +67,7 @@ void CLoading_Scene::LateUpdate_Scene(void)
 			break;
 
 		case LOADING_INTRO:
-			m_pScene = CStage::Create(m_pGraphicDev);  //CIntro::Create(m_pGraphicDev);
+			m_pScene = CIntro::Create(m_pGraphicDev);
 			break;
 
 		case LOADING_STAGE:

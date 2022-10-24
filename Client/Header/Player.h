@@ -6,7 +6,7 @@ namespace Engine
 	class CTransform;
 	class CRcTex;
 	class CTexture;
-	class CCalculator;	
+	class CCalculator;
 	class CItem;
 }
 class CBlock;
@@ -90,6 +90,7 @@ private:
 
 	CBlock*				m_pCurrentBlock = nullptr;
 	_bool				m_bBlockChanged = true;
+	_bool				m_bOnce = false;
 
 	PLAYER_STATE		m_eState = PLAYER_GROUND;
 
@@ -99,9 +100,9 @@ private:
 
 	// Related to Jump
 	_bool				m_bJump = false;
-	_float				m_fJSpeed; 		
-	_float				m_fJSpeed0; 	
-	_float				m_fAccel;		
+	_float				m_fJSpeed;
+	_float				m_fJSpeed0;
+	_float				m_fAccel;
 	_float				m_fJTimeDelta = 0.f;
 
 	// Hit
@@ -119,15 +120,15 @@ private:
 
 	// Hunger
 	_float				m_fHungerTimeAcc = 0.f;
-	_bool				m_bHungerOneCheck = false;	
+	_bool				m_bHungerOneCheck = false;
 
 	// click Test?
 	_float				m_fLBClick = 0.f;
 	_float				m_fTimeDelta = 0.f;
 
 	// Releated to Item
-	CItem*				m_pRight	= nullptr;	
-	CItem*				m_pLeft		= nullptr;	
+	CItem*				m_pRight = nullptr;
+	CItem*				m_pLeft = nullptr;
 
 	_bool				m_bSnipper = false;
 

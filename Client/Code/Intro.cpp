@@ -129,7 +129,7 @@ void CIntro::LateUpdate_Scene(void)
 }
 void CIntro::Render_Scene(void)
 {
-	for (_int i = 0; i < BLOCKTYPE_END; ++i)
+	/*for (_int i = 0; i < BLOCKTYPE_END; ++i)
 	{
 		if (i == BLOCK_CAVE)
 		{
@@ -161,7 +161,7 @@ void CIntro::Render_Scene(void)
 			for (_int j = 0; j < TEMPLETEX_CNT; ++j)
 				CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
 		}
-	}
+	}*/
 }
 
 HRESULT CIntro::Ready_Layer_Environment(const _tchar * pLayerTag)
@@ -207,7 +207,7 @@ HRESULT CIntro::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks
 	{
-		string	strPath = "..\\..\\Data\\Map_Intro.dat";
+		string	strPath = "..\\..\\Data\\Map_Intro2.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];

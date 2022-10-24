@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CullingMgr.h"
 
+_bool	g_bIsRenderInstancing = false;
 
 CBlock::CBlock(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -151,6 +152,11 @@ _int CBlock::Update_Object(const _float & fTimeDelta)
 			if (CCullingMgr::GetInstance()->Is_Inside(this))
 				Add_RenderGroup(RENDER_NONALPHA, this);
 		}
+		if (!g_bIsTool && !g_bIsRenderInstancing)
+		{
+			Add_RenderGroup(RENDER_NONALPHA, this);
+			g_bIsRenderInstancing = true;
+		}
 	}
 	else
 	{
@@ -180,6 +186,43 @@ void CBlock::Render_Obejct(void)
 		{
 			m_pTextureCom->Set_Texture(m_iTexture);
 			m_pBufferCom->Render_Buffer();
+		}
+		if (!g_bIsTool && !g_bIsRenderInstancing)
+		{
+			for (_int i = 0; i < BLOCKTYPE_END; ++i)
+			{
+				if (i == BLOCK_CAVE)
+				{
+					for (_int j = 0; j < CAVETEX_CNT; ++j)
+						CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+				}
+				else if (i == BLOCK_COLD)
+				{
+					for (_int j = 0; j < COLDTEX_CNT; ++j)
+						CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+				}
+				else if (i == BLOCK_DUNGEON)
+				{
+					for (_int j = 0; j < DUNGEONTEX_CNT; ++j)
+						CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+				}
+				else if (i == BLOCK_ROOM)
+				{
+					for (_int j = 0; j < ROOMTEX_CNT; ++j)
+						CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+				}
+				else if (i == BLOCK_SEWER)
+				{
+					for (_int j = 0; j < SEWERTEX_CNT; ++j)
+						CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+				}
+				else if (i == BLOCK_TEMPLE)
+				{
+					for (_int j = 0; j < TEMPLETEX_CNT; ++j)
+						CBlockVIBuffer::GetInstance()->Render_Buffer(m_pGraphicDev, (BLOCKTYPE)i, j);
+				}
+			}
+			g_bIsRenderInstancing = true;
 		}
 	}
 	else
