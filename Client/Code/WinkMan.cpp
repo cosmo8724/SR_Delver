@@ -110,12 +110,32 @@ void CWinkMan::OnText(const _float& fTimeDelta)
 	{
 		m_bDetected = true;
 
-		if (Engine::Get_DIKeyState(DIK_T) && m_fLBClick > 0.3f)
+		if (pTalkWindow->Is_Finished())
 		{
-			pTalkWindow->Set_OnText();
-			pTalkWindow->Set_TextCount();
-			pTalkWindow->Set_Text(&m_vecDialogue);
-			m_fLBClick = 0.f;
+			if (Key_Down(DIK_T))
+			{
+				CShop* pShop = static_cast<CShop*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Shop"));
+				pShop->Set_Open(true);
+
+				CInventory* pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+				pInv->Set_Open(true);
+
+				CEquipWindow* pEquip = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+				pEquip->Set_Open(true);
+
+				CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+				pCam->Set_Free(true);
+			}
+		}
+		else
+		{
+			if (Engine::Get_DIKeyState(DIK_T) && m_fLBClick > 0.3f)
+			{
+				pTalkWindow->Set_OnText();
+				pTalkWindow->Set_TextCount();
+				pTalkWindow->Set_Text(&m_vecDialogue);
+				m_fLBClick = 0.f;
+			}
 		}
 	}
 	else
@@ -128,23 +148,7 @@ void CWinkMan::OnText(const _float& fTimeDelta)
 		m_bDetected = false;
 	}
 
-	if (pTalkWindow->Is_Finished())
-	{
-		if (Key_Down(DIK_T))
-		{
-			CShop* pShop = static_cast<CShop*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Shop"));
-			pShop->Set_Open(true);
-
-			CInventory* pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
-			pInv->Set_Open(true);
-
-			CEquipWindow* pEquip = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
-			pEquip->Set_Open(true);
-
-			CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
-			pCam->Set_Free(true);
-		}
-	}
+	
 
 }
 
