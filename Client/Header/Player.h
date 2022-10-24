@@ -25,7 +25,7 @@ public:
 
 public:
 	void				Set_HpFull()				{ m_tInfo.iHp = m_tInfo.iHpMax; }
-	void				Set_HpPlus(_int iHp = 1)	{ if (m_tInfo.iHpMax > m_tInfo.iHp) m_tInfo.iHp += iHp; }
+	void				Set_HpPlus(_int iHp = 1); 
 	void				Set_HpMinus(_int iHp = 1)	{ if (0 < m_tInfo.iHp) m_tInfo.iHp -= iHp; }
 	void				Set_HungerPlus()			{ if (5 > m_tInfo.iHunger) m_tInfo.iHunger++; }
 	void				Set_HungerMinus()			{ if (0 < m_tInfo.iHunger) m_tInfo.iHunger--; }
@@ -79,6 +79,8 @@ public:
 	}
 	_float			Get_MinAngle() { return m_fDotAngle; }
 	void			Set_Interact(CGameObject* pObj) { m_pInteractObj = pObj; }
+
+
 
 private:
 	CRcTex*				m_pBufferCom = nullptr;
@@ -146,6 +148,9 @@ private:
 	_float					m_fDotAngle = 360.f;
 	_bool					m_bText = false;
 	wstring					m_str;
+
+	// Heal Potion
+	_float					m_fHealTime = 0.f;
 
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

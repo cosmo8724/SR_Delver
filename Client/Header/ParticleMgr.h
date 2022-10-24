@@ -5,7 +5,6 @@ BEGIN(Engine)
 class CLayer;
 END
 
-// ��ƼŬ�� ������ƮǮó�� �̸� �����Ͽ� ����
 class CParticleMgr : public CBase
 {
 	DECLARE_SINGLETON(CParticleMgr)
@@ -16,19 +15,14 @@ private:
 public:
 	void			Ready_ParticleMgr(LPDIRECT3DDEVICE9 pGraphicDev);
 
-	// ��ƼŬ Proto ������Ʈ ����(�ַ� �ؽ�ó)
 	HRESULT			Ready_Proto();
 
-	// �̸� ������Ʈ�� �����ص�.
 	HRESULT			Add_GameObject(CLayer* pLayer);
 
-	// ��ƼŬ ȣ�� (changed)
 	void			Call_Particle(PTYPE eType, PTEXTUREID eTex);
 
-	// ����� ���� ��ƼŬ ȸ�� (dispose)
 	void			Collect_Particle(_int iIdx);
 
-	// ȣ�� �� ��ƼŬ ���� ����
 	void			Set_Info(CGameObject* pObj
 		, _int		_maxParticles						// �ִ� ��ƼŬ ��
 		, _float	_fSize								// ��� ��ƼŬ�� ũ��
@@ -62,7 +56,6 @@ public:
 	}
 
 
-	// �ٿ�� �ڽ� ���� ( �ʿ��� ��� )
 	//void			Set_BoundingBox(BDBOX _bdBox);
 
 
