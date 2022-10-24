@@ -141,7 +141,6 @@ HRESULT CKey::Add_Component(void)
 	return S_OK;
 }
 
-
 CKey * CKey::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CKey*	pInstance = new CKey(pGraphicDev, vPos);

@@ -80,7 +80,7 @@ _int CSongBossFloorLightning::Update_Object(const _float & fTimeDelta)
 		}
 
 		_float fNotePos = 3.f;
-		_float fNotePosY = -65.8f;
+		_float fNotePosY = vFloorPos.y; // -65.8f;
 
 		if (m_iBulletCount == 0)
 			m_pTransCom->Set_Pos(vFloorPos.x, fNotePosY, vFloorPos.z + fNotePos);

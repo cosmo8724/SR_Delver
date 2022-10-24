@@ -150,8 +150,8 @@ void CStage::LateUpdate_Scene(void)
 	pMonsterBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_M_SPIDER);
 
 	vector<CGameObject*>*	pBossBulletGroup[4];
-	pBossBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
-	pBossBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+	pBossBulletGroup[0] = CBulletMgr::GetInstance()->Get_Bullets(STUN_SONGBOSS);
+	pBossBulletGroup[1] = CBulletMgr::GetInstance()->Get_Bullets(BULLET_SONGBOSS);
 	pBossBulletGroup[2] = CBulletMgr::GetInstance()->Get_Bullets(FLOOR_SONGBOSS);
 	pBossBulletGroup[3] = CBulletMgr::GetInstance()->Get_Bullets(LIGHTNING_SONGBOSS);
 	// ~Bullets
@@ -238,11 +238,20 @@ void CStage::LateUpdate_Scene(void)
 		}
 	}
 
+	// boss bullet 
 	for (int i = 0; i < 3; ++i)
 	{
 		for (auto& bullet : *pBossBulletGroup[i])
 		{
-			Engine::CollisionAABB(pPlayer, bullet);
+			if (i == 0)
+			{
+				for (auto& weapon : *pWeaponGroup)
+				{
+					Engine::CollisionAABB(weapon, bullet);
+				}
+			}
+			else
+				Engine::CollisionAABB(pPlayer, bullet);
 		}
 	}
 
@@ -791,17 +800,17 @@ void CStage::Free(void)
 HRESULT CStage::Ready_Light(void)
 {
 	// Default
-	D3DLIGHT9		tLightInfo0;
+	D3DLIGHT9        tLightInfo0;
 	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
 	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
 	tLightInfo0.Diffuse = D3DXCOLOR(0.1f, 0.1f,0.1f, 1.f);
 	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Direction = _vec3(0.f, 1.f, 0.f);
+	tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
+	tLightInfo0.Range = 3000.f;
 
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
-
 
 	//// Player
 	D3DLIGHT9		tLightInfo1;

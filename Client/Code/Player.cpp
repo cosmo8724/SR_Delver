@@ -147,7 +147,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	return 0;
 }
@@ -647,7 +647,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{	
 		if(0 < _HpMinus)
 		m_bKnockBack = true;
-		
+		cout << "아야 " << endl;
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
 	}

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
+#include "Lantern.h"
 
 CSkeletonGhost::CSkeletonGhost(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -80,9 +81,13 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 	Engine::CMonster::Update_Object(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
+	//// Do you have a rental? Ok->true
+	//CLantern* pLentern = dynamic_cast<CLantern*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Lantern"));
+	//if (STATE_EQUIP == pLentern->Get_State())
+	//	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
-	m_bRender = true; // TODO : false
 	
 	if (g_bIsTool)
 		return 0;
@@ -115,8 +120,8 @@ void CSkeletonGhost::LateUpdate_Object(void)
 
 void CSkeletonGhost::Render_Obejct(void)
 {
-	if (!m_bRender)
-		return;
+	//if (!m_bRender)
+	//	return;
 
 	if (!m_bRenderOFF)
 		CMonster::Render_Obejct();
@@ -200,7 +205,7 @@ void CSkeletonGhost::Target_Follow(const _float & fTimeDelta)
 			m_eCurState = ATTACK;
 
 			CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-			pPlayer->Set_HpMinus();
+			pPlayer->OnHit(m_tInfo.iAttack);
 
 			m_fHpMinusTimeAcc = 0.f;
 		}
@@ -226,100 +231,100 @@ void CSkeletonGhost::Circle()
 	if (!m_bCircle)
 		return;
 
-	_vec3	vPos, vPlayerPos;
-	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-
-	pPlayer->Get_Info(INFO_POS, &vPlayerPos);
-	m_pTransCom->Get_Info(INFO_POS, &vPos);
-	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z); // Bullet의 시작위치
-
-	_vec3 vDir, vDistance;
-	//vDir = { 0.f, 1.f , 0.1f };
-	vDir = vPlayerPos - vPos; // 몬스터가 플레이어를 바라보는 방향 벡터
-	D3DXVec3Normalize(&vDir, &vDir); // 단위 벡터로 변경
-	D3DXVec3Normalize(&vDistance, &vDistance);
-
-	if (!m_bReady) // 처음 들어 왔을 때 한 번만 받는다
-	{
-		m_vTrans = vPos;
-		m_vDir = vDir;
-		m_bReady = true;
-	}
-
-	_matrix matScale, matRot, matTrans, matRev, matWorld;
-	// 스
-	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
-
-	// 이
-	D3DXMatrixTranslation(&matTrans, 2.f, 2.f, 2.f);
-
-	// 공
-	m_fAngle += 0.2f;
-	if (m_fAngle > 360.f)
-		m_fAngle -= 360.f;
-	//m_fAngle = 0.1f;
-	//m_fAngle = m_fAngle % 360.f;
-	D3DXMatrixRotationAxis(&matRev, &m_vDir, m_fAngle);
-
-	//matWorld = matTrans * matRev;
-
-	_matrix matParent;
-	m_pTransCom->Get_WorldMatrix(&matParent);
-	_matrix mat;
-	D3DXMatrixTranslation(&mat, matParent._41, matParent._42, matParent._43);
-
-	matParent = matScale * matRev;// *mat;
-
-	_matrix mat1;
-	mat1 = matTrans * matParent; // 공전하는 행렬
-
-	_matrix mat2;
-
-	if (m_bReady)
-	{
-		m_vTrans += m_vDir * 0.2f;
-		D3DXMatrixTranslation(&mat2, m_vTrans.x, m_vTrans.y, m_vTrans.z);
-	}
-	m_matWorld = mat2 * mat1;
-
-	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
-
-	//_vec3	vPlayerPos;
+	//_vec3	vPos, vPlayerPos;
 	//CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
-	//NULL_CHECK(pPlayer);
 
 	//pPlayer->Get_Info(INFO_POS, &vPlayerPos);
-	////m_pTransCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z);
+	//m_pTransCom->Get_Info(INFO_POS, &vPos);
+	//m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z); // Bullet의 시작위치
 
 	//_vec3 vDir, vDistance;
-	//vDir = { 1.f, 1.f, 1.f };
-	//D3DXVec3Normalize(&vDir, &vDir);
+	////vDir = { 0.f, 1.f , 0.1f };
+	//vDir = vPlayerPos - vPos; // 몬스터가 플레이어를 바라보는 방향 벡터
+	//D3DXVec3Normalize(&vDir, &vDir); // 단위 벡터로 변경
 	//D3DXVec3Normalize(&vDistance, &vDistance);
 
-	//_matrix matTrans, matRev;
+	//if (!m_bReady) // 처음 들어 왔을 때 한 번만 받는다
+	//{
+	//	m_vTrans = vPos;
+	//	m_vDir = vDir;
+	//	m_bReady = true;
+	//}
 
-	//// ��
-	//D3DXMatrixTranslation(&matTrans, vDistance.x * 5.f, vDistance.y * -2.5f, vDistance.z * 2.f);
+	//_matrix matScale, matRot, matTrans, matRev, matWorld;
+	//// 스
+	//D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
 
-	//// ��
-	//m_fAngle += 0.03f;
+	//// 이
+	//D3DXMatrixTranslation(&matTrans, 2.f, 2.f, 2.f);
+
+	//// 공
+	//m_fAngle += 0.2f;
 	//if (m_fAngle > 360.f)
-	//	m_fAngle = 0.03f;
-	//D3DXMatrixRotationAxis(&matRev, &vDir, m_fAngle);
+	//	m_fAngle -= 360.f;
+	////m_fAngle = 0.1f;
+	////m_fAngle = m_fAngle % 360.f;
+	//D3DXMatrixRotationAxis(&matRev, &m_vDir, m_fAngle);
+
+	////matWorld = matTrans * matRev;
 
 	//_matrix matParent;
-	//pPlayer->Get_WorldMatrix(&matParent);
-
+	//m_pTransCom->Get_WorldMatrix(&matParent);
 	//_matrix mat;
 	//D3DXMatrixTranslation(&mat, matParent._41, matParent._42, matParent._43);
 
-	//matParent = matRev * mat;
+	//matParent = matScale * matRev;// *mat;
 
 	//_matrix mat1;
-	//mat1 = matTrans * matParent;
+	//mat1 = matTrans * matParent; // 공전하는 행렬
 
-	//m_matWorld = mat1;
+	//_matrix mat2;
+
+	//if (m_bReady)
+	//{
+	//	m_vTrans += m_vDir * 0.2f;
+	//	D3DXMatrixTranslation(&mat2, m_vTrans.x, m_vTrans.y, m_vTrans.z);
+	//}
+	//m_matWorld = mat2 * mat1;
+
 	//m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
+
+	_vec3	vPlayerPos;
+	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+	NULL_CHECK(pPlayer);
+
+	pPlayer->Get_Info(INFO_POS, &vPlayerPos);
+	//m_pTransCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z);
+
+	_vec3 vDir, vDistance;
+	vDir = { 0.f, 1.f, 0.f };
+	//D3DXVec3Normalize(&vDir, &vDir);
+	//D3DXVec3Normalize(&vDistance, &vDistance);
+
+	_matrix matTrans, matRev;
+
+	// ��
+	D3DXMatrixTranslation(&matTrans, 3.f, 2.f, 0.f);
+
+	// ��
+	m_fAngle += 0.03f;
+	if (m_fAngle > 360.f)
+		m_fAngle = 0.03f;
+	D3DXMatrixRotationAxis(&matRev, &vDir, m_fAngle);
+
+	_matrix matParent;
+	pPlayer->Get_WorldMatrix(&matParent);
+
+	_matrix mat;
+	D3DXMatrixTranslation(&mat, matParent._41, matParent._42, matParent._43);
+
+	matParent = matRev * mat;
+
+	_matrix mat1;
+	mat1 = matTrans * matParent;
+
+	m_matWorld = mat1;
+	m_pTransCom->Set_Pos(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 }
 
 void CSkeletonGhost::Billboard()
@@ -359,7 +364,7 @@ void CSkeletonGhost::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack(m_vPos.y);
+		CMonster::Set_KnockBack(m_vPos.y + 2.2f);
 
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 4.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
@@ -390,7 +395,7 @@ void CSkeletonGhost::Dead()
 		return;
 
 	m_eCurState = DIE;
-	m_pTransCom->Set_Y(m_vPos.y - 3.f);
+	m_pTransCom->Set_Y(m_vPos.y);
 
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);

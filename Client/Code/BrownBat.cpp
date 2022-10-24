@@ -229,7 +229,7 @@ void CBrownBat::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack(m_vPos.y);
+		CMonster::Set_KnockBack(m_vPos.y + 0.2f);
 
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, 1.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);

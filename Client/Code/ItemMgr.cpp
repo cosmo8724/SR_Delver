@@ -328,6 +328,26 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
+		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f}), POTION_2);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_2", pGameObject), E_FAIL);
+		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+
+		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 20.f }), POTION_0);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_3", pGameObject), E_FAIL);
+		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+
+		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f }), POTION_1);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_4", pGameObject), E_FAIL);
+		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+
+		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f }), POTION_2);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_5", pGameObject), E_FAIL);
+		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+
 		pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern", pGameObject), E_FAIL);
