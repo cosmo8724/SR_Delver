@@ -39,7 +39,7 @@ HRESULT CJar::Ready_Object(void)
 
 _int CJar::Update_Object(const _float & fTimeDelta)
 {
-	if (!m_bReady)
+	if (!m_bReady && !g_bIsTool)
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		if (nullptr != pPlayer)
