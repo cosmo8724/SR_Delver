@@ -17,6 +17,8 @@
 #include "EcoWeb.h"
 #include "Statue.h"
 #include "RockFall.h"
+#include "KnifeTrap.h"
+#include "Door.h"
 #include "TreasureBox.h"
 
 CObjectTool::CObjectTool(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -46,7 +48,7 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 	static	_bool	bNowCrafting = false;
 	//if (pGameObject)
 	//{
-		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Bonfire", "Jam", "Long Torch", "Short Torch", "MushRoom", "Web", "Statue", "RockFall", "Door", "TreasureBox"};
+		const char* items[] = { "Stone", "Grass", "Tree", "Jar", "Bonfire", "Jam", "Long Torch", "Short Torch", "MushRoom", "Web", "Statue", "RockFall", "KnifeTrap", "Door", "TreasureBox"};
 		static _int item_current = 0;
 
 		ImGui::Combo("Item Type", &item_current, items, IM_ARRAYSIZE(items), 4);
@@ -200,8 +202,28 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 				m_iRockFallCnt++;
 				break;
 			}
+			case ECO_KNIFETRAP:
+			{
+				wsprintf(szObjTag, L"KnifeTrap_%d", m_iKnifeTrapCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CKnifeTrap::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iKnifeTrapCnt++;
+				break;
+			}
 			case ECO_DOOR:
 			{
+				wsprintf(szObjTag, L"Door_%d", m_iDoorCnt);
+				m_vecObjTags.push_back(szObjTag);
+
+				pEcoObject = CDoor::Create(m_pGraphicDev);
+				NULL_CHECK_RETURN(pEcoObject, E_FAIL);
+				FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_vecObjTags.back(), pEcoObject), E_FAIL);
+
+				m_iDoorCnt++;
 				break;
 			}
 			case ECO_TREASUREBOX:
@@ -512,6 +534,16 @@ HRESULT CObjectTool::ObjectTool_Window(const _float & fTimeDelta)
 					case ECO_ROCKFALL:
 						pCloneObject = CRockFall::Create(pEcoObject);
 						m_iRockFallCnt++;
+						break;
+
+					case ECO_KNIFETRAP:
+						pCloneObject = CKnifeTrap::Create(pEcoObject);
+						m_iKnifeTrapCnt++;
+						break;
+
+					case ECO_DOOR:
+						pCloneObject = CDoor::Create(pEcoObject);
+						m_iDoorCnt++;
 						break;
 
 					case ECO_TREASUREBOX:

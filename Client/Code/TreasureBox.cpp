@@ -71,7 +71,7 @@ void CTreasureBox::Render_Obejct(void)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);

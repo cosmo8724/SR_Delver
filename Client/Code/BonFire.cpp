@@ -80,7 +80,7 @@ void CBonFire::Render_Obejct(void)
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
-	// ¾ËÆÄ°ª º¯È­
+	// ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½È­
 	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(m_iTransparency, 0, 0, 0));
 	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
@@ -97,12 +97,12 @@ void CBonFire::Render_Obejct(void)
 	m_pTextureCom->Set_Texture((_ulong)m_fFrame);
 	m_pBufferCom->Render_Buffer();
 
-	// ¾ËÆÄ°ª º¯È­ ÇØÁ¦
+	// ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
 	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-	CEcoObject::Render_Obejct();	// collider Ãâ·Â
+	CEcoObject::Render_Obejct();	// collider ï¿½ï¿½ï¿½
 }
 
 HRESULT CBonFire::Add_Component(void)

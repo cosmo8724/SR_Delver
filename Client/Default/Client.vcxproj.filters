@@ -433,6 +433,9 @@
     <Filter Include="02. GameObject\01. For_Stage\10. EcoObject\Harmless\Door">
       <UniqueIdentifier>{a272b666-e124-4214-a776-04e4044031ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\02. Monster\JellyfishBoss">
+      <UniqueIdentifier>{279bd719-dc13-47f5-b354-8d2bd6fbde38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -849,6 +852,9 @@
     <ClInclude Include="..\Header\KnifeTrap.h">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Trap\KnifeTrap</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Jellyfish.h">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\JellyfishBoss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1246,6 +1252,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\KnifeTrap.cpp">
       <Filter>02. GameObject\01. For_Stage\10. EcoObject\Trap\KnifeTrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Jellyfish.cpp">
+      <Filter>02. GameObject\01. For_Stage\02. Monster\JellyfishBoss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

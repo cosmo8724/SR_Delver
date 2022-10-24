@@ -15,6 +15,7 @@
 #include "Mimic.h"
 // Boss
 #include "SongBoss.h"
+#include "Jellyfish.h"
 
 IMPLEMENT_SINGLETON(CMonsterMgr)
 
@@ -105,6 +106,12 @@ HRESULT CMonsterMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Attack/SongBoss%d.png", TEX_NORMAL, 12)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Hit/SongBoss%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SongBossDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/SongBoss/Die/SongBoss%d.png", TEX_NORMAL, 10)), E_FAIL);
+
+	// JellyfishBoss_Texture 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_JellyfishBossIDLE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Jellyfish/Idle/Jellyfish_%d.png", TEX_NORMAL, 7)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_JellyfishBossATTACK_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Jellyfish/Attack/Jellyfish_%d.png", TEX_NORMAL, 8)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_JellyfishBossHIT_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Jellyfish/Hit/Jellyfish_%d.png", TEX_NORMAL, 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_JellyfishBossDIE_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Jellyfish/Die/Jellyfish_%d.png", TEX_NORMAL, 8)), E_FAIL);
 
 	return S_OK;
 }
@@ -205,8 +212,8 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 		m_vecMonster.push_back(pGameObject);
 
 		// Leaf
-		pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(50.f, -30.f, 62.f));
-		//pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(5.f, 2.f, 6.f));
+		//pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(50.f, -30.f, 62.f));
+		pGameObject = CLeaf::Create(m_pGraphicDev, _vec3(15.f, 2.f, 15.f));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leaf", pGameObject), E_FAIL);
 		m_vecMonster.push_back(pGameObject);
@@ -215,6 +222,11 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 		pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(1.f, -63.f, -33.f));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost", pGameObject), E_FAIL);
+		m_vecMonster.push_back(pGameObject);
+
+		pGameObject = CSkeletonGhost::Create(m_pGraphicDev, _vec3(20.f, 2.f, 15.f));
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkeletonGhost1", pGameObject), E_FAIL);
 		m_vecMonster.push_back(pGameObject);
 
 		// GreenSpider
@@ -239,6 +251,12 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 		pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(-22.f, -63.5f, -23.f));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
+		m_vecMonster.push_back(pGameObject);
+
+		// Jellyfish
+		pGameObject = CJellyfish::Create(m_pGraphicDev, _vec3(16.f, 2.f, 16.f));
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jellyfish", pGameObject), E_FAIL);
 		m_vecMonster.push_back(pGameObject);
 	}
 	else
@@ -336,7 +354,12 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 		}
 		CloseHandle(hFile);
 
-
+		//////////Boss
+		// SongBoss
+		pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(50, -116.f, 50.f));
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
+		m_vecMonster.push_back(pGameObject);
 
 
 

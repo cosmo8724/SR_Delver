@@ -65,13 +65,12 @@ HRESULT CPlayer::Ready_Object(_vec3 vPos)
 _int CPlayer::Update_Object(const _float & fTimeDelta)
 {
 	// Create Minimap Icon
-	static _bool	bOnce = false;
-	if (!bOnce)
+	if (!m_bOnce)
 	{
 		CMiniMap* pMiniMap = dynamic_cast<CMiniMap*>(Engine::Get_GameObject(L"Layer_UI", L"UI_MiniMap"));
 		pMiniMap->Add_Icon(m_pGraphicDev, this);
 
-		bOnce = true;
+		m_bOnce = true;
 	}
 	// *Create Minimap Icon
 
@@ -147,7 +146,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	return 0;
 }
@@ -647,7 +646,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{	
 		if(0 < _HpMinus)
 		m_bKnockBack = true;
-		
+		cout << "아야 " << endl;
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
 	}
@@ -802,6 +801,7 @@ CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 
 void CPlayer::Free(void)
 {
+	m_bOnce = false;
 	m_CollisionGroup.clear();
 	m_CollisionGroup.swap(vector<CGameObject*>());
 	CGameObject::Free();
