@@ -55,17 +55,17 @@ HRESULT CPlayer::Ready_Object(_vec3 vPos)
 	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
 	// 플레이어 스탯정보
-	m_tInfo.iHp = 200;
-	m_tInfo.iHpMax = 20;
+	m_tInfo.iHp = 21;
+	m_tInfo.iHpMax = 28;
 	m_tInfo.iAtk = 1;
 	m_tInfo.iDef = 10;
-	m_tInfo.iExp = 0;
-	m_tInfo.iExpMax = 5;
-	m_tInfo.iHunger = 5;
+	m_tInfo.iExp = 2;
+	m_tInfo.iExpMax = 9;
+	m_tInfo.iHunger = 2;
 	m_tInfo.fSpeed = 5.f;
 	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
-	m_tInfo.iLevel = 1;
-	m_tInfo.iGold = 0;
+	m_tInfo.iLevel = 4;
+	m_tInfo.iGold = 7;
 
 	return S_OK;
 }
