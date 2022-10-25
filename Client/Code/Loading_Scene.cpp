@@ -122,7 +122,16 @@ HRESULT CLoading_Scene::Ready_Layer(const _tchar * pLayerTag)
 HRESULT CLoading_Scene::Ready_Proto()
 {
 	Engine::Delete_Proto(L"Proto_LoadingTexture");
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LoadingTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/Intro Loading.png", TEX_NORMAL)), E_FAIL);
+
+	if (m_eID == LOADING_INTRO)
+	{
+		FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LoadingTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/Intro Loading.png", TEX_NORMAL)), E_FAIL);
+	}
+	else if (m_eID == LOADING_STAGE || m_eID == LOADING_BOSS)
+	{
+		FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LoadingTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/Stage Loading.png", TEX_NORMAL)), E_FAIL);
+	}
+
 
 	return S_OK;
 }

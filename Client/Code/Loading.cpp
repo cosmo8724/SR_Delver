@@ -56,9 +56,9 @@ _uint CLoading::Loading_ForMapTool()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlockTexCom", CCubeTex::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexCom", CCubeTex::Create(m_pGraphicDev)), E_FAIL);
 
-	_int	iWidth, iDepth, iInterval;
+	//_int	iWidth, iDepth, iInterval;
 	//CImGuiMgr::GetInstance()->Get_MapWidth(&iWidth, &iDepth, &iInterval);
-	iWidth = 10; iDepth = 10; iInterval = 1;
+	//iWidth = 10; iDepth = 10; iInterval = 1;
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexCom", CTerrainTex::Create(m_pGraphicDev, iWidth, iDepth, iInterval)), E_FAIL);
 
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformCom", CTransform::Create()), E_FAIL);
@@ -97,7 +97,6 @@ _uint CLoading::Loading_ForMapTool()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_KnifeTrap_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject18.png", TEX_NORMAL, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TreasureBox_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject16_%d.png", TEX_NORMAL, 2)), E_FAIL);
 
-
 	CMonsterMgr::GetInstance()->Ready_Proto();
 
 	m_bFinish = true;
@@ -109,7 +108,7 @@ _uint CLoading::Loading_ForMapTool()
 
 _uint CLoading::Loading_ForStage(void)
 {
-	lstrcpy(m_szLoading, L"Loading...");
+	lstrcpy(m_szLoading, L"Loading Done!! Press Enter to continue.");
 	m_bFinish = true;
 
 	return 0;
@@ -166,9 +165,9 @@ _uint CLoading::Loading_ForIntro()
 	// Eco Object
 	lstrcpy(m_szLoading, L"Loading Objects...");
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoStone_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject0_%d.png", TEX_NORMAL, 3)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoGrass_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject1_%d.png", TEX_NORMAL, 9)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTree_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject2_%d.png", TEX_NORMAL, 5)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoJar_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject3_%d.png", TEX_NORMAL, 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoGrass_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject1_%d.png", TEX_NORMAL, 12)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTree_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject2_%d.png", TEX_NORMAL, 11)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoJar_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject3_%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoBonfire_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject6_%d.png", TEX_NORMAL, 18)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoJam_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject8_%d.png", TEX_NORMAL, 7)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoWeb_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject9_%d.png", TEX_NORMAL, 6)), E_FAIL);
@@ -208,14 +207,14 @@ _uint CLoading::Loading_ForIntro()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Temple_CubeExampleImage", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Cube Texture/Temple/textures_%d.png", TEX_NORMAL, 21)), E_FAIL);
 
 	m_bFinish = true;
-	lstrcpy(m_szLoading, L"Loading Done...");
+	lstrcpy(m_szLoading, L"Loading Done!! Press Enter to continue.");
 
 	return 0;
 }
 
 _uint CLoading::Loading_ForBoss(void)
 {
-	lstrcpy(m_szLoading, L"Loading...");
+	lstrcpy(m_szLoading, L"Loading Done!! Press Enter to continue.");
 	m_bFinish = true;
 
 	return 0;

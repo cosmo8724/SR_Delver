@@ -508,7 +508,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer, LOADING_STAGE);
 
 	// EcoObject
-	pGameObject = CJar::Create(m_pGraphicDev, _vec3({30.f, 1.f, 40.f}));
+	/*pGameObject = CJar::Create(m_pGraphicDev, _vec3({30.f, 1.f, 40.f}));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Jar", pGameObject), E_FAIL);
 
@@ -535,7 +535,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	pGameObject = CKnifeTrap::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 5.f }));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"KnifeTrap", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"KnifeTrap", pGameObject), E_FAIL);*/
 
 	//pGameObject = CLongTorch::Create(m_pGraphicDev, _vec3({ 6.f, 0.9f, 5.f }));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -704,6 +704,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 			case ECO_ROCKFALL:
 				pCloneObject = CRockFall::Create(pEcoObject);
+				break;
+
+			case ECO_KNIFETRAP:
+				pCloneObject = CKnifeTrap::Create(pEcoObject);
+				break;
+
+			case ECO_DOOR:
+				pCloneObject = CDoor::Create(pEcoObject);
 				break;
 
 			case ECO_TREASUREBOX:
