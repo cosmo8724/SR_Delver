@@ -69,7 +69,7 @@ private:
 	_int				m_iLightningCreate = 0;
 
 	//
-	_bool				m_bGreenSpiderOne = false;
+	_int				m_iGreenSpiderCreate = 0;
 
 	// Timer
 	_float				m_fTimeAcc;

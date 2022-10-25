@@ -439,6 +439,7 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 			Engine::StopSound(SOUND_SONGBOSS);
 			Engine::Play_Sound(L"M_SongBoss_Stun_0.mp3", SOUND_SONGBOSS, 1.f);
 
+			m_iGreenSpiderCreate++;
 			SKillMonsterCreate_Update(fTimeDelta);
 			CBulletMgr::GetInstance()->Fire(STUN_SONGBOSS);
 			++m_iStunCreate;
@@ -523,35 +524,6 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 
 void CSongBoss::SKillMonsterCreate_Update(const _float& fTimeDelta) 
 {
-	if (!m_bGreenSpiderOne)
-	{
-		_int iRand = rand() % 20;
-
-		CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		CGameObject* pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(m_vPos.x - (_float)iRand, m_vPos.y - 1.5f, m_vPos.z + (_float)iRand));
-		NULL_CHECK(pGameObject);
-		pLayer->Add_GameObject(L"GreebSpider_20", pGameObject);
-		CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
-
-		CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		CGameObject* pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(m_vPos.x + (_float)iRand, m_vPos.y - 1.5f, m_vPos.z - (_float)iRand));
-		NULL_CHECK(pGameObject);
-		pLayer->Add_GameObject(L"GreebSpider_21", pGameObject);
-		CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
-
-		CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		CGameObject* pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3(m_vPos.x + (_float)iRand, m_vPos.y + 1.f, m_vPos.z - (_float)iRand));
-		NULL_CHECK(pGameObject);
-		pLayer->Add_GameObject(L"BrownBat_20", pGameObject);
-		CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
-
-		m_bGreenSpiderOne = true;
-	}
-
-
-
-
-
 }
 
 void CSongBoss::OnHit(const _float & fTimeDelta)

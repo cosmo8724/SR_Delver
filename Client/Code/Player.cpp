@@ -54,7 +54,7 @@ HRESULT CPlayer::Ready_Object(_vec3 vPos)
 	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
 	// 플레이어 스탯정보
-	m_tInfo.iHp = 20;
+	m_tInfo.iHp = 200;
 	m_tInfo.iHpMax = 20;
 	m_tInfo.iAtk = 1;
 	m_tInfo.iDef = 10;
@@ -597,7 +597,6 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State() && pItem->Get_ItemType() != ITEM_GOLD)
 	{
-		//cout << "test" << endl;
 		m_str = L"E : Get";
 		if (Key_Down(DIK_E))
 		{
@@ -716,7 +715,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{	
 		if(0 < _HpMinus)
 		m_bKnockBack = true;
-		//cout << "아야 " << endl;
+
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
 		m_bHitParticle = false;
