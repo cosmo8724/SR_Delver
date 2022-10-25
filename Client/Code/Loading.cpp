@@ -215,7 +215,10 @@ _uint CLoading::Loading_ForIntro()
 
 _uint CLoading::Loading_ForBoss(void)
 {
-	return _uint();
+	lstrcpy(m_szLoading, L"Loading...");
+	m_bFinish = true;
+
+	return 0;
 }
 
 _uint CLoading::Loading_ForTool_Scene()

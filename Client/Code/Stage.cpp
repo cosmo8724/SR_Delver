@@ -43,6 +43,7 @@
 #include "TreasureBox.h"
 
 #include "KnifeTrap.h"
+#include "Loading_Scene.h"
 
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -125,6 +126,21 @@ _int CStage::Update_Scene(const _float & fTimeDelta)
 
 void CStage::LateUpdate_Scene(void)
 {
+	if (Engine::Key_Down(DIK_F9))
+	{
+		CCameraMgr::DestroyInstance();
+		CItemMgr::DestroyInstance();
+		CMonsterMgr::DestroyInstance();
+		CParticleMgr::DestroyInstance();
+		CUIMgr::DestroyInstance();
+		CBlockVIBuffer::DestroyInstance();
+
+		CScene*	pLoadingScene = CLoading_Scene::Create(m_pGraphicDev, LOADING_BOSS);
+		NULL_CHECK(pLoadingScene);
+		Engine::Set_Scene(pLoadingScene);
+		return;
+	}
+
 	// Player
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	
@@ -535,7 +551,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	// Blocks 
 	{
 		string	strPath = "..\\..\\Data\\Map_Stage.dat";
-		//string	strPath = "..\\..\\Data\\Map_Boss5.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -586,12 +601,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 				vecBlocks.push_back(pTemp);
 
-
 			}
 		}
 		CloseHandle(hFile);
 		Safe_Release(pBlock);
-		m_mapLayer.insert({ pLayerTag, pLayer });
 	}
 
 	// Eco Object
@@ -701,6 +714,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		CloseHandle(hFile);
 	}
 
+	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
 }

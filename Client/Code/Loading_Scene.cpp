@@ -66,29 +66,34 @@ void CLoading_Scene::LateUpdate_Scene(void)
 {
 	if (m_pLoading->Get_Finish())
 	{
-		switch (m_pLoading->Get_LoadingID())
+		if (!m_pScene)
 		{
-		case LOADING_TOOL:
-			m_pScene = CTool_Scene::Create(m_pGraphicDev);
-			break;
+			switch (m_pLoading->Get_LoadingID())
+			{
+			case LOADING_TOOL:
+				m_pScene = CTool_Scene::Create(m_pGraphicDev);
+				break;
 
-		case LOADING_INTRO:
-			m_pScene = CIntro::Create(m_pGraphicDev);
-			break;
+			case LOADING_INTRO:
+				m_pScene = CIntro::Create(m_pGraphicDev);
+				break;
 
-		case LOADING_STAGE:
-			m_pScene = CStage::Create(m_pGraphicDev);
-			break;
+			case LOADING_STAGE:
+				m_pScene = CStage::Create(m_pGraphicDev);
+				break;
 
-		case LOADING_BOSS:
-			m_pScene = CBoss::Create(m_pGraphicDev);
-			break;
+			case LOADING_BOSS:
+				m_pScene = CBoss::Create(m_pGraphicDev);
+				break;
+			}
 		}
 
-		NULL_CHECK(m_pScene);
-		Engine::Set_Scene(m_pScene);
-
-		return;
+		if (Key_Down(DIK_RETURN))
+		{
+			NULL_CHECK(m_pScene);
+			Engine::Set_Scene(m_pScene);
+			return;
+		}
 	}
 }
 
