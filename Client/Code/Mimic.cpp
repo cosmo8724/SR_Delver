@@ -272,13 +272,23 @@ void CMimic::Dead()
 		{ 1.f, 1.f, 0.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	_int iTex = rand() % 3;
-	if (iTex == 0)
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
-	else if (iTex == 1)
+	_int iTex = rand() % 100;
+	if (iTex > 80)
 		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
-	else if (iTex == 2)
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+	else if (iTex > 50)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
+
+	// ITEM_ARMOR, ITEM_HELMAT, ITEM_NECKLACE, ITEM_PANTS, ITEM_RING
+	else if (iTex > 40)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Armor", ITEM_ARMOR, m_pTransCom->Get_Pos());
+	else if (iTex > 30)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Helmet", ITEM_HELMAT, m_pTransCom->Get_Pos());
+	else if (iTex > 20)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Necklace", ITEM_NECKLACE, m_pTransCom->Get_Pos());
+	else if (iTex > 10)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Pants", ITEM_PANTS, m_pTransCom->Get_Pos());
+	else if (iTex > 5)
+		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Ring", ITEM_RING, m_pTransCom->Get_Pos());
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;
