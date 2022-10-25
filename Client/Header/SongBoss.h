@@ -68,6 +68,9 @@ private:
 	_int				m_iFloorCreate = 0;
 	_int				m_iLightningCreate = 0;
 
+	//
+	_bool				m_bGreenSpiderOne = false;
+
 	// Timer
 	_float				m_fTimeAcc;
 	_float				m_fIdleTimeAcc;
