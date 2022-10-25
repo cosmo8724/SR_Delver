@@ -9,6 +9,8 @@
 #include "Potion.h"
 #include "EquipWindow.h"
 #include "Player.h"
+#include "StaticCamera.h"
+#include "TalkWindow.h"
 CMyButton::CMyButton(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, wstring str)
 	: CUI(pGraphicDev)
 {
@@ -74,7 +76,7 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 	{
 		m_iFrame = 1;
 
-		if (m_str == L"±¸¸Å")
+		if (m_str == L"ï¿½ï¿½ï¿½ï¿½")
 		{
 			if (Mouse_Down(DIM_LB))
 			{
@@ -89,7 +91,7 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 				{
 					if (g_iMoney >= 20)
 					{
-						m_pPlayer->Cal_Money(-20); // ½Ã°£»ó...
+						m_pPlayer->Cal_Money(-20); // ï¿½Ã°ï¿½ï¿½ï¿½...
 						CRedWand* pItem = static_cast<CRedWand*>(CItemMgr::GetInstance()->Add_GameObject_Shop(L"Layer_GameLogic", L"RadWand", ITEM_WEAPON, pPlayer->Get_Pos()));
 						pItem->Set_State(STATE_INV);
 						m_pInv->Set_Inventory(pItem);
@@ -123,7 +125,7 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 			}
 
 		}
-		else if (m_str == L"´Ý±â")
+		else if (m_str == L"ï¿½Ý±ï¿½")
 		{
 			if (Mouse_Down(DIM_LB))
 			{
@@ -132,6 +134,12 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 				CEquipWindow* pEquip = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 				pEquip->Set_Open(false);
 
+				CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
+				pCam->Set_Free(false);
+
+				CTalkWindow* pTalkWindow = dynamic_cast<CTalkWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_TalkWindow"));
+				pTalkWindow->Set_OFFText();
+				pTalkWindow->Reset_TextCount();
 			}
 		}
 	

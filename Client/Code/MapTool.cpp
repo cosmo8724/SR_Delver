@@ -492,7 +492,8 @@ HRESULT CMapTool::MapTool_Window(const _float& fTimeDelta)
 							pTemp = CBlock::Create(*pBlock);
 							pLayer->Add_GameObject(m_vecObjTags.back(), pTemp);
 							m_iBlockCnt++;
-							m_iTerrainCnt = 107;
+							//m_iTerrainCnt = 107; //Stage
+							m_iTerrainCnt = 90;	//Boss
 						}
 					}
 					CloseHandle(hFile);

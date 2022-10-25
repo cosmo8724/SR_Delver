@@ -15,7 +15,7 @@ public:
 
 public:
 	void				Set_OnText() { m_bText = true; m_bFinished = false; }
-	void				Set_OFFText() { m_bText = false; }
+	void				Set_OFFText() { m_bText = false; m_bFinished = false; }
 	void				Set_TextCount() { m_iTextCount++; }
 	void				Set_Text(vector<wstring> *_sText) { m_vecDialogue = *_sText; }
 	void				Reset_TextCount() { m_iTextCount = 0; }
