@@ -174,6 +174,9 @@ void CJar::CollisionEvent(CGameObject * pObj)
 	//MSG_BOX("Ãæµ¹");
 	//m_pTransCom->Set_Pos(-1000.f, -1000.f, -1000.f);
 
+	if (!m_bDead)
+		Engine::Play_Sound(L"Jar_Break.mp3", SOUND_JAR, 0.5f);
+
 	m_bDead = true;
 	m_pColliderCom->Set_Free(true);
 	CParticleMgr::GetInstance()->Set_Info(this, 20, 1.f, { 0.1f, 0.1f, 0.1f },
