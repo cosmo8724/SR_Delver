@@ -36,6 +36,5 @@ private:
 
 	_int			m_bSelecting = false;
 
-
 };
 

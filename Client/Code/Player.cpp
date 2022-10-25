@@ -28,6 +28,7 @@
 
 D3DXVECTOR3 g_vPlayerPos;
 float		g_fAmbient = 1.f;
+int			g_iMoney = 0;
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -175,7 +176,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	g_vPlayerPos = vPos;
-
+	g_iMoney = m_tInfo.iGold;
 
 	return 0;
 }

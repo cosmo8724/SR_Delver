@@ -79,7 +79,7 @@ public:
 	}
 	_float			Get_MinAngle() { return m_fDotAngle; }
 	void			Set_Interact(CGameObject* pObj) { m_pInteractObj = pObj; }
-
+	void			Cal_Money(_int iPrice) { m_tInfo.iGold += iPrice; }
 
 
 private:
