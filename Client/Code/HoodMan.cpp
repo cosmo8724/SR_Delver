@@ -20,22 +20,22 @@ HRESULT CHoodMan::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Pos(15.f, 2.f, 3.f);
+	m_pTransCom->Set_Pos(108.f, -38.f, 76.f);
 
 	// 다이얼로그 테스트 (※메모리 누수 주의)
 	wstring str = L"";
 	m_vecDialogue.push_back(str);
 
-	str = L"... 안녕?";
+	str = L"..";
 	m_vecDialogue.push_back(str);
 
-	str = L"내가 좋은 것을 아주 많이 준비했어";
+	str = L"....";
 	m_vecDialogue.push_back(str);
 
-	str = L"너도 한 번 해볼래?";
+	str = L"......";
 	m_vecDialogue.push_back(str);
 
-	str = L"한 번에 000원이야";
+	str = L"뭘 봐?";
 	m_vecDialogue.push_back(str);
 
 	return S_OK;

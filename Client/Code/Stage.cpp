@@ -505,7 +505,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
 
 	// NPC
-	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
+	CNPCMgr::GetInstance()->Add_GameObject(pLayer, LOADING_STAGE);
 
 	// EcoObject
 	pGameObject = CJar::Create(m_pGraphicDev, _vec3({30.f, 1.f, 40.f}));
@@ -551,7 +551,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks 
 	{
-		string	strPath = "..\\..\\Data\\Map_Boss5.dat";
+		string	strPath = "..\\..\\Data\\Map_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
