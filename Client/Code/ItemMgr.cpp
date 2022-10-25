@@ -759,7 +759,7 @@ HRESULT		CItemMgr::Add_GameObject_Box(const _tchar* objTag, ITEMTYPE eType, _vec
 
 		m_vecItemPool[ITEM_NECKLACE].push_back(pGameObject);
 	}
-	else if (objName == L"GreenWnad")
+	else if (objName == L"GreenWand")
 	{
 		m_vecItemObjTags[eType].push_back(szObjTag);
 
