@@ -38,6 +38,8 @@ public:
 
 	void			Action_PlayerDie();
 
+	void			Reset_Camera();
+
 
 public:
 	inline virtual void Free(void);

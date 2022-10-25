@@ -254,8 +254,8 @@ void CPlayer::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-	if(m_bText)
-		Render_Font(L"Font_Jinji", m_str.c_str(), &_vec2(WINCX*0.5f, WINCY*0.5f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	//if(m_bText)
+	//	Render_Font(L"Font_Jinji", m_str.c_str(), &_vec2(WINCX*0.5f, WINCY*0.5f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 
 
 
@@ -657,7 +657,8 @@ void CPlayer::Respawn()
 	m_fDeathTime = 0.f;
 	m_tInfo.iHp = 10;
 
-	CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
+	//CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
+	CCameraMgr::GetInstance()->Reset_Camera();
 
 	CTransform* pTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Bonfire", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pTransCom);
