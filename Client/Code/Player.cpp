@@ -727,8 +727,6 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 	}
 
 
-
-
 	_vec3 vPos, vLook;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	m_pTransCom->Get_Info(INFO_LOOK, &vLook);
