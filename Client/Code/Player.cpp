@@ -17,6 +17,8 @@
 #include "EcoObject.h"
 #include "RockFall.h"
 
+#include "Lantern.h"
+#include "QuickSlot.h"
 #include "Monster.h"
 #include "Bullet.h"
 #include "Mimic.h"
@@ -24,7 +26,7 @@
 #include "Gold.h"
 #include "Door.h"
 #include "KnifeTrap.h"
-
+#include "EquipWindow.h"
 
 D3DXVECTOR3 g_vPlayerPos;
 float		g_fAmbient = 1.f;
@@ -157,6 +159,22 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	if (Key_Down(DIK_U))
 	{
 		OnHit(1);
+	}
+
+
+	if (Key_Down(DIK_V))
+	{
+		if (nullptr != dynamic_cast<CLantern*>(m_pLeft))
+		{
+			CEquipWindow* pSlot = static_cast<CEquipWindow*>(Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
+			CInventory* pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
+			
+			CItem* pItem = pSlot->Get_Item(0, 1);
+			static_cast<CInvImg*>(pItem)->Get_TargetObj()->Set_State(STATE_INV);
+			pInv->Set_Inventory(pItem);
+			pSlot->Set_Item(0, 1, nullptr);
+			m_pLeft = nullptr;
+		}
 	}
 
 	///////////////////////////

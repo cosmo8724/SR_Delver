@@ -30,6 +30,7 @@
 #include "RockFall.h"
 #include "TreasureBox.h"
 
+
 CBoss::CBoss(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -94,6 +95,8 @@ HRESULT CBoss::Ready_Scene(void)
 		}
 	}
 
+
+	CBlockVIBuffer::GetInstance()->Set_Scene(LOADING_BOSS);
 
 	//// Snow Particle Create
 	//CParticleMgr::GetInstance()->Set_Info(
@@ -469,13 +472,25 @@ HRESULT CBoss::Ready_Layer_UI(const _tchar * pLayerTag)
 HRESULT CBoss::Ready_Proto(void)
 {
 	Engine::Delete_Proto(L"Proto_CubeTexture");
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/Waterfall Skybox.dds", TEX_CUBE)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/Boss Skybox.dds", TEX_CUBE)), E_FAIL);
 
 	return S_OK;
 }
 
 HRESULT CBoss::Ready_Light(void)
 {
+	// WandBullet
+	D3DLIGHT9		tLightInfo5;
+	ZeroMemory(&tLightInfo5, sizeof(D3DLIGHT9));
+	tLightInfo5.Type = D3DLIGHT_POINT;
+	tLightInfo5.Diffuse = D3DXCOLOR(1.f, 0.8f, 0.f, 1.f);
+	tLightInfo5.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo5.Ambient = D3DXCOLOR(1.f, 0.8f, 0.f, 1.f);
+	tLightInfo5.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo5.Range = 4.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo5, LIGHT_PLAYERBULLET), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_BOSS, FALSE);
+
 	return S_OK;
 }
 

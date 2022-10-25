@@ -27,7 +27,7 @@ public:
 	virtual	void			InteractEvent() 	override;
 
 public:
-	void		Set_LodingType(LOADINGID eLodingType) { cout << "Set_LodingType" << endl; m_eLoadingType = eLodingType; }
+	void		Set_LodingType(LOADINGID eLodingType) { m_eLoadingType = eLodingType; }
 
 private:
 	_bool		m_bReady = false;

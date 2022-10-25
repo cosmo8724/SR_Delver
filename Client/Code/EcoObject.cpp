@@ -78,7 +78,6 @@ void CEcoObject::Free(void)
 
 void CEcoObject::Billboard()
 {
-	// ºôº¸µå
 	_matrix		matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
@@ -103,13 +102,7 @@ void CEcoObject::Billboard()
 
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
-	_vec3 vScale = m_pTransCom->Get_Scale();
-	_matrix matScale, matScaleInv;
-	D3DXMatrixScaling(&matScale, vScale.x, vScale.y, vScale.z);
-	D3DXMatrixInverse(&matScaleInv, 0, &matScale);
-
-	m_matWorld = matBill *matWorld;
-	m_pTransCom->Set_WorldMatrix(&m_matWorld);
+	m_pTransCom->Set_WorldMatrix(&(matBill * matWorld));
 }
 
 HRESULT CEcoObject::Add_Component(void)

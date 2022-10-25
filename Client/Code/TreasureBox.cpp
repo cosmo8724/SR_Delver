@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "ParticleMgr.h"
 
+_bool	g_bOpenAtOnce = false;
+
 CTreasureBox::CTreasureBox(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CEcoObject(pGraphicDev)
 {
@@ -70,7 +72,19 @@ void CTreasureBox::LateUpdate_Object(void)
 	if (m_bDead)
 		return;
 
-	Billboard();
+	if (m_eLoadingType != LOADING_BOSS)
+		Billboard();
+
+	if (g_bOpenAtOnce && !m_iTexture)
+	{
+		m_iTexture = 1;
+
+		_int iRand = rand() % 10 + 100;
+		for (int i = 0; i < iRand; ++i)
+		{
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+		}
+	}
 	CEcoObject::LateUpdate_Object();
 }
 
@@ -107,14 +121,14 @@ void CTreasureBox::Render_Obejct(void)
 		{
 			g_fAmbient = min(g_fAmbient + 0.01f, 1.f);
 		}
-		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // È¯°æ¹Ý»ç
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // È¯ï¿½ï¿½Ý»ï¿½
 	}
 	else
 	{
 		g_fAmbient += 0.01f;
 		if (1.f <= g_fAmbient)
 			g_fAmbient = 1.f;
-		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // È¯°æ¹Ý»ç
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // È¯ï¿½ï¿½Ý»ï¿½
 	}
 
 	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
@@ -135,7 +149,7 @@ void CTreasureBox::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 
-	CEcoObject::Render_Obejct();	// collider Ãâ·Â
+	CEcoObject::Render_Obejct();	// collider ï¿½ï¿½ï¿½
 }
 
 HRESULT CTreasureBox::Add_Component(void)
@@ -239,6 +253,9 @@ void CTreasureBox::InteractEvent()
 		}
 		else if (m_eLoadingType == LOADING_BOSS)
 		{
+			g_bOpenAtOnce = true;
+			m_iTexture = 1;
+
 			Engine::StopSound(SOUND_TREASUREBOX);
 			Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
 
@@ -267,13 +284,13 @@ void CTreasureBox::InteractEvent()
 
 			m_pColliderCom->Set_Free(true);
 
-			_int iRand = rand() % 10 + 5;
+			_int iRand = rand() % 10 + 100;
 			for (int i = 0; i < iRand; ++i)
 			{
-				//CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
-				CItemMgr::GetInstance()->Add_GameObject_Box(L"Ring", ITEM_RING, m_pTransCom->Get_Pos());
-				CItemMgr::GetInstance()->Add_GameObject_Box(L"Necklace", ITEM_NECKLACE, m_pTransCom->Get_Pos());
+				CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
 			}
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"Ring", ITEM_RING, m_pTransCom->Get_Pos());
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"Necklace", ITEM_NECKLACE, m_pTransCom->Get_Pos());
 		}
 	}
 }

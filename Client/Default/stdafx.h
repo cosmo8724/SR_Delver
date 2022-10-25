@@ -56,8 +56,10 @@ extern HWND			g_hWnd;
 extern LPDIRECT3DDEVICE9	g_GraphicDev;
 extern bool			g_bIsTool;
 extern bool			g_bIsRenderInstancing;
+extern bool			g_bOpenAtOnce;
 extern D3DXVECTOR3	g_vPlayerPos;
 extern float		g_fAmbient;
 extern int			g_iMoney;
+extern bool			g_bBoss;
 
 using namespace std;
