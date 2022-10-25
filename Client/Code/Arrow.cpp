@@ -28,7 +28,7 @@ HRESULT CArrow::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	m_pTransCom->Set_Pos(10.f, 2.f, 12.f);
+	m_pTransCom->Set_Pos(29.f, 2.f, 7.f);
 	m_eState = STATE_GROUND;
 
 	//_vec3 vScale;
@@ -79,7 +79,8 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 	case STATE_EQUIP:
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
 
-		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
+		
+		if (!g_bShopOpen && !g_bInvOpen)
 		{
 			Charge(fTimeDelta);
 			Attack(fTimeDelta);

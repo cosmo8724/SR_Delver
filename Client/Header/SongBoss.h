@@ -77,6 +77,8 @@ private:
 	_float				m_fAttackTimeAcc;
 	_float				m_fMoveTimeAcc;
 
+	_bool				m_bLight = false;
+
 public:
 	static CSongBoss*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 	static CSongBoss*		Create(CMonster* pMonster);

@@ -196,19 +196,19 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 	if (eID == LOADING_STAGE)
 	{
 		//Arrow
-		pGameObject = CArrow::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 10.f }));
+		pGameObject = CArrow::Create(m_pGraphicDev, _vec3({ 29.f, 2.f, 7.f }));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Arrow", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 		//Dagger
-		pGameObject = CDagger::Create(m_pGraphicDev, _vec3({ 9.f, 2.f, 7.f }));
+		pGameObject = CDagger::Create(m_pGraphicDev, _vec3({ 27.f, 2.f, 7.f }));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Dagger", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 
 		//Wand
-		pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 3.f }));
+		pGameObject = CWand::Create(m_pGraphicDev, _vec3({ 31.f, 2.f, 7.f }));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wand", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
@@ -243,10 +243,10 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		//m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
 
 		// Shield
-		pGameObject = CShield::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 10.f }));
+		pGameObject = CShield::Create(m_pGraphicDev, _vec3({ 27.f, 2.f, 5.f }));
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shield", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
+		m_vecItemPool[ITEM_SHIELD].push_back(pGameObject);
 
 		// Helmat
 		//pGameObject = CHelmat::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 5.f }), 0);
@@ -298,7 +298,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food", pGameObject), E_FAIL);
 		//m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
 
-		pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 11.f, 2.f, 6.f }), 1);
+		pGameObject = CFood::Create(m_pGraphicDev, _vec3({ 29.f, 2.f, 5.f }), 1);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food2", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_FOOD].push_back(pGameObject);
@@ -323,7 +323,7 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_0", pGameObject), E_FAIL);
 		//m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 20.f }), POTION_1);
+		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 31.f, 2.f, 5.f }), POTION_1);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
@@ -758,6 +758,20 @@ HRESULT		CItemMgr::Add_GameObject_Box(const _tchar* objTag, ITEMTYPE eType, _vec
 		static_cast<CItem*>(pGameObject)->Set_State(STATE_POP);
 
 		m_vecItemPool[ITEM_NECKLACE].push_back(pGameObject);
+	}
+	else if (objName == L"GreenWand")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CGreenWand::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		static_cast<CItem*>(pGameObject)->Set_State(STATE_GROUND);
+
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
 	}
 	else
 	{

@@ -35,7 +35,7 @@ public:
 	_int			Get_Attack() { return m_iAttack; }
 	void			Set_GroundY(_float y) { m_fGroundY = y; }
 	void			Set_TopY(_float y) { m_fTopPosY = y; }
-
+	_vec3			Get_vPos() { return m_vPos; }
 
 private:
 	_float			m_fDist; // Distance between player and rockfall

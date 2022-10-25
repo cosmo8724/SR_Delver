@@ -24,7 +24,7 @@ HRESULT CWinkMan::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Pos(2.f, -60.f, 26.f);
+	m_pTransCom->Set_Pos(2.f, -60.f, 30.f);
 
 	// 다이얼로그 테스트 (※메모리 누수 주의)
 	wstring str = L"";

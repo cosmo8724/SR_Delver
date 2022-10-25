@@ -2,6 +2,8 @@
 #include "Shop.h"
 #include "Export_Function.h"
 
+bool		g_bShopOpen = false;
+
 CShop::CShop(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
 {
@@ -53,11 +55,15 @@ _int CShop::Update_Object(const _float & fTimeDelta)
 
 	if (m_bOpen)
 	{
+		g_bShopOpen = true;
+
 		Engine::StopSound(SOUND_UI);
 		Engine::Play_Sound(L"UI_Shop.mp3", SOUND_UI, 1.f);
 
 		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
+	else
+		g_bShopOpen = false;
 
 	if (m_bOpen)
 	{

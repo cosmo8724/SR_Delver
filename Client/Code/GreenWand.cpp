@@ -257,7 +257,7 @@ _int CGreenWand::Update_Object(const _float & fTimeDelta)
 		break;
 	case STATE_EQUIP:
 
-		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
+		if (!g_bShopOpen && !g_bInvOpen)
 		{
 			Charge(fTimeDelta);
 			Attack(fTimeDelta);
