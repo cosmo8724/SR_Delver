@@ -220,7 +220,10 @@ _uint CLoading::Loading_ForBoss(void)
 
 _uint CLoading::Loading_ForTool_Scene()
 {
-	return _uint();
+	lstrcpy(m_szLoading, L"Loading...");
+	m_bFinish = true;
+
+	return 0;
 }
 
 unsigned int CLoading::Thread_Main(void * pArg)
@@ -246,7 +249,7 @@ unsigned int CLoading::Thread_Main(void * pArg)
 		break;
 
 	case LOADING_BOSS:
-		// iFlag = pLoading->Loading_ForBoss();
+		iFlag = pLoading->Loading_ForBoss();
 		break;
 	}
 	

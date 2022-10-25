@@ -2,9 +2,10 @@
 #include "Loading_Scene.h"
 #include "Export_Function.h"
 #include "Loading_BG.h"
+#include "Tool_Scene.h"
 #include "Intro.h"
 #include "Stage.h"
-#include "Tool_Scene.h"
+#include "Boss.h"
 
 CLoading_Scene::CLoading_Scene(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -50,6 +51,11 @@ _int CLoading_Scene::Update_Scene(const _float & fTimeDelta)
 			m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_STAGE);
 			NULL_CHECK_RETURN(m_pLoading, E_FAIL);
 			break;
+
+		case LOADING_BOSS:
+			m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_BOSS);
+			NULL_CHECK_RETURN(m_pLoading, E_FAIL);
+			break;
 		}
 	}
 
@@ -72,6 +78,10 @@ void CLoading_Scene::LateUpdate_Scene(void)
 
 		case LOADING_STAGE:
 			m_pScene = CStage::Create(m_pGraphicDev);
+			break;
+
+		case LOADING_BOSS:
+			m_pScene = CBoss::Create(m_pGraphicDev);
 			break;
 		}
 
