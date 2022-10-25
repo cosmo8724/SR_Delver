@@ -24,14 +24,14 @@ public:
 	void			Collect_Particle(_int iIdx);
 
 	void			Set_Info(CGameObject* pObj
-		, _int		_maxParticles						// �ִ� ��ƼŬ ��
-		, _float	_fSize								// ��� ��ƼŬ�� ũ��
-		, _vec3		_vVelocity = { 1.f,1.f,1.f }		// �ӵ�(Spot Type�� ��� vRight, vUp, vLook ���κ����� �Ÿ�)
-		, _float	_fLifeTime = 1.f					// ��ƼŬ �Ҹ���� �����Ǵ� �ð�
-		, D3DXCOLOR _tColor = { 1.f, 1.f, 1.f, 1.f }		// ����
-		, _float	_fFrameSpeed = 1.f					// ������ �ӵ�
-		, _bool		_bFrameRepeat = false				// ������ �ݺ���� ����
-		, _bool		_bRand = false						// �� ���� ����
+		, _int		_maxParticles						
+		, _float	_fSize								
+		, _vec3		_vVelocity = { 1.f,1.f,1.f }		
+		, _float	_fLifeTime = 1.f					
+		, D3DXCOLOR _tColor = { 1.f, 1.f, 1.f, 1.f }	
+		, _float	_fFrameSpeed = 1.f					
+		, _bool		_bFrameRepeat = false				
+		, _bool		_bRand = false						
 		);
 
 
@@ -53,6 +53,11 @@ public:
 		m_fFrame = _fFrame;
 		m_fDist = _fDist;
 		m_fAngleSpeed = _fAngleSpeed;
+	}
+
+	void			Add_Info_Snow(BDBOX _bdBox)
+	{
+		m_tPInfo.tBdBox = _bdBox;
 	}
 
 

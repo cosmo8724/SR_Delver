@@ -93,6 +93,16 @@ HRESULT CBoss::Ready_Scene(void)
 			}
 		}
 	}
+
+
+	//// Snow Particle Create
+	//CParticleMgr::GetInstance()->Set_Info(
+	//	nullptr, 5000, 1.f, _vec3({ 1.f, 1.f, 1.f }), 1.f, { 1.f, 1.f, 1.f, 1.f });
+	//CParticleMgr::GetInstance()->Add_Info_Snow(
+	//	BDBOX({ _vec3(-38,14, -6), _vec3(60,127, 50) })
+	//	);
+	//CParticleMgr::GetInstance()->Call_Particle(PTYPE_SNOW, TEXTURE_5);
+
 	return S_OK;
 }
 

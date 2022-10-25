@@ -205,7 +205,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->vVelocity.x = GetRandomFloat(0.0f, m_Attribute.vVelocity.x) * (-3.0f);
 		attribute->vVelocity.y = GetRandomFloat(0.0f, m_Attribute.vVelocity.y) * (-10.0f);
 		attribute->vVelocity.z = m_Attribute.vVelocity.z;
-		attribute->vVelocity *= m_fVelocityMulti;
+		//attribute->vVelocity *= m_fVelocityMulti;
 	}
 	break;
 

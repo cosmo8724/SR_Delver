@@ -109,6 +109,15 @@ HRESULT CStage::Ready_Scene(void)
 			}
 		}
 	}
+
+
+	// Snow Particle Create
+	//CParticleMgr::GetInstance()->Set_Info(
+	//	nullptr, 5000, 1.f, _vec3({ 1.f, 1.f, 1.f }), 1.f, { 1.f, 1.f, 1.f, 1.f });
+	//CParticleMgr::GetInstance()->Add_Info_Snow(
+	//	BDBOX({ _vec3(-38,14, -6), _vec3(60,127, 50) })
+	//	);
+	//CParticleMgr::GetInstance()->Call_Particle(PTYPE_SNOW, TEXTURE_5);
 	return S_OK;
 }
 
@@ -552,6 +561,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	// Blocks 
 	{
 		string	strPath = "..\\..\\Data\\Map_Boss5.dat";
+		//string	strPath = "..\\..\\Data\\Map_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -610,7 +620,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		string	strPath = "..\\..\\Data\\EcoObject_Stage.dat";
+		// string	strPath = "..\\..\\Data\\EcoObject_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -731,6 +741,10 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	CUIMgr::GetInstance()->Add_GameObject(pLayer);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
+
+
+
+
 
 	return S_OK;
 }

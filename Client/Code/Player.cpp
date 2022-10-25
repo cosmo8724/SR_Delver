@@ -79,7 +79,23 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	}
 	// *Create Minimap Icon
 
-//	
+	if (!m_bSnowParticle)
+	{
+		CLayer*		pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		if (pLayer == nullptr)
+			return 0;
+		else
+		{
+			// Snow Particle Create
+			CParticleMgr::GetInstance()->Set_Info(
+				this, 8000, 0.1f, _vec3({ 0.8f, 0.8f, 0.8f }), 1.f, { 1.f, 1.f, 1.f, 1.f });
+			CParticleMgr::GetInstance()->Add_Info_Snow(
+				BDBOX({ _vec3(-38,-6, 14), _vec3(60,50, 147) })
+				);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_SNOW, TEXTURE_19);
+			m_bSnowParticle = true;
+		}
+	}
 	
 	if (!m_pInv)
 		m_pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
@@ -668,7 +684,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{
 		//m_bKnockBack = true;
 		m_tInfo.iHp = 0;
-		// m_bDead = true;
+		 m_bDead = true;
 		return;
 	}
 
