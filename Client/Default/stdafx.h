@@ -61,5 +61,7 @@ extern D3DXVECTOR3	g_vPlayerPos;
 extern float		g_fAmbient;
 extern int			g_iMoney;
 extern bool			g_bBoss;
+extern bool			g_bShopOpen;
+extern bool			g_bInvOpen;
 
 using namespace std;

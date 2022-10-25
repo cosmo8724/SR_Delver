@@ -79,7 +79,8 @@ _int CArrow::Update_Object(const _float & fTimeDelta)
 	case STATE_EQUIP:
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
 
-		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
+		
+		if (!g_bShopOpen && !g_bInvOpen)
 		{
 			Charge(fTimeDelta);
 			Attack(fTimeDelta);

@@ -32,6 +32,7 @@ D3DXVECTOR3 g_vPlayerPos;
 float		g_fAmbient = 1.f;
 int			g_iMoney = 0;
 
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_vDirection(0.f, 0.f, 0.f)
@@ -86,7 +87,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 		CLayer*		pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 		if (pLayer == nullptr)
 			return 0;
-		else
+		else if(g_bBoss == true)
 		{
 			// Snow Particle Create
 			CParticleMgr::GetInstance()->Set_Info(
@@ -141,12 +142,8 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 
 
-
-
-
-
 	if (!((Get_DIKeyState(DIK_TAB) & 0x80) || m_pInv->Is_Open()))
-	{
+	{	
 		::SetCursor(NULL);
 		Mouse_Move();
 	}

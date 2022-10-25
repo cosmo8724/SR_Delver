@@ -7,8 +7,9 @@
 #include "Player.h"
 #include "EquipWindow.h"
 #include "QuickSlot.h"
-#include "ItemMgr.h"
+#include "ItemMgr.h" 
 
+bool g_bInvOpen = false;
 CInventory::CInventory(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CUI(pGraphicDev)
 {
@@ -53,8 +54,14 @@ HRESULT CInventory::Ready_Object(void)
 
 _int CInventory::Update_Object(const _float & fTimeDelta)
 {
-	if (m_bOpen || Engine::Get_DIKeyState(DIK_TAB) & 0x80 )
+	if (m_bOpen || Engine::Get_DIKeyState(DIK_TAB) & 0x80)
+	{
+		g_bInvOpen = true;
 		Engine::Add_RenderGroup(RENDER_UI, this);
+
+	}
+	else
+		g_bInvOpen = false;
 
 
 	m_pTransCom->Set_Scale(m_fScaleX, m_fScaleY, 1.f);
