@@ -110,6 +110,13 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 	if (!m_bHit)
 		SKill_Update(fTimeDelta);	
 
+
+	if (m_bLight)
+	{
+		_vec3 vPos = m_pTransCom->Get_Pos();
+ 		Engine::Update_Pos(LIGHT_BOSS, _vec3{ vPos.x , vPos.y , vPos.z  });
+	}
+
 	return 0;
 }
 
@@ -218,6 +225,7 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 			Engine::Play_Sound(L"M_SongBoss_Move.mp3", SOUND_SONGBOSS, 1.f);
 
 			m_pGraphicDev->LightEnable(LIGHT_BOSS, true);
+			m_bLight = true;
 
 			CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 			NULL_CHECK(pStaticCamera);
