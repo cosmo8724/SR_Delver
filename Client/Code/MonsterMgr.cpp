@@ -120,13 +120,6 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 {
 	CGameObject*		pGameObject = nullptr;
 
-
-	pGameObject = CFist::Create(m_pGraphicDev, _vec3({ 22, 2, 14.f }));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"fistttt", pGameObject), E_FAIL);
-	m_vecMonster.push_back(pGameObject);
-
-
 	if (!lstrcmp(szFilePath, L""))
 	{
 		//////////// Monster
@@ -353,16 +346,6 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 			m_vecMonster.push_back(pCloneObject);
 		}
 		CloseHandle(hFile);
-
-		//////////Boss
-		// SongBoss
-		pGameObject = CSongBoss::Create(m_pGraphicDev, _vec3(50, -116.f, 50.f));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SongBoss", pGameObject), E_FAIL);
-		m_vecMonster.push_back(pGameObject);
-
-
-
 	}
 	return S_OK;
 }
