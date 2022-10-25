@@ -7,7 +7,6 @@
 CLeafBullet::CLeafBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBullet(pGraphicDev)
 	, m_bReady(false)
-	, m_fSpeed(0.f)
 {
 }
 
@@ -25,8 +24,6 @@ HRESULT CLeafBullet::Ready_Object(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_tInfo.iAttack = 1;
-	m_fSpeed = 20.f;
-	//m_pTransCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pColliderCom->Set_Free(true);
 	return S_OK;
 }
@@ -244,7 +241,7 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
 
 	// ÀÌ
-	D3DXMatrixTranslation(&matTrans, 2.f, 2.f, 2.f);
+	D3DXMatrixTranslation(&matTrans, 0.7f, 0.7f, 0.7f);
 
 	// °ר
 	m_fAngle += 0.2f;
@@ -272,7 +269,7 @@ _int CLeafBullet::Target(const _float & fTimeDelta)
 
 	if (m_bReady)
 	{
-		m_vTrans += vDir * 0.2f;
+		m_vTrans += vDir * 0.1f;
 		D3DXMatrixTranslation(&mat2, m_vTrans.x, m_vTrans.y, m_vTrans.z);
 	}
 	m_matWorld = mat1 * mat2;

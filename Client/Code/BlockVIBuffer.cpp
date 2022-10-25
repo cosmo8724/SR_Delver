@@ -299,5 +299,5 @@ void CBlockVIBuffer::Free()
 		ppBPT = nullptr;
 	}
 
-	Safe_Release(m_pGraphicDev);
+	//Safe_Release(m_pGraphicDev);
 }

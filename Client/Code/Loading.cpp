@@ -80,10 +80,10 @@ _uint CLoading::Loading_ForMapTool()
 	FAILED_CHECK_RETURN(CParticleMgr::GetInstance()->Ready_Proto(), -1);
 
 	// Eco Object Texture
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoStone_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject0_%d.png", TEX_NORMAL, 3)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoGrass_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject1_%d.png", TEX_NORMAL, 9)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTree_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject2_%d.png", TEX_NORMAL, 5)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoJar_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject3_%d.png", TEX_NORMAL, 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoStone_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject0_%d.png", TEX_NORMAL, 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoGrass_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject1_%d.png", TEX_NORMAL, 12)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoTree_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject2_%d.png", TEX_NORMAL, 11)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoJar_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject3_%d.png", TEX_NORMAL, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoBonfire_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject6_%d.png", TEX_NORMAL, 18)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoJam_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject8_%d.png", TEX_NORMAL, 7)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EcoWeb_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/EcoObject/EcoObject9_%d.png", TEX_NORMAL, 6)), E_FAIL);
@@ -215,12 +215,18 @@ _uint CLoading::Loading_ForIntro()
 
 _uint CLoading::Loading_ForBoss(void)
 {
-	return _uint();
+	lstrcpy(m_szLoading, L"Loading...");
+	m_bFinish = true;
+
+	return 0;
 }
 
 _uint CLoading::Loading_ForTool_Scene()
 {
-	return _uint();
+	lstrcpy(m_szLoading, L"Loading...");
+	m_bFinish = true;
+
+	return 0;
 }
 
 unsigned int CLoading::Thread_Main(void * pArg)
@@ -246,7 +252,7 @@ unsigned int CLoading::Thread_Main(void * pArg)
 		break;
 
 	case LOADING_BOSS:
-		// iFlag = pLoading->Loading_ForBoss();
+		iFlag = pLoading->Loading_ForBoss();
 		break;
 	}
 	

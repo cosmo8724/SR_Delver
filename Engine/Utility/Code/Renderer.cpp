@@ -1,6 +1,7 @@
 #include "..\..\Header\Renderer.h"
 #include "Management.h"
 #include "Camera.h"
+#include "Item.h"
 
 USING(Engine)
 IMPLEMENT_SINGLETON(CRenderer)
@@ -47,6 +48,12 @@ void CRenderer::Clear_RenderGroup(void)
 	for (_uint i = 0; i < RENDER_END; ++i)
 	{
 		for_each(m_RenderGroup[i].begin(), m_RenderGroup[i].end(), CDeleteObj());
+		/*for (auto iter = m_RenderGroup[i].begin(); iter != m_RenderGroup[i].end(); ++iter)
+		{
+			if (nullptr == dynamic_cast<CItem*>(*iter))
+				continue;
+			Safe_Release(*iter);
+		}*/
 		m_RenderGroup[i].clear();
 	}
 }

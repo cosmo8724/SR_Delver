@@ -412,9 +412,6 @@
     <Filter Include="01. Scene\02. Intro">
       <UniqueIdentifier>{8ecd3665-c5b6-4723-a5c2-18a0a0a80696}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\03. WaterFall">
-      <UniqueIdentifier>{515174c3-267e-4efc-a6a6-2cc2bdc2ac50}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\99. Loading\00. Loading Scene">
       <UniqueIdentifier>{7de395d8-cefa-4253-82fc-349554d8dcd4}</UniqueIdentifier>
     </Filter>
@@ -435,6 +432,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. For_Stage\99. UI\11. HungerUI">
       <UniqueIdentifier>{c431b304-53e0-42d8-be5e-44c4caac5898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\03. Boss">
+      <UniqueIdentifier>{9e8c3ac8-188f-4168-809b-f7bbbb7bc4ce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -855,6 +855,9 @@
     <ClInclude Include="..\Header\Jellyfish.h">
       <Filter>02. GameObject\01. For_Stage\02. Monster\JellyfishBoss</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Boss.h">
+      <Filter>01. Scene\03. Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1255,6 +1258,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Jellyfish.cpp">
       <Filter>02. GameObject\01. For_Stage\02. Monster\JellyfishBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Boss.cpp">
+      <Filter>01. Scene\03. Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

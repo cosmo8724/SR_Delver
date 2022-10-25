@@ -37,7 +37,7 @@ CPinkSlime::CPinkSlime(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	, m_fTimeAcc(0.f)
 	, m_fJumpTimeAcc(0.f)
 	, m_fScale(0.f)
-	, m_fHeight(0.f)
+	, m_fHeight(vPos.y)
 	, m_bJump(false)
 	, m_fJSpeed(0.f)
 	, m_fJSpeed0(0.f)
@@ -110,7 +110,7 @@ HRESULT CPinkSlime::Ready_Object(SEPARATION dID)
 	}
 	else if (m_eSeparation == SEPARATION_FOUR || m_eSeparation == SEPARATION_FIVE)
 	{
-		m_tInfo.iHp = 5;
+		m_tInfo.iHp = 3;
 		m_tInfo.iAttack = 3;
 		m_tInfo.iExp = 5;
 		m_fScale = 1.f;
@@ -402,8 +402,10 @@ void CPinkSlime::Dead()
 	if (m_bDead)
 		return;
 
+	static _int			m_tKeyCount;
+	m_tKeyCount++;
 	m_eCurState = DIE;
-
+	cout << m_tKeyCount << endl;
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
 
@@ -415,13 +417,11 @@ void CPinkSlime::Dead()
 		{ 1.f, 0.2f, 0.8f, 1.f }); // pink
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	_int iTex = rand() % 3;
-	if (iTex == 0)
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
-	else if (iTex == 1)
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
-	else if (iTex == 2)
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+	if (m_tKeyCount == 7)
+	{
+		cout << "key" << endl;
+		CItemMgr::GetInstance()->Add_GameObject_Box(L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
+	}
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;
