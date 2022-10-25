@@ -689,6 +689,10 @@ inline void CItemMgr::Free(void)
 
 	for (int i = 0; i < ITEM_END; ++i)
 	{
+		for (size_t j = 0; j < m_vecItemPool[i].size(); ++j)
+			Safe_Release(m_vecItemPool[i][j]);
+
+		m_vecItemPool[i].clear();
 		m_vecItemPool[i].swap(vector<CGameObject*>());
 	}
 
