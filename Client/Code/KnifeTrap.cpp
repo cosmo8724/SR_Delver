@@ -12,14 +12,12 @@ CKnifeTrap::CKnifeTrap(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_eType = ECO_KNIFETRAP;
 	//m_fTopPosY = m_vPos.y;
 	//m_fGroundY = -m_vPos.y;
-	m_fTopPosY = m_vPos.y + 0.5f;
-	m_fGroundY = -m_vPos.y;
 
 	m_fSpeed = 0.5f;
 	m_fCurSpeed = m_fSpeed;
 	m_fDist = 5.f;
 
-	m_bChargeTime = 0.8f;
+	m_bChargeTime = 1.f;
 }
 
 CKnifeTrap::CKnifeTrap(const CEcoObject & rhs)
@@ -30,8 +28,10 @@ CKnifeTrap::CKnifeTrap(const CEcoObject & rhs)
 	m_fSpeed = 0.5f;
 	m_fCurSpeed = m_fSpeed;
 	m_fDist = 5.f;
+	m_eType = ECO_KNIFETRAP;
 
-	m_bChargeTime = 0.8f;
+
+	m_bChargeTime = 1.f;
 }
 
 CKnifeTrap::~CKnifeTrap()
@@ -42,16 +42,22 @@ HRESULT CKnifeTrap::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_fTopPosY = m_pTransCom->Get_Pos().y + 0.5f;
-	m_fGroundY = m_pTransCom->Get_Pos().y - 32.f;
+
 
 	if (!m_bClone)
-		m_pTransCom->Set_Pos(m_vPos.x, m_fGroundY, m_vPos.z);
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_pTransCom->Set_Scale(0.4f, 1.f, 1.f);
 
+	m_fTopPosY = m_pTransCom->Get_Pos().y + 0.5f;
+	m_fGroundY = m_pTransCom->Get_Pos().y - 3.f;
+	m_bChargeTime = 1.f;
+	m_fSpeed = 0.5f;
+	m_fCurSpeed = m_fSpeed;
+	m_fDist = 5.f;
+	m_eType = ECO_KNIFETRAP;
 
-
+	m_pTransCom->Set_Y(m_fGroundY);
 	return S_OK;
 }
 

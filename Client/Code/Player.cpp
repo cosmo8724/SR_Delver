@@ -277,7 +277,7 @@ void CPlayer::Set_HpPlus(_int iHp)
 
 
 		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.5f, { 1.f, 1.f, 2.f },
-			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_MOOD, TEXTURE_16);
 
@@ -721,7 +721,7 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 0.5f },
 			0.1f, { 1.f, 1.f, 1.f, 1.f }, 5.f, false);
 		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_18);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_MOOD, TEXTURE_18);
 		m_bHitParticle = true;
 	}
 
