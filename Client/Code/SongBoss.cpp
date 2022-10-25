@@ -438,6 +438,14 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 
 	m_eCurState = ATTACK;
 
+	if (m_iStunCount == 0)
+	{
+		static _uint i = 0;
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+
+
+	}
+
 	if (m_iStunCreate != 4) // MusicNote Create > 4
 	{
 		if (m_pAnimtorCom->Get_Currentframe() >= 9.f)
