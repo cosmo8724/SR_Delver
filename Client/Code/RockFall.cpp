@@ -22,6 +22,10 @@ CRockFall::CRockFall(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 CRockFall::CRockFall(const CEcoObject & rhs)
 	:CEcoObject(rhs)
 {
+	m_fDist = 10.f;
+	m_fRisingSpeed = 0.07f;
+	m_fFallSpeed = 0.5f;
+	m_fCurSpeed = m_fFallSpeed;
 }
 
 CRockFall::~CRockFall()
@@ -32,10 +36,13 @@ HRESULT CRockFall::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	if (!m_bClone)
-		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-
-	m_pTransCom->Set_Scale(0.4f, 1.f, 1.f);
+	if (m_bClone)
+	{
+		//m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+		m_fOriginPosY = m_pTransCom->Get_Pos().y;
+	}
+	else
+		m_pTransCom->Set_Scale(0.4f, 1.f, 1.f);
 
 	return S_OK;
 }

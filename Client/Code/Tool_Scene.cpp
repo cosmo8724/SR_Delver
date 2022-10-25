@@ -5,6 +5,7 @@
 #include "CameraMgr.h"
 #include "BlockVIBuffer.h"
 #include "SkyBox.h"
+#include "Water.h"
 
 
 CTool_Scene::CTool_Scene(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -32,6 +33,8 @@ _int CTool_Scene::Update_Scene(const _float & fTimeDelta)
 {
 	// Add Tool Windows Here.
 	//CImGuiMgr::GetInstance()->ImGui_Map_Tool(m_pGraphicDev, fTimeDelta);
+	::SetCursor(::LoadCursor(NULL, IDC_ARROW));
+
 	_uint		iResult = Engine::CScene::Update_Scene(fTimeDelta);
 
 	CImGuiMgr::GetInstance()->MapTool();
@@ -141,7 +144,6 @@ HRESULT CTool_Scene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Particle", pGameObject), E_FAIL);
 	CImGuiMgr::GetInstance()->Set_Particle(static_cast<CUserParticle*>(pGameObject));*/
-
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 

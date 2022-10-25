@@ -54,7 +54,7 @@ HRESULT CSongBoss::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tInfo.iHp = 5;
+	m_tInfo.iHp = 20;
 	m_tInfo.iAttack = 5;
 	m_tInfo.iExp = 10;
 
@@ -65,7 +65,7 @@ HRESULT CSongBoss::Ready_Object(void)
 	
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 	m_pTransCom->Set_Scale(2.5f, 2.5f, 2.5f);
-
+			
 	m_eCurState = MOVE;
 	m_ePreState = MOTION_END;
 	m_eSkill = SKILL_END;

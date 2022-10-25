@@ -17,6 +17,14 @@ CTreasureBox::CTreasureBox(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 	m_vPos = vPos;
 }
 
+CTreasureBox::CTreasureBox(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, LOADINGID eID)
+	: CEcoObject(pGraphicDev)
+{
+	m_eLoadingType = eID;
+	m_eType = ECO_TREASUREBOX;
+	m_vPos = vPos;
+}
+
 CTreasureBox::CTreasureBox(const CEcoObject& rhs)
 	: CEcoObject(rhs)
 {
@@ -156,7 +164,7 @@ HRESULT CTreasureBox::Add_Component(void)
 	return S_OK;
 }
 
-CTreasureBox * CTreasureBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CTreasureBox * CTreasureBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, LOADINGID eID)
 {
 	CTreasureBox *	pInstance = new CTreasureBox(pGraphicDev, vPos);
 
@@ -197,35 +205,50 @@ void CTreasureBox::InteractEvent()
 {
 	if (m_iTexture == 0)
 	{
-		Engine::StopSound(SOUND_TREASUREBOX);
-		Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
-
-		m_iTexture = 1;
-
-		//CItemMgr::GetInstance()->Add_RandomObject(
-		//	L"Layer_GameLogic", L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
-
-		m_pColliderCom->Set_Free(true);
-
-
-		CParticleMgr::GetInstance()->Set_Info(this,
-			50,
-			0.7f,
-			{ 0.5f, 0.5f, 0.5f },
-			1.f,
-			{ 1.f, 1.f, 1.f, 1.f }, 1.f ,false, true);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_17);
-
-
-		//CItemMgr::GetInstance()->Add_GameObject_Box(L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
-
-
-		_int iRand = rand() % 10 + 5;
-		for (int i = 0; i < iRand; ++i)
+		if (m_eLoadingType == LOADING_STAGE)
 		{
-			CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
-		}
+			Engine::StopSound(SOUND_TREASUREBOX);
+			Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
 
-	
+			m_iTexture = 1;
+
+			//CItemMgr::GetInstance()->Add_RandomObject(
+			//	L"Layer_GameLogic", L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
+
+			m_pColliderCom->Set_Free(true);
+
+
+			CParticleMgr::GetInstance()->Set_Info(this,
+				50,
+				0.7f,
+				{ 0.5f, 0.5f, 0.5f },
+				1.f,
+				{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_17);
+
+
+			//CItemMgr::GetInstance()->Add_GameObject_Box(L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
+
+
+			_int iRand = rand() % 10 + 5;
+			for (int i = 0; i < iRand; ++i)
+			{
+				CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+			}
+		}
+		else if (m_eLoadingType == LOADING_BOSS)
+		{
+			Engine::StopSound(SOUND_TREASUREBOX);
+			Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
+
+			CParticleMgr::GetInstance()->Set_Info(this,
+				500,
+				0.5f,
+				{ 1.f, 1.f, 1.f },
+				1.f,
+				{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
+			//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_4);
+		}
 	}
 }

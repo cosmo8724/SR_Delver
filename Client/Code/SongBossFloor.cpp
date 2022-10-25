@@ -87,7 +87,7 @@ void CSongBossFloor::MusicNoteCreatePos()
 	CTransform*		pPlayer = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pPlayer);
 
-	CTransform*		pSongBoss = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"SongBoss", L"Proto_TransformCom", ID_DYNAMIC));
+	CTransform*		pSongBoss = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"SongBoss_0", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pSongBoss);
 
 	pPlayer->Get_Info(INFO_POS, &m_vPlayerPos);
@@ -96,7 +96,7 @@ void CSongBossFloor::MusicNoteCreatePos()
 	if (!m_bReady)
 	{
 		_float fNotePos = 3.f;
-		_float fNotePosY = m_vSongBoss.y - 2.3f; //-65.8f;
+		_float fNotePosY = m_vSongBoss.y - 2.45f;
 
 		if (m_iBulletCount == 0)
 			m_pTransCom->Set_Pos(m_vPlayerPos.x, fNotePosY, m_vPlayerPos.z + fNotePos);

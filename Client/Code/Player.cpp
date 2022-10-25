@@ -145,8 +145,11 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	if (!((Get_DIKeyState(DIK_TAB) & 0x80) || m_pInv->Is_Open()))
 	{
+		::SetCursor(NULL);
 		Mouse_Move();
 	}
+	else
+		::SetCursor(::LoadCursor(NULL, IDC_ARROW));
 
 
 	// test area //////////////////
@@ -660,7 +663,7 @@ void CPlayer::Respawn()
 	//CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
 	CCameraMgr::GetInstance()->Reset_Camera();
 
-	CTransform* pTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Bonfire", L"Proto_TransformCom", ID_DYNAMIC));
+	CTransform* pTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"BonFire_0", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pTransCom);
 
 	_vec3 vPos = pTransCom->Get_Pos();

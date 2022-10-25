@@ -268,7 +268,7 @@ HRESULT CBoss::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
-	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
+	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Boss.dat");
 
 	// NPC
 	CNPCMgr::GetInstance()->Add_GameObject(pLayer, LOADING_BOSS);
@@ -335,7 +335,7 @@ HRESULT CBoss::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		string	strPath = "..\\..\\Data\\EcoObject_Stage.dat";
+		string	strPath = "..\\..\\Data\\EcoObject_Boss.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -429,16 +429,22 @@ HRESULT CBoss::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 			case ECO_ROCKFALL:
 				pCloneObject = CRockFall::Create(pEcoObject);
+				dynamic_cast<CRockFall*>(pCloneObject)->Set_GroundY(2.f);
 				break;
 
 			case ECO_TREASUREBOX:
 				pCloneObject = CTreasureBox::Create(pEcoObject);
+				static_cast<CTreasureBox*>(pCloneObject)->Set_LodingType(LOADING_BOSS);
 				break;
 			}
 			pLayer->Add_GameObject(m_vecObjTags.back(), pCloneObject);
 		}
 		CloseHandle(hFile);
 	}
+
+	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 5.f, 2.f, 8.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BonFire_0", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag, pLayer });
 

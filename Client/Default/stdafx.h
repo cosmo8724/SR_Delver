@@ -53,6 +53,7 @@
 
 extern HINSTANCE	g_hInst;
 extern HWND			g_hWnd;
+extern LPDIRECT3DDEVICE9	g_GraphicDev;
 extern bool			g_bIsTool;
 extern bool			g_bIsRenderInstancing;
 extern D3DXVECTOR3	g_vPlayerPos;

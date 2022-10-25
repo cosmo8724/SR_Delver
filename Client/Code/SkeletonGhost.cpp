@@ -79,12 +79,11 @@ _int CSkeletonGhost::Update_Object(const _float & fTimeDelta)
 		m_bCreateIcon = true;
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_ALPHA, this); // TODO : Delete
 
-	//// Do you have a rental? Ok->true
-	//CLantern* pLentern = dynamic_cast<CLantern*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Lantern"));
-	//if (STATE_EQUIP == pLentern->Get_State())
-	//	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	// Do you have a rental? Ok->true
+	CLantern* pLentern = dynamic_cast<CLantern*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Lantern"));
+	if (STATE_EQUIP == pLentern->Get_State())
+		Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
@@ -364,9 +363,9 @@ void CSkeletonGhost::OnHit(const _float & fTimeDelta)
 	if (!m_bOneCheck)
 	{
 		m_eCurState = HIT;
-		CMonster::Set_KnockBack(m_vPos.y + 0.2f);
+		CMonster::Set_KnockBack(m_vPos.y + 0.1f);
 
-		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 1.f, m_vPos.y + 0.5f, 0.f },
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 0.5f, { 0.f, 1.f, 0.f },
 			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(false, true);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_14);
