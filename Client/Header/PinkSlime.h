@@ -66,7 +66,7 @@ private:
 	_float				m_fOneJumpTimeAcc = 0.f;
 	_float				m_fTowJumpTimeAcc = 0.f;
 
-
+	
 
 
 

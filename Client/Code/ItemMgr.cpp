@@ -474,7 +474,7 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 	{
 		m_vecItemObjTags[eType].push_back(szObjTag);
 
-		_int iTex = rand() % POTION_END;
+		_int iTex = rand() % POTION_END + 2;
 
 		CGameObject* pGameObject = CPotion::Create(m_pGraphicDev, vPos, iTex);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
