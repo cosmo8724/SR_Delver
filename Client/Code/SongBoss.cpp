@@ -217,6 +217,8 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 			Engine::StopSound(SOUND_SONGBOSS);
 			Engine::Play_Sound(L"M_SongBoss_Move.mp3", SOUND_SONGBOSS, 1.f);
 
+			m_pGraphicDev->LightEnable(LIGHT_BOSS, true);
+
 			CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 			NULL_CHECK(pStaticCamera);
 			pStaticCamera->Shake_Camera(5.f, 3.f);
