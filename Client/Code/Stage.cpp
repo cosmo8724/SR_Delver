@@ -179,7 +179,8 @@ void CStage::LateUpdate_Scene(void)
 
 	for (auto& obj : *pCollisionGroup)
 	{
-		Engine::CollisionAABB(pPlayer, obj);		// Player
+		if(ECO_JAR != static_cast<CEcoObject*>(obj)->Get_Type()) // Player
+			Engine::CollisionAABB(pPlayer, obj);		
 
 		for (auto& weapon : *pWeaponGroup)			// weapon
 		{
@@ -550,7 +551,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks 
 	{
-		string	strPath = "..\\..\\Data\\Map_Stage.dat";
+		string	strPath = "..\\..\\Data\\Map_Boss5.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];

@@ -524,6 +524,76 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 
 		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
 	}
+	else if (objName == L"Armor")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		_int iTex = rand() % 2;
+
+		CGameObject* pGameObject = CArmor::Create(m_pGraphicDev, vPos, iTex);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[eType].push_back(pGameObject);
+	}
+	else if (objName == L"Helmet")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		_int iTex = rand() % 2;
+
+		CGameObject* pGameObject = CHelmat::Create(m_pGraphicDev, vPos, iTex);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[eType].push_back(pGameObject);
+	}
+	else if (objName == L"Necklace")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		_int iTex = rand() % 2;
+
+		CGameObject* pGameObject = CNecklace::Create(m_pGraphicDev, vPos, iTex);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[eType].push_back(pGameObject);
+	}
+	else if (objName == L"Pants")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		_int iTex = rand() % 2;
+
+		CGameObject* pGameObject = CPants::Create(m_pGraphicDev, vPos, iTex);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[eType].push_back(pGameObject);
+	}
+	else if (objName == L"Ring")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		_int iTex = rand() % 2;
+
+		CGameObject* pGameObject = CRing::Create(m_pGraphicDev, vPos, iTex);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[eType].push_back(pGameObject);
+	}
 
 	else
 	{

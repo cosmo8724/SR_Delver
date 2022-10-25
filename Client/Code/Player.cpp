@@ -680,6 +680,7 @@ void CPlayer::OnHit(_int _HpMinus)
 		//cout << "아야 " << endl;
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
+		m_bHitParticle = false;
 	}
 }
 
@@ -688,15 +689,27 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 	if (!m_bKnockBack)
 		return;
 
-	// Light
-	D3DLIGHT9		tLightInfo;
-	m_pGraphicDev->GetLight(LIGHT_PLAYER, &tLightInfo);
-	tLightInfo.Diffuse = { 1.f, 0.f, 0.f ,1.f };
-	tLightInfo.Ambient = { 1.f, 0.f, 0.f ,1.f };
-	m_pGraphicDev->SetLight(LIGHT_PLAYER, &tLightInfo);
-	m_pGraphicDev->LightEnable(LIGHT_PLAYER, TRUE);
-	if (0.5f < m_fJTimeDelta)
-		m_pGraphicDev->LightEnable(LIGHT_PLAYER, FALSE);
+	//// Light
+	//D3DLIGHT9		tLightInfo;
+	//m_pGraphicDev->GetLight(LIGHT_PLAYER, &tLightInfo);
+	//tLightInfo.Diffuse = { 1.f, 0.f, 0.f ,1.f };
+	//tLightInfo.Ambient = { 1.f, 0.f, 0.f ,1.f };
+	//m_pGraphicDev->SetLight(LIGHT_PLAYER, &tLightInfo);
+	//m_pGraphicDev->LightEnable(LIGHT_PLAYER, TRUE);
+	//if (0.5f < m_fJTimeDelta)
+	//	m_pGraphicDev->LightEnable(LIGHT_PLAYER, FALSE);
+	
+
+	if (!m_bHitParticle)
+	{
+		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 0.5f },
+			0.1f, { 1.f, 1.f, 1.f, 1.f }, 5.f, false);
+		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_18);
+		m_bHitParticle = true;
+	}
+
+
 
 
 	_vec3 vPos, vLook;
