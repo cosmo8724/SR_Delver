@@ -250,6 +250,7 @@ void CTreasureBox::InteractEvent()
 			{
 				CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
 			}
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"GreenWand", ITEM_WEAPON, m_pTransCom->Get_Pos());
 		}
 		else if (m_eLoadingType == LOADING_BOSS)
 		{

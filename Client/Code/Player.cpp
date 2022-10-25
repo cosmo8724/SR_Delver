@@ -877,6 +877,8 @@ void CPlayer::Set_Level(const _int& iMonsterHp, const _int& iMonsterExp)
 		else
 		{
 			m_tInfo.iLevel += 1;
+			m_tInfo.iHpMax += 2;
+			m_tInfo.iHp = m_tInfo.iHpMax;
 			m_tInfo.iExp = 0;
 			m_tInfo.iExpMax += 10;
 		}

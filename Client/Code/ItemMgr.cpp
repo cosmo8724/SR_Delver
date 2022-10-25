@@ -759,6 +759,20 @@ HRESULT		CItemMgr::Add_GameObject_Box(const _tchar* objTag, ITEMTYPE eType, _vec
 
 		m_vecItemPool[ITEM_NECKLACE].push_back(pGameObject);
 	}
+	else if (objName == L"GreenWnad")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CGreenWand::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		static_cast<CItem*>(pGameObject)->Set_State(STATE_GROUND);
+
+		m_vecItemPool[ITEM_WEAPON].push_back(pGameObject);
+	}
 	else
 	{
 		delete[] szObjTag;
