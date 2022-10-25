@@ -98,7 +98,7 @@ void CCameraMgr::Action_PlayerDie()
 
 void CCameraMgr::Reset_Camera()
 {
-	m_vecCamera[m_CurId]->Reset();
+	dynamic_cast<CStaticCamera*>(m_vecCamera[m_CurId])->Reset();
 }
 
 inline void CCameraMgr::Free(void)

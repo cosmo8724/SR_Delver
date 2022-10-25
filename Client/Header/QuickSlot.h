@@ -31,6 +31,8 @@ public:
 	_bool				Is_Clicked(POINT ptMouse);
 	CItem*				Get_Item() { return m_Slot[m_iRow][m_iCol];	}
 	void				Set_Item(CItem* pItem);
+	CItem*				Get_Item(_int i, _int j) { return m_Slot[i][j]; }
+	void				Set_Item(_int i, _int j, CItem* pItem) { m_Slot[i][j] = pItem; }
 
 
 private:

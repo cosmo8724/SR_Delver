@@ -256,6 +256,7 @@ _int CGreenWand::Update_Object(const _float & fTimeDelta)
 		//m_pTransCom->Move_Pos(&_vec3({ 0.005f, 0.005f, 0.005f }));
 		break;
 	case STATE_EQUIP:
+
 		if (!(Engine::Get_DIKeyState(DIK_TAB) & 0x80))
 		{
 			Charge(fTimeDelta);

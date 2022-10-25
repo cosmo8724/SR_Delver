@@ -31,6 +31,8 @@ HRESULT CRedWand::Ready_Object(void)
 	//m_pTransCom->Set_Pos(6.f, 0.5f, 15.f);
 	m_eState = STATE_GROUND;
 
+	m_pColliderCom->Set_Free(true);
+
 	//_vec3 vScale;
 	//_matrix matWorld;
 	//m_pTransCom->Get_WorldMatrix(&matWorld);
