@@ -196,17 +196,17 @@ void CGold::InteractEvent()
 		Engine::Play_Sound(L"I_Gold.mp3", SOUND_ITEM, 1.f);
 
 		/*
-		GOLD_0 : 2
-		GOLD_1 : 4
-		GOLD_2 : 6
-		GOLD_3 : 8
+		GOLD_0 : 6
+		GOLD_1 : 8
+		GOLD_2 : 10
+		GOLD_3 : 12
 		*/
 		//CMonster* pMonster = dynamic_cast<CMonster*>(pObj);
 		//if (pMonster)
 		//	return;
 
 		CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-		m_iTextureIdx = (m_iTextureIdx + 1) * 2;
+		m_iTextureIdx = (m_iTextureIdx + 3) * 2;
 		pPlayer->Set_GoldPlus(m_iTextureIdx);
 
 		m_eState = STATE_INV;

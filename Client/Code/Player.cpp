@@ -57,7 +57,7 @@ HRESULT CPlayer::Ready_Object(_vec3 vPos)
 	m_tInfo.iAtk = 1;
 	m_tInfo.iDef = 10;
 	m_tInfo.iExp = 0;
-	m_tInfo.iExpMax = 10;
+	m_tInfo.iExpMax = 5;
 	m_tInfo.iHunger = 5;
 	m_tInfo.fSpeed = 5.f;
 	m_tInfo.fSlowSpeed = m_tInfo.fSpeed * 0.5f;
@@ -161,6 +161,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 	///////////////////////////
 
+	SpeedControl(fTimeDelta);
 	Key_Input(fTimeDelta);
 	Jump(fTimeDelta);
 	
@@ -806,6 +807,22 @@ void CPlayer::Slow(const _float & fTimeDelta)
 		m_tInfo.bSlow = false;
 		m_tInfo.fSpeed = m_tInfo.fSlowSpeed  * 2.f;
 		m_fSlowTimeAcc = 0.f;
+	}
+}
+
+void CPlayer::SpeedControl(const _float & fTimeDelta)
+{
+	if (!m_bSpeedControl)
+		return;
+
+	m_tInfo.fSpeed *= 2;
+
+	m_fSpeedControlTimeAcc += fTimeDelta;
+	if (8.f < m_fSpeedControlTimeAcc)
+	{
+		m_bSpeedControl = false;
+		m_tInfo.fSpeed /= 2;
+		m_fSpeedControlTimeAcc = 0.f;
 	}
 }
 

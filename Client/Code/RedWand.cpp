@@ -105,7 +105,6 @@ void CRedWand::CollisionEvent(CGameObject * pObj)
 	//	//m_bdBox.vMin = { m_vPos.x - vScale.x, m_vPos.y - vScale.y, m_vPos.z - vScale.z };
 	//	//m_bdBox.vMax = { m_vPos.x + vScale.x, m_vPos.y + vScale.y, m_vPos.z + vScale.z };
 	//}
-
 }
 
 void CRedWand::InteractEvent()

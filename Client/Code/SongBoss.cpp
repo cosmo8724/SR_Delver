@@ -571,13 +571,7 @@ void CSongBoss::Dead()
 		{ 1.f, 0.f, 0.f, 1.f });
 	CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
 
-	_int iTex = rand() % 3;
-	if (iTex == 0)
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Potion", ITEM_POTION, m_pTransCom->Get_Pos());
-	else if (iTex == 1)
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Food", ITEM_FOOD, m_pTransCom->Get_Pos());
-	else if (iTex == 2)
-		CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+	CItemMgr::GetInstance()->Add_RandomObject(L"Layer_GameLogic", L"Beer", ITEM_POTION, m_pTransCom->Get_Pos());
 
 	m_pColliderCom->Set_Free(true);
 	m_bDead = true;

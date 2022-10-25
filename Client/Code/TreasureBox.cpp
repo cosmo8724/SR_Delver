@@ -61,6 +61,7 @@ _int CTreasureBox::Update_Object(const _float & fTimeDelta)
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
+	m_fParticle += fTimeDelta;
 	return OBJ_NOEVENT;
 }
 
@@ -241,14 +242,38 @@ void CTreasureBox::InteractEvent()
 			Engine::StopSound(SOUND_TREASUREBOX);
 			Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
 
-			CParticleMgr::GetInstance()->Set_Info(this,
-				500,
-				0.5f,
-				{ 1.f, 1.f, 1.f },
-				1.f,
-				{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
-			CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
-			//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_4);
+			m_iTexture = 1;
+
+			if (0.1f < m_fParticle)
+			{
+				CParticleMgr::GetInstance()->Set_Info(this,
+					50,
+					1.f,
+					{ 1.f, 1.f, 1.f },
+					1.f,
+					{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
+				CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_4);
+				
+				//CParticleMgr::GetInstance()->Set_Info(this,
+				//	500,
+				//	10.f,
+				//	{ 1.f, 1.f, 1.f },
+				//	1.f,
+				//	{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
+				//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
+
+				m_fParticle = 0.f;
+			}
+
+			m_pColliderCom->Set_Free(true);
+
+			_int iRand = rand() % 10 + 5;
+			for (int i = 0; i < iRand; ++i)
+			{
+				//CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+				CItemMgr::GetInstance()->Add_GameObject_Box(L"Ring", ITEM_RING, m_pTransCom->Get_Pos());
+				CItemMgr::GetInstance()->Add_GameObject_Box(L"Necklace", ITEM_NECKLACE, m_pTransCom->Get_Pos());
+			}
 		}
 	}
 }

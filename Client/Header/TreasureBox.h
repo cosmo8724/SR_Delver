@@ -32,5 +32,6 @@ public:
 private:
 	_bool		m_bReady = false;
 	LOADINGID	m_eLoadingType = LOADING_END;
+	_float		m_fParticle = false;
 };
 
