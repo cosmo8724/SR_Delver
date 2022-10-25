@@ -63,6 +63,7 @@ _int CTreasureBox::Update_Object(const _float & fTimeDelta)
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
+	m_fParticle += fTimeDelta;
 	return OBJ_NOEVENT;
 }
 
@@ -120,14 +121,14 @@ void CTreasureBox::Render_Obejct(void)
 		{
 			g_fAmbient = min(g_fAmbient + 0.01f, 1.f);
 		}
-		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // È¯°æ¹Ý»ç
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // È¯ï¿½ï¿½Ý»ï¿½
 	}
 	else
 	{
 		g_fAmbient += 0.01f;
 		if (1.f <= g_fAmbient)
 			g_fAmbient = 1.f;
-		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // È¯°æ¹Ý»ç
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // È¯ï¿½ï¿½Ý»ï¿½
 	}
 
 	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
@@ -148,7 +149,7 @@ void CTreasureBox::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 
-	CEcoObject::Render_Obejct();	// collider Ãâ·Â
+	CEcoObject::Render_Obejct();	// collider ï¿½ï¿½ï¿½
 }
 
 HRESULT CTreasureBox::Add_Component(void)
@@ -258,21 +259,38 @@ void CTreasureBox::InteractEvent()
 			Engine::StopSound(SOUND_TREASUREBOX);
 			Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
 
-			CParticleMgr::GetInstance()->Set_Info(this,
-				500,
-				0.5f,
-				{ 1.f, 1.f, 1.f },
-				1.f,
-				{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
-			CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
-			//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_4);
+			m_iTexture = 1;
 
-			int iRand = rand() % 10 + 100;
+			if (0.1f < m_fParticle)
+			{
+				CParticleMgr::GetInstance()->Set_Info(this,
+					50,
+					1.f,
+					{ 1.f, 1.f, 1.f },
+					1.f,
+					{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
+				CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_4);
+				
+				//CParticleMgr::GetInstance()->Set_Info(this,
+				//	500,
+				//	10.f,
+				//	{ 1.f, 1.f, 1.f },
+				//	1.f,
+				//	{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
+				//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
+
+				m_fParticle = 0.f;
+			}
+
+			m_pColliderCom->Set_Free(true);
+
+			_int iRand = rand() % 10 + 100;
 			for (int i = 0; i < iRand; ++i)
 			{
 				CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
 			}
-
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"Ring", ITEM_RING, m_pTransCom->Get_Pos());
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"Necklace", ITEM_NECKLACE, m_pTransCom->Get_Pos());
 		}
 	}
 }

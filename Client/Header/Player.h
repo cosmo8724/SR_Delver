@@ -34,6 +34,7 @@ public:
 
 	void				Set_Stun() { m_tInfo.bStun = true; }
 	void				Set_Slow() { m_tInfo.bSlow = true; }
+	void				Set_SpeedControl() { m_bSpeedControl = true; }
 	void				Set_KnockBack() { m_bKnockBack = true; }
 
 	void				OnHit(_int _HpMinus); // sh
@@ -59,6 +60,7 @@ private:
 	void				KnockBack(const _float& fTimeDelta); // sh
 	void				Stun(const _float& fTimeDelta); // sh
 	void				Slow(const _float& fTimeDelta); // sh
+	void				SpeedControl(const _float& fTimeDelta); // sh
 	void				Hunger(const _float& fTimeDelta); // sh
 
 public:
@@ -117,6 +119,9 @@ private:
 
 	// Slow
 	_float				m_fSlowTimeAcc = 0.f;
+	_bool				m_bSpeedControl = false;
+	_float				m_fTempSpeed = 0.f;
+	_float				m_fSpeedControlTimeAcc = 0.f;
 
 	// Hunger
 	_float				m_fHungerTimeAcc = 0.f;

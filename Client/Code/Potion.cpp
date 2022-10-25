@@ -277,7 +277,7 @@ void CPotion::RandomItem(const _float& fTimeDelta)
 	break;
 	case POTION_3: // blue
 	{
-		pPlayer->Set_Slow();
+		pPlayer->Set_SpeedControl();
 		m_bFinished = true;
 	}
 	break;

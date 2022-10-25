@@ -26,7 +26,7 @@ protected:
 	virtual void	LevelUp() override;
 
 private:
-	HRESULT		Add_Component(void);
+	HRESULT			Add_Component(void);
 
 public:
 	virtual void	CollisionEvent(CGameObject* pObj);
