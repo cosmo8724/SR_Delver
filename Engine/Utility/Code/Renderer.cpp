@@ -28,13 +28,16 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
 	for (_uint i = 0; i < RENDER_END; ++i)
 	{
-		Set_RenderState(pGraphicDev, i);
+		Set_PreRenderState(pGraphicDev, i);
 
 		for (auto& iter : m_RenderGroup[i])
 		{
 			iter->Render_Obejct();
 			Safe_Release(iter);			// 삭제가 아님, 레퍼런스 카운트 감소
 		}
+
+		Set_PostRenderState(pGraphicDev, i);
+
 		m_RenderGroup[i].clear();
 	}
 }
@@ -48,7 +51,7 @@ void CRenderer::Clear_RenderGroup(void)
 	}
 }
 
-void CRenderer::Set_RenderState(LPDIRECT3DDEVICE9 & pGraphicDev, _int _i)
+void CRenderer::Set_PreRenderState(LPDIRECT3DDEVICE9 & pGraphicDev, _int _i)
 {
 	if (_i == RENDER_UI)	//직교투영
 	{
@@ -67,6 +70,19 @@ void CRenderer::Set_RenderState(LPDIRECT3DDEVICE9 & pGraphicDev, _int _i)
 
 		//pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 		pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matOrtho);
+
+		pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+		pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+		pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
+		pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+
+
 	}
 	else //원근투영
 	{
@@ -91,6 +107,17 @@ void CRenderer::Set_RenderState(LPDIRECT3DDEVICE9 & pGraphicDev, _int _i)
 			pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
 			pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 		}
+	}
+}
+
+void CRenderer::Set_PostRenderState(LPDIRECT3DDEVICE9 & pGraphicDev, _int _i)
+{
+	if (_i == RENDER_UI)	//직교투영
+	{
+		pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+		pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
 	}
 }
 

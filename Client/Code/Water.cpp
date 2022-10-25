@@ -168,7 +168,7 @@ void CWater::LateUpdate_Object(void)
 void CWater::Render_Obejct(void)
 {
 	/*
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	////m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
@@ -194,11 +194,11 @@ void CWater::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	////m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	*/
 
 	// Shader Test
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	////m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	_matrix		IMatrix = *D3DXMatrixIdentity(&IMatrix);

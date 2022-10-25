@@ -174,12 +174,12 @@ HRESULT CUIMgr::Add_GameObject(CLayer * pLayer)
 	m_vecUI.push_back(pGameObject);
 
 	// Buttons
-	pGameObject = CMyButton::Create(m_pGraphicDev, _vec2( WINCX * 0.5f + 240.f  , WINCY *0.5f + 30.f), L"±¸¸Å");
+	pGameObject = CMyButton::Create(m_pGraphicDev, _vec2( WINCX * 0.5f + 240.f  , WINCY *0.5f + 30.f), L"Buy");
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Button_Buy", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);
 
-	pGameObject = CMyButton::Create(m_pGraphicDev, _vec2(WINCX * 0.5f + 240.f, WINCY *0.5f + 70.f), L"´Ý±â");
+	pGameObject = CMyButton::Create(m_pGraphicDev, _vec2(WINCX * 0.5f + 240.f, WINCY *0.5f + 70.f), L"Close");
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Button_Close", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);

@@ -99,6 +99,7 @@ technique DefaultTechnique
 		AlphaBlendEnable = true;
 		SrcBlend = SrcAlpha;
 		DestBlend = InvSrcAlpha;
+
 		BlendOp = Add;
 
 		VertexShader = compile vs_3_0 VS_MAIN();

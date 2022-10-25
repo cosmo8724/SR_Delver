@@ -48,7 +48,7 @@ void CMonster::Render_Obejct()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -59,12 +59,13 @@ void CMonster::Render_Obejct()
 
 	//D3DMATERIAL9		tMtrl;
 	//ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+	//m_pGraphicDev->GetMaterial(&tMtrl);
+	//if (tMtrl.Ambient.r < 0.5f)
+	//{
+	//	tMtrl.Ambient = { 0.5f, 0.5f, 0.5f, 1.f };
+	//	m_pGraphicDev->SetMaterial(&tMtrl);
+	//}
 
-	//tMtrl.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // ����
-	//tMtrl.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//tMtrl.Ambient	= D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f); // ȯ��ݻ�
-
-	//m_pGraphicDev->SetMaterial(&tMtrl);
 
 
 	m_pAnimtorCom->Set_Texture();
@@ -73,7 +74,7 @@ void CMonster::Render_Obejct()
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 
 #ifdef _DEBUG

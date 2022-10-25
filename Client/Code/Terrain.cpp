@@ -38,7 +38,7 @@ void CTerrain::LateUpdate_Object(void)
 
 void CTerrain::Render_Obejct(void)
 {
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	////m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -52,7 +52,7 @@ void CTerrain::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	////m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
 
 HRESULT CTerrain::Add_Component(void)
