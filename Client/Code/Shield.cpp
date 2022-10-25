@@ -62,7 +62,7 @@ _int CShield::Update_Object(const _float & fTimeDelta)
 
 		if (!m_bAttack)
 		{
-			m_pColliderCom->Set_Free(true);
+			//m_pColliderCom->Set_Free(true);
 			m_pTransCom->Item_LeftMotion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
 		}
 		break;
@@ -218,7 +218,7 @@ void CShield::Attack(const _float & fTimeDelta)
 	if (m_pTransCom->Item_Defense(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer()))
 	{
 		m_bAttack = false;
-		m_pColliderCom->Set_Free(true);
+		//m_pColliderCom->Set_Free(true);
 	}
 
 }

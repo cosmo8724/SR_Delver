@@ -480,7 +480,78 @@ HRESULT CBoss::Ready_Proto(void)
 
 HRESULT CBoss::Ready_Light(void)
 {
+	// Default
+	D3DLIGHT9        tLightInfo0;
+	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
+
+	//tLightInfo0.Type = D3DLIGHT_POINT;
+	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
+	tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
+	//tLightInfo0.Range = 3000.f;
+	tLightInfo0.Direction = { 0.f ,-1.f, -1.f };
+
+	// intro 에서 이미 생성함.
+	// FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
+	Engine::Update_Light(LIGHT_STAGE, &tLightInfo0);
+	//m_pGraphicDev->LightEnable(LIGHT_STAGE, FALSE);
+
+
+	//// Player
+	D3DLIGHT9		tLightInfo1;
+	ZeroMemory(&tLightInfo1, sizeof(D3DLIGHT9));
+	tLightInfo1.Type = D3DLIGHT_POINT;
+	tLightInfo1.Diffuse = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
+	tLightInfo1.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo1.Ambient = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
+	tLightInfo1.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo1.Range = 3.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo1, LIGHT_PLAYER), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_PLAYER, FALSE);
+
+
+	//// Lantern
+	D3DLIGHT9		tLightInfo2;
+	ZeroMemory(&tLightInfo2, sizeof(D3DLIGHT9));
+	tLightInfo2.Type = D3DLIGHT_POINT;
+	tLightInfo2.Diffuse = D3DXCOLOR(1.f, 0.6f, 0.f, 1.f);
+	tLightInfo2.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo2.Ambient = D3DXCOLOR(1.f, 0.6f, 0.f, 1.f);
+	tLightInfo2.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo2.Attenuation0 = 0.00001f;
+	tLightInfo2.Range = 5.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo2, LIGHT_LANTERN), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_LANTERN, FALSE);
+
+
+	//// Wand
+	D3DLIGHT9		tLightInfo3;
+	ZeroMemory(&tLightInfo3, sizeof(D3DLIGHT9));
+	tLightInfo3.Type = D3DLIGHT_POINT;
+	tLightInfo3.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo3.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo3.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo3.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo3.Range = 0.5f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo3, LIGHT_WAND), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_WAND, FALSE);
+
+
 	// WandBullet
+	D3DLIGHT9		tLightInfo4;
+	ZeroMemory(&tLightInfo4, sizeof(D3DLIGHT9));
+	tLightInfo4.Type = D3DLIGHT_POINT;
+	tLightInfo4.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo4.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo4.Range = 3.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo4, LIGHT_PLAYERBULLET), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, FALSE);
+
+	// Boss
 	D3DLIGHT9		tLightInfo5;
 	ZeroMemory(&tLightInfo5, sizeof(D3DLIGHT9));
 	tLightInfo5.Type = D3DLIGHT_POINT;
@@ -491,6 +562,43 @@ HRESULT CBoss::Ready_Light(void)
 	tLightInfo5.Range = 4.f;
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo5, LIGHT_BOSS), E_FAIL);
 	m_pGraphicDev->LightEnable(LIGHT_BOSS, FALSE);
+
+
+	// Light1
+	D3DLIGHT9		tLightInfo6;
+	ZeroMemory(&tLightInfo6, sizeof(D3DLIGHT9));
+	tLightInfo6.Type = D3DLIGHT_POINT;
+	tLightInfo6.Diffuse = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
+	tLightInfo6.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo6.Ambient = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
+	tLightInfo6.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo6.Range = 3.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo6, LIGHT_1), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_1, FALSE);
+
+	// Light2
+	D3DLIGHT9		tLightInfo7;
+	ZeroMemory(&tLightInfo7, sizeof(D3DLIGHT9));
+	tLightInfo7.Type = D3DLIGHT_POINT;
+	tLightInfo7.Diffuse = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
+	tLightInfo7.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo7.Ambient = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
+	tLightInfo7.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo7.Range = 3.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo7, LIGHT_2), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_2, FALSE);
+
+	// Light3
+	D3DLIGHT9		tLightInfo8;
+	ZeroMemory(&tLightInfo8, sizeof(D3DLIGHT9));
+	tLightInfo8.Type = D3DLIGHT_POINT;
+	tLightInfo8.Diffuse = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
+	tLightInfo8.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	tLightInfo8.Ambient = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
+	tLightInfo8.Position = _vec3(7.f, 2.f, 5.f);
+	tLightInfo8.Range = 3.f;
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo8, LIGHT_3), E_FAIL);
+	m_pGraphicDev->LightEnable(LIGHT_3, FALSE);
 
 
 

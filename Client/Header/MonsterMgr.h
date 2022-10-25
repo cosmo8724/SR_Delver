@@ -20,6 +20,8 @@ public:
 
 	HRESULT					Add_GameObject(CLayer* pLayer, const _tchar* szFilePath = L"");
 
+	HRESULT					Add_GameObject(const _tchar* objTag, _vec3 vPos);
+
 public:
 	inline virtual void		Free(void);
 

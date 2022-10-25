@@ -211,7 +211,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	g_vPlayerPos = vPos;
 	g_iMoney = m_tInfo.iGold;
@@ -341,6 +341,11 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
 	
+	if (Key_Down(DIK_L))
+	{
+		m_tInfo.iHp = m_tInfo.iHpMax;
+	}
+
 	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	
 	{
 		m_vDirection.y = 0.f;

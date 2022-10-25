@@ -350,6 +350,48 @@ HRESULT CMonsterMgr::Add_GameObject(CLayer * pLayer, const _tchar* szFilePath)
 	return S_OK;
 }
 
+HRESULT CMonsterMgr::Add_GameObject(const _tchar * objTag, _vec3 vPos)
+{
+	wstring tag = objTag;
+	tag += L"%d";
+
+	TCHAR   *   szObjTag = new TCHAR[MAX_PATH];
+	wsprintf(szObjTag, objTag);
+	_tcscat_s(szObjTag, MAX_PATH, L"%d");
+	wsprintf(szObjTag, tag.c_str(), m_vecObjTags.size());
+
+
+	wstring objName = objTag;
+	if (objName == L"GreenSpider")
+	{
+		m_vecObjTags.push_back(szObjTag);
+
+		CGameObject* pGameObject = CGreenSpider::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecMonster.push_back(pGameObject);
+	}
+	else if (objName == L"BrownBat")
+	{
+		m_vecObjTags.push_back(szObjTag);
+
+		CGameObject* pGameObject = CBrownBat::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecMonster.push_back(pGameObject);
+	}
+
+
+	return S_OK;
+}
+
+
 inline void CMonsterMgr::Free(void)
 {
 	for (size_t i = 0; i < m_vecObjTags.size(); i++)

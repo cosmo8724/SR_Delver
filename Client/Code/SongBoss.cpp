@@ -109,10 +109,14 @@ _int CSongBoss::Update_Object(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	}
 
+	cout << m_pTransCom->Get_Pos().x << " " << m_pTransCom->Get_Pos().y << " " << m_pTransCom->Get_Pos().z << endl;
+
 	OnHit(fTimeDelta);
 
 	if (!m_bHit)
 		SKill_Update(fTimeDelta);	
+
+	Engine::Update_Pos(LIGHT_BOSS, m_pTransCom->Get_Pos());
 
 	return 0;
 }
@@ -236,6 +240,8 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 				Engine::StopSound(SOUND_HHH);
 				Engine::Play_Sound(L"M_SongBoss_Idle.mp3", SOUND_HHH, 0.7f);
 				m_eCurState = IDLE;
+
+				m_pGraphicDev->LightEnable(LIGHT_BOSS, true);
 			}
 		}
 
@@ -442,10 +448,14 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 			SKillMonsterCreate_Update(fTimeDelta);
 			CBulletMgr::GetInstance()->Fire(STUN_SONGBOSS);
 			++m_iStunCreate;
+
+
 		}
 	}
 	else
 	{
+		
+
 		m_eCurState = IDLE;
 
 		m_fStunTimeAcc += fTimeDelta;
@@ -461,6 +471,12 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 			}
 			m_fStunTimeAcc = 0.f;
 			m_bSkillStun = false;
+			m_bGreenSpiderOne = false;
+
+			m_pGraphicDev->LightEnable(LIGHT_1, false);
+			m_pGraphicDev->LightEnable(LIGHT_2, false);
+			m_pGraphicDev->LightEnable(LIGHT_3, false);
+			m_pGraphicDev->LightEnable(LIGHT_PLAYER, false);
 		}
 	}
 }
@@ -525,25 +541,65 @@ void CSongBoss::SKillMonsterCreate_Update(const _float& fTimeDelta)
 {
 	if (!m_bGreenSpiderOne)
 	{
-		_int iRand = rand() % 20;
+		//_int iRand = rand() % 20;
 
-		CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		CGameObject* pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(m_vPos.x - (_float)iRand, m_vPos.y - 1.5f, m_vPos.z + (_float)iRand));
-		NULL_CHECK(pGameObject);
-		pLayer->Add_GameObject(L"GreebSpider_20", pGameObject);
-		CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
+		//CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		//CGameObject* pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(m_vPos.x - (_float)iRand, m_vPos.y - 1.5f, m_vPos.z + (_float)iRand));
+		//NULL_CHECK(pGameObject);
+		//pLayer->Add_GameObject(L"GreebSpider_20", pGameObject);
+		//CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-		CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		CGameObject* pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(m_vPos.x + (_float)iRand, m_vPos.y - 1.5f, m_vPos.z - (_float)iRand));
-		NULL_CHECK(pGameObject);
-		pLayer->Add_GameObject(L"GreebSpider_21", pGameObject);
-		CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
+		////CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		//pGameObject = CGreenSpider::Create(m_pGraphicDev, _vec3(m_vPos.x + (_float)iRand, m_vPos.y - 1.5f, m_vPos.z - (_float)iRand));
+		//NULL_CHECK(pGameObject);
+		//pLayer->Add_GameObject(L"GreebSpider_21", pGameObject);
+		//CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
 
-		CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		CGameObject* pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3(m_vPos.x + (_float)iRand, m_vPos.y + 1.f, m_vPos.z - (_float)iRand));
-		NULL_CHECK(pGameObject);
-		pLayer->Add_GameObject(L"BrownBat_20", pGameObject);
-		CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
+		////CLayer*   pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		//pGameObject = CBrownBat::Create(m_pGraphicDev, _vec3(m_vPos.x + (_float)iRand, m_vPos.y + 1.f, m_vPos.z - (_float)iRand));
+		//NULL_CHECK(pGameObject);
+		//pLayer->Add_GameObject(L"BrownBat_20", pGameObject);
+		//CMonsterMgr::GetInstance()->Add_Monster(pGameObject);
+
+		_vec3 vPos = m_pTransCom->Get_Pos();
+		vPos.z -= 3.f;
+	
+		_float fSpiderY = m_vPos.y - 1.5f;
+		_float fBatY = m_vPos.y + 1.f;
+
+		_vec3 vPosL		= { vPos.x - 5.f,	fSpiderY , vPos.z };
+		_vec3 vPosLU	= { vPos.x - 2.5f,	fSpiderY , vPos.z + 2.5f };
+		_vec3 vPosR		= { vPos.x + 5.f,	fSpiderY , vPos.z };
+		_vec3 vPosRU	= { vPos.x + 2.5f,	fSpiderY , vPos.z + 2.5f };
+
+		if (!m_bPosSet)
+		{
+			Engine::Update_Pos(LIGHT_1, vPosL);
+			Engine::Update_Pos(LIGHT_2, vPosLU);
+			Engine::Update_Pos(LIGHT_3, vPosR);
+			Engine::Update_Pos(LIGHT_PLAYER, vPosRU);
+			m_bPosSet = true;
+		}
+		
+
+		m_pGraphicDev->LightEnable(LIGHT_1, true);
+		m_pGraphicDev->LightEnable(LIGHT_2, true);
+		m_pGraphicDev->LightEnable(LIGHT_3, true);
+		m_pGraphicDev->LightEnable(LIGHT_PLAYER, true);
+
+		
+
+
+		CMonsterMgr::GetInstance()->Add_GameObject(L"GreenSpider", vPosL);
+		CMonsterMgr::GetInstance()->Add_GameObject(L"GreenSpider", vPosLU);
+		CMonsterMgr::GetInstance()->Add_GameObject(L"GreenSpider", vPosR);
+		CMonsterMgr::GetInstance()->Add_GameObject(L"GreenSpider", vPosRU);
+
+		vPosL.y = vPosLU.y = vPosR.y = vPosRU.y = fBatY;
+		CMonsterMgr::GetInstance()->Add_GameObject(L"BrownBat", vPosL);
+		CMonsterMgr::GetInstance()->Add_GameObject(L"BrownBat", vPosR);
+
+
 
 		m_bGreenSpiderOne = true;
 	}
