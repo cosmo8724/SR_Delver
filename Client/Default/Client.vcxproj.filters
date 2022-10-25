@@ -436,6 +436,9 @@
     <Filter Include="01. Scene\03. Boss">
       <UniqueIdentifier>{9e8c3ac8-188f-4168-809b-f7bbbb7bc4ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. For_Stage\99. UI\EndUI">
+      <UniqueIdentifier>{1ff0100e-933e-4cee-9ddf-1dfd2bf6d102}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -858,6 +861,9 @@
     <ClInclude Include="..\Header\Boss.h">
       <Filter>01. Scene\03. Boss</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\EndUI.h">
+      <Filter>02. GameObject\01. For_Stage\99. UI\EndUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1261,6 +1267,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Boss.cpp">
       <Filter>01. Scene\03. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\EndUI.cpp">
+      <Filter>02. GameObject\01. For_Stage\99. UI\EndUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

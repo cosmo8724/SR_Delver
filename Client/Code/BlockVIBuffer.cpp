@@ -238,7 +238,8 @@ void CBlockVIBuffer::Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eTyp
 
 	if (true == g_bBoss)
 	{
-		g_fAmbient = 0.4f;
+		//g_fAmbient = 0.4f;
+		g_fAmbient = 1.f;
 		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // 환경반사
 	}
 	else if (g_vPlayerPos.x < 0 || g_vPlayerPos.z < 0)

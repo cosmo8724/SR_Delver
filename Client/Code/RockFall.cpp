@@ -214,8 +214,14 @@ void CRockFall::Activate()
 
 			_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
 
-			if (fDist < 10.f)
-				Engine::Play_Sound(L"E_RockFall.mp3", SOUND_ROCKFALL, 0.5f);
+			_int iRand = rand() % 10;
+			if (fDist < 25.f)
+			{
+				if(iRand %= 0)
+					Engine::Play_Sound(L"E_RockFall.mp3", SOUND_ROCKFALL, 0.5f);
+				else
+					Engine::Play_Sound(L"E_RockFall.mp3", SOUND_ROCKFALLL, 0.5f);
+			}
 			else
 				Engine::StopSound(SOUND_ROCKFALL);
 

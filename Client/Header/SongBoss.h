@@ -32,6 +32,7 @@ private:
 	void				SKillBullet_Update(const _float& fTimeDelta);
 	void				SKillStun_Update(const _float& fTimeDelta);
 	void				SKillFloor_Update(const _float& fTimeDelta);
+	void				SKillMonsterCreate_Update(const _float& fTimeDelta);
 
 	void				Motion_Change(const _float& fTimeDelta);
 

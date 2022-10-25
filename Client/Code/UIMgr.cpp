@@ -16,6 +16,7 @@
 #include "HungerUI.h"
 #include "Shop.h"
 #include "MyButton.h"
+#include "EndUI.h"
 
 // Font
 #include "HPGauge.h"
@@ -39,6 +40,9 @@ void CUIMgr::Ready_UI(LPDIRECT3DDEVICE9 pGraphicDev)
 }
 HRESULT CUIMgr::Ready_Proto()
 {
+	// EndUI
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_EndUI_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/EndUI/EndUI.png", TEX_NORMAL, 1)), E_FAIL);
+
 	// Player_HitBackGround
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UI_SpiderBackground_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Monster_Effect/SpiderBackground/SpiderBackground.png", TEX_NORMAL, 1)), E_FAIL);
 	
@@ -182,6 +186,12 @@ HRESULT CUIMgr::Add_GameObject(CLayer * pLayer)
 	pGameObject = CMyButton::Create(m_pGraphicDev, _vec2(WINCX * 0.5f + 240.f, WINCY *0.5f + 70.f), L"Close");
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Button_Close", pGameObject), E_FAIL);
+	m_vecUI.push_back(pGameObject);
+
+	// EndUI
+	pGameObject = CEndUI::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_EndUI", pGameObject), E_FAIL);
 	m_vecUI.push_back(pGameObject);
 
 

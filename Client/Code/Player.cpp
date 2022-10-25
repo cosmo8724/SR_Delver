@@ -211,7 +211,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	g_vPlayerPos = vPos;
 	g_iMoney = m_tInfo.iGold;
@@ -878,6 +878,7 @@ void CPlayer::Set_Level(const _int& iMonsterHp, const _int& iMonsterExp)
 		{
 			m_tInfo.iLevel += 1;
 			m_tInfo.iExp = 0;
+			m_tInfo.iHp = m_tInfo.iHpMax;
 			m_tInfo.iExpMax += 10;
 		}
 	}

@@ -48,6 +48,7 @@ HRESULT CBoss::Ready_Scene(void)
 	CParticleMgr::GetInstance()->Ready_ParticleMgr(m_pGraphicDev);
 	CUIMgr::GetInstance()->Ready_UI(m_pGraphicDev);
 
+
 	if (FAILED(Engine::CScene::Ready_Scene()))
 		return E_FAIL;
 
@@ -488,8 +489,10 @@ HRESULT CBoss::Ready_Light(void)
 	tLightInfo5.Ambient = D3DXCOLOR(1.f, 0.8f, 0.f, 1.f);
 	tLightInfo5.Position = _vec3(7.f, 2.f, 5.f);
 	tLightInfo5.Range = 4.f;
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo5, LIGHT_PLAYERBULLET), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo5, LIGHT_BOSS), E_FAIL);
 	m_pGraphicDev->LightEnable(LIGHT_BOSS, FALSE);
+
+
 
 	return S_OK;
 }

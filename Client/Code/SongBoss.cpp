@@ -424,9 +424,7 @@ void CSongBoss::SKillBullet_Update(const _float & fTimeDelta)
 void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 {
 	if (!m_bSkillStun)
-	{
 		return;
-	}
 
 	m_eCurState = ATTACK;
 
@@ -437,6 +435,7 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 			Engine::StopSound(SOUND_SONGBOSS);
 			Engine::Play_Sound(L"M_SongBoss_Stun_0.mp3", SOUND_SONGBOSS, 1.f);
 
+			SKillMonsterCreate_Update(fTimeDelta);
 			CBulletMgr::GetInstance()->Fire(STUN_SONGBOSS);
 			++m_iStunCreate;
 		}
@@ -516,6 +515,14 @@ void CSongBoss::SKillFloor_Update(const _float & fTimeDelta)
 			m_bSkillFloor = false;
 		}
 	}
+}
+
+void CSongBoss::SKillMonsterCreate_Update(const _float& fTimeDelta) 
+{
+
+
+
+
 }
 
 void CSongBoss::OnHit(const _float & fTimeDelta)
