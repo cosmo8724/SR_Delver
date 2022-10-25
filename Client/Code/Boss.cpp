@@ -48,6 +48,7 @@ HRESULT CBoss::Ready_Scene(void)
 	CParticleMgr::GetInstance()->Ready_ParticleMgr(m_pGraphicDev);
 	CUIMgr::GetInstance()->Ready_UI(m_pGraphicDev);
 
+
 	if (FAILED(Engine::CScene::Ready_Scene()))
 		return E_FAIL;
 
@@ -492,7 +493,7 @@ HRESULT CBoss::Ready_Light(void)
 	//tLightInfo0.Range = 3000.f;
 	tLightInfo0.Direction = { 0.f ,-1.f, -1.f };
 
-	// intro ¿¡¼­ ÀÌ¹Ì »ý¼ºÇÔ.
+	// intro ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	// FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
 	Engine::Update_Light(LIGHT_STAGE, &tLightInfo0);
 	//m_pGraphicDev->LightEnable(LIGHT_STAGE, FALSE);
@@ -563,6 +564,8 @@ HRESULT CBoss::Ready_Light(void)
 	tLightInfo5.Range = 5.f;
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo5, LIGHT_BOSS), E_FAIL);
 	m_pGraphicDev->LightEnable(LIGHT_BOSS, FALSE);
+
+
 
 	return S_OK;
 }

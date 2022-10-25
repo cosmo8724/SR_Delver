@@ -33,5 +33,7 @@ private:
 	_bool		m_bReady = false;
 	LOADINGID	m_eLoadingType = LOADING_END;
 	_float		m_fParticle = false;
+	_bool		m_bOneCheck = false;
+	_float		m_fEndUITimeAcc = 0.1f;
 };
 

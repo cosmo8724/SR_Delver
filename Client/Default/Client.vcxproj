@@ -198,6 +198,7 @@
     <ClInclude Include="..\Header\EcoObject.h" />
     <ClInclude Include="..\Header\EcoWeb.h" />
     <ClInclude Include="..\Header\Effect.h" />
+    <ClInclude Include="..\Header\EndUI.h" />
     <ClInclude Include="..\Header\Equipment.h" />
     <ClInclude Include="..\Header\EquipWindow.h" />
     <ClInclude Include="..\Header\ExplodeBullet.h" />
@@ -348,6 +349,7 @@
     <ClCompile Include="..\Code\EcoObject.cpp" />
     <ClCompile Include="..\Code\EcoWeb.cpp" />
     <ClCompile Include="..\Code\Effect.cpp" />
+    <ClCompile Include="..\Code\EndUI.cpp" />
     <ClCompile Include="..\Code\Equipment.cpp" />
     <ClCompile Include="..\Code\EquipWindow.cpp" />
     <ClCompile Include="..\Code\ExplodeBullet.cpp" />

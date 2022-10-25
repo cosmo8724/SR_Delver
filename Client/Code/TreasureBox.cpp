@@ -4,6 +4,7 @@
 #include "ItemMgr.h"
 #include "Player.h"
 #include "ParticleMgr.h"
+#include "EndUI.h"
 
 _bool	g_bOpenAtOnce = false;
 
@@ -62,6 +63,62 @@ _int CTreasureBox::Update_Object(const _float & fTimeDelta)
 	CEcoObject::Update_Object(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
+
+	if (m_eLoadingType == LOADING_BOSS)
+	{
+		CTransform*		pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
+		NULL_CHECK(pPlayerTransformCom);
+
+		_vec3		vPlayerPos, vPos;
+		pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+		m_pTransCom->Get_Info(INFO_POS, &vPos);
+
+		_float fDist = D3DXVec3Length(&(vPlayerPos - vPos));
+
+		if (fDist < 8.f)
+		{
+			g_bOpenAtOnce = true;
+			m_iTexture = 1;
+
+			Engine::StopSound(SOUND_TREASUREBOX);
+			Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
+
+			CEndUI* pEndUI = static_cast<CEndUI*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EndUI"));
+			NULL_CHECK(pEndUI);
+
+			m_fEndUITimeAcc += fTimeDelta;
+			if (2.f < m_fEndUITimeAcc)
+			{
+				pEndUI->Set_EndUI();
+			}
+
+			m_iTexture = 1;
+			m_pColliderCom->Set_Free(true);
+		}
+	}
+
+	if (g_bOpenAtOnce && m_eLoadingType == LOADING_BOSS && m_iTexture == 1 && !m_bOneCheck)
+	{
+		Engine::StopSound(SOUND_TREASUREBOX);
+
+		CParticleMgr::GetInstance()->Set_Info(this,
+			100,
+			0.5f,
+			{ 1.f, 1.f, 1.f },
+			1.f,
+			{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_17);
+
+		_int iRand = rand() % 10 + 100;
+		for (int i = 0; i < iRand; ++i)
+		{
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+		}
+
+
+
+		m_bOneCheck = true;
+	}
 
 	m_fParticle += fTimeDelta;
 	return OBJ_NOEVENT;
@@ -251,47 +308,6 @@ void CTreasureBox::InteractEvent()
 				CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
 			}
 			CItemMgr::GetInstance()->Add_GameObject_Box(L"GreenWand", ITEM_WEAPON, _vec3(m_pTransCom->Get_Pos().x, m_pTransCom->Get_Pos().y + 1.f, m_pTransCom->Get_Pos().z));
-		}
-		else if (m_eLoadingType == LOADING_BOSS)
-		{
-			g_bOpenAtOnce = true;
-			m_iTexture = 1;
-
-			Engine::StopSound(SOUND_TREASUREBOX);
-			Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
-
-			m_iTexture = 1;
-
-			if (0.1f < m_fParticle)
-			{
-				CParticleMgr::GetInstance()->Set_Info(this,
-					50,
-					1.f,
-					{ 1.f, 1.f, 1.f },
-					1.f,
-					{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
-				CParticleMgr::GetInstance()->Call_Particle(PTYPE_CIRCLING, TEXTURE_4);
-				
-				//CParticleMgr::GetInstance()->Set_Info(this,
-				//	500,
-				//	10.f,
-				//	{ 1.f, 1.f, 1.f },
-				//	1.f,
-				//	{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
-				//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
-
-				m_fParticle = 0.f;
-			}
-
-			m_pColliderCom->Set_Free(true);
-
-			_int iRand = rand() % 10 + 100;
-			for (int i = 0; i < iRand; ++i)
-			{
-				CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
-			}
-			CItemMgr::GetInstance()->Add_GameObject_Box(L"Ring", ITEM_RING, m_pTransCom->Get_Pos());
-			CItemMgr::GetInstance()->Add_GameObject_Box(L"Necklace", ITEM_NECKLACE, m_pTransCom->Get_Pos());
 		}
 	}
 }

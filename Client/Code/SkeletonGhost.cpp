@@ -64,7 +64,7 @@ HRESULT CSkeletonGhost::Ready_Object(void)
 	m_eCurState = IDLE;
 	m_ePreState = MOTION_END;
 
-	m_fIdle_Speed = 1.f;
+	m_fIdle_Speed = 0.5f;
 	m_fAttack_Speed = 2.f;
 
 	return S_OK;

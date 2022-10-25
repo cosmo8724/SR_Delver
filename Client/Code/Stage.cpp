@@ -110,7 +110,6 @@ HRESULT CStage::Ready_Scene(void)
 		}
 	}
 
-
 	// Snow Particle Create
 	//CParticleMgr::GetInstance()->Set_Info(
 	//	nullptr, 5000, 1.f, _vec3({ 1.f, 1.f, 1.f }), 1.f, { 1.f, 1.f, 1.f, 1.f });

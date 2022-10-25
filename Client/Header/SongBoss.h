@@ -32,6 +32,7 @@ private:
 	void				SKillBullet_Update(const _float& fTimeDelta);
 	void				SKillStun_Update(const _float& fTimeDelta);
 	void				SKillFloor_Update(const _float& fTimeDelta);
+	void				SKillMonsterCreate_Update(const _float& fTimeDelta);
 
 	void				Motion_Change(const _float& fTimeDelta);
 
@@ -66,6 +67,9 @@ private:
 	_float				m_fFloorTimeAcc = 0.f;
 	_int				m_iFloorCreate = 0;
 	_int				m_iLightningCreate = 0;
+
+	//
+	_int				m_iGreenSpiderCreate = 0;
 
 	// Timer
 	_float				m_fTimeAcc;

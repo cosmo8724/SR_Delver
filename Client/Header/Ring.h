@@ -29,5 +29,7 @@ private:
 	_float				m_fDotTime = 0.f;
 	_int				m_iDot = 0;
 	_int				m_iTextureType;
+
+	_vec3				m_vPopAngle;
 };
 
