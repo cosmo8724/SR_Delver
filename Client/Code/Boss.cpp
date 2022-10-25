@@ -258,7 +258,7 @@ HRESULT CBoss::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	// Player
-	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(5.f, 2.f, 5.f));
+	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(4.5f, 2.f, 0.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 

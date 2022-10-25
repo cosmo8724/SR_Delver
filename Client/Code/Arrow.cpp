@@ -28,7 +28,7 @@ HRESULT CArrow::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
-	m_pTransCom->Set_Pos(29.f, 2.f, 7.f);
+	m_pTransCom->Set_Pos(4.5f, 2.f, 0.f);
 	m_eState = STATE_GROUND;
 
 	//_vec3 vScale;
