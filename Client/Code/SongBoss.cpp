@@ -65,7 +65,7 @@ HRESULT CSongBoss::Ready_Object(void)
 	
 	m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 	m_pTransCom->Set_Scale(2.5f, 2.5f, 2.5f);
-
+			
 	m_eCurState = MOVE;
 	m_ePreState = MOTION_END;
 	m_eSkill = SKILL_END;

@@ -44,7 +44,7 @@
 
 #include "KnifeTrap.h"
 #include "Loading_Scene.h"
-
+#include "TreasureBox.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -502,6 +502,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
  	CParticleMgr::GetInstance()->Add_GameObject(pLayer);
 
 	// Monster
+	//CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Boss.dat");
 	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
 
 	// NPC
@@ -716,6 +717,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 			case ECO_TREASUREBOX:
 				pCloneObject = CTreasureBox::Create(pEcoObject);
+				static_cast<CTreasureBox*>(pCloneObject)->Set_LodingType(LOADING_STAGE);
 				break;
 			}
 			pLayer->Add_GameObject(vecObjTags.back(), pCloneObject);
@@ -747,9 +749,7 @@ HRESULT CStage::Ready_Proto(void)
 {
 	Engine::Delete_Proto(L"Proto_CubeTexture");
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/Waterfall Skybox.dds", TEX_CUBE)), E_FAIL);
-
 	
-
 	_int	iWidth, iDepth, iInterval;
 	CImGuiMgr::GetInstance()->Get_MapWidth(&iWidth, &iDepth, &iInterval);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WaterTexCom", CTerrainTex::Create(m_pGraphicDev, 20, 17, iInterval, _vec3(20,0,11))), E_FAIL);

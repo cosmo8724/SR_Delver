@@ -424,6 +424,7 @@ HRESULT CBoss::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 			case ECO_TREASUREBOX:
 				pCloneObject = CTreasureBox::Create(pEcoObject);
+				static_cast<CTreasureBox*>(pCloneObject)->Set_LodingType(LOADING_BOSS);
 				break;
 			}
 			pLayer->Add_GameObject(m_vecObjTags.back(), pCloneObject);
