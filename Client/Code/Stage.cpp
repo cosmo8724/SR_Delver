@@ -197,6 +197,11 @@ void CStage::LateUpdate_Scene(void)
 			Engine::CollisionAABB(obj, weapon);
 		}
 
+		for (auto& shield : *pShieldGroup)
+		{
+			Engine::CollisionAABB(obj, shield);
+		}
+
 		for (int i = 0; i < 4; ++i)					// playerBullet	
 		{
 			for (auto& bullet : *pPlayerBulletGroup[i])
@@ -263,11 +268,6 @@ void CStage::LateUpdate_Scene(void)
 		for (auto& bullet : *pMonsterBulletGroup[i])
 		{
 			Engine::CollisionAABB(pPlayer, bullet);
-
-			for (auto& shield : *pShieldGroup)
-			{
-				Engine::CollisionAABB(bullet, shield);
-			}
 		}
 	}
 

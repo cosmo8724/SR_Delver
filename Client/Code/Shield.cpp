@@ -218,7 +218,7 @@ void CShield::Attack(const _float & fTimeDelta)
 	if (m_pTransCom->Item_Defense(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer()))
 	{
 		m_bAttack = false;
-		m_pColliderCom->Set_Free(true);
+		//m_pColliderCom->Set_Free(true);
 	}
 
 }
