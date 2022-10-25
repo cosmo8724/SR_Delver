@@ -2,6 +2,7 @@
 #include "Engine_Include.h"
 #include "Export_Function.h"
 
+
 class CBlockVIBuffer
 {
 	DECLARE_SINGLETON(CBlockVIBuffer)
@@ -44,7 +45,8 @@ private:
 public:
 	HRESULT		Add_Instancing(BLOCKTYPE eType, CTexture* pTextureCom, _int iTexture, CTransform* pTransformCom);
 	HRESULT		Ready_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eType, _int iTexture);
-	void			Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eType, _int iTexture);
+	void		Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eType, _int iTexture);
+	void		Set_Scene(LOADINGID eID); // { if (eID == LOADING_BOSS) g_bBoss = true; }
 
 public:
 	void			Free();

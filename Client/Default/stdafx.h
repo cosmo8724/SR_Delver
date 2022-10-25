@@ -59,5 +59,6 @@ extern bool			g_bIsRenderInstancing;
 extern D3DXVECTOR3	g_vPlayerPos;
 extern float		g_fAmbient;
 extern int			g_iMoney;
+extern bool			g_bBoss;
 
 using namespace std;

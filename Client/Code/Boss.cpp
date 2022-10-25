@@ -30,6 +30,7 @@
 #include "RockFall.h"
 #include "TreasureBox.h"
 
+
 CBoss::CBoss(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -94,6 +95,8 @@ HRESULT CBoss::Ready_Scene(void)
 		}
 	}
 
+
+	CBlockVIBuffer::GetInstance()->Set_Scene(LOADING_BOSS);
 
 	//// Snow Particle Create
 	//CParticleMgr::GetInstance()->Set_Info(

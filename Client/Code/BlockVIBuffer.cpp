@@ -4,6 +4,9 @@
 
 IMPLEMENT_SINGLETON(CBlockVIBuffer)
 
+bool	g_bBoss = false;
+
+
 CBlockVIBuffer::CBlockVIBuffer()
 	: m_dwVtxSize(0)
 	, m_dwFVF(0)
@@ -25,6 +28,11 @@ CBlockVIBuffer::CBlockVIBuffer()
 CBlockVIBuffer::~CBlockVIBuffer()
 {
 	Free();
+}
+
+void		CBlockVIBuffer::Set_Scene(LOADINGID eID)
+{
+	if (eID == LOADING_BOSS) g_bBoss = true; 
 }
 
 HRESULT CBlockVIBuffer::Add_Instancing(BLOCKTYPE eType, CTexture* pTextureCom, _int iTexture, CTransform* pTransformCom)
@@ -228,7 +236,12 @@ void CBlockVIBuffer::Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eTyp
 	tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 
-	if (g_vPlayerPos.x < 0 || g_vPlayerPos.z < 0)
+	if (true == g_bBoss)
+	{
+		g_fAmbient = 0.2f;
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // 환경반사
+	}
+	else if (g_vPlayerPos.x < 0 || g_vPlayerPos.z < 0)
 	{
 		g_fAmbient -= 0.001f;
 		if (0.2f >= g_fAmbient)
