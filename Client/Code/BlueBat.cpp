@@ -181,6 +181,9 @@ void CBlueBat::Target_Follow(const _float & fTimeDelta)
 	{
 		m_eCurState = IDLE;
 
+		Engine::StopSound(SOUND_BLUEBAT);
+		Engine::Play_Sound(L"M_BlueBat_Alert.mp3", SOUND_BLUEBAT, 0.5f);
+
 		m_pTransCom->Chase_Target(&vPlayerPos, m_fAttack_Speed, fTimeDelta);
 		m_pTransCom->Set_Y(m_vPos.y);
 	}
@@ -232,7 +235,7 @@ void CBlueBat::Jump(const _float & fTimeDelta)
 			if (m_pAnimtorCom->Get_Currentframe() >= 5.f && m_pAnimtorCom->Get_Currentframe() < 8.f) // CameraShake
 			{
 				Engine::StopSound(SOUND_BLUEBAT);
-				Engine::Play_Sound(L"M_BlueBat_Attack.mp3", SOUND_BLUEBAT, 1.f);
+				Engine::Play_Sound(L"M_BlueBat_Attack.mp3", SOUND_BLUEBAT, 0.5f);
 
 				CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 				NULL_CHECK(pStaticCamera);

@@ -38,7 +38,6 @@ private:
 	CAnimator*				m_pAnimtorCom = nullptr;
 
 private:
-	_float					m_fSpeed;
 	_bool					m_bReady;
 
 	// 회전 테스트
