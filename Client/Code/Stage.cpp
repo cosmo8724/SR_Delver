@@ -211,6 +211,8 @@ void CStage::LateUpdate_Scene(void)
 	}
 
 
+
+
 	for (int i = 0; i < ITEM_IMG; ++i)
 	{
 		vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items((ITEMTYPE)i);
@@ -267,6 +269,8 @@ void CStage::LateUpdate_Scene(void)
 		for (auto& bullet : *pMonsterBulletGroup[i])
 		{
 			Engine::CollisionAABB(pPlayer, bullet);
+
+
 		}
 	}
 

@@ -208,7 +208,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	// sh
-	cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
+	//cout << (_int)vPos.x << "  " << (_int)vPos.y << "  " << (_int)vPos.z << endl;
 
 	g_vPlayerPos = vPos;
 	g_iMoney = m_tInfo.iGold;
@@ -338,6 +338,13 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 	m_pTransCom->Get_Info(INFO_LOOK, &m_vDirection);
 	
+	if (Key_Down(DIK_T))
+	{
+		m_tInfo.iHp = m_tInfo.iHpMax;
+		Set_HungerPlus();
+	}
+
+
 	if (Engine::Get_DIKeyState(DIK_W) & 0x80)	
 	{
 		m_vDirection.y = 0.f;
@@ -413,20 +420,20 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	}
 
 	// camera test
-	if (Engine::Key_Down(DIK_C))
-	{
-		// 한바퀴 돌기
-		//CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT);
-		//CCameraMgr::GetInstance()->Set_Camera(this, 3.f, 0.f);
-		//CCameraMgr::GetInstance()->Action_Camera(360.f);
+	//if (Engine::Key_Down(DIK_C))
+	//{
+	//	// 한바퀴 돌기
+	//	//CCameraMgr::GetInstance()->Change_Camera(CAM_OBJECT);
+	//	//CCameraMgr::GetInstance()->Set_Camera(this, 3.f, 0.f);
+	//	//CCameraMgr::GetInstance()->Action_Camera(360.f);
 
-		// Deadmotion
-		m_bDead = true;
-		//CCameraMgr::GetInstance()->Action_PlayerDie();
-		//CCameraMgr::GetInstance()->Set_Camera(this, 0.3f, 1.f);
+	//	// Deadmotion
+	//	m_bDead = true;
+	//	//CCameraMgr::GetInstance()->Action_PlayerDie();
+	//	//CCameraMgr::GetInstance()->Set_Camera(this, 0.3f, 1.f);
 
 
-	}
+	//}
 	if (Engine::Key_Down(DIK_V))
 	{
 		CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
@@ -847,7 +854,7 @@ void CPlayer::Hunger(const _float & fTimeDelta)
 		Set_HungerMinus();
 
 	if (Engine::Key_Down(DIK_L))
-		Set_HungerPlus();
+		//Set_HungerPlus();
 	// test
 
 	if (0 >= m_tInfo.iHunger && !m_tInfo.bSlow)

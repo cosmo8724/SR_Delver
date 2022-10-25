@@ -4,7 +4,7 @@
 #include "Export_Function.h"
 #include "MiniMap.h"
 
-// �浹
+// �浹
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
@@ -405,6 +405,7 @@ void CPinkSlime::Dead()
 	static _int			m_tKeyCount;
 	m_tKeyCount++;
 	m_eCurState = DIE;
+	//cout << m_tKeyCount << endl;
 	
 	CPlayer*	pPlayer = static_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	pPlayer->Set_Level(m_tInfo.iHp, m_tInfo.iExp);
@@ -419,6 +420,7 @@ void CPinkSlime::Dead()
 
 	if (m_tKeyCount == 7)
 	{
+		//cout << "key" << endl;
 		CItemMgr::GetInstance()->Add_GameObject_Box(L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
 	}
 
