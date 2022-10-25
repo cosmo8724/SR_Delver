@@ -469,7 +469,7 @@ HRESULT CBoss::Ready_Layer_UI(const _tchar * pLayerTag)
 HRESULT CBoss::Ready_Proto(void)
 {
 	Engine::Delete_Proto(L"Proto_CubeTexture");
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/Waterfall Skybox.dds", TEX_CUBE)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/Boss Skybox.dds", TEX_CUBE)), E_FAIL);
 
 	return S_OK;
 }
