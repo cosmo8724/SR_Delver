@@ -18,7 +18,7 @@ public:
 	void					Ready_NPC(LPDIRECT3DDEVICE9 pGraphicDev);
 	HRESULT					Ready_Proto();
 
-	HRESULT					Add_GameObject(CLayer* pLayer);
+	HRESULT					Add_GameObject(CLayer* pLayer, LOADINGID eID);
 
 public:
 	inline virtual void		Free(void);

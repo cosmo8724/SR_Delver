@@ -184,6 +184,7 @@ void CBlock::Render_Obejct(void)
 	{
 		if (g_bIsTool)
 		{
+			m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 			m_pTextureCom->Set_Texture(m_iTexture);
 			m_pBufferCom->Render_Buffer();
 		}

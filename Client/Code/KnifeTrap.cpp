@@ -27,6 +27,11 @@ CKnifeTrap::CKnifeTrap(const CEcoObject & rhs)
 {
 	m_fTopPosY = m_vPos.y + 0.5f;
 	m_fGroundY = -m_vPos.y;
+	m_fSpeed = 0.5f;
+	m_fCurSpeed = m_fSpeed;
+	m_fDist = 5.f;
+
+	m_bChargeTime = 0.8f;
 }
 
 CKnifeTrap::~CKnifeTrap()
@@ -82,6 +87,9 @@ void CKnifeTrap::LateUpdate_Object(void)
 
 void CKnifeTrap::Render_Obejct(void)
 {
+	if (g_bIsTool)
+		m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
