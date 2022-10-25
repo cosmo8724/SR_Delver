@@ -325,33 +325,23 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 
 		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 20.f }), POTION_1);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_1", pGameObject), E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION", pGameObject), E_FAIL);
 		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f}), POTION_2);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_2", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+		//pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f}), POTION_2);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_2", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 20.f }), POTION_0);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_3", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+		//pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 20.f, 2.f, 20.f }), POTION_0);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_3", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
-		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f }), POTION_1);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_4", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
-
-		pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f }), POTION_2);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_5", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
-
-		pGameObject = CLantern::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 4.f }));
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern", pGameObject), E_FAIL);
-		m_vecItemPool[ITEM_LANTERN].push_back(pGameObject);
+		//pGameObject = CPotion::Create(m_pGraphicDev, _vec3({ 16.f, 2.f, 16.f }), POTION_1);
+		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"POTION_4", pGameObject), E_FAIL);
+		//m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 
 		// Gold
 		//pGameObject = CGold::Create(m_pGraphicDev, _vec3({ 10.f, 2.f, 5.f }), 2);
@@ -484,6 +474,20 @@ HRESULT CItemMgr::Add_RandomObject(const _tchar * pLayerTag, const _tchar * objT
 
 		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
 	}
+
+	else if (objName == L"Beer")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CPotion::Create(m_pGraphicDev, vPos, POTION_0);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(pLayerTag);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		m_vecItemPool[ITEM_POTION].push_back(pGameObject);
+	}
+
 	else if (objName == L"Food")
 	{
 		m_vecItemObjTags[eType].push_back(szObjTag);
@@ -726,6 +730,34 @@ HRESULT		CItemMgr::Add_GameObject_Box(const _tchar* objTag, ITEMTYPE eType, _vec
 		static_cast<CItem*>(pGameObject)->Set_State(STATE_POP);
 		
 		m_vecItemPool[ITEM_GOLD].push_back(pGameObject);
+	}
+	else if (objName == L"Ring")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CRing::Create(m_pGraphicDev, vPos, 1);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		static_cast<CItem*>(pGameObject)->Set_State(STATE_POP);
+
+		m_vecItemPool[ITEM_RING].push_back(pGameObject);
+	}
+	else if (objName == L"Necklace")
+	{
+		m_vecItemObjTags[eType].push_back(szObjTag);
+
+		CGameObject* pGameObject = CNecklace::Create(m_pGraphicDev, vPos, 1);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(szObjTag, pGameObject), E_FAIL);
+
+		static_cast<CItem*>(pGameObject)->Set_State(STATE_POP);
+
+		m_vecItemPool[ITEM_NECKLACE].push_back(pGameObject);
 	}
 	else
 	{
