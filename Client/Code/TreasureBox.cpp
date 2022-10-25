@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "ParticleMgr.h"
 
+_bool	g_bOpenAtOnce = false;
+
 CTreasureBox::CTreasureBox(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CEcoObject(pGraphicDev)
 {
@@ -69,7 +71,19 @@ void CTreasureBox::LateUpdate_Object(void)
 	if (m_bDead)
 		return;
 
-	Billboard();
+	if (m_eLoadingType != LOADING_BOSS)
+		Billboard();
+
+	if (g_bOpenAtOnce && !m_iTexture)
+	{
+		m_iTexture = 1;
+
+		_int iRand = rand() % 10 + 100;
+		for (int i = 0; i < iRand; ++i)
+		{
+			CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+		}
+	}
 	CEcoObject::LateUpdate_Object();
 }
 
@@ -238,6 +252,9 @@ void CTreasureBox::InteractEvent()
 		}
 		else if (m_eLoadingType == LOADING_BOSS)
 		{
+			g_bOpenAtOnce = true;
+			m_iTexture = 1;
+
 			Engine::StopSound(SOUND_TREASUREBOX);
 			Engine::Play_Sound(L"E_Box.mp3", SOUND_TREASUREBOX, 1.f);
 
@@ -249,6 +266,13 @@ void CTreasureBox::InteractEvent()
 				{ 1.f, 1.f, 1.f, 1.f }, 1.f, false, true);
 			CParticleMgr::GetInstance()->Call_Particle(PTYPE_FIREWORK, TEXTURE_4);
 			//CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_4);
+
+			int iRand = rand() % 10 + 100;
+			for (int i = 0; i < iRand; ++i)
+			{
+				CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());
+			}
+
 		}
 	}
 }

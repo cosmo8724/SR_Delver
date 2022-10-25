@@ -242,10 +242,77 @@ void CDoor::Free(void)
 
 void CDoor::CollisionEvent(CGameObject * pObj)
 {
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(pObj);
 	if (pPlayer)
 	{
-		//pPlayer->
+		if (m_fAngle + 90.f < 0.0001f)
+			return;
+
+		CTransform* pPlayerTransform = dynamic_cast<CTransform*>(pPlayer->Get_Component(L"Proto_TransformCom", ID_DYNAMIC));
+		CCollider*		pPlayerCollider = dynamic_cast<CCollider*>(pPlayer->Get_Component(L"Proto_ColliderCom", ID_STATIC));
+		BDBOX			tPlayerBox = { pPlayerCollider->Get_MinPoint(), pPlayerCollider->Get_MaxPoint() };
+		BDBOX			tBlockBox = { m_pColliderCom->Get_MinPoint(), m_pColliderCom->Get_MaxPoint() };
+
+		_vec3			vPlayerPos = pPlayerTransform->Get_Pos();
+
+		_float			fDistX = 0.f, fDistY = 0.f, fDistZ = 0.f;
+
+		fDistY = 0.f;
+
+		//if (fabs(fDistY) < 0.01f || pPlayer->Get_CurState() == PLAYER_JUMP)
+		//	return;
+
+		if (tPlayerBox.vMin.y >= m_pTransCom->Get_Pos().y)
+			return;
+
+		_float		fDist = D3DXVec3Length(&(m_pTransCom->Get_Pos() - pPlayerTransform->Get_Pos()));
+
+
+		// Player at Leftside
+		if (tPlayerBox.vMax.x > tBlockBox.vMin.x && tPlayerBox.vMax.x < tBlockBox.vMax.x)
+		{
+			fDistX = tBlockBox.vMin.x - tPlayerBox.vMax.x;
+		}
+
+		// Player at Rightside
+		else if (tPlayerBox.vMin.x < tBlockBox.vMax.x && tPlayerBox.vMin.x > tBlockBox.vMin.x)
+		{
+			fDistX = tBlockBox.vMax.x - tPlayerBox.vMin.x;
+		}
+
+		// Player at Frontside
+		if (tPlayerBox.vMin.z < tBlockBox.vMax.z  && tPlayerBox.vMin.z > tBlockBox.vMin.z)
+		{
+			fDistZ = tBlockBox.vMax.z - tPlayerBox.vMin.z;
+		}
+
+		// Player at Backside
+		else if (tPlayerBox.vMax.z > tBlockBox.vMin.z && tPlayerBox.vMax.z < tBlockBox.vMax.z)
+		{
+			fDistZ = tBlockBox.vMin.z - tPlayerBox.vMax.z;
+		}
+
+		// Player On Block		-> Player CollisionEvent
+		// Player Under Block	-> Player CollisionEvent
+
+		//if ((vPlayerPos.x < tBlockBox.vMin.x || vPlayerPos.x > tBlockBox.vMax.x)
+		//	&& (vPlayerPos.z < tBlockBox.vMin.z || vPlayerPos.z > tBlockBox.vMax.z)
+		//	&& fabs(fDistX) > 0.0001f && fabs(fDistZ) > 0.0001f)
+		{
+			//if (sqrtf(fDistX * fDistX + fDistZ * fDistZ) < fabs(tBlockBox.vMax.x - tBlockBox.vMin.x) * 0.2f)
+			//	return;
+			if (fabs(fDistX) > fabs(fDistZ))
+				fDistX = 0.f;
+			else if (fabs(fDistX) < fabs(fDistZ))
+				fDistZ = 0.f;
+		}
+		//else
+		//	return;
+
+		_vec3	vDir = { fDistX, 0.f, fDistZ };
+
+		//pPlayerTransform->Move_Pos(&(vDir * pPlayer->Get_CurSpeed() * m_fTimeDelta));
+		pPlayerTransform->Set_Pos(vPlayerPos.x + fDistX, vPlayerPos.y + fDistY, vPlayerPos.z + fDistZ);
 	}
 }
 
