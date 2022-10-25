@@ -162,6 +162,7 @@ void CStage::LateUpdate_Scene(void)
 	// Item
 	vector<CGameObject*>*	pItemGroup = nullptr;
 	vector<CGameObject*>*	pWeaponGroup = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
+	vector<CGameObject*>*	pShieldGroup = CItemMgr::GetInstance()->Get_Items(ITEM_SHIELD);
 
 	// Bullets
 	vector<CGameObject*>*	pPlayerBulletGroup[4];
@@ -262,6 +263,11 @@ void CStage::LateUpdate_Scene(void)
 		for (auto& bullet : *pMonsterBulletGroup[i])
 		{
 			Engine::CollisionAABB(pPlayer, bullet);
+
+			for (auto& shield : *pShieldGroup)
+			{
+				Engine::CollisionAABB(bullet, shield);
+			}
 		}
 	}
 
@@ -560,8 +566,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Blocks 
 	{
-		string	strPath = "..\\..\\Data\\Map_Boss5.dat";
-		//string	strPath = "..\\..\\Data\\Map_Stage.dat";
+		//string	strPath = "..\\..\\Data\\Map_Boss5.dat";
+		string	strPath = "..\\..\\Data\\Map_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -620,7 +626,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Eco Object
 	{
-		// string	strPath = "..\\..\\Data\\EcoObject_Stage.dat";
+		 string	strPath = "..\\..\\Data\\EcoObject_Stage.dat";
 		const char* pPath = strPath.c_str();
 		int iLength = strlen(pPath) + 1;
 		TCHAR* wpPath = new TCHAR[iLength];
@@ -714,6 +720,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 			case ECO_ROCKFALL:
 				pCloneObject = CRockFall::Create(pEcoObject);
+				break;
+
+			case ECO_KNIFETRAP:
+				pCloneObject = CKnifeTrap::Create(pEcoObject);
+				break;
+
+			case ECO_DOOR:
+				pCloneObject = CDoor::Create(pEcoObject);
 				break;
 
 			case ECO_TREASUREBOX:
