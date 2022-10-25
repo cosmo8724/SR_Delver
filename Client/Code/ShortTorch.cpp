@@ -112,9 +112,9 @@ HRESULT CShortTorch::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTransCom, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Proto_ColliderCom", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_EcoTorch2_Texture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Clone_Proto(L"Proto_EcoTorch1_Texture"));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Proto_EcoTorch2_Texture", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Proto_EcoTorch1_Texture", pComponent });
 
 	return S_OK;
 }

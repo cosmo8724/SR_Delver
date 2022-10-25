@@ -430,12 +430,9 @@
     <Filter Include="02. GameObject\01. For_Stage\02. Monster\JellyfishBoss">
       <UniqueIdentifier>{279bd719-dc13-47f5-b354-8d2bd6fbde38}</UniqueIdentifier>
     </Filter>
-<<<<<<< Updated upstream
     <Filter Include="02. GameObject\01. For_Stage\99. UI\11. HungerUI">
       <UniqueIdentifier>{c431b304-53e0-42d8-be5e-44c4caac5898}</UniqueIdentifier>
     </Filter>
-=======
->>>>>>> Stashed changes
     <Filter Include="01. Scene\03. Boss">
       <UniqueIdentifier>{9e8c3ac8-188f-4168-809b-f7bbbb7bc4ce}</UniqueIdentifier>
     </Filter>

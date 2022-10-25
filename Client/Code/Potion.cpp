@@ -271,5 +271,22 @@ void CPotion::RandomItem(const _float& fTimeDelta)
 		m_bFinished = true;
 	}
 	break;
+	default:
+	{
+		m_fDotTime += fTimeDelta;
+		if (1.f < m_fDotTime)
+		{
+			if (m_iDot > m_tInfo.iHpHeal)
+			{
+				m_bFinished = true;
+				return;
+			}
+
+			pPlayer->Set_HpPlus();
+			m_iDot++;
+			m_fDotTime = 0.f;
+		}
+	}
+		break;
 	}
 }
