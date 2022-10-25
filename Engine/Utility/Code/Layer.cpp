@@ -116,3 +116,4 @@ void CLayer::Free(void)
 	for_each(m_mapObject.begin(), m_mapObject.end(), CDeleteMap());
 	m_mapObject.clear();
 }
+																																																																																																																																																

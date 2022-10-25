@@ -243,10 +243,10 @@ HRESULT CItemMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 		//m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
 
 		// Shield
-		//pGameObject = CShield::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 10.f }));
-		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shield", pGameObject), E_FAIL);
-		//m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
+		pGameObject = CShield::Create(m_pGraphicDev, _vec3({ 13.f, 2.f, 10.f }));
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shield", pGameObject), E_FAIL);
+		m_vecItemPool[ITEM_ARMOR].push_back(pGameObject);
 
 		// Helmat
 		//pGameObject = CHelmat::Create(m_pGraphicDev, _vec3({ 7.f, 2.f, 5.f }), 0);

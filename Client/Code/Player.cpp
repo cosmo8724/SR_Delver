@@ -79,7 +79,23 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 	}
 	// *Create Minimap Icon
 
-//	
+	if (!m_bSnowParticle)
+	{
+		CLayer*		pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		if (pLayer == nullptr)
+			return 0;
+		else
+		{
+			// Snow Particle Create
+			CParticleMgr::GetInstance()->Set_Info(
+				this, 8000, 0.1f, _vec3({ 0.8f, 0.8f, 0.8f }), 1.f, { 1.f, 1.f, 1.f, 1.f });
+			CParticleMgr::GetInstance()->Add_Info_Snow(
+				BDBOX({ _vec3(-38,-6, 14), _vec3(60,50, 147) })
+				);
+			CParticleMgr::GetInstance()->Call_Particle(PTYPE_SNOW, TEXTURE_19);
+			m_bSnowParticle = true;
+		}
+	}
 	
 	if (!m_pInv)
 		m_pInv = static_cast<CInventory*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Inventory"));
@@ -241,8 +257,8 @@ void CPlayer::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-	if(m_bText)
-		Render_Font(L"Font_Jinji", m_str.c_str(), &_vec2(WINCX*0.5f, WINCY*0.5f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	//if(m_bText)
+	//	Render_Font(L"Font_Jinji", m_str.c_str(), &_vec2(WINCX*0.5f, WINCY*0.5f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 
 
 
@@ -264,7 +280,7 @@ void CPlayer::Set_HpPlus(_int iHp)
 
 
 		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.5f, { 1.f, 1.f, 2.f },
-			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true);
+			1.f, { 1.f, 1.f, 1.f, 1.f }, 5.f, true, true);
 		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_MOOD, TEXTURE_16);
 
@@ -644,7 +660,8 @@ void CPlayer::Respawn()
 	m_fDeathTime = 0.f;
 	m_tInfo.iHp = 10;
 
-	CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
+	//CCameraMgr::GetInstance()->Change_Camera(CAM_STATIC);
+	CCameraMgr::GetInstance()->Reset_Camera();
 
 	CTransform* pTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"BonFire_0", L"Proto_TransformCom", ID_DYNAMIC));
 	NULL_CHECK(pTransCom);
@@ -671,7 +688,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{
 		//m_bKnockBack = true;
 		m_tInfo.iHp = 0;
-		// m_bDead = true;
+		 m_bDead = true;
 		return;
 	}
 
@@ -708,11 +725,9 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 		CParticleMgr::GetInstance()->Set_Info(this, 1, 1.f, { 0.f, 0.f, 0.5f },
 			0.1f, { 1.f, 1.f, 1.f, 1.f }, 5.f, false);
 		CParticleMgr::GetInstance()->Add_Info_Spot(true, false);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_SPOT, TEXTURE_18);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_MOOD, TEXTURE_18);
 		m_bHitParticle = true;
 	}
-
-
 
 
 	_vec3 vPos, vLook;

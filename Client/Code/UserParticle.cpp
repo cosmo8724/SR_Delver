@@ -205,7 +205,7 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 		attribute->vVelocity.x = GetRandomFloat(0.0f, m_Attribute.vVelocity.x) * (-3.0f);
 		attribute->vVelocity.y = GetRandomFloat(0.0f, m_Attribute.vVelocity.y) * (-10.0f);
 		attribute->vVelocity.z = m_Attribute.vVelocity.z;
-		attribute->vVelocity *= m_fVelocityMulti;
+		//attribute->vVelocity *= m_fVelocityMulti;
 	}
 	break;
 
@@ -275,12 +275,15 @@ void CUserParticle::resetParticle(ATTINFO * attribute)
 	{
 		attribute->bIsAlive = true;
 
-		attribute->vVelocity =
+		if (m_bRand)
+			attribute->vVelocity =
 		{
 			GetRandomFloat(-m_Attribute.vVelocity.x, m_Attribute.vVelocity.x),
 			GetRandomFloat(-m_Attribute.vVelocity.y, m_Attribute.vVelocity.y),
 			GetRandomFloat(1.f, m_Attribute.vVelocity.z)
 		};
+		else
+			attribute->vVelocity = m_Attribute.vVelocity;
 
 	}
 	break;
@@ -527,7 +530,7 @@ void CUserParticle::update(_float fTimeDelta)
 					+ iter->vVelocity.y * vUp
 					+ iter->vVelocity.z * vLook;
 
-				iter->tColor.a -= 0.01f;
+				iter->tColor = m_Attribute.tColor;
 
 				iter->fAge += fTimeDelta;
 				if (iter->fAge > iter->fLifeTime)

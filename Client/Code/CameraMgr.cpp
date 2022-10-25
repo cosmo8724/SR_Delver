@@ -90,9 +90,15 @@ void CCameraMgr::Action_PlayerDie()
 		m_CurId = CAM_STATIC;
 		m_vecCamera[m_CurId]->Set_Switch(true);
 	}
-
+	
+	static_cast<CStaticCamera*>(m_vecCamera[m_CurId])->Reset();
 	static_cast<CStaticCamera*>(m_vecCamera[m_CurId])->Set_PlayerDead(true);
 
+}
+
+void CCameraMgr::Reset_Camera()
+{
+	m_vecCamera[m_CurId]->Reset();
 }
 
 inline void CCameraMgr::Free(void)

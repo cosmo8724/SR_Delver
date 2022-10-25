@@ -97,6 +97,10 @@ void CShield::Render_Obejct(void)
 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	_vec3 vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);

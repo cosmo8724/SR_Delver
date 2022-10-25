@@ -48,7 +48,7 @@ HRESULT CParticleMgr::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle16_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle16/particle16_%d.png", TEX_NORMAL, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle17_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle17/particle17_%d.png", TEX_NORMAL, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle18_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle18/particle18_%d.png", TEX_NORMAL, 1)), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Particle19_Texture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Particle/particle19/particle19_%d.png", TEX_NORMAL, 1)), E_FAIL);
 
 	return S_OK;
 }
@@ -105,7 +105,8 @@ void CParticleMgr::Call_Particle(PTYPE eType, PTEXTUREID eTex)
 			pParticle->Add_Info_Spot(m_bFrameMove, m_bFrameRand);
 		//else if(eType == PTYPE_CIRCLING)
 			pParticle->Add_Info(m_bFrameMove, m_fFrame, m_fDist, m_fAngleSpeed);
-		
+			
+			pParticle->Set_bdBox(m_tPInfo.tBdBox.vMin, m_tPInfo.tBdBox.vMax);
 		pParticle->Set_Particle(eType);
 	}
 
@@ -134,14 +135,14 @@ void CParticleMgr::Collect_Particle(_int iIdx)
 }
 
 void CParticleMgr::Set_Info(CGameObject* pObj
-	, _int		_maxParticles				// �ִ� ��ƼŬ ��
-	, _float	_fSize						// ��� ��ƼŬ�� ũ��
-	, _vec3		_vVelocity					// �ӵ�
-	, _float	_fLifeTime					// ��ƼŬ �Ҹ���� �����Ǵ� �ð�
-	, D3DXCOLOR _tColor						// ����
-	, _float	_fFrameSpeed 				// ������ �ӵ�
-	, _bool		_bFrameRepeat				// ������ �ݺ���� ����
-	, _bool		_bRand)						// �� ���� ����
+	, _int		_maxParticles				
+	, _float	_fSize						
+	, _vec3		_vVelocity					
+	, _float	_fLifeTime					
+	, D3DXCOLOR _tColor						
+	, _float	_fFrameSpeed 				
+	, _bool		_bFrameRepeat				
+	, _bool		_bRand)						
 {
 	m_pTarget = pObj;
 

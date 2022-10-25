@@ -155,6 +155,8 @@ private:
 
 	_bool				m_bHitParticle = false;
 
+	_bool				m_bSnowParticle = false;
+
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);
