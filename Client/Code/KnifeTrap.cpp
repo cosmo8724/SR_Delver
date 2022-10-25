@@ -10,10 +10,8 @@ CKnifeTrap::CKnifeTrap(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 
 	m_vPos = vPos;
 	m_eType = ECO_KNIFETRAP;
-	m_fTopPosY = m_vPos.y + 0.5f;
-	m_fGroundY = m_vPos.y - 1.f;
 
-	m_fSpeed = 0.5f;
+	m_fSpeed = 0.3f;
 	m_fCurSpeed = m_fSpeed;
 	m_fDist = 5.f;
 
@@ -23,7 +21,7 @@ CKnifeTrap::CKnifeTrap(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 CKnifeTrap::CKnifeTrap(const CEcoObject & rhs)
 	: CEcoObject(rhs)
 {	
-	m_fSpeed = 0.5f;
+	m_fSpeed = 0.3f;
 	m_fCurSpeed = m_fSpeed;
 	m_fDist = 5.f;
 	m_eType = ECO_KNIFETRAP;
@@ -40,23 +38,22 @@ HRESULT CKnifeTrap::Ready_Object(void)
 
 	if (!m_bClone)
 		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
+	else
+		m_vPos = m_pTransCom->Get_Pos();
 
 	m_pTransCom->Set_Scale(0.4f, 1.f, 1.f);
 
-
 	m_bChargeTime = 1.f;
-	m_fSpeed = 0.5f;
+	m_fSpeed = 0.3f;
 	m_fCurSpeed = m_fSpeed;
 	m_fDist = 5.f;
 	m_eType = ECO_KNIFETRAP;
 
-	m_pTransCom->Set_Y(m_fGroundY);
 	return S_OK;
 }
 
 _int CKnifeTrap::Update_Object(const _float & fTimeDelta)
 {
-	CEcoObject::Update_Object(fTimeDelta);
 
 	if (!m_bReady)
 	{
@@ -66,10 +63,19 @@ _int CKnifeTrap::Update_Object(const _float & fTimeDelta)
 			m_pPlayerTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
 			pPlayer->Add_CollisionGroup(this);
 			m_bReady = true;
+
+			m_fTopPosY = m_vPos.y + 3.f;
+			m_fGroundY = m_vPos.y;
+
 		}
 		else
 			return 0;
 	}
+
+
+	CEcoObject::Update_Object(fTimeDelta);
+
+	cout << m_pTransCom->Get_Pos().y << endl;
 
 	if (Is_Player_Around())
 	{
