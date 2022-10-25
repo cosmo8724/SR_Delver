@@ -20,19 +20,22 @@ HRESULT CGuitarMan::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Pos(3.f, 2.f, 6.f);
+	m_pTransCom->Set_Pos(19.f, 2.f, 20.f);
 
 	// 다이얼로그 테스트 (※메모리 누수 주의)
 	wstring str = L"";
 	m_vecDialogue.push_back(str);
 
-	str = L"내 기타소리 좋지?";
+	str = L"내 기타 연주가 마음에 드나?";
 	m_vecDialogue.push_back(str);
 
-	str = L"돈은 팁이라고 생각할게";
+	str = L"그렇다면 팁을 내주셔야지!";
 	m_vecDialogue.push_back(str);
 
-	str = L"O_<";
+	str = L"(2 Gold 를 빼았겼다!)";
+	m_vecDialogue.push_back(str);
+
+	str = L"대신 내가 이 곳 전체에 울릴 정도로 기타를 크게 연주해주지.";
 	m_vecDialogue.push_back(str);
 
 	return S_OK;

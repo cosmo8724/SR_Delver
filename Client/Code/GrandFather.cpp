@@ -20,22 +20,28 @@ HRESULT CGrandfather::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Pos(5.f, 2.f, 3.f);
+	m_pTransCom->Set_Pos(21.f, 2.f, 16.f);
 
 	// 다이얼로그 테스트 (※메모리 누수 주의)
 	wstring str = L"";
 	m_vecDialogue.push_back(str);
 
-	str = L"이곳에 온 것을 환영한다네";
+	str = L"어서오게 젊은이,,";
 	m_vecDialogue.push_back(str);
 
-	str = L"어쩌고";
+	str = L"자네도 마왕의 보물을 노리고 이곳을 찾아온겐가?";
 	m_vecDialogue.push_back(str);
 
-	str = L"저쩌고";
+	str = L"맨몸으로 이 곳까지 도달한 것을 보면 실력에는 자신이 있나 보군.";
 	m_vecDialogue.push_back(str);
 
-	str = L"조심하거라";
+	str = L"하지만 이 앞부터는 두 주먹만으로는 나아가기 힘들게야.";
+	m_vecDialogue.push_back(str);
+
+	str = L"내 젊을 적 사용하던 장비들을 자네에게 넘겨주겠네.";
+	m_vecDialogue.push_back(str);
+
+	str = L"무운을 비네, 젊은이.";
 	m_vecDialogue.push_back(str);
 
 	return S_OK;

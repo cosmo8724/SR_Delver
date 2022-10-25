@@ -82,6 +82,9 @@ void CRockFall::LateUpdate_Object(void)
 
 void CRockFall::Render_Obejct(void)
 {
+	if (g_bIsTool)
+		m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
 	// 알파값 변화

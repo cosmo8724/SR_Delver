@@ -20,19 +20,19 @@ HRESULT CSmileMan::Ready_Object(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransCom->Set_Pos(17.f, 2.f, 5.f);
+	m_pTransCom->Set_Pos(-2.5f, 2.f, 5.f);
 
 	// 다이얼로그 테스트 (※메모리 누수 주의)
 	wstring str = L"";
 	m_vecDialogue.push_back(str);
 
-	str = L"^ - ^";
+	str = L"이봐! 거기 모험가!";
 	m_vecDialogue.push_back(str);
 
-	str = L"^ _ ^ ?";
+	str = L"내 동생 본 적 없어? 나랑 똑같이 생겼다만..";
 	m_vecDialogue.push_back(str);
 
-	str = L"뭐해 얼른 내 잘생긴 얼굴을 봐!";
+	str = L"제길.. 슬슬 맥주를 마셔야 하는데 말이야.";
 	m_vecDialogue.push_back(str);
 
 	return S_OK;

@@ -514,7 +514,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
 
 	// NPC
-	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
+	CNPCMgr::GetInstance()->Add_GameObject(pLayer, LOADING_STAGE);
 
 	// EcoObject
 	pGameObject = CJar::Create(m_pGraphicDev, _vec3({30.f, 1.f, 40.f}));

@@ -271,7 +271,7 @@ HRESULT CBoss::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CMonsterMgr::GetInstance()->Add_GameObject(pLayer, L"..\\..\\Data\\Monsters_Stage.dat");
 
 	// NPC
-	CNPCMgr::GetInstance()->Add_GameObject(pLayer);
+	CNPCMgr::GetInstance()->Add_GameObject(pLayer, LOADING_BOSS);
 
 	// Blocks
 	{

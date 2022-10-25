@@ -21,7 +21,7 @@ HRESULT CDog::Ready_Object(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransCom->Set_Scale(0.6f, 0.6f, 0.6f);
-	m_pTransCom->Set_Pos(3.f, 1.7f, 3.f);
+	m_pTransCom->Set_Pos(21.f, 1.6f, 18.f);
 
 	// 다이얼로그 테스트 (※메모리 누수 주의)
 	wstring str = L"";

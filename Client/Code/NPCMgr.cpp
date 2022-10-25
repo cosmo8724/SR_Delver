@@ -39,47 +39,51 @@ HRESULT CNPCMgr::Ready_Proto()
 	return S_OK;
 }
 
-HRESULT CNPCMgr::Add_GameObject(CLayer * pLayer)
+HRESULT CNPCMgr::Add_GameObject(CLayer * pLayer, LOADINGID eID)
 {
 	CGameObject*		pGameObject = nullptr;
 
-	//////////////////NPC
-	// Dog
-	pGameObject = CDog::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Dog", pGameObject), E_FAIL);
-	m_vecNPC.push_back(pGameObject);
+	if (eID == LOADING_STAGE)
+	{
+		//////////////////NPC
+		// Dog
+		pGameObject = CDog::Create(m_pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Dog", pGameObject), E_FAIL);
+		m_vecNPC.push_back(pGameObject);
 
-	// Grandfather
-	pGameObject = CGrandfather::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Grandfather", pGameObject), E_FAIL);
-	m_vecNPC.push_back(pGameObject);
+		// Grandfather
+		pGameObject = CGrandfather::Create(m_pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Grandfather", pGameObject), E_FAIL);
+		m_vecNPC.push_back(pGameObject);
 
-	// GuitarMan
-	pGameObject = CGuitarMan::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GuitarMan", pGameObject), E_FAIL);
-	m_vecNPC.push_back(pGameObject);
+		// GuitarMan
+		pGameObject = CGuitarMan::Create(m_pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GuitarMan", pGameObject), E_FAIL);
+		m_vecNPC.push_back(pGameObject);
 
-	// HoodMan
-	pGameObject = CHoodMan::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HoodMan", pGameObject), E_FAIL);
-	m_vecNPC.push_back(pGameObject);
+		// HoodMan
+		pGameObject = CHoodMan::Create(m_pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HoodMan", pGameObject), E_FAIL);
+		m_vecNPC.push_back(pGameObject);
 
-	// SmileMan
-	pGameObject = CSmileMan::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SmileMan", pGameObject), E_FAIL);
-	m_vecNPC.push_back(pGameObject);
-
-	// WinkMan
-	pGameObject = CWinkMan::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WinkMan", pGameObject), E_FAIL);
-	m_vecNPC.push_back(pGameObject);
-
+		// WinkMan
+		pGameObject = CWinkMan::Create(m_pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WinkMan", pGameObject), E_FAIL);
+		m_vecNPC.push_back(pGameObject);
+	}
+	else if (eID == LOADING_BOSS)
+	{
+		// SmileMan
+		pGameObject = CSmileMan::Create(m_pGraphicDev);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SmileMan", pGameObject), E_FAIL);
+		m_vecNPC.push_back(pGameObject);
+	}
 	return E_NOTIMPL;
 }
 

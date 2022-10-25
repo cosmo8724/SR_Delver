@@ -51,8 +51,8 @@ void CJam::LateUpdate_Object(void)
 
 void CJam::Render_Obejct(void)
 {
-	if (m_bDead)
-		return;
+	if (g_bIsTool)
+		m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 	
