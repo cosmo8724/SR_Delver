@@ -43,7 +43,7 @@ HRESULT CKnifeTrap::Ready_Object(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	if (!m_bClone)
-		m_pTransCom->Set_Pos(m_vPos.x, m_fGroundY, m_vPos.z);
+		m_pTransCom->Set_Pos(m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_pTransCom->Set_Scale(0.4f, 1.f, 1.f);
 

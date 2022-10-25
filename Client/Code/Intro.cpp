@@ -90,9 +90,14 @@ HRESULT CIntro::Ready_Scene(void)
 
 _int CIntro::Update_Scene(const _float & fTimeDelta)
 {
-	_int	iResult = Engine::CScene::Update_Scene(fTimeDelta);
+	static _bool Stage = false;
+	if (!Stage)
+	{
+		Engine::PlayBGM(L"BGM_Intro.mp3", 1.f);
+		Stage = true;
+	}
 
-	
+	_int	iResult = Engine::CScene::Update_Scene(fTimeDelta);
 
 	return iResult;
 }
