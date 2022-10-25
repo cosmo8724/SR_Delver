@@ -127,7 +127,7 @@ HRESULT CLoading_Scene::Ready_Proto()
 	{
 		FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LoadingTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/Intro Loading.png", TEX_NORMAL)), E_FAIL);
 	}
-	else if (m_eID == LOADING_STAGE || m_eID == LOADING_BOSS)
+	else if (m_eID == LOADING_STAGE || m_eID == LOADING_BOSS || m_eID == LOADING_TOOL)
 	{
 		FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LoadingTexture", CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/Stage Loading.png", TEX_NORMAL)), E_FAIL);
 	}

@@ -431,6 +431,10 @@ HRESULT CBoss::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		CloseHandle(hFile);
 	}
 
+	pGameObject = CBonFire::Create(m_pGraphicDev, _vec3({ 5.f, 2.f, 8.f }));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BonFire_0", pGameObject), E_FAIL);
+
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;

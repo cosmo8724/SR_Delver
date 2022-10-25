@@ -128,8 +128,9 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 	//m_pGraphicDev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	m_pGraphicDev->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
-
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	SendMessage(g_hWnd, 27000, (WPARAM)m_pGraphicDev, NULL);
 
 	return S_OK;
 }

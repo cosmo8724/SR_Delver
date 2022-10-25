@@ -6,12 +6,14 @@
 #include "MainApp.h"
 
 #define MAX_LOADSTRING 100
+#define MSG_GRAPHICDEV 27000
 
 // 전역 변수:
 HINSTANCE g_hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 HWND	g_hWnd;
+LPDIRECT3DDEVICE9		g_GraphicDev = NULL;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -211,6 +213,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+
+	case WM_SETCURSOR:
+		SetCursor(NULL);
+		if (g_GraphicDev)
+			g_GraphicDev->ShowCursor(TRUE);
+		return 0;
+
+	case MSG_GRAPHICDEV:
+		g_GraphicDev = (LPDIRECT3DDEVICE9)wParam;
+		break;
 
 	case WM_KEYDOWN:
 		switch (wParam)

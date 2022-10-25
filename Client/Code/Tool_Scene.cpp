@@ -33,6 +33,8 @@ _int CTool_Scene::Update_Scene(const _float & fTimeDelta)
 {
 	// Add Tool Windows Here.
 	//CImGuiMgr::GetInstance()->ImGui_Map_Tool(m_pGraphicDev, fTimeDelta);
+	::SetCursor(::LoadCursor(NULL, IDC_ARROW));
+
 	_uint		iResult = Engine::CScene::Update_Scene(fTimeDelta);
 
 	CImGuiMgr::GetInstance()->MapTool();
