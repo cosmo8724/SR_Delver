@@ -69,7 +69,7 @@ private:
 	_int				m_iLightningCreate = 0;
 
 	//
-	_bool				m_bGreenSpiderOne = false;
+	_int				m_iGreenSpiderCreate = 0;
 
 	// Timer
 	_float				m_fTimeAcc;
@@ -78,6 +78,7 @@ private:
 	_float				m_fMoveTimeAcc;
 
 	_bool				m_bPosSet = false;
+	_bool				m_bLight = false;
 
 public:
 	static CSongBoss*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });

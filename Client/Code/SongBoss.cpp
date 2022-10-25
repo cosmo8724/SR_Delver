@@ -226,6 +226,7 @@ void CSongBoss::SKill_Update(const _float & fTimeDelta)
 			Engine::Play_Sound(L"M_SongBoss_Move.mp3", SOUND_SONGBOSS, 1.f);
 
 			m_pGraphicDev->LightEnable(LIGHT_BOSS, true);
+			m_bLight = true;
 
 			CStaticCamera* pStaticCamera = dynamic_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 			NULL_CHECK(pStaticCamera);
@@ -438,6 +439,14 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 
 	m_eCurState = ATTACK;
 
+	if (m_iStunCount == 0)
+	{
+		static _uint i = 0;
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+
+
+	}
+
 	if (m_iStunCreate != 4) // MusicNote Create > 4
 	{
 		if (m_pAnimtorCom->Get_Currentframe() >= 9.f)
@@ -445,6 +454,7 @@ void CSongBoss::SKillStun_Update(const _float & fTimeDelta)
 			Engine::StopSound(SOUND_SONGBOSS);
 			Engine::Play_Sound(L"M_SongBoss_Stun_0.mp3", SOUND_SONGBOSS, 1.f);
 
+			m_iGreenSpiderCreate++;
 			SKillMonsterCreate_Update(fTimeDelta);
 			CBulletMgr::GetInstance()->Fire(STUN_SONGBOSS);
 			++m_iStunCreate;

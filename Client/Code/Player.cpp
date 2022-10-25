@@ -32,6 +32,7 @@ D3DXVECTOR3 g_vPlayerPos;
 float		g_fAmbient = 1.f;
 int			g_iMoney = 0;
 
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_vDirection(0.f, 0.f, 0.f)
@@ -54,7 +55,7 @@ HRESULT CPlayer::Ready_Object(_vec3 vPos)
 	m_pTransCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
 	// 플레이어 스탯정보
-	m_tInfo.iHp = 20;
+	m_tInfo.iHp = 200;
 	m_tInfo.iHpMax = 20;
 	m_tInfo.iAtk = 1;
 	m_tInfo.iDef = 10;
@@ -86,7 +87,7 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 		CLayer*		pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 		if (pLayer == nullptr)
 			return 0;
-		else
+		else if(g_bBoss == true)
 		{
 			// Snow Particle Create
 			CParticleMgr::GetInstance()->Set_Info(
@@ -141,12 +142,8 @@ _int CPlayer::Update_Object(const _float & fTimeDelta)
 
 
 
-
-
-
-
 	if (!((Get_DIKeyState(DIK_TAB) & 0x80) || m_pInv->Is_Open()))
-	{
+	{	
 		::SetCursor(NULL);
 		Mouse_Move();
 	}
@@ -604,7 +601,6 @@ void CPlayer::CollisionEvent(CGameObject * pOtherObj)
 	CItem*	pItem = dynamic_cast<CItem*>(pOtherObj);
 	if (nullptr != pItem && STATE_GROUND == pItem->Get_State() && pItem->Get_ItemType() != ITEM_GOLD)
 	{
-		//cout << "test" << endl;
 		m_str = L"E : Get";
 		if (Key_Down(DIK_E))
 		{
@@ -723,7 +719,7 @@ void CPlayer::OnHit(_int _HpMinus)
 	{	
 		if(0 < _HpMinus)
 		m_bKnockBack = true;
-		//cout << "아야 " << endl;
+
 		m_tInfo.iHp -= _HpMinus;
 		m_InvincibilityTimeAcc = 0.f;
 		m_bHitParticle = false;
@@ -884,6 +880,8 @@ void CPlayer::Set_Level(const _int& iMonsterHp, const _int& iMonsterExp)
 		else
 		{
 			m_tInfo.iLevel += 1;
+			m_tInfo.iHpMax += 2;
+			m_tInfo.iHp = m_tInfo.iHpMax;
 			m_tInfo.iExp = 0;
 			m_tInfo.iHp = m_tInfo.iHpMax;
 			m_tInfo.iExpMax += 10;

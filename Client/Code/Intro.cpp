@@ -112,8 +112,8 @@ void CIntro::LateUpdate_Scene(void)
 		CUIMgr::DestroyInstance();
 		CBlockVIBuffer::DestroyInstance();
 
-		// CScene*	pLoadingScene = CLoading_Scene::Create(m_pGraphicDev, LOADING_STAGE);
-		CScene*	pLoadingScene = CLoading_Scene::Create(m_pGraphicDev, LOADING_BOSS);
+		 CScene*	pLoadingScene = CLoading_Scene::Create(m_pGraphicDev, LOADING_STAGE);
+		// CScene*	pLoadingScene = CLoading_Scene::Create(m_pGraphicDev, LOADING_BOSS);
 		NULL_CHECK(pLoadingScene);
 		Engine::Set_Scene(pLoadingScene);
 		return;

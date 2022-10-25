@@ -493,7 +493,8 @@ HRESULT CBoss::Ready_Light(void)
 	//tLightInfo0.Range = 3000.f;
 	tLightInfo0.Direction = { 0.f ,-1.f, -1.f };
 
-	// intro ¿¡¼­ ÀÌ¹Ì »ý¼ºÇÔ.
+	// intro ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+	// intro ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	// FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
 	Engine::Update_Light(LIGHT_STAGE, &tLightInfo0);
 	//m_pGraphicDev->LightEnable(LIGHT_STAGE, FALSE);
@@ -551,6 +552,7 @@ HRESULT CBoss::Ready_Light(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo4, LIGHT_PLAYERBULLET), E_FAIL);
 	m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, FALSE);
 
+
 	// Boss
 	D3DLIGHT9		tLightInfo5;
 	ZeroMemory(&tLightInfo5, sizeof(D3DLIGHT9));
@@ -559,7 +561,7 @@ HRESULT CBoss::Ready_Light(void)
 	tLightInfo5.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo5.Ambient = D3DXCOLOR(1.f, 0.8f, 0.f, 1.f);
 	tLightInfo5.Position = _vec3(7.f, 2.f, 5.f);
-	tLightInfo5.Range = 4.f;
+	tLightInfo5.Range = 5.f;
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo5, LIGHT_BOSS), E_FAIL);
 	m_pGraphicDev->LightEnable(LIGHT_BOSS, FALSE);
 
