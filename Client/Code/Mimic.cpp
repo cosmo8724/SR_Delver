@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "ParticleMgr.h"
 #include "ItemMgr.h"
+#include "CullingMgr.h"
 
 CMimic::CMimic(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev)
@@ -71,7 +72,9 @@ _int CMimic::Update_Object(const _float & fTimeDelta)
 		m_bCreateIcon = true;
 	}
 	Engine::CMonster::Update_Object(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
+	if(CCullingMgr::GetInstance()->Is_Inside(this))
+		Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	m_pAnimtorCom->Play_Animation(fTimeDelta);
 	Motion_Change();
@@ -106,8 +109,68 @@ void CMimic::LateUpdate_Object(void)
 
 void CMimic::Render_Obejct(void)
 {
+
+
 	if (!m_bRenderOFF)
-		CMonster::Render_Obejct();
+	{
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+		//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+		//// Set Material
+		D3DMATERIAL9		tMtrl, tOldMtrl;
+		ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+		m_pGraphicDev->GetMaterial(&tMtrl);
+		tOldMtrl = tMtrl;
+
+		if (g_vPlayerPos.x < 0 || g_vPlayerPos.z < 0)
+		{
+			g_fAmbient -= 0.001f;
+			if (0.2f >= g_fAmbient)
+				g_fAmbient = 0.2f;
+
+			_vec3 dist = g_vPlayerPos - m_pTransCom->Get_Pos();
+			if (D3DXVec3Length(&dist) < 5.f)
+			{
+				g_fAmbient = min(g_fAmbient + 0.01f, 1.f);
+			}
+			tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // 환경반사
+		}
+		else
+		{
+			g_fAmbient += 0.01f;
+			if (1.f <= g_fAmbient)
+				g_fAmbient = 1.f;
+			tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // 환경반사
+		}
+
+		tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+		tMtrl.Power = 0.f;
+
+		m_pGraphicDev->SetMaterial(&tMtrl);
+		//// *Set Material
+
+
+
+		m_pAnimtorCom->Set_Texture();
+		m_pBufferCom->Render_Buffer();
+
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+		m_pGraphicDev->SetMaterial(&tOldMtrl);
+		//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+
+	}
 }
 
 HRESULT CMimic::Add_Component(void)

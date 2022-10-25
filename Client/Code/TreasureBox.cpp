@@ -71,7 +71,7 @@ void CTreasureBox::Render_Obejct(void)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
@@ -81,6 +81,40 @@ void CTreasureBox::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
+	//// Set Material
+	D3DMATERIAL9		tMtrl, tOldMtrl;
+	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+	m_pGraphicDev->GetMaterial(&tMtrl);
+	tOldMtrl = tMtrl;
+
+	if (g_vPlayerPos.x < 0 || g_vPlayerPos.z < 0)
+	{
+		g_fAmbient -= 0.001f;
+		if (0.2f >= g_fAmbient)
+			g_fAmbient = 0.2f;
+
+		_vec3 dist = g_vPlayerPos - m_pTransCom->Get_Pos();
+		if (D3DXVec3Length(&dist) < 5.f)
+		{
+			g_fAmbient = min(g_fAmbient + 0.01f, 1.f);
+		}
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // 환경반사
+	}
+	else
+	{
+		g_fAmbient += 0.01f;
+		if (1.f <= g_fAmbient)
+			g_fAmbient = 1.f;
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // 환경반사
+	}
+
+	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+	tMtrl.Power = 0.f;
+
+	m_pGraphicDev->SetMaterial(&tMtrl);
+	//// *Set Material
+
+
 
 	m_pTextureCom->Set_Texture(m_iTexture);
 	m_pBufferCom->Render_Buffer();
@@ -88,7 +122,8 @@ void CTreasureBox::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphicDev->SetMaterial(&tOldMtrl);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 
 	CEcoObject::Render_Obejct();	// collider 출력
@@ -182,10 +217,10 @@ void CTreasureBox::InteractEvent()
 		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_17);
 
 
-		CItemMgr::GetInstance()->Add_GameObject_Box(L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
+		//CItemMgr::GetInstance()->Add_GameObject_Box(L"Key", ITEM_KEY, m_pTransCom->Get_Pos());
 
 
-		_int iRand = rand() % 5 + 3;
+		_int iRand = rand() % 10 + 5;
 		for (int i = 0; i < iRand; ++i)
 		{
 			CItemMgr::GetInstance()->Add_GameObject_Box(L"Gold", ITEM_GOLD, m_pTransCom->Get_Pos());

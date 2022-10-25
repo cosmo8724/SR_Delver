@@ -114,7 +114,7 @@ void CPSystem::render()
 
 void CPSystem::postRender()
 {
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, false);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, false);

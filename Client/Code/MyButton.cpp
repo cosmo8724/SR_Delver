@@ -76,7 +76,7 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 	{
 		m_iFrame = 1;
 
-		if (m_str == L"����")
+		if (m_str == L"Buy")
 		{
 			if (Mouse_Down(DIM_LB))
 			{
@@ -125,7 +125,7 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 			}
 
 		}
-		else if (m_str == L"�ݱ�")
+		else if (m_str == L"Close")
 		{
 			if (Mouse_Down(DIM_LB))
 			{

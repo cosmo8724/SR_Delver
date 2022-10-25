@@ -98,7 +98,7 @@ void CLantern::Render_Obejct(void)
 	_vec3 vPos;
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -106,14 +106,28 @@ void CLantern::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	m_pTextureCom->Set_Texture(_ulong(m_fFrame));
+	D3DMATERIAL9		tMtrl, tOldMtrl;
+	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+	m_pGraphicDev->GetMaterial(&tMtrl);
+	tOldMtrl = tMtrl;
+
+	if (tMtrl.Ambient.r < 0.5f)
+	{
+		tMtrl.Ambient = { 0.5f, 0.5f, 0.5f, 1.f };
+		m_pGraphicDev->SetMaterial(&tMtrl);
+	}
+
+
+	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphicDev->SetMaterial(&tOldMtrl);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 
 	/*if(m_bText)

@@ -103,15 +103,25 @@ void CFistBullet::Render_Obejct(void)
 		return;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
+	
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+	D3DMATERIAL9		tMtrl;
+	m_pGraphicDev->GetMaterial(&tMtrl);
+	tMtrl.Ambient = { 0.f, 1.f, 0.f, 1.f };
 
 	m_pAnimtorCom->Set_Texture();
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
 
 #ifdef _DEBUG
 	// Collider

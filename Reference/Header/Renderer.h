@@ -19,7 +19,9 @@ public:
 	void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 	void		Clear_RenderGroup(void);
 
-	void		Set_RenderState(LPDIRECT3DDEVICE9& pGraphicDev, _int _i);
+	void		Set_PreRenderState(LPDIRECT3DDEVICE9& pGraphicDev, _int _i);
+	void		Set_PostRenderState(LPDIRECT3DDEVICE9& pGraphicDev, _int _i);
+
 
 private:
 	list<CGameObject*>			m_RenderGroup[RENDER_END];

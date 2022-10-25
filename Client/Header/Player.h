@@ -153,6 +153,8 @@ private:
 	// Heal Potion
 	_float					m_fHealTime = 0.f;
 
+	_bool				m_bHitParticle = false;
+
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 	virtual void		Free(void);

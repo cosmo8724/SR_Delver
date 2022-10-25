@@ -191,10 +191,12 @@ void CWandBullet::Render_Obejct(void)
 	//m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pTextureCom->Set_Texture(FtoDw(m_fFrame));
 
 	m_pBufferCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
