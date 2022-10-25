@@ -80,6 +80,8 @@ private:
 	_bool				m_bPosSet = false;
 	_bool				m_bLight = false;
 
+	_bool				m_bGreenSpiderOne = false;
+
 public:
 	static CSongBoss*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 	static CSongBoss*		Create(CMonster* pMonster);
