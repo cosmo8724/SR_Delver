@@ -130,6 +130,7 @@ void CShop::LateUpdate_Object(void)
 void CShop::Render_Obejct(void)
 {
 
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransCom->Get_WorldMatrixPointer());
 
 	_matrix		ViewMatrix;
@@ -153,6 +154,13 @@ void CShop::Render_Obejct(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	wstring str = L"Gold: ";
+	wchar_t index[10];
+	_itow_s(g_iMoney, index, 10);
+	str += index;
+	Render_Font(L"Font_Jinji", str.c_str(), &_vec2(m_fPosX + 200.f, m_fPosY - 20.f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+
 }
 
 HRESULT CShop::Add_Component(void)

@@ -2,6 +2,7 @@
 #include "UI.h"
 class CInventory;
 class CShop;
+class CPlayer;
 class CMyButton : public CUI
 {
 private:
@@ -32,6 +33,7 @@ private:
 	CInventory*		m_pInv = nullptr;
 	wstring			m_str;
 	CShop*			m_pShop = nullptr;
+	CPlayer*		m_pPlayer = nullptr;
 
 	_float			m_fTime = 0.f;
 };

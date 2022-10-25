@@ -161,17 +161,17 @@ HRESULT CTool_Scene::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 HRESULT CTool_Scene::Ready_Light()
 {
 	// Default
-	D3DLIGHT9        tLightInfo0;
-	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
+	//D3DLIGHT9        tLightInfo0;
+	//ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
-	tLightInfo0.Type = D3DLIGHT_POINT;
-	tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
-	tLightInfo0.Range = 3000.f;
+	//tLightInfo0.Type = D3DLIGHT_POINT;
+	//tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
+	//tLightInfo0.Range = 3000.f;
 
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
 
 	return S_OK;
 }

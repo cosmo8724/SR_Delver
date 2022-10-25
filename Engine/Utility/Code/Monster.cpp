@@ -57,14 +57,14 @@ void CMonster::Render_Obejct()
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0x00);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	D3DMATERIAL9		tMtrl;
-	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+	//D3DMATERIAL9		tMtrl;
+	//ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
 
-	tMtrl.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // ����
-	tMtrl.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tMtrl.Ambient	= D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f); // ȯ��ݻ�
+	//tMtrl.Diffuse	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // ����
+	//tMtrl.Specular	= D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tMtrl.Ambient	= D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f); // ȯ��ݻ�
 
-	m_pGraphicDev->SetMaterial(&tMtrl);
+	//m_pGraphicDev->SetMaterial(&tMtrl);
 
 
 	m_pAnimtorCom->Set_Texture();

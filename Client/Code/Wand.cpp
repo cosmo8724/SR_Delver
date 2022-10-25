@@ -144,7 +144,7 @@ void CWand::Charge(const _float & fTimeDelta)
 			m_pTransCom->Set_Stop(true);
 
 			D3DXCOLOR tColor = { 0.5f, 0.f, 0.5f, 1.f };
-			CLightMgr::GetInstance()->Update_Color(LIGHT_WAND, tColor);
+			Update_Color(LIGHT_WAND, tColor);
 			m_pGraphicDev->LightEnable(LIGHT_WAND, TRUE);
 
 		}
@@ -249,7 +249,7 @@ _int CWand::Update_Object(const _float & fTimeDelta)
 		m_pCenter->Get_Info(INFO_LOOK, &vLook);
 		m_pCenter->Get_Info(INFO_UP, &vUp);
 		_vec3 vTrans = vPos + 0.25f * vRight + 0.7f * vLook + 0.2f * vUp;
-		CLightMgr::GetInstance()->Update_Pos(LIGHT_WAND, vTrans);
+		Update_Pos(LIGHT_WAND, vTrans);
 
 		break;
 	}
@@ -298,18 +298,18 @@ void CWand::Render_Obejct(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 
-	D3DMATERIAL9		tMtrl;
-	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+	//D3DMATERIAL9		tMtrl;
+	//ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
 
-	tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
-	tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f); // 환경반사
-	
-	// 수행 x
-	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
-	tMtrl.Power = 0.f;
+	//tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 원색
+	//tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f); // 환경반사
+	//
+	//// 수행 x
+	//tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+	//tMtrl.Power = 0.f;
 
-	m_pGraphicDev->SetMaterial(&tMtrl);
+	//m_pGraphicDev->SetMaterial(&tMtrl);
 
 	m_pTextureCom->Set_Texture(_ulong(m_fFrame));
 

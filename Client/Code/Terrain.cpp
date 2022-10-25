@@ -78,16 +78,16 @@ HRESULT CTerrain::Add_Component(void)
 
 HRESULT CTerrain::SetUp_Material(void)
 {
-	D3DMATERIAL9		tMtrl;
-	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+	//D3DMATERIAL9		tMtrl;
+	//ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
 
-	tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
-	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
-	tMtrl.Power = 0.f;
+	//tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+	//tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
+	//tMtrl.Power = 0.f;
 
-	m_pGraphicDev->SetMaterial(&tMtrl);
+	//m_pGraphicDev->SetMaterial(&tMtrl);
 
 	// 램버트 확산 조명 공식
 	// 명도의 세기 * (L.D * M.D) + L.A * M.A

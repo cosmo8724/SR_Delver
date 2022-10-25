@@ -47,38 +47,27 @@ _int CLantern::Update_Object(const _float & fTimeDelta)
 	switch (m_eState)
 	{
 	case STATE_GROUND:
+	{
 		m_pTransCom->Set_Scale(0.6f, 0.6f, 0.6f);
 		m_pTransCom->Revolution(pPlayerInfo, matView, 0.f, m_fTimeDelta, STATE_GROUND);
-
-		//interact
-		//_vec3 vLook	= m_pCenter->Get_Look();
-		//_vec3 vDir	= m_pCenter->Get_Pos() - m_pTransCom->Get_Pos();
-		//D3DXVec3Normalize(&vLook, &vLook);
-		//D3DXVec3Normalize(&vDir, &vDir);
-
-		//_float fAngle = D3DXToDegree(D3DXVec3Dot(&vLook, &vDir));
-		//if (20 > fAngle)
-		//{
-		//	if (m_pPlayer->Get_MinAngle() > fAngle)
-		//	{
-		//		m_bText = true;
-		//	}
-		//}
-		//else
-		//	m_bText = false;
-
-
-
+	}
 		break;
 	case STATE_EQUIP:
+	{
+
 		m_pTransCom->Set_Scale(0.3f, 0.3f, 0.3f);
 
 		m_pTransCom->Item_LeftMotion(m_pGraphicDev, *m_pCenter->Get_WorldMatrixPointer());
-		
+
 		m_pColliderCom->Set_Free(true);
 
+		BOOL bOn = false;
+		_vec3 vPos;
+		m_pCenter->Get_Info(INFO_POS, &vPos);
+		Update_Pos(LIGHT_LANTERN, vPos);
+
 		m_pGraphicDev->LightEnable(LIGHT_LANTERN, TRUE);
-		CLightMgr::GetInstance()->Update_Pos(LIGHT_LANTERN, m_pCenter->Get_Pos());
+	}
 		break;
 	case STATE_INV:
 		m_pGraphicDev->LightEnable(LIGHT_LANTERN, FALSE);
@@ -110,6 +99,8 @@ void CLantern::Render_Obejct(void)
 	m_pTransCom->Get_Info(INFO_POS, &vPos);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xcc);

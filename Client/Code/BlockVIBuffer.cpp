@@ -217,18 +217,31 @@ void CBlockVIBuffer::Render_Buffer(LPDIRECT3DDEVICE9 pGraphicDev, BLOCKTYPE eTyp
 	pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
-	// Set Material
+	//// Set Material
 	D3DMATERIAL9		tMtrl;
 	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
 
 	tMtrl.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tMtrl.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tMtrl.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+	if (g_vPlayerPos.x < 0 || g_vPlayerPos.z < 0)
+	{
+		g_fAmbient -= 0.001f;
+		if (0.2f >= g_fAmbient)
+			g_fAmbient = 0.2f;
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // 환경반사
+	}
+	else
+	{
+		g_fAmbient += 0.01f;
+		if (1.f <=  g_fAmbient)
+			g_fAmbient = 1.f;
+		tMtrl.Ambient = D3DXCOLOR(g_fAmbient, g_fAmbient, g_fAmbient, 1.f); // 환경반사
+	}
 	tMtrl.Emissive = D3DXCOLOR(0.f, 0.f, 0.f, 1.f);
 	tMtrl.Power = 0.f;
 
 	pGraphicDev->SetMaterial(&tMtrl);
-	// *Set Material
+	//// *Set Material
 	
 	pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	pGraphicDev->SetTexture(0, pBPT->m_pTexture);

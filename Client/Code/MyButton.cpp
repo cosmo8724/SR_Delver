@@ -8,6 +8,7 @@
 #include "Lantern.h"
 #include "Potion.h"
 #include "EquipWindow.h"
+#include "Player.h"
 #include "StaticCamera.h"
 #include "TalkWindow.h"
 CMyButton::CMyButton(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, wstring str)
@@ -49,7 +50,9 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 
 		m_pInv = dynamic_cast<CInventory*>(Get_GameObject(L"Layer_UI", L"UI_Inventory"));
 		m_pShop = dynamic_cast<CShop*>(Get_GameObject(L"Layer_UI", L"UI_Shop"));
-		if ((nullptr != m_pInv) && (nullptr != m_pShop))
+		m_pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+		if ((nullptr != m_pInv) && (nullptr != m_pShop) &&(nullptr != m_pPlayer))
 			m_bReady = true;
 		else
 			return 0;
@@ -73,7 +76,7 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 	{
 		m_iFrame = 1;
 
-		if (m_str == L"±¸¸Å")
+		if (m_str == L"ï¿½ï¿½ï¿½ï¿½")
 		{
 			if (Mouse_Down(DIM_LB))
 			{
@@ -86,30 +89,43 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 				{
 				case 1:
 				{
-					CRedWand* pItem = static_cast<CRedWand*>(CItemMgr::GetInstance()->Add_GameObject_Shop(L"Layer_GameLogic", L"RadWand", ITEM_WEAPON, pPlayer->Get_Pos()));
-					pItem->Set_State(STATE_INV);
-					m_pInv->Set_Inventory(pItem);
+					if (g_iMoney >= 20)
+					{
+						m_pPlayer->Cal_Money(-20); // ï¿½Ã°ï¿½ï¿½ï¿½...
+						CRedWand* pItem = static_cast<CRedWand*>(CItemMgr::GetInstance()->Add_GameObject_Shop(L"Layer_GameLogic", L"RadWand", ITEM_WEAPON, pPlayer->Get_Pos()));
+						pItem->Set_State(STATE_INV);
+						m_pInv->Set_Inventory(pItem);
+					}
 				}
 				break;
 				case 2:
 				{
-					CPotion* pItem = static_cast<CPotion*>(CItemMgr::GetInstance()->Add_GameObject_Shop(L"Layer_GameLogic", L"Potion", ITEM_POTION, pPlayer->Get_Pos()));
-					pItem->Set_State(STATE_INV);
-					m_pInv->Set_Inventory(pItem);
+					if (g_iMoney >= 15)
+					{
+						m_pPlayer->Cal_Money(-15); 
+						CPotion* pItem = static_cast<CPotion*>(CItemMgr::GetInstance()->Add_GameObject_Shop(L"Layer_GameLogic", L"Potion", ITEM_POTION, pPlayer->Get_Pos()));
+						pItem->Set_State(STATE_INV);
+						m_pInv->Set_Inventory(pItem);
+					}
 				}
 				break;
 				case 3:
 				{
-					CLantern* pItem = static_cast<CLantern*>(CItemMgr::GetInstance()->Add_GameObject_Shop(L"Layer_GameLogic", L"Lantern", ITEM_LANTERN, pPlayer->Get_Pos()));
-					pItem->Set_State(STATE_INV);
-					m_pInv->Set_Inventory(pItem);
+					if (g_iMoney >= 10)
+					{
+						m_pPlayer->Cal_Money(-10);
+						CLantern* pItem = static_cast<CLantern*>(CItemMgr::GetInstance()->Add_GameObject_Shop(L"Layer_GameLogic", L"Lantern", ITEM_LANTERN, pPlayer->Get_Pos()));
+						pItem->Set_State(STATE_INV);
+						m_pInv->Set_Inventory(pItem);
+					}
+
 				}
 				break;
 				}
 			}
 
 		}
-		else if (m_str == L"´Ý±â")
+		else if (m_str == L"ï¿½Ý±ï¿½")
 		{
 			if (Mouse_Down(DIM_LB))
 			{
@@ -117,6 +133,7 @@ _int CMyButton::Update_Object(const _float & fTimeDelta)
 				m_pInv->Set_Open(false);
 				CEquipWindow* pEquip = static_cast<CEquipWindow*>(Engine::Get_GameObject(L"Layer_UI", L"UI_EquipWindow"));
 				pEquip->Set_Open(false);
+
 				CStaticCamera* pCam = static_cast<CStaticCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"StaticCamera"));
 				pCam->Set_Free(false);
 

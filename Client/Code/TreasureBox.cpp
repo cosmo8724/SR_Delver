@@ -175,11 +175,11 @@ void CTreasureBox::InteractEvent()
 
 		CParticleMgr::GetInstance()->Set_Info(this,
 			50,
-			0.1f,
+			0.7f,
 			{ 0.5f, 0.5f, 0.5f },
 			1.f,
 			{ 1.f, 1.f, 1.f, 1.f }, 1.f ,false, true);
-		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_5);
+		CParticleMgr::GetInstance()->Call_Particle(PTYPE_FOUNTAIN, TEXTURE_17);
 
 
 		CItemMgr::GetInstance()->Add_GameObject_Box(L"Key", ITEM_KEY, m_pTransCom->Get_Pos());

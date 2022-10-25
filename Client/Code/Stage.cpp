@@ -44,6 +44,7 @@
 
 #include "KnifeTrap.h"
 
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -768,14 +769,20 @@ HRESULT CStage::Ready_Light(void)
 	D3DLIGHT9        tLightInfo0;
 	ZeroMemory(&tLightInfo0, sizeof(D3DLIGHT9));
 
+	//tLightInfo0.Type = D3DLIGHT_POINT;
 	tLightInfo0.Type = D3DLIGHT_DIRECTIONAL;
-	tLightInfo0.Diffuse = D3DXCOLOR(0.1f, 0.1f,0.1f, 1.f);
+	tLightInfo0.Diffuse = D3DXCOLOR(1.f, 1.f ,1.f, 1.f);
 	tLightInfo0.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	tLightInfo0.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
-	tLightInfo0.Range = 3000.f;
+	//tLightInfo0.Position = _vec3(50.f, 50.f, 50.f);
+	//tLightInfo0.Range = 3000.f;
+	tLightInfo0.Direction = { 0.f ,-1.f, -1.f };
 
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
+	// intro 에서 이미 생성함.
+	// FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo0, LIGHT_STAGE), E_FAIL);
+	Engine::Update_Light(LIGHT_STAGE, &tLightInfo0);
+	//m_pGraphicDev->LightEnable(LIGHT_STAGE, FALSE);
+
 
 	//// Player
 	D3DLIGHT9		tLightInfo1;

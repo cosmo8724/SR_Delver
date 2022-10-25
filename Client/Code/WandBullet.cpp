@@ -113,7 +113,7 @@ _int CWandBullet::Update_Object(const _float & fTimeDelta)
 
 		// Light
 		D3DXCOLOR tColor = { 0.5f, 0.f, 0.5f, 1.f };
-		CLightMgr::GetInstance()->Update_Color(LIGHT_PLAYERBULLET, tColor);
+		Update_Color(LIGHT_PLAYERBULLET, tColor);
 		m_pGraphicDev->LightEnable(LIGHT_PLAYERBULLET, TRUE);
 
 		m_bReady = true;
@@ -125,7 +125,7 @@ _int CWandBullet::Update_Object(const _float & fTimeDelta)
 	m_fParticleTime += fTimeDelta;
 
 	m_pTransCom->Move_Pos(&(m_fSpeed * fTimeDelta * m_vDirection));
-	CLightMgr::GetInstance()->Update_Pos(LIGHT_PLAYERBULLET, m_pTransCom->Get_Pos());
+	Update_Pos(LIGHT_PLAYERBULLET, m_pTransCom->Get_Pos());
 	if (0.1f < m_fParticleTime)
 	{
 		CParticleMgr::GetInstance()->Set_Info(this, 3, 0.1f,

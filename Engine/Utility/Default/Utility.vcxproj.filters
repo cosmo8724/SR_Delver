@@ -100,17 +100,17 @@
     <Filter Include="00. Component\00. VIBuffer\05. SphereTex">
       <UniqueIdentifier>{ed566c01-6569-4746-bc2a-35c4d380a078}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. GameObject\Item">
-      <UniqueIdentifier>{de9a0722-2ddf-49e1-9212-64c48f7b8cf4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. GameObject\Item\Weapon">
-      <UniqueIdentifier>{13d47400-4dae-4c7f-9842-40f74e1e471e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Component\00. VIBuffer\07. CubeTerrainTex">
       <UniqueIdentifier>{dfe71cf1-a845-4ad5-8764-3a5d36d2a0fa}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. Component\00. VIBuffer\07. Shader">
       <UniqueIdentifier>{ad2381e1-4d34-419b-bfe3-25a63ecc77cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. GameObject\Bullet\Item">
+      <UniqueIdentifier>{de9a0722-2ddf-49e1-9212-64c48f7b8cf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. GameObject\Bullet\Item\Weapon">
+      <UniqueIdentifier>{13d47400-4dae-4c7f-9842-40f74e1e471e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -178,10 +178,10 @@
       <Filter>04. Manager\04. LightMgr</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Header\Item.h">
-      <Filter>01. GameObject\Item</Filter>
+      <Filter>01. GameObject\Bullet\Item</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Header\Weapon.h">
-      <Filter>01. GameObject\Item\Weapon</Filter>
+      <Filter>01. GameObject\Bullet\Item\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Header\Bullet.h">
       <Filter>01. GameObject\Bullet</Filter>
@@ -276,10 +276,10 @@
       <Filter>04. Manager\04. LightMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Item.cpp">
-      <Filter>01. GameObject\Item</Filter>
+      <Filter>01. GameObject\Bullet\Item</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Weapon.cpp">
-      <Filter>01. GameObject\Item\Weapon</Filter>
+      <Filter>01. GameObject\Bullet\Item\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Bullet.cpp">
       <Filter>01. GameObject\Bullet</Filter>
