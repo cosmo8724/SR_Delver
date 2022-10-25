@@ -81,6 +81,15 @@ void CStaticCamera::LateUpdate_Object(void)
 	CCamera::LateUpdate_Object();
 }
 
+void CStaticCamera::Reset()
+{
+	CCamera::Reset();
+	m_vUp = { 0.f, 1.f, 0.f };
+	m_bPlayerDead = false;
+	m_fDeadAngle = 0.f;
+	m_fDeadTime = 0.f;
+}
+
 void CStaticCamera::Free(void)
 {
 	CCamera::Free();
@@ -136,7 +145,7 @@ void CStaticCamera::Key_Input(const _float& fTimeDelta)
 
 void CStaticCamera::Target_Renewal(void)
 {
-	if (m_bShakeY || m_bShake || m_bPlayerDead)
+	if (m_bShakeY || m_bShake)
 		return;
 
 	m_pPlayerTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Proto_TransformCom", ID_DYNAMIC));
@@ -274,6 +283,7 @@ void CStaticCamera::Wave_Camera(const _float & fTimeDelta)
 
 void CStaticCamera::Player_Dead(const _float & fTimeDelta)
 {
+
 	if (!m_bPlayerDead)
 		return;
 
@@ -288,15 +298,13 @@ void CStaticCamera::Player_Dead(const _float & fTimeDelta)
 		_vec3 vLook;
 		D3DXVec3Normalize(&vLook, &_vec3(m_matView._31, m_matView._32, m_matView._33));
 
-		_vec3 vAxis = vLook;
-
 		m_fDeadAngle += 1.f;
 
 		_matrix matRot;
-		D3DXMatrixRotationAxis(&matRot, &vAxis, D3DXToRadian(m_fDeadAngle));
+		D3DXMatrixRotationAxis(&matRot, &vLook, D3DXToRadian(m_fDeadAngle));
 
 		_vec3 Up = { 0.f, 1.f, 0.f };
-		D3DXVec3TransformCoord(&m_vUp, &Up, &matRot);
+		D3DXVec3TransformNormal(&m_vUp, &Up, &matRot);
 	}
 
 

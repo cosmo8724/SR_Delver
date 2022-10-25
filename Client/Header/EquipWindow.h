@@ -30,6 +30,8 @@ private:
 public:
 	void		Set_Item(CItem* pItem, ITEMTYPE eType);
 	void		Set_Open(_bool bOpen) { m_bOpen = bOpen; }
+	CItem*				Get_Item(_int i, _int j) { return m_Window[i][j]; }
+	void				Set_Item(_int i, _int j, CItem* pItem) { m_Window[i][j] = pItem; }
 
 
 private:

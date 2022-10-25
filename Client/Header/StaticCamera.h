@@ -23,13 +23,7 @@ public:
 	virtual _int Update_Object(const _float& fTimeDelta) override;
 
 	virtual void LateUpdate_Object(void) override;
-	virtual	void Reset() {
-		CCamera::Reset();
-		m_vUp = { 0.f, 1.f, 0.f };
-		m_bPlayerDead = false;
-		m_fDeadAngle = 0.f;
-		m_fDeadTime = 0.f;
-	}
+	virtual	void Reset();
 
 
 public:
