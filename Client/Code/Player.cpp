@@ -854,7 +854,7 @@ void CPlayer::Hunger(const _float & fTimeDelta)
 		Set_HungerMinus();
 
 	if (Engine::Key_Down(DIK_L))
-		//Set_HungerPlus();
+		Set_HungerPlus();
 	// test
 
 	if (0 >= m_tInfo.iHunger && !m_tInfo.bSlow)

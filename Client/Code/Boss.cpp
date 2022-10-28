@@ -136,6 +136,7 @@ void CBoss::LateUpdate_Scene(void)
 	// Item
 	vector<CGameObject*>*	pItemGroup = nullptr;
 	vector<CGameObject*>*	pWeaponGroup = CItemMgr::GetInstance()->Get_Items(ITEM_WEAPON);
+	vector<CGameObject*>*	pShieldGroup = CItemMgr::GetInstance()->Get_Items(ITEM_SHIELD);
 
 	// Bullets
 	vector<CGameObject*>*	pPlayerBulletGroup[4];
@@ -156,13 +157,23 @@ void CBoss::LateUpdate_Scene(void)
 	pBossBulletGroup[3] = CBulletMgr::GetInstance()->Get_Bullets(LIGHTNING_SONGBOSS);
 	// ~Bullets
 
+	// Blocks : m_vecBlocks;
+
+
+
 	for (auto& obj : *pCollisionGroup)
 	{
-		Engine::CollisionAABB(pPlayer, obj);		// Player
+		if (ECO_JAR != static_cast<CEcoObject*>(obj)->Get_Type()) // Player
+			Engine::CollisionAABB(pPlayer, obj);
 
 		for (auto& weapon : *pWeaponGroup)			// weapon
 		{
 			Engine::CollisionAABB(obj, weapon);
+		}
+
+		for (auto& shield : *pShieldGroup)
+		{
+			Engine::CollisionAABB(obj, shield);
 		}
 
 		for (int i = 0; i < 4; ++i)					// playerBullet	
@@ -174,6 +185,9 @@ void CBoss::LateUpdate_Scene(void)
 		}
 	}
 
+
+
+
 	for (int i = 0; i < ITEM_IMG; ++i)
 	{
 		vector<CGameObject*>*	pItems = CItemMgr::GetInstance()->Get_Items((ITEMTYPE)i);
@@ -182,6 +196,7 @@ void CBoss::LateUpdate_Scene(void)
 			Engine::CollisionAABB(pPlayer, item);
 		}
 	}
+
 
 	for (auto& monster : *pMonsterGroup)
 	{
@@ -201,9 +216,37 @@ void CBoss::LateUpdate_Scene(void)
 		}
 	}
 
+
 	for (auto& block : m_vecBlocks)
 	{
-		Engine::CollisionAABB(block, pPlayer);
+		Engine::CollisionAABB(block, pPlayer);		// block <-> player
+
+													//for (int i = 0; i < 4; ++i)					// block <-> playerBullet	
+													//{
+													//	for (auto& bullet : *pPlayerBulletGroup[i])
+													//	{
+													//		Engine::CollisionAABB(block, bullet);
+													//	}
+													//}
+
+													//for (int i = 0; i < 3; ++i)					// block <-> monsterBullet
+													//{
+													//	for (auto& bullet : *pMonsterBulletGroup[i])
+													//	{
+													//		Engine::CollisionAABB(block, bullet);
+													//	}
+													//}
+
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (auto& bullet : *pMonsterBulletGroup[i])
+		{
+			Engine::CollisionAABB(pPlayer, bullet);
+
+
+		}
 	}
 
 	// boss bullet 
